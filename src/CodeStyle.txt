@@ -1,0 +1,7 @@
+ClassName
+methodName
+argumentName
+_fieldName (privata instansvariabler)
+variableName
+CONST
+ENUM
