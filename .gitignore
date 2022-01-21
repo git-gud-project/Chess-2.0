@@ -2,5 +2,5 @@ bin/*
 lib/*
 .vscode/*
 out/*
-.idea/*
+.idea/*.xml
 *.iml
