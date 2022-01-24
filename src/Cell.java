@@ -1,6 +1,6 @@
 public class Cell {
-    private int _xPos;
-    private int _yPos;
+    private final int _xPos;
+    private final int _yPos;
     private int _weatherEffect; //Datatype can be changed later.
 
     public Cell(int x, int y){
