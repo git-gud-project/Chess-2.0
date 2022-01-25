@@ -10,4 +10,8 @@ public class Board {
             }
         }
     }
+
+    public Cell cellAtPos(int x, int y){
+        return _board[y][x];
+    }
 }

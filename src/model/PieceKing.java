@@ -1,10 +1,11 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class PieceKing extends Piece {
     private boolean firstMove = false;
-    private Iterator<Move> _possibleMoves;
+    private ArrayList<Move> _possibleMoves;
 
     public PieceKing(Cell cell, int team) {
         super(cell, team);

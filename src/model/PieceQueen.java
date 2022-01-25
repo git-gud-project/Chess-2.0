@@ -1,9 +1,10 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class PieceQueen extends Piece {
-    private Iterator<Move> _possibleMoves;
+    private ArrayList<Move> _possibleMoves;
 
     public PieceQueen(Cell cell, int team) {
         super(cell, team);
