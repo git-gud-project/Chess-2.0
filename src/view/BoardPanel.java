@@ -1,19 +1,33 @@
 package view;
 
 import javax.swing.*;
+
+import model.ChessModel;
+
 import java.awt.*;
 
 public class BoardPanel extends JPanel {
-    public BoardPanel() {
-        super(new GridLayout(8, 8));
+    private CellButton[][] _board;
 
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
+    public final Dimension MIN_SIZE = new Dimension(60, 60);
+    public final Dimension MAX_SIZE = new Dimension(80, 80);
+
+    public void Update(ChessModel model) {
+        
+    }
+
+    public BoardPanel(int size) {
+        super(new GridLayout(size, size));
+        _board = new CellButton[size][size];
+
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
                         
                 CellButton button = new CellButton();
 
-                button.setMinimumSize(new Dimension(60, 60));
-                button.setPreferredSize(new Dimension(80, 80));
+                button.setMinimumSize(MIN_SIZE);
+                button.setPreferredSize(MAX_SIZE);
+                button.setIcon(new ImageIcon("res/kb.png"));
 
                 this.add(button);
 
@@ -24,6 +38,8 @@ public class BoardPanel extends JPanel {
 
                 button.setHoverBackgroundColor(color);
                 button.setPressedBackgroundColor(color);
+
+                _board[row][col] = button;
             }
         }
     }

@@ -60,7 +60,7 @@ public class ChessView extends JFrame {
             button.setPreferredSize(new Dimension(40, 80));
         }
 
-        JPanel grid = new BoardPanel();
+        JPanel grid = new BoardPanel(SIZE);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.0;
         c.gridwidth = 8;
