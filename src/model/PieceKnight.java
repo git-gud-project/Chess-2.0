@@ -8,7 +8,7 @@ import java.util.Iterator;
 public class PieceKnight extends Piece {
     private ArrayList<Move> _possibleMoves;
 
-    public PieceKnight(Cell cell, int team) {
+    public PieceKnight(Cell cell, Team team) {
         super(cell, team);
     }
 

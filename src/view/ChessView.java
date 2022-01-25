@@ -3,21 +3,32 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ChessView extends JFrame {
+
+    public final int DEFAULT_WINDOW_WIDTH = 600;
+    public final int DEFAULT_WINDOW_HEIGHT = 600;
+    public final boolean DEFAULT_RESIZABLE = false;
+    public final String DEFAULT_TITLE = "Chess Game";
+
+    private BoardPanel _boardPanel;
     
     public ChessView() {
-        super("Chess Game");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(new Dimension(600, 600));
-
-        GridBagLayout layout = new GridBagLayout();
+        this.setTitle(DEFAULT_TITLE);
         
-        JPanel outer = new JPanel();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        this.setSize(new Dimension(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
+        
+        this.setResizable(DEFAULT_RESIZABLE);
 
-        // Create a grid, with 8 rows and 8 columns
-        JPanel grid = new BoardPanel();
+        this.setLayout(new BorderLayout());
 
-        add(grid);
+        // Create board panel
+        _boardPanel = new BoardPanel(8);
 
-        setVisible(true);
+        this.add(_boardPanel, BorderLayout.CENTER);
+
+        this.pack();
+
+        this.setVisible(true);
     }
 }

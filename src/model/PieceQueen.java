@@ -6,7 +6,7 @@ import java.util.Iterator;
 public class PieceQueen extends Piece {
     private ArrayList<Move> _possibleMoves;
 
-    public PieceQueen(Cell cell, int team) {
+    public PieceQueen(Cell cell, Team team) {
         super(cell, team);
     }
 

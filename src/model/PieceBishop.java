@@ -5,7 +5,7 @@ import java.util.Iterator;
 public class PieceBishop extends Piece {
     private Iterator<Move> _possibleMoves;
 
-    public PieceBishop(Cell cell, int team) {
+    public PieceBishop(Cell cell, Team team) {
         super(cell, team);
     }
 

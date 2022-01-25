@@ -10,7 +10,7 @@ public class PiecePawn extends Piece {
     private boolean firstMove = false;
     private ArrayList<Move> _possibleMoves;
 
-    public PiecePawn(Cell cell, int team) {
+    public PiecePawn(Cell cell, Team team) {
         super(cell, team);
     }
 

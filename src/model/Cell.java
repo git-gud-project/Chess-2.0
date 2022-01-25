@@ -1,15 +1,31 @@
 package model;
 
 public class Cell {
+
     private final int _xPos;
     private final int _yPos;
     private int _weatherEffect; //Datatype can be changed later.
     private Piece piece;
 
-    public Cell(int x, int y){
+    private Board _board;
+    private Piece _piece;
+
+    public Cell(Board board, int x, int y){
+        this._board = board;
         this._xPos = x;
         this._yPos = y;
+        selectPiece();
     }
+
+    private void selectPiece() {
+        switch(_xPos*_board.getGameSize() + _yPos){
+            case 0, 1, 2, 3, 4, 5, 6, 7: _piece = new PiecePawn(this, _board.getChessModel().getTeamWhite() ); break;
+            case 56, 57, 58, 59, 60, 61, 62, 63: _piece = new PiecePawn(this, _board.getChessModel().getTeamBlack() ); break;
+            // Rest of pieces go here.
+        }
+    }
+
+    public Board getBoard () { return this._board; }
 
     public int getWeatherEffect() {
         return _weatherEffect;
