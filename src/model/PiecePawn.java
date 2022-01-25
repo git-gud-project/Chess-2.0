@@ -17,12 +17,13 @@ public class PiecePawn extends Piece {
     //Getter for the iterator containing all possibleMoves.
     //TO-FIX: En croissant!
     public Iterator<Move> getPossibleMoves(){
+        _possibleMoves = new ArrayList<Move>();
         Board tempBoard = this.getCell().getBoard();
         int tempX = this.getCell().getxPos();
         int tempY = this.getCell().getyPos();
         if(firstMove){
             _possibleMoves.add(new Move(tempBoard.getCell(tempX, tempY - 1), false));
-            _possibleMoves.add(new Move(tempBoard.getCell(tempX, tempY - 2), false)); //Fel implementering eftersom vi skapar en ny cell. Ska istället referera till brädans cell men vi har inte kommit så långt.
+            _possibleMoves.add(new Move(tempBoard.getCell(tempX, tempY - 2), false));
         }
         else{
             _possibleMoves.add(new Move(tempBoard.getCell(tempX, tempY + 1), false));
@@ -36,5 +37,9 @@ public class PiecePawn extends Piece {
             }
         }
         return _possibleMoves.iterator();
+    }
+
+    public void setFirstMove(){
+        this.firstMove = true;
     }
 }
