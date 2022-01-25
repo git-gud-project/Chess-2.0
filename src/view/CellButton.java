@@ -20,6 +20,7 @@ public class CellButton extends JButton {
         super.setFocusPainted(false);
         super.setRolloverEnabled(false);
         super.setFocusable(false);
+        super.setMargin(new Insets(0, 0, 0, 0));
     }
 
     @Override

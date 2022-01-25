@@ -12,6 +12,9 @@ public class BoardPanel extends JPanel {
                         
                 CellButton button = new CellButton();
 
+                button.setMinimumSize(new Dimension(60, 60));
+                button.setPreferredSize(new Dimension(80, 80));
+
                 this.add(button);
 
                 Color color = row % 2 == col % 2 ? Color.WHITE : Color.BLACK;
