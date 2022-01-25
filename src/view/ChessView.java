@@ -1,6 +1,7 @@
 package view;
 import javax.swing.*;
 import java.awt.*;
+import model.ChessModel;
 
 public class ChessView extends JFrame {
 
@@ -28,7 +29,7 @@ public class ChessView extends JFrame {
 
     private BoardPanel _boardPanel;
     
-    public ChessView() {
+    public ChessView(ChessModel model) {
         this.setTitle(DEFAULT_TITLE);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

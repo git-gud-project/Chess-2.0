@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import model.ChessModel;
 
 public class BoardPanel extends JPanel {
     public BoardPanel(int size) {
