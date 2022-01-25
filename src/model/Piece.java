@@ -43,12 +43,9 @@ public abstract class Piece {
     }
 
     //moves the cell of the piece.
-    void move(Cell newCell){
-        if(getPossibleMoves().hasNext()){
-            this._cell = newCell;
-        }
-        else{
-            System.out.print("That is not a possible move;");
-        }
+    public void move(Cell newCell) {
+        _cell.setPiece(null);
+        _cell = newCell;
+        _cell.setPiece(this);
     }
 }

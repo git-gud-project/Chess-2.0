@@ -10,6 +10,7 @@ public class BoardGridPanel extends JPanel {
     private int _size;
     private ChessView _view;
 
+    private BoardCell _selectedCell;
     private ArrayList<BoardCell> _highlightedCells;
 
     public BoardGridPanel(ChessView view, int size) {
@@ -47,18 +48,32 @@ public class BoardGridPanel extends JPanel {
     }
 
     private void handleClick(BoardCell boardCell) {
+        ChessModel model = _view.getModel();
+        Board board = model.getBoard();
+
         for (BoardCell cell : _highlightedCells) {
             cell.unhighlight();
         }
-        _highlightedCells.clear();
 
-        ChessModel model = _view.getModel();
+        // If the cell was highlighted, move the selected piece to the cell
+        if (_highlightedCells.contains(boardCell)) {
+            board
+            .getCell(_selectedCell.getRow(), _selectedCell.getCol())
+            .getPiece()
+            .move(board.getCell(boardCell.getRow(), boardCell.getCol()));
+
+            updateModel(model);
+        }
+
+        _highlightedCells.clear();
 
         Piece piece = model.getBoard().getCell(boardCell.getRow(), boardCell.getCol()).getPiece();
 
         if (piece == null) {
             return;
         }
+
+        _selectedCell = boardCell;
 
         Iterator<Move> moves = piece.getPossibleMoves();
         while (moves.hasNext()) {

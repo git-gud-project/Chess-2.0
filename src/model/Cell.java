@@ -55,5 +55,9 @@ public class Cell {
     public Piece getPiece() {
         return _piece;
     }
+
+    public void setPiece(Piece piece) {
+        this._piece = piece;
+    }
 }
 
