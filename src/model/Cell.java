@@ -5,6 +5,7 @@ public class Cell {
     private final int _xPos;
     private final int _yPos;
     private int _weatherEffect; //Datatype can be changed later.
+    private Piece piece;
 
     private Board _board;
     private Piece _piece;
@@ -52,5 +53,8 @@ public class Cell {
         this._weatherEffect = weatherEffect;
     }
 
+    public Piece getPiece() {
+        return piece;
+    }
 }
 

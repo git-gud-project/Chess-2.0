@@ -1,46 +1,66 @@
 package view;
 
 import javax.swing.*;
-
-import model.ChessModel;
-
 import java.awt.*;
 
 public class BoardPanel extends JPanel {
-    private CellButton[][] _board;
-
-    public final Dimension MIN_SIZE = new Dimension(60, 60);
-    public final Dimension MAX_SIZE = new Dimension(80, 80);
-
-    public void Update(ChessModel model) {
-        
-    }
-
     public BoardPanel(int size) {
-        super(new GridLayout(size, size));
-        _board = new CellButton[size][size];
+        CellButton button;
 
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                        
-                CellButton button = new CellButton();
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
 
-                button.setMinimumSize(MIN_SIZE);
-                button.setPreferredSize(MAX_SIZE);
-                button.setIcon(new ImageIcon("res/kb.png"));
-
-                this.add(button);
-
-                Color color = row % 2 == col % 2 ? Color.WHITE : Color.BLACK;
-
-                // Set the background color of the button, balck or white
-                button.setBackground(color);
-
-                button.setHoverBackgroundColor(color);
-                button.setPressedBackgroundColor(color);
-
-                _board[row][col] = button;
-            }
+        // Top
+        for (int i = 0; i < size; ++i) {
+            button = new CellButton(String.valueOf((char) (i + 'A')));
+            c.fill = GridBagConstraints.HORIZONTAL;
+            c.gridx = i + 1;
+            c.gridy = 0;
+            this.add(button, c);
+            button.setMinimumSize(new Dimension(60, 20));
+            button.setPreferredSize(new Dimension(80, 40));
         }
+
+        // Left
+        for (int i = 0; i < size; ++i) {
+            button = new CellButton(Integer.toString(size - i));
+            c.fill = GridBagConstraints.VERTICAL;
+            c.gridx = 0;
+            c.gridy = i + 1;
+            this.add(button, c);
+            button.setMinimumSize(new Dimension(20, 60));
+            button.setPreferredSize(new Dimension(40, 80));
+        }
+        
+        // Bottom
+        for (int i = 0; i < size; ++i) {
+            button = new CellButton(String.valueOf((char) (i + 'A')));
+            c.fill = GridBagConstraints.HORIZONTAL;
+            c.gridx = i + 1;
+            c.gridy = size + 1;
+            this.add(button, c);
+            button.setMinimumSize(new Dimension(60, 20));
+            button.setPreferredSize(new Dimension(80, 40));
+        }
+
+        // Right
+        for (int i = 0; i < size; ++i) {
+            button = new CellButton(Integer.toString(size - i));
+            c.fill = GridBagConstraints.VERTICAL;
+            c.gridx = size + 1;
+            c.gridy = i + 1;
+            this.add(button, c);
+            button.setMinimumSize(new Dimension(20, 60));
+            button.setPreferredSize(new Dimension(40, 80));
+        }
+
+        JPanel grid = new BoardGridPanel(size);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.0;
+        c.gridwidth = 8;
+        c.gridheight = 8;
+        c.gridx = 1;
+        c.gridy = 1;
+        this.add(grid, c);
     }
 }

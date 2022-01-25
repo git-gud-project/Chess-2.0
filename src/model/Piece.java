@@ -10,7 +10,35 @@ abstract class Piece {
         this._cell = cell;
         this._team = team;
     }
+    //Abstract classes
+    abstract Iterator<Move> getPossibleMoves();
 
+    Iterable<Cell> iterateMoves() { return null; }
+
+    //Getters and Setters.
+    public Cell getCell() {
+        return this._cell;
+    }
+
+    public int getTeam(){
+        return _team;
+    }
+    // Common methods for all pieces.
+    /**
+     * A help method that checks if the move contains a possible eliminations of a piece.
+     * @param move
+     * @return
+     */
+    public boolean checkEliminate(Move move){
+        if(move.getCell().getPiece().getTeam() != this.getTeam()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    //moves the cell of the piece.
     void move(Cell newCell){
         if(getPossibleMoves().hasNext()){
             this._cell = newCell;
@@ -19,13 +47,4 @@ abstract class Piece {
             System.out.print("That is not a possible move;");
         }
     }
-
-    public Cell getCell() { return this._cell; }
-
-    public Team getTeam() { return this._team; }
-
-    abstract Iterator<Move> getPossibleMoves();
-
-    Iterable<Cell> iterateMoves() { return null; }
-
 }
