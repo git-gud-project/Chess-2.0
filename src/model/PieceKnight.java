@@ -9,80 +9,81 @@ import java.util.Iterator;
 public class PieceKnight extends Piece {
     private ArrayList<Move> _possibleMoves;
     Board tempBoard = this.getCell().getBoard();
-    int tempX = this.getCell().getRow();
-    int tempY = this.getCell().getCol();
 
     public PieceKnight(Cell cell, Team team) {
         super(cell, team,PieceType.KNIGHT);
     }
 
     public Iterator<Move> getPossibleMoves(){
-        _possibleMoves = new ArrayList<Move>();
-        if(tempBoard.getCell(tempX + 2, tempY - 1) != null){ //change to check if move isValid();
-            if(checkEliminate(new Move(tempBoard.getCell(tempX + 2, tempY - 1)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX +2, tempY - 1), true));
+        _possibleMoves = new ArrayList<>();
+        int row = this.getCell().getRow();
+        int col = this.getCell().getCol();
+        System.out.println(tempBoard.isValid(row + 2, col - 1));
+        if(tempBoard.isValid(row + 2, col - 1)){
+            if(checkEliminate(new Move(tempBoard.getCell(row + 2, col - 1)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row +2, col - 1), true));
             }
-            else if(checkEliminate(new Move(tempBoard.getCell(tempX + 2, tempY - 1)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX + 2, tempY - 1), false));
-            }
-        }
-        if(tempBoard.getCell(tempX + 2, tempY + 1) != null){ //change to check if move isValid();
-            if(checkEliminate(new Move(tempBoard.getCell(tempX + 2, tempY + 1)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX +2, tempY + 1), true));
-            }
-            else if(checkEliminate(new Move(tempBoard.getCell(tempX + 2, tempY + 1)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX + 2, tempY + 1), false));
+            else if(!checkEliminate(new Move(tempBoard.getCell(row + 2, col - 1)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row + 2, col - 1), false));
             }
         }
-
-        if(tempBoard.getCell(tempX - 2, tempY - 1) != null){ //change to check if move isValid();
-            if(checkEliminate(new Move(tempBoard.getCell(tempX - 2, tempY - 1)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX - 2, tempY - 1), true));
+        if(tempBoard.isValid(row + 2, col + 1)){ //change to check if move isValid();
+            if(checkEliminate(new Move(tempBoard.getCell(row + 2, col + 1)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row +2, col + 1), true));
             }
-            else if(checkEliminate(new Move(tempBoard.getCell(tempX - 2, tempY - 1)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX - 2, tempY - 1), false));
-            }
-        }
-        if(tempBoard.getCell(tempX - 2, tempY + 1) != null){ //change to check if move isValid();
-            if(checkEliminate(new Move(tempBoard.getCell(tempX - 2, tempY + 1)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX - 2, tempY + 1), true));
-            }
-            else if(checkEliminate(new Move(tempBoard.getCell(tempX - 2, tempY + 1)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX - 2, tempY + 1), false));
+            else if(!checkEliminate(new Move(tempBoard.getCell(row + 2, col + 1)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row + 2, col + 1), false));
             }
         }
 
-        if(tempBoard.getCell(tempX + 1, tempY - 2) != null){ //change to check if move isValid();
-            if(checkEliminate(new Move(tempBoard.getCell(tempX + 1, tempY - 2)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX + 1, tempY - 2), true));
+        if(tempBoard.isValid(row - 2, col - 1)){ //change to check if move isValid();
+            if(checkEliminate(new Move(tempBoard.getCell(row - 2, col - 1)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col - 1), true));
             }
-            else if(checkEliminate(new Move(tempBoard.getCell(tempX + 1, tempY - 2)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX + 1, tempY - 2), false));
+            else if(!checkEliminate(new Move(tempBoard.getCell(row - 2, col - 1)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col - 1), false));
             }
         }
-        if(tempBoard.getCell(tempX - 1, tempY - 2) != null){ //change to check if move isValid();
-            if(checkEliminate(new Move(tempBoard.getCell(tempX - 1, tempY  - 2)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX - 1, tempY - 2), true));
+        if(tempBoard.isValid(row - 2, col + 1)){ //change to check if move isValid();
+            if(checkEliminate(new Move(tempBoard.getCell(row - 2, col + 1)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col + 1), true));
             }
-            else if(checkEliminate(new Move(tempBoard.getCell(tempX - 1, tempY - 2)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX - 1, tempY - 2), false));
+            else if(!checkEliminate(new Move(tempBoard.getCell(row - 2, col + 1)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col + 1), false));
             }
         }
 
-        if(tempBoard.getCell(tempX + 1, tempY + 2) != null){ //change to check if move isValid();
-            if(checkEliminate(new Move(tempBoard.getCell(tempX + 1, tempY + 2)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX + 1, tempY + 2), true));
+        if(tempBoard.isValid(row + 1, col - 2)){ //change to check if move isValid();
+            if(checkEliminate(new Move(tempBoard.getCell(row + 1, col - 2)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col - 2), true));
             }
-            else if(checkEliminate(new Move(tempBoard.getCell(tempX + 1, tempY + 2)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX + 1, tempY + 2), false));
+            else if(!checkEliminate(new Move(tempBoard.getCell(row + 1, col - 2)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col - 2), false));
             }
         }
-        if(tempBoard.getCell(tempX - 1, tempY + 2) != null){ //change to check if move isValid();
-            if(checkEliminate(new Move(tempBoard.getCell(tempX - 1, tempY  + 2)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX - 1, tempY + 2), true));
+        if(tempBoard.isValid(row - 1, col - 2)){ //change to check if move isValid();
+            if(checkEliminate(new Move(tempBoard.getCell(row - 1, col  - 2)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col - 2), true));
             }
-            else if(checkEliminate(new Move(tempBoard.getCell(tempX - 1, tempY + 2)))){
-                _possibleMoves.add(new Move(tempBoard.getCell(tempX - 1, tempY + 2), false));
+            else if(!checkEliminate(new Move(tempBoard.getCell(row - 1, col - 2)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col - 2), false));
+            }
+        }
+
+        if(tempBoard.isValid(row + 1, col + 2)){ //change to check if move isValid();
+            if(checkEliminate(new Move(tempBoard.getCell(row + 1, col + 2)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col + 2), true));
+            }
+            else if(!checkEliminate(new Move(tempBoard.getCell(row + 1, col + 2)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col + 2), false));
+            }
+        }
+        if(tempBoard.isValid(row - 1, col + 2)){ //change to check if move isValid();
+            if(checkEliminate(new Move(tempBoard.getCell(row - 1, col  + 2)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col + 2), true));
+            }
+            else if(!checkEliminate(new Move(tempBoard.getCell(row - 1, col + 2)))){
+                _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col + 2), false));
             }
         }
         return _possibleMoves.iterator(); //Fix so we get the possibleMoves for a pawn. Probably check get the current pos, get posX+1 and so on.

@@ -18,7 +18,7 @@ public class PiecePawn extends Piece {
     //Getter for the iterator containing all possibleMoves.
     //TO-FIX: En croissant!
     public Iterator<Move> getPossibleMoves(){
-        _possibleMoves = new ArrayList<Move>();
+        _possibleMoves = new ArrayList<>();
         Board tempBoard = this.getCell().getBoard();
         int row = this.getCell().getRow();
         int col = this.getCell().getCol();
@@ -28,14 +28,17 @@ public class PiecePawn extends Piece {
             _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col), false));
         }
         else{
-            //Need a check to see if this a valid move.
-            _possibleMoves.add(new Move(tempBoard.getCell(row, col + 1), false));
-            if(tempBoard.getCell(row+1, col - 1) != null || tempBoard.getCell(row - 1, col - 1) != null){ //change to check if move isValid()
-                if(checkEliminate(new Move(tempBoard.getCell(row + 1, col + 1)))){
+            if(tempBoard.isValid(row - 1, col)) {
+                if(!checkEliminate(new Move(tempBoard.getCell(row - 1, col)))) {
+                    _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col), false));
+                }
+            }
+            if(tempBoard.isValid(row - 1, col - 1) && tempBoard.isValid(row - 1, col + 1)){ //change to check if move isValid()
+                if(checkEliminate(new Move(tempBoard.getCell(row - 1, col - 1)))){
                     _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col - 1), true));
                 }
-                else if(checkEliminate(new Move(tempBoard.getCell(row + 1, col - 1)))){
-                    _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col - 1), true));
+                if(checkEliminate(new Move(tempBoard.getCell(row - 1, col + 1)))){
+                    _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col + 1), true));
                 }
             }
         }
@@ -43,7 +46,7 @@ public class PiecePawn extends Piece {
     }
 
     public void setFirstMove(){
-        this.firstMove = true;
+        this.firstMove = false;
     }
 
     @Override

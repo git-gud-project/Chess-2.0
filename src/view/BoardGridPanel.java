@@ -83,6 +83,9 @@ public class BoardGridPanel extends JPanel {
 
             BoardCell possibleMove = _board[cell.getRow()][cell.getCol()];
 
+            if(piece instanceof PiecePawn){
+                ((PiecePawn) piece).setFirstMove();
+            }
             possibleMove.highlight();
             _highlightedCells.add(possibleMove);
         }

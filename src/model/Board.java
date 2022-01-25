@@ -35,7 +35,8 @@ public class Board {
     }
 
     public boolean isValid(int row, int col) {
-        return !(row > _gameSize || col > _gameSize);
+        System.out.println((row < _gameSize && row >= 0) && (col < _gameSize && col >= 0));
+        return ((row < _gameSize && row >= 0) && (col < _gameSize && col >= 0));
     }
 
 }
