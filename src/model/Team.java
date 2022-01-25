@@ -3,11 +3,19 @@ import java.awt.*;
 
 public class Team {
 
-    Color _teamColor;
+    private Color _teamColor;
+    private String _fileSuffix;
 
-    public Team(Color color) {
-        this._teamColor = color;
+    public Team(Color color, String fileSuffix) {
+        _teamColor = color;
+        _fileSuffix = fileSuffix;
     }
 
-    public Color getColor() { return this._teamColor; }
+    public Color getColor() { 
+        return _teamColor;
+    }
+
+    public String getFileSuffix() {
+        return _fileSuffix;
+    }
 }
