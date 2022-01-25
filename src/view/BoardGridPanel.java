@@ -27,7 +27,7 @@ public class BoardGridPanel extends JPanel {
 
                 this.add(button);
 
-                Color color = row % 2 == col % 2 ? Color.WHITE : Color.BLACK;
+                Color color = row % 2 == col % 2 ? ChessView.PRIMARY_COLOR : ChessView.SECONDARY_COLOR;
 
                 // Set the background color of the button, balck or white
                 button.setBackground(color);
