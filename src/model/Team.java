@@ -8,4 +8,6 @@ public class Team {
     public Team(Color color) {
         this._teamColor = color;
     }
+
+    public Color getColor() { return this._teamColor; }
 }

@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class PieceBishop extends Piece {
@@ -95,6 +94,11 @@ public class PieceBishop extends Piece {
         }
 
         return _possibleMoves.iterator();
+    }
+
+    public String toString() {
+        if(getTeam().getColor().equals(Color.WHITE)) return "WBishop";
+        return "BBishop";
     }
 
 }
