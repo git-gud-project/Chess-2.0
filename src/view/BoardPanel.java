@@ -10,6 +10,8 @@ public class BoardPanel extends JPanel {
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
+        this.setBackground(Color.WHITE);
+
         // Top
         for (int i = 0; i < size; ++i) {
             button = new CellButton(String.valueOf((char) (i + 'A')));
@@ -57,8 +59,8 @@ public class BoardPanel extends JPanel {
         JPanel grid = new BoardGridPanel(size);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.0;
-        c.gridwidth = 8;
-        c.gridheight = 8;
+        c.gridwidth = size;
+        c.gridheight = size;
         c.gridx = 1;
         c.gridy = 1;
         this.add(grid, c);

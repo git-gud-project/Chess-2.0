@@ -5,8 +5,8 @@ import java.awt.*;
 
 public class CellButton extends JButton {
 
-    private Color hoverBackgroundColor;
-    private Color pressedBackgroundColor;
+    private Color _hoverBackgroundColor;
+    private Color _pressedBackgroundColor;
 
     public CellButton() {
         this(null);
@@ -20,14 +20,18 @@ public class CellButton extends JButton {
         super.setRolloverEnabled(false);
         super.setFocusable(false);
         super.setMargin(new Insets(0, 0, 0, 0));
+        super.setBackground(Color.WHITE);
+    
+        _hoverBackgroundColor = Color.WHITE;
+        _pressedBackgroundColor = Color.WHITE;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         if (getModel().isPressed()) {
-            g.setColor(pressedBackgroundColor);
+            g.setColor(_pressedBackgroundColor);
         } else if (getModel().isRollover()) {
-            g.setColor(hoverBackgroundColor);
+            g.setColor(_hoverBackgroundColor);
         } else {
             g.setColor(getBackground());
         }
@@ -40,18 +44,18 @@ public class CellButton extends JButton {
     }
 
     public Color getHoverBackgroundColor() {
-        return hoverBackgroundColor;
+        return _hoverBackgroundColor;
     }
 
     public void setHoverBackgroundColor(Color hoverBackgroundColor) {
-        this.hoverBackgroundColor = hoverBackgroundColor;
+        this._hoverBackgroundColor = hoverBackgroundColor;
     }
 
     public Color getPressedBackgroundColor() {
-        return pressedBackgroundColor;
+        return _pressedBackgroundColor;
     }
 
     public void setPressedBackgroundColor(Color pressedBackgroundColor) {
-        this.pressedBackgroundColor = pressedBackgroundColor;
+        this._pressedBackgroundColor = pressedBackgroundColor;
     }
 }
