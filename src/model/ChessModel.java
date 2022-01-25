@@ -1,24 +1,22 @@
 package model;
 
+import java.awt.*;
+
 public class ChessModel {
 
     private static final int GAMESIZE = 8;
+    private Team _teamWhite, _teamBlack;
 
-    private Cell[][] _cellArray;
+    private Board _board;
 
     public ChessModel() {
-        initCellArray();
+        _teamWhite = new Team(Color.WHITE);
+        _teamBlack = new Team(Color.BLACK);
+        _board = new Board(this, GAMESIZE);
     }
 
-    private void initCellArray() {
-        _cellArray = new Cell[GAMESIZE][GAMESIZE];
-        for(int i = 0; i < GAMESIZE; i++){
-            for(int j = 0; j < GAMESIZE; j++){
-                _cellArray[i][j] = new Cell(i,j);
-            }
-        }
-    }
+    public Team getTeamWhite() { return this._teamWhite; }
 
-    public Cell getCell(int x, int y) { return _cellArray[x][y]; }
+    public Team getTeamBlack() { return this._teamBlack; }
 
 }
