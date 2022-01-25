@@ -8,7 +8,7 @@ public class PieceKing extends Piece {
     private ArrayList<Move> _possibleMoves;
 
     public PieceKing(Cell cell, Team team) {
-        super(cell, team);
+        super(cell, team,PieceType.KING);
     }
 
     public Iterator<Move> getPossibleMoves(){

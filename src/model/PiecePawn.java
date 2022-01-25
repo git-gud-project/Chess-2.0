@@ -11,7 +11,7 @@ public class PiecePawn extends Piece {
     private ArrayList<Move> _possibleMoves;
 
     public PiecePawn(Cell cell, Team team) {
-        super(cell, team);
+        super(cell, team, PieceType.PAWN);
     }
 
     //Getter for the iterator containing all possibleMoves.

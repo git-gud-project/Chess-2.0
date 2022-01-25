@@ -6,7 +6,7 @@ public class PieceBishop extends Piece {
     private Iterator<Move> _possibleMoves;
 
     public PieceBishop(Cell cell, Team team) {
-        super(cell, team);
+        super(cell, team,PieceType.BISHOP);
     }
 
     public Iterator<Move> getPossibleMoves(){

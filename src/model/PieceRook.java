@@ -6,7 +6,7 @@ import java.util.Iterator;
 public class PieceRook extends Piece {
 
     public PieceRook(Cell cell, Team team) {
-        super(cell, team);
+        super(cell, team,PieceType.ROOK);
     }
 
     // Add all possible moves to the _possibleMoves list and return its iterator

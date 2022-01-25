@@ -5,10 +5,12 @@ import java.util.Iterator;
 public abstract class Piece {
     private Cell _cell;
     private final Team _team; //0 for white, 1 for black. Used for later scalability for XvX games.
+    private PieceType _type;
 
-    public Piece(Cell cell, Team team){
+    public Piece(Cell cell, Team team, PieceType type){
         this._cell = cell;
         this._team = team;
+        _type = type;
     }
     //Abstract classes
     abstract Iterator<Move> getPossibleMoves();
@@ -16,6 +18,8 @@ public abstract class Piece {
     Iterable<Cell> iterateMoves() { return null; }
 
     //Getters and Setters.
+    public PieceType getPieceType(){return _type;}
+
     public Cell getCell() {
         return this._cell;
     }

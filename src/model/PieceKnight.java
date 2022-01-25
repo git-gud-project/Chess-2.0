@@ -9,7 +9,7 @@ public class PieceKnight extends Piece {
     private ArrayList<Move> _possibleMoves;
 
     public PieceKnight(Cell cell, Team team) {
-        super(cell, team);
+        super(cell, team,PieceType.KNIGHT);
     }
 
     public Iterator<Move> getPossibleMoves(){
