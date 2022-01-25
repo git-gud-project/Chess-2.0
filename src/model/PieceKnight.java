@@ -23,7 +23,10 @@ public class PieceKnight extends Piece {
             if(checkEliminate(new Move(tempBoard.getCell(row + 2, col - 1)))){
                 _possibleMoves.add(new Move(tempBoard.getCell(row +2, col - 1), true));
             }
-            else if(!checkEliminate(new Move(tempBoard.getCell(row + 2, col - 1)))){
+            else if(!checkEliminate(new Move(tempBoard.getCell(row + 2, col - 1))) && tempBoard.getCell(row + 2, col - 1).getPiece() != null){
+                assert true;
+            }
+            else{
                 _possibleMoves.add(new Move(tempBoard.getCell(row + 2, col - 1), false));
             }
         }
@@ -31,7 +34,10 @@ public class PieceKnight extends Piece {
             if(checkEliminate(new Move(tempBoard.getCell(row + 2, col + 1)))){
                 _possibleMoves.add(new Move(tempBoard.getCell(row +2, col + 1), true));
             }
-            else if(!checkEliminate(new Move(tempBoard.getCell(row + 2, col + 1)))){
+            else if(!checkEliminate(new Move(tempBoard.getCell(row + 2, col + 1))) && tempBoard.getCell(row + 2, col + 1).getPiece() != null){
+                assert true;
+            }
+            else{
                 _possibleMoves.add(new Move(tempBoard.getCell(row + 2, col + 1), false));
             }
         }
@@ -40,7 +46,10 @@ public class PieceKnight extends Piece {
             if(checkEliminate(new Move(tempBoard.getCell(row - 2, col - 1)))){
                 _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col - 1), true));
             }
-            else if(!checkEliminate(new Move(tempBoard.getCell(row - 2, col - 1)))){
+            else if(!checkEliminate(new Move(tempBoard.getCell(row - 2, col - 1))) && tempBoard.getCell(row - 2, col - 1).getPiece() != null){
+                assert true;
+            }
+            else{
                 _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col - 1), false));
             }
         }
@@ -48,7 +57,10 @@ public class PieceKnight extends Piece {
             if(checkEliminate(new Move(tempBoard.getCell(row - 2, col + 1)))){
                 _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col + 1), true));
             }
-            else if(!checkEliminate(new Move(tempBoard.getCell(row - 2, col + 1)))){
+            else if(!checkEliminate(new Move(tempBoard.getCell(row - 2, col + 1))) && tempBoard.getCell(row - 2, col + 1).getPiece() != null){
+                assert true;
+            }
+            else{
                 _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col + 1), false));
             }
         }
@@ -57,7 +69,10 @@ public class PieceKnight extends Piece {
             if(checkEliminate(new Move(tempBoard.getCell(row + 1, col - 2)))){
                 _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col - 2), true));
             }
-            else if(!checkEliminate(new Move(tempBoard.getCell(row + 1, col - 2)))){
+            else if(!checkEliminate(new Move(tempBoard.getCell(row + 1, col - 2))) && tempBoard.getCell(row + 1, col - 2).getPiece() != null){
+                assert true;
+            }
+            else{
                 _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col - 2), false));
             }
         }
@@ -65,7 +80,10 @@ public class PieceKnight extends Piece {
             if(checkEliminate(new Move(tempBoard.getCell(row - 1, col  - 2)))){
                 _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col - 2), true));
             }
-            else if(!checkEliminate(new Move(tempBoard.getCell(row - 1, col - 2)))){
+            else if(!checkEliminate(new Move(tempBoard.getCell(row - 1, col - 2))) && tempBoard.getCell(row - 1, col - 2).getPiece() != null){
+                assert true;
+            }
+            else{
                 _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col - 2), false));
             }
         }
@@ -74,7 +92,10 @@ public class PieceKnight extends Piece {
             if(checkEliminate(new Move(tempBoard.getCell(row + 1, col + 2)))){
                 _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col + 2), true));
             }
-            else if(!checkEliminate(new Move(tempBoard.getCell(row + 1, col + 2)))){
+            else if(!checkEliminate(new Move(tempBoard.getCell(row + 1, col + 2))) && tempBoard.getCell(row + 1, col + 2).getPiece() != null){
+                assert true;
+            }
+            else{
                 _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col + 2), false));
             }
         }
@@ -82,7 +103,10 @@ public class PieceKnight extends Piece {
             if(checkEliminate(new Move(tempBoard.getCell(row - 1, col  + 2)))){
                 _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col + 2), true));
             }
-            else if(!checkEliminate(new Move(tempBoard.getCell(row - 1, col + 2)))){
+            else if(!checkEliminate(new Move(tempBoard.getCell(row - 1, col + 2))) && tempBoard.getCell(row - 1, col + 2).getPiece() != null){
+                assert true;
+            }
+            else{
                 _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col + 2), false));
             }
         }

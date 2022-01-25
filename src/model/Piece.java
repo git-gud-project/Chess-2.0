@@ -35,7 +35,7 @@ public abstract class Piece {
      * @return true if there's a possible elimination or false if there's none.
      */
     public boolean checkEliminate(Move move){
-        if(move.getCell().getPiece() != null && move.getCell().getPiece().getTeam() != this.getTeam()){
+        if((move.getCell().getPiece() != null) && (move.getCell().getPiece().getTeam() != this.getTeam())){
             return true;
         }
         else{
