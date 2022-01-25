@@ -2,6 +2,7 @@ package model;
 
 import model.Piece;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -41,5 +42,11 @@ public class PiecePawn extends Piece {
 
     public void setFirstMove(){
         this.firstMove = true;
+    }
+
+    @Override
+    public String toString() {
+        if(getTeam().getColor().equals(Color.WHITE)) return "WPawn";
+        return "BPawn";
     }
 }

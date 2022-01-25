@@ -30,8 +30,8 @@ public abstract class Piece {
     // Common methods for all pieces.
     /**
      * A help method that checks if the move contains a possible eliminations of a piece.
-     * @param move
-     * @return
+     * @param move - The move we want to move the piece to.
+     * @return true if there's a possible elimination or false if there's none.
      */
     public boolean checkEliminate(Move move){
         if(move.getCell().getPiece().getTeam() != this.getTeam()){
