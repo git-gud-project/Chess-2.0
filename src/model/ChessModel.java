@@ -5,8 +5,8 @@ import java.awt.*;
 public class ChessModel {
 
     private static final int GAMESIZE = 8;
-    private Team _teamWhite, _teamBlack;
 
+    private Team _teamWhite, _teamBlack;
     private Board _board;
 
     public ChessModel() {
