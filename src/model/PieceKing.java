@@ -6,7 +6,7 @@ public class PieceKing extends Piece {
     private boolean firstMove = false;
     private Iterator<Move> _possibleMoves;
 
-    public PieceKing(Cell cell, int team) {
+    public PieceKing(Cell cell, Team team) {
         super(cell, team);
     }
 
