@@ -23,7 +23,6 @@ public class BoardGridPanel extends JPanel {
 
                 button.setMinimumSize(ChessView.CELL_MIN_SIZE);
                 button.setPreferredSize(ChessView.CELL_IDEAL_SIZE);
-                button.setIcon(new ImageIcon("res/kb.png"));
 
                 this.add(button);
 
@@ -50,7 +49,7 @@ public class BoardGridPanel extends JPanel {
                    _board[row][col].setIcon(null);
                }
                else{
-                   _board[row][col].setIcon(new ImageIcon("res/"+p.getPieceType().getFilePrefix()+p.getTeam().getFileSuffix()));
+                   _board[row][col].setIcon(new ImageIcon("res/"+p.getPieceType().getFilePrefix()+p.getTeam().getFileSuffix()+".png"));
                }
             }
         }
