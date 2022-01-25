@@ -23,12 +23,14 @@ public class PiecePawn extends Piece {
         int tempX = this.getCell().getxPos();
         int tempY = this.getCell().getyPos();
         if(firstMove){
+            //Unnecessary but need to check if this is valid moves.
             _possibleMoves.add(new Move(tempBoard.getCell(tempX, tempY - 1), false));
             _possibleMoves.add(new Move(tempBoard.getCell(tempX, tempY - 2), false));
         }
         else{
+            //Need a check to see if this a valid move.
             _possibleMoves.add(new Move(tempBoard.getCell(tempX, tempY + 1), false));
-            if(tempBoard.getCell(tempX+1, tempY - 1) != null || tempBoard.getCell(tempX - 1, tempY - 1) != null){
+            if(tempBoard.getCell(tempX+1, tempY - 1) != null || tempBoard.getCell(tempX - 1, tempY - 1) != null){ //change to check if move isValid()
                 if(checkEliminate(new Move(tempBoard.getCell(tempX + 1, tempY + 1)))){
                     _possibleMoves.add(new Move(tempBoard.getCell(tempX - 1, tempY - 1), true));
                 }
