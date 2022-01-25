@@ -9,25 +9,12 @@ public class ChessView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(new Dimension(600, 600));
 
+        GridBagLayout layout = new GridBagLayout();
+        
+        JPanel outer = new JPanel();
+
         // Create a grid, with 8 rows and 8 columns
-        JPanel grid = new JPanel(new GridLayout(8, 8));
-
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                        
-                CellButton button = new CellButton();
-
-                grid.add(button);
-
-                Color color = row % 2 == col % 2 ? Color.WHITE : Color.BLACK;
-
-                // Set the background color of the button, balck or white
-                button.setBackground(color);
-
-                button.setHoverBackgroundColor(color);
-                button.setPressedBackgroundColor(color);
-            }
-        }
+        JPanel grid = new BoardPanel();
 
         add(grid);
 
