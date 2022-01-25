@@ -22,9 +22,20 @@ public class Board {
         }
     }
 
-    public Cell getCell(int x, int y) { return _cellArray[x][y]; }
+    public Cell getCell(int x, int y) {
+        return _cellArray[x][y];
+    }
 
     public ChessModel getChessModel() { return this._model; }
 
     public int getGameSize() { return this._gameSize; }
+
+    public boolean isEmpty(int x, int y) {
+        return (_cellArray[y][x].getPiece() == null);
+    }
+
+    public boolean isValid(int x, int y) {
+        return !(x > _gameSize || y > _gameSize);
+    }
+
 }
