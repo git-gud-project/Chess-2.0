@@ -17,8 +17,8 @@ public class BoardPanel extends JPanel {
             c.gridx = i + 1;
             c.gridy = 0;
             this.add(button, c);
-            button.setMinimumSize(new Dimension(60, 20));
-            button.setPreferredSize(new Dimension(80, 40));
+            button.setMinimumSize(ChessView.NUM_MIN_SIZE_H);
+            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_H);
         }
 
         // Left
@@ -28,8 +28,8 @@ public class BoardPanel extends JPanel {
             c.gridx = 0;
             c.gridy = i + 1;
             this.add(button, c);
-            button.setMinimumSize(new Dimension(20, 60));
-            button.setPreferredSize(new Dimension(40, 80));
+            button.setMinimumSize(ChessView.NUM_MIN_SIZE_V);
+            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_V);
         }
         
         // Bottom
@@ -39,8 +39,8 @@ public class BoardPanel extends JPanel {
             c.gridx = i + 1;
             c.gridy = size + 1;
             this.add(button, c);
-            button.setMinimumSize(new Dimension(60, 20));
-            button.setPreferredSize(new Dimension(80, 40));
+            button.setMinimumSize(ChessView.NUM_MIN_SIZE_H);
+            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_H);
         }
 
         // Right
@@ -50,8 +50,8 @@ public class BoardPanel extends JPanel {
             c.gridx = size + 1;
             c.gridy = i + 1;
             this.add(button, c);
-            button.setMinimumSize(new Dimension(20, 60));
-            button.setPreferredSize(new Dimension(40, 80));
+            button.setMinimumSize(ChessView.NUM_MIN_SIZE_V);
+            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_V);
         }
 
         JPanel grid = new BoardGridPanel(size);

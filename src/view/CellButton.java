@@ -15,7 +15,6 @@ public class CellButton extends JButton {
     public CellButton(String text) {
         super(text);
         super.setContentAreaFilled(false);
-        
         super.setBorderPainted(false);
         super.setFocusPainted(false);
         super.setRolloverEnabled(false);

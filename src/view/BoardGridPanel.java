@@ -8,9 +8,6 @@ import java.awt.*;
 public class BoardGridPanel extends JPanel {
     private CellButton[][] _board;
 
-    public final Dimension MIN_SIZE = new Dimension(60, 60);
-    public final Dimension MAX_SIZE = new Dimension(80, 80);
-
     public void Update(ChessModel model) {
         
     }
@@ -21,11 +18,11 @@ public class BoardGridPanel extends JPanel {
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-                        
+                
                 CellButton button = new CellButton();
 
-                button.setMinimumSize(MIN_SIZE);
-                button.setPreferredSize(MAX_SIZE);
+                button.setMinimumSize(ChessView.CELL_MIN_SIZE);
+                button.setPreferredSize(ChessView.CELL_IDEAL_SIZE);
                 button.setIcon(new ImageIcon("res/kb.png"));
 
                 this.add(button);
