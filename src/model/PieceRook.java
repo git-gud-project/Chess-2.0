@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class PieceRook extends Piece {
-    private ArrayList<Move> _possibleMoves;
 
     public PieceRook(Cell cell, Team team) {
         super(cell, team);
@@ -12,6 +11,8 @@ public class PieceRook extends Piece {
 
     // Add all possible moves to the _possibleMoves list and return its iterator
     public Iterator<Move> getPossibleMoves(){
+
+        ArrayList<Move> _possibleMoves = new ArrayList<>();
 
         int boardSize = this.getCell().getBoard().getGameSize();
         Board currentBoard = this.getCell().getBoard();
@@ -25,6 +26,7 @@ public class PieceRook extends Piece {
             }
             // If a piece is in the rooks way
             else if((currentBoard.getCell(this.getCell().getyPos(), i).getPiece() != null)) {
+                // If the piece is on another team, it can be eliminated
                 if(currentBoard.getCell(this.getCell().getyPos(), i).getPiece().getTeam() != this.getTeam()) {
                     _possibleMoves.add(new Move(currentBoard.getCell(this.getCell().getyPos(), i), true));
                     break;
@@ -43,6 +45,7 @@ public class PieceRook extends Piece {
             }
             // If a piece is in the rooks way
             else if((currentBoard.getCell(this.getCell().getyPos(), i).getPiece() != null)) {
+                // If the piece is on another team, it can be eliminated
                 if(currentBoard.getCell(this.getCell().getyPos(), i).getPiece().getTeam() != this.getTeam()) {
                     _possibleMoves.add(new Move(currentBoard.getCell(this.getCell().getyPos(), i), true));
                     break;
@@ -61,6 +64,7 @@ public class PieceRook extends Piece {
             }
             // If a piece is in the rooks way
             else if((currentBoard.getCell(this.getCell().getyPos(), i).getPiece() != null)) {
+                // If the piece is on another team, it can be eliminated
                 if(currentBoard.getCell(this.getCell().getyPos(), i).getPiece().getTeam() != this.getTeam()) {
                     _possibleMoves.add(new Move(currentBoard.getCell(i, this.getCell().getxPos()), true));
                     break;
@@ -79,6 +83,7 @@ public class PieceRook extends Piece {
             }
             // If a piece is in the rooks way
             else if((currentBoard.getCell(this.getCell().getyPos(), i).getPiece() != null)) {
+                // If the piece is on another team, it can be eliminated
                 if(currentBoard.getCell(this.getCell().getyPos(), i).getPiece().getTeam() != this.getTeam()) {
                     _possibleMoves.add(new Move(currentBoard.getCell(i, this.getCell().getxPos()), true));
                     break;
@@ -88,8 +93,6 @@ public class PieceRook extends Piece {
                 }
             }
         }
-
-
 
         return _possibleMoves.iterator();
     }
