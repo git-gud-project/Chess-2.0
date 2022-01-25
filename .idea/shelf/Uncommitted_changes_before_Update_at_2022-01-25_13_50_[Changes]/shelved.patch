@@ -1,0 +1,78 @@
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>## Chess 2.0\n\nHELLO MY NAME IS MARCUS\nHAHAHAH JAG SKRATTAR\n\n\n## Rasmus Standar\n## rasmus 2\n## rasmus 3\n\n## OSCAR TEST \n\n## Isak Test
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/README.md b/README.md
+--- a/README.md	(revision d6020fe2ba2a6964798216b08ed5c5d422948fab)
++++ b/README.md	(date 1643114824813)
+@@ -1,7 +1,5 @@
+ ## Chess 2.0
+ 
+-HELLO MY NAME IS MARCUS
+-HAHAHAH JAG SKRATTAR
+ 
+ 
+ ## Rasmus Standar
+Index: src/Piece.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>abstract class Piece {\n    private Cell _cell;\n    private final boolean _team; //TRUE FOR WHITE, FALSE FOR BLACK.\n\n    public Piece(Cell cell, boolean team){\n        this._cell = cell;\n        this._team = team;\n    }\n\n    void move(Cell newCell){\n        if(getPossibleMoves()){\n            this._cell = newCell;\n        }\n        else{\n            System.out.print(\"That is not a possible move;\");\n        }\n    }\n\n    abstract boolean getPossibleMoves();\n\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Piece.java b/src/Piece.java
+--- a/src/Piece.java	(revision d6020fe2ba2a6964798216b08ed5c5d422948fab)
++++ b/src/Piece.java	(date 1643114892035)
+@@ -1,3 +1,5 @@
++import java.util.Iterator;
++
+ abstract class Piece {
+     private Cell _cell;
+     private final boolean _team; //TRUE FOR WHITE, FALSE FOR BLACK.
+@@ -8,7 +10,7 @@
+     }
+ 
+     void move(Cell newCell){
+-        if(getPossibleMoves()){
++        if(getPossibleMoves().hasNext()){
+             this._cell = newCell;
+         }
+         else{
+@@ -16,7 +18,7 @@
+         }
+     }
+ 
+-    abstract boolean getPossibleMoves();
++    abstract Iterator<Cell> getPossibleMoves();
+ 
+ 
+ 
+Index: src/PiecePawn.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>public class PiecePawn extends Piece{\n\n    public PiecePawn(Cell cell, boolean team) {\n        super(cell, team);\n    }\n\n    public boolean getPossibleMoves(){\n            return true; //Fix so we get the possibleMoves for a pawn. Probably check get the current pos, get posX+1 and so on.\n        }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/PiecePawn.java b/src/PiecePawn.java
+--- a/src/PiecePawn.java	(revision d6020fe2ba2a6964798216b08ed5c5d422948fab)
++++ b/src/PiecePawn.java	(date 1643114913272)
+@@ -1,11 +1,13 @@
++import java.util.Iterator;
++
+ public class PiecePawn extends Piece{
+ 
+     public PiecePawn(Cell cell, boolean team) {
+         super(cell, team);
+     }
+ 
+-    public boolean getPossibleMoves(){
+-            return true; //Fix so we get the possibleMoves for a pawn. Probably check get the current pos, get posX+1 and so on.
++    public Iterator<Cell> getPossibleMoves(){
++            return null; //Fix so we get the possibleMoves for a pawn. Probably check get the current pos, get posX+1 and so on.
+         }
+ 
+ }

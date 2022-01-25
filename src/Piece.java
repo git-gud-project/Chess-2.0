@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 abstract class Piece {
     private Cell _cell;
     private final boolean _team; //TRUE FOR WHITE, FALSE FOR BLACK.
@@ -8,7 +10,7 @@ abstract class Piece {
     }
 
     void move(Cell newCell){
-        if(getPossibleMoves()){
+        if(getPossibleMoves().hasNext()){
             this._cell = newCell;
         }
         else{
@@ -16,7 +18,7 @@ abstract class Piece {
         }
     }
 
-    abstract boolean getPossibleMoves();
+    abstract Iterator<Cell> getPossibleMoves();
 
     Iterable<Cell> iterateMoves() { return null; }
 
