@@ -14,8 +14,8 @@ public class PieceBishop extends Piece {
     }
 
     public String toString() {
-        if(getTeam().getColor().equals(Color.WHITE)) return "WB";
-        return "BB";
+        if(getTeam().getColor().equals(Color.WHITE)) return "WBishop";
+        return "BBishop";
     }
 
 }

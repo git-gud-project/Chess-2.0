@@ -19,8 +19,8 @@ public class PieceKing extends Piece {
 
     @Override
     public String toString() {
-        if(getTeam().getColor().equals(Color.WHITE)) return "WKi";
-        return "BKi";
+        if(getTeam().getColor().equals(Color.WHITE)) return "WKing";
+        return "BKing";
     }
 
 }

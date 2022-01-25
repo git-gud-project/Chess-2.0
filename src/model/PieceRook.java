@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -95,6 +96,12 @@ public class PieceRook extends Piece {
         }
 
         return _possibleMoves.iterator();
+    }
+
+    @Override
+    public String toString() {
+        if(getTeam().getColor().equals(Color.WHITE)) return "WRook";
+        return "BRook";
     }
 
 }
