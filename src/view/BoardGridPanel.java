@@ -39,7 +39,7 @@ public class BoardGridPanel extends JPanel {
         }
     }
 
-    public void Update(ChessModel m) {
+    public void updateModel(ChessModel m) {
         model.Board b= m.getBoard();
 
         for(int row=0;row<_size;row++){

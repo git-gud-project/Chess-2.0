@@ -5,6 +5,8 @@ import java.awt.*;
 import model.ChessModel;
 
 public class BoardPanel extends JPanel {
+    private BoardGridPanel _boardPanel;
+
     public BoardPanel(int size) {
         CellButton button;
 
@@ -61,13 +63,17 @@ public class BoardPanel extends JPanel {
             button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_V);
         }
 
-        JPanel grid = new BoardGridPanel(size);
+        _boardPanel = new BoardGridPanel(size);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.0;
         c.gridwidth = size;
         c.gridheight = size;
         c.gridx = 1;
         c.gridy = 1;
-        this.add(grid, c);
+        this.add(_boardPanel, c);
+    }
+
+    public void updateModel(ChessModel model) {
+        _boardPanel.updateModel(model);
     }
 }
