@@ -19,9 +19,19 @@ public class Cell {
 
     private void selectPiece() {
         switch(_xPos*_board.getGameSize() + _yPos){
-            case 0, 1, 2, 3, 4, 5, 6, 7: _piece = new PiecePawn(this, _board.getChessModel().getTeamWhite() ); break;
-            case 56, 57, 58, 59, 60, 61, 62, 63: _piece = new PiecePawn(this, _board.getChessModel().getTeamBlack() ); break;
-            // Rest of pieces go here.
+            case 0, 1, 2, 3, 4, 5, 6, 7: _piece = new PiecePawn(this, _board.getChessModel().getTeamBlack() ); break;
+            case 8, 15: _piece = new PieceRook(this, _board.getChessModel().getTeamBlack() ); break;
+            case 9, 14: _piece = new PieceKnight(this, _board.getChessModel().getTeamBlack() ); break;
+            case 10, 13: _piece = new PieceBishop(this, _board.getChessModel().getTeamBlack() ); break;
+            case 11: _piece = new PieceQueen(this, _board.getChessModel().getTeamBlack() ); break;
+            case 12: _piece = new PieceKing(this, _board.getChessModel().getTeamBlack() ); break;
+            case 56, 57, 58, 59, 60, 61, 62, 63: _piece = new PiecePawn(this, _board.getChessModel().getTeamWhite() ); break;
+            case 48, 55: _piece = new PieceRook(this, _board.getChessModel().getTeamWhite() ); break;
+            case 49, 54: _piece = new PieceKnight(this, _board.getChessModel().getTeamWhite() ); break;
+            case 50, 53: _piece = new PieceBishop(this, _board.getChessModel().getTeamWhite() ); break;
+            case 51: _piece = new PieceQueen(this, _board.getChessModel().getTeamWhite() ); break;
+            case 52: _piece = new PieceKing(this, _board.getChessModel().getTeamWhite() ); break;
+            default: _piece = null; break;
         }
     }
 
