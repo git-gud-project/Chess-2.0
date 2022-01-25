@@ -1,3 +1,5 @@
+package model;
+
 public class Cell {
     private final int _xPos;
     private final int _yPos;

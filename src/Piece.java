@@ -1,3 +1,5 @@
+import model.Cell;
+
 import java.util.Iterator;
 
 abstract class Piece {
