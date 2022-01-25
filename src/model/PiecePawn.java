@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 public class PiecePawn extends Piece {
 
-    private boolean firstMove = false;
+    private boolean firstMove = true;
     private ArrayList<Move> _possibleMoves;
 
     public PiecePawn(Cell cell, Team team) {
@@ -20,22 +20,22 @@ public class PiecePawn extends Piece {
     public Iterator<Move> getPossibleMoves(){
         _possibleMoves = new ArrayList<Move>();
         Board tempBoard = this.getCell().getBoard();
-        int tempX = this.getCell().getxPos();
-        int tempY = this.getCell().getyPos();
+        int row = this.getCell().getRow();
+        int col = this.getCell().getCol();
         if(firstMove){
             //Unnecessary but need to check if this is valid moves.
-            _possibleMoves.add(new Move(tempBoard.getCell(tempX, tempY - 1), false));
-            _possibleMoves.add(new Move(tempBoard.getCell(tempX, tempY - 2), false));
+            _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col), false));
+            _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col), false));
         }
         else{
             //Need a check to see if this a valid move.
-            _possibleMoves.add(new Move(tempBoard.getCell(tempX, tempY + 1), false));
-            if(tempBoard.getCell(tempX+1, tempY - 1) != null || tempBoard.getCell(tempX - 1, tempY - 1) != null){ //change to check if move isValid()
-                if(checkEliminate(new Move(tempBoard.getCell(tempX + 1, tempY + 1)))){
-                    _possibleMoves.add(new Move(tempBoard.getCell(tempX - 1, tempY - 1), true));
+            _possibleMoves.add(new Move(tempBoard.getCell(row, col + 1), false));
+            if(tempBoard.getCell(row+1, col - 1) != null || tempBoard.getCell(row - 1, col - 1) != null){ //change to check if move isValid()
+                if(checkEliminate(new Move(tempBoard.getCell(row + 1, col + 1)))){
+                    _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col - 1), true));
                 }
-                else if(checkEliminate(new Move(tempBoard.getCell(tempX + 1, tempY - 1)))){
-                    _possibleMoves.add(new Move(tempBoard.getCell(tempX + 1, tempY - 1), true));
+                else if(checkEliminate(new Move(tempBoard.getCell(row + 1, col - 1)))){
+                    _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col - 1), true));
                 }
             }
         }

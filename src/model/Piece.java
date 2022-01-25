@@ -13,7 +13,7 @@ public abstract class Piece {
         _type = type;
     }
     //Abstract classes
-    abstract Iterator<Move> getPossibleMoves();
+    public abstract Iterator<Move> getPossibleMoves();
 
     Iterable<Cell> iterateMoves() { return null; }
 

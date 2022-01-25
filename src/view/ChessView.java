@@ -45,7 +45,7 @@ public class ChessView extends JFrame {
         this.setLayout(new BorderLayout());
 
         // Create board panel
-        _boardPanel = new BoardPanel(8);
+        _boardPanel = new BoardPanel(this, 8);
 
         this.add(_boardPanel, BorderLayout.CENTER);
 
@@ -56,6 +56,10 @@ public class ChessView extends JFrame {
         _model = model;
 
         updateModel();
+    }
+
+    public ChessModel getModel() {
+        return _model;
     }
     
     public void updateModel() {

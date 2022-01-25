@@ -7,7 +7,7 @@ import model.ChessModel;
 public class BoardPanel extends JPanel {
     private BoardGridPanel _boardPanel;
 
-    public BoardPanel(int size) {
+    public BoardPanel(ChessView view, int size) {
         CellButton button;
 
         this.setLayout(new GridBagLayout());
@@ -63,7 +63,7 @@ public class BoardPanel extends JPanel {
             button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_V);
         }
 
-        _boardPanel = new BoardGridPanel(size);
+        _boardPanel = new BoardGridPanel(view, size);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.0;
         c.gridwidth = size;

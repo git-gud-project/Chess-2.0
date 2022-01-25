@@ -2,22 +2,22 @@ package model;
 
 public class Cell {
 
-    private final int _xPos;
-    private final int _yPos;
+    private final int _row;
+    private final int _col;
     private int _weatherEffect; //Datatype can be changed later.
 
     private Board _board;
     private Piece _piece;
 
-    public Cell(Board board, int x, int y){
+    public Cell(Board board, int row, int col){
         this._board = board;
-        this._xPos = x;
-        this._yPos = y;
+        this._row = row;
+        this._col = col;
         selectPiece();
     }
 
     private void selectPiece() {
-        switch (_xPos * _board.getGameSize() + _yPos) {
+        switch (_row * _board.getGameSize() + _col) {
             case 8, 9, 10, 11, 12, 13, 14, 15 -> _piece = new PiecePawn(this, _board.getChessModel().getTeamBlack());
             case 0, 7 -> _piece = new PieceRook(this, _board.getChessModel().getTeamBlack());
             case 1, 6 -> _piece = new PieceKnight(this, _board.getChessModel().getTeamBlack());
@@ -40,12 +40,12 @@ public class Cell {
         return _weatherEffect;
     }
 
-    public int getxPos() {
-        return _xPos;
+    public int getRow() {
+        return _row;
     }
 
-    public int getyPos(){
-        return _yPos;
+    public int getCol(){
+        return _col;
     }
 
     public void setWeatherEffect(int weatherEffect){

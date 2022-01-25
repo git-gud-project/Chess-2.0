@@ -9,8 +9,8 @@ import java.util.Iterator;
 public class PieceKnight extends Piece {
     private ArrayList<Move> _possibleMoves;
     Board tempBoard = this.getCell().getBoard();
-    int tempX = this.getCell().getxPos();
-    int tempY = this.getCell().getyPos();
+    int tempX = this.getCell().getRow();
+    int tempY = this.getCell().getCol();
 
     public PieceKnight(Cell cell, Team team) {
         super(cell, team,PieceType.KNIGHT);
