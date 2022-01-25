@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BoardGridPanel extends JPanel {
-    private CellButton[][] _board;
+    private BoardCell[][] _board;
 
     public void Update(ChessModel model) {
         
@@ -14,12 +14,12 @@ public class BoardGridPanel extends JPanel {
 
     public BoardGridPanel(int size) {
         super(new GridLayout(size, size));
-        _board = new CellButton[size][size];
+        _board = new BoardCell[size][size];
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 
-                CellButton button = new CellButton();
+                BoardCell button = new BoardCell();
 
                 button.setMinimumSize(ChessView.CELL_MIN_SIZE);
                 button.setPreferredSize(ChessView.CELL_IDEAL_SIZE);

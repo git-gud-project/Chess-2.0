@@ -26,6 +26,12 @@ public class CellButton extends JButton {
         _pressedBackgroundColor = Color.WHITE;
     }
 
+    public void setColorAll(Color color) {
+        super.setBackground(color);
+        _hoverBackgroundColor = color;
+        _pressedBackgroundColor = color;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         if (getModel().isPressed()) {
