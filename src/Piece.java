@@ -18,6 +18,6 @@ abstract class Piece {
 
     abstract boolean getPossibleMoves();
 
-
+    Iterable<Cell> iterateMoves() { return null; }
 
 }

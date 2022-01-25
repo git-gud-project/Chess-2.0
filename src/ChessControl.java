@@ -1,19 +1,7 @@
-import javax.swing.*;
-import java.awt.*;
+import view.ChessView;
 
-public class ChessControl extends JFrame {
-
-
+public class ChessControl {
     public ChessControl() {
-        super("Chess Game");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocation(250, 100);
-        setSize(new Dimension(600, 600));
-        setVisible(true);
+        new ChessView();
     }
-
-    public static void main(String[] args){
-        new ChessControl();
-    }
-
 }
