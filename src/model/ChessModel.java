@@ -19,4 +19,6 @@ public class ChessModel {
 
     public Team getTeamBlack() { return this._teamBlack; }
 
+    public Board getBoard() { return this._board; }
+
 }
