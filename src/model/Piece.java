@@ -20,7 +20,7 @@ abstract class Piece {
         return this._cell;
     }
 
-    public int getTeam(){
+    public Team getTeam(){
         return _team;
     }
     // Common methods for all pieces.
