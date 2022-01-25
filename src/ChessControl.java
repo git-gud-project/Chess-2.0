@@ -1,7 +1,9 @@
 import view.ChessView;
+import model.ChessModel;
 
 public class ChessControl {
     public ChessControl() {
-        new ChessView();
+        ChessModel model = new ChessModel();
+        ChessView view = new ChessView(model);
     }
 }
