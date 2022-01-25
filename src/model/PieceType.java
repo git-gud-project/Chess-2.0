@@ -1,3 +1,5 @@
+package model;
+
 public enum PieceType {
     BISHOP,
     KING,

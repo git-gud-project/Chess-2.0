@@ -2,6 +2,7 @@ package model;
 
 import model.Piece;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -11,7 +12,7 @@ public class PiecePawn extends Piece {
     private ArrayList<Move> _possibleMoves;
 
     public PiecePawn(Cell cell, Team team) {
-        super(cell, team);
+        super(cell, team, PieceType.PAWN);
     }
 
     //Getter for the iterator containing all possibleMoves.
@@ -41,5 +42,11 @@ public class PiecePawn extends Piece {
 
     public void setFirstMove(){
         this.firstMove = true;
+    }
+
+    @Override
+    public String toString() {
+        if(getTeam().getColor().equals(Color.WHITE)) return "WPawn";
+        return "BPawn";
     }
 }
