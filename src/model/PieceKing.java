@@ -12,6 +12,7 @@ public class PieceKing extends Piece {
     }
 
     public Iterator<Move> getPossibleMoves(){
+        _possibleMoves = new ArrayList<Move>();
         return null; //Fix so we get the possibleMoves for a pawn. Probably check get the current pos, get posX+1 and so on.
     }
 
