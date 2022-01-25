@@ -1,3 +1,4 @@
+import model.ChessModel;
 import view.ChessView;
 import model.ChessModel;
 

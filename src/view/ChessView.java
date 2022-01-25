@@ -1,7 +1,9 @@
 package view;
+
+import model.*;
+
 import javax.swing.*;
 import java.awt.*;
-import model.ChessModel;
 
 public class ChessView extends JFrame {
 
@@ -28,6 +30,8 @@ public class ChessView extends JFrame {
     public final static Color BOARD_BACKGROUND_COLOR = Color.BLACK;
 
     private BoardPanel _boardPanel;
+
+    private ChessModel _model;
     
     public ChessView(ChessModel model) {
         this.setTitle(DEFAULT_TITLE);
@@ -48,5 +52,13 @@ public class ChessView extends JFrame {
         this.pack();
 
         this.setVisible(true);
+
+        _model = model;
+
+        updateModel();
+    }
+    
+    public void updateModel() {
+        _boardPanel.updateModel(_model);
     }
 }
