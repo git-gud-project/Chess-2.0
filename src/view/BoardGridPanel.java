@@ -1,20 +1,20 @@
 package view;
 
-import model.ChessModel;
+import model.*;
+
 
 import javax.swing.*;
 import java.awt.*;
 
 public class BoardGridPanel extends JPanel {
     private BoardCell[][] _board;
+    private int _size;
 
-    public void Update(ChessModel model) {
-        
-    }
 
     public BoardGridPanel(int size) {
         super(new GridLayout(size, size));
         _board = new BoardCell[size][size];
+        _size = size;
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
@@ -36,6 +36,22 @@ public class BoardGridPanel extends JPanel {
                 button.setPressedBackgroundColor(color);
 
                 _board[row][col] = button;
+            }
+        }
+    }
+
+    public void Update(ChessModel m) {
+        model.Board b= m.getBoard();
+
+        for(int row=0;row<_size;row++){
+            for(int col=0;col<_size;col++){
+                Piece p = b.getCell(row,col).getPiece();
+               if(p == null){
+                   _board[row][col].setIcon(null);
+               }
+               else{
+                   _board[row][col].setIcon(new ImageIcon("res/"+p.getPieceType().getFilePrefix()+p.getTeam().getFileSuffix()));
+               }
             }
         }
     }
