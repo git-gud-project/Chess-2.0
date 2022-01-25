@@ -17,19 +17,21 @@ public class PieceRook extends Piece {
 
         int boardSize = this.getCell().getBoard().getGameSize();
         Board currentBoard = this.getCell().getBoard();
+        int rookYPos = this.getCell().getyPos();
+        int rookXPos = this.getCell().getxPos();
 
 
         // Check to see how far the rook can move to the right
-        for(int i = this.getCell().getxPos()+1; i<boardSize; i++) {
+        for(int i = rookXPos+1; i<boardSize; i++) {
             // No piece is in the rooks way
-            if(currentBoard.getCell(this.getCell().getyPos(), i).getPiece() == null) {
-                    _possibleMoves.add(new Move(currentBoard.getCell(this.getCell().getyPos(), i), false));
+            if(currentBoard.isEmpty(rookXPos, i)){
+                    _possibleMoves.add(new Move(currentBoard.getCell(i, rookYPos), false));
             }
             // If a piece is in the rooks way
-            else if((currentBoard.getCell(this.getCell().getyPos(), i).getPiece() != null)) {
+            else {
                 // If the piece is on another team, it can be eliminated
-                if(currentBoard.getCell(this.getCell().getyPos(), i).getPiece().getTeam() != this.getTeam()) {
-                    _possibleMoves.add(new Move(currentBoard.getCell(this.getCell().getyPos(), i), true));
+                if(currentBoard.getCell(i, rookYPos).getPiece().getTeam() != this.getTeam()) {
+                    _possibleMoves.add(new Move(currentBoard.getCell(i, rookYPos), true));
                     break;
                 }
                 else {
@@ -39,16 +41,16 @@ public class PieceRook extends Piece {
         }
 
         // Check to see how far the rook can move to the left
-        for(int i = this.getCell().getxPos()-1; i>=0; i--) {
+        for(int i = rookXPos-1; i>=0; i--) {
             // No piece is in the rooks way
-            if(currentBoard.getCell(this.getCell().getyPos(), i).getPiece() == null) {
-                _possibleMoves.add(new Move(currentBoard.getCell(this.getCell().getyPos(), i), false));
+            if(currentBoard.isEmpty(rookXPos, i)) {
+                _possibleMoves.add(new Move(currentBoard.getCell(i, rookYPos), false));
             }
             // If a piece is in the rooks way
-            else if((currentBoard.getCell(this.getCell().getyPos(), i).getPiece() != null)) {
+            else {
                 // If the piece is on another team, it can be eliminated
-                if(currentBoard.getCell(this.getCell().getyPos(), i).getPiece().getTeam() != this.getTeam()) {
-                    _possibleMoves.add(new Move(currentBoard.getCell(this.getCell().getyPos(), i), true));
+                if(currentBoard.getCell(rookYPos, i).getPiece().getTeam() != this.getTeam()) {
+                    _possibleMoves.add(new Move(currentBoard.getCell(i, rookYPos), true));
                     break;
                 }
                 else {
@@ -58,16 +60,16 @@ public class PieceRook extends Piece {
         }
 
         // Check to see how far the rook can move downwards
-        for(int i = this.getCell().getyPos()+1; i<boardSize; i++) {
+        for(int i = rookYPos+1; i<boardSize; i++) {
             // No piece is in the rooks way
-            if(currentBoard.getCell(i, this.getCell().getxPos()).getPiece() == null) {
-                _possibleMoves.add(new Move(currentBoard.getCell(i, this.getCell().getxPos()), false));
+            if(currentBoard.isEmpty(rookXPos, i)) {
+                _possibleMoves.add(new Move(currentBoard.getCell(rookXPos, i), false));
             }
             // If a piece is in the rooks way
-            else if((currentBoard.getCell(this.getCell().getyPos(), i).getPiece() != null)) {
+            else {
                 // If the piece is on another team, it can be eliminated
-                if(currentBoard.getCell(this.getCell().getyPos(), i).getPiece().getTeam() != this.getTeam()) {
-                    _possibleMoves.add(new Move(currentBoard.getCell(i, this.getCell().getxPos()), true));
+                if(currentBoard.getCell(i, rookYPos).getPiece().getTeam() != this.getTeam()) {
+                    _possibleMoves.add(new Move(currentBoard.getCell(rookXPos, i), true));
                     break;
                 }
                 else {
