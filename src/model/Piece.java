@@ -1,10 +1,12 @@
+package model;
+
 import java.util.Iterator;
 
 abstract class Piece {
     private Cell _cell;
-    private final boolean _team; //TRUE FOR WHITE, FALSE FOR BLACK.
+    private final int _team; //0 for white, 1 for black. Used for later scalability for XvX games.
 
-    public Piece(Cell cell, boolean team){
+    public Piece(Cell cell, int team){
         this._cell = cell;
         this._team = team;
     }
@@ -18,7 +20,7 @@ abstract class Piece {
         }
     }
 
-    abstract Iterator<Cell> getPossibleMoves();
+    abstract Iterator<Move> getPossibleMoves();
 
     Iterable<Cell> iterateMoves() { return null; }
 
