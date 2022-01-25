@@ -2,7 +2,7 @@ package model;
 
 import java.util.Iterator;
 
-abstract class Piece {
+public abstract class Piece {
     private Cell _cell;
     private final Team _team; //0 for white, 1 for black. Used for later scalability for XvX games.
 
