@@ -10,11 +10,24 @@ public class PieceKing extends Piece {
 
     public PieceKing(Cell cell, Team team) {
         super(cell, team,PieceType.KING);
+        _possibleMoves = new ArrayList<Move>();
     }
 
     public Iterator<Move> getPossibleMoves(){
-        _possibleMoves = new ArrayList<Move>();
-        return null; //Fix so we get the possibleMoves for a pawn. Probably check get the current pos, get posX+1 and so on.
+        _possibleMoves.clear();
+
+        Board board = this.getCell().getBoard();
+        
+        board.calculateMoves(this, _possibleMoves, 1, 1, 1);
+        board.calculateMoves(this, _possibleMoves, -1, 1, 1);
+        board.calculateMoves(this, _possibleMoves, 1, -1, 1);
+        board.calculateMoves(this, _possibleMoves, -1, -1, 1);
+        board.calculateMoves(this, _possibleMoves, 1, 0, 1);
+        board.calculateMoves(this, _possibleMoves, -1, 0, 1);
+        board.calculateMoves(this, _possibleMoves, 0, 1, 1);
+        board.calculateMoves(this, _possibleMoves, 0, -1, 1);
+
+        return _possibleMoves.iterator();
     }
 
     @Override
