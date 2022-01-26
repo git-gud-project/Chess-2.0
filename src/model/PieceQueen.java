@@ -45,24 +45,61 @@ public class PieceQueen extends Piece {
         int col = this.getCell().getCol();
 
         int inc = 1;
-        while(currentBoard.isValid(row - inc, col - inc) && currentBoard.getCell(row - inc, col - inc).getPiece() == null){
-            _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col - inc)));
-            inc++;
+        while(currentBoard.isValid(row - inc, col - inc)){
+            if(currentBoard.getCell(row - inc, col - inc).getPiece() == null){
+                _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col - inc), false));
+                inc++;
+            }
+            else if(checkEliminate(new Move(currentBoard.getCell(row - inc, col - inc)))){
+                _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col - inc), true));
+                inc = 10;
+            }
+            else{
+                break;
+            }
         }
         inc = 1;
-        while(currentBoard.isValid(row - inc, col + inc) && currentBoard.getCell(row - inc, col + inc).getPiece() == null){
-            _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col + inc)));
-            inc++;
-        }
-        inc = 1;while(currentBoard.isValid(row + inc, col + inc) && currentBoard.getCell(row + inc, col + inc).getPiece() == null){
-            _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col + inc)));
-            inc++;
-        }
-        inc = 1;while(currentBoard.isValid(row + inc, col - inc) && currentBoard.getCell(row + inc, col - inc).getPiece() == null){
-            _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col - inc)));
-            inc++;
+        while(currentBoard.isValid(row - inc, col + inc)){
+            if(currentBoard.getCell(row - inc, col + inc).getPiece() == null){
+                _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col + inc), false));
+                inc++;
+            }
+            else if(checkEliminate(new Move(currentBoard.getCell(row - inc, col + inc)))){
+                _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col + inc), true));
+                inc = 10;
+            }
+            else{
+                break;
+            }
         }
         inc = 1;
+        while(currentBoard.isValid(row + inc, col + inc)){
+            if(currentBoard.getCell(row + inc, col + inc).getPiece() == null){
+                _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col + inc), false));
+                inc++;
+            }
+            else if(checkEliminate(new Move(currentBoard.getCell(row + inc, col + inc)))){
+                _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col + inc), true));
+                inc = 10;
+            }
+            else{
+                break;
+            }
+        }
+        inc = 1;
+        while(currentBoard.isValid(row + inc, col - inc)){
+            if(currentBoard.getCell(row + inc, col - inc).getPiece() == null){
+                _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col - inc), false));
+                inc++;
+            }
+            else if(checkEliminate(new Move(currentBoard.getCell(row + inc, col - inc)))){
+                _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col - inc), true));
+                inc = 10;
+            }
+            else{
+                break;
+            }
+        }
     }
 
     /**
@@ -74,23 +111,60 @@ public class PieceQueen extends Piece {
         int col = this.getCell().getCol();
 
         int inc = 1;
-        while(currentBoard.isValid(row, col - inc) && currentBoard.getCell(row, col - inc).getPiece() == null){
-            _possibleMoves.add(new Move(currentBoard.getCell(row, col - inc)));
-            inc++;
+        while(currentBoard.isValid(row, col - inc)){
+            if(currentBoard.getCell(row, col - inc).getPiece() == null){
+                _possibleMoves.add(new Move(currentBoard.getCell(row, col - inc), false));
+                inc++;
+            }
+            else if(checkEliminate(new Move(currentBoard.getCell(row, col - inc)))){
+                _possibleMoves.add(new Move(currentBoard.getCell(row, col - inc), true));
+                inc = 10;
+            }
+            else{
+                break;
+            }
         }
         inc = 1;
-        while(currentBoard.isValid(row, col + inc) && currentBoard.getCell(row, col + inc).getPiece() == null){
-            _possibleMoves.add(new Move(currentBoard.getCell(row, col + inc)));
-            inc++;
-        }
-        inc = 1;while(currentBoard.isValid(row - inc, col) && currentBoard.getCell(row - inc, col).getPiece() == null){
-            _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col)));
-            inc++;
-        }
-        inc = 1;while(currentBoard.isValid(row + inc, col) && currentBoard.getCell(row + inc, col).getPiece() == null){
-            _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col)));
-            inc++;
+        while(currentBoard.isValid(row, col + inc)){
+            if(currentBoard.getCell(row, col + inc).getPiece() == null){
+                _possibleMoves.add(new Move(currentBoard.getCell(row, col + inc), false));
+                inc++;
+            }
+            else if(checkEliminate(new Move(currentBoard.getCell(row, col + inc)))){
+                _possibleMoves.add(new Move(currentBoard.getCell(row, col + inc), true));
+                inc = 10;
+            }
+            else{
+                break;
+            }
         }
         inc = 1;
+        while(currentBoard.isValid(row + inc, col)){
+            if(currentBoard.getCell(row + inc, col).getPiece() == null){
+                _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col), false));
+                inc++;
+            }
+            else if(checkEliminate(new Move(currentBoard.getCell(row + inc, col)))){
+                _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col), true));
+                inc = 10;
+            }
+            else{
+                break;
+            }
+        }
+        inc = 1;
+        while(currentBoard.isValid(row - inc, col)){
+            if(currentBoard.getCell(row - inc, col).getPiece() == null){
+                _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col), false));
+                inc++;
+            }
+            else if(checkEliminate(new Move(currentBoard.getCell(row - inc, col)))){
+                _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col), true));
+                inc = 10;
+            }
+            else{
+                break;
+            }
+        }
     }
 }
