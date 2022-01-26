@@ -35,6 +35,15 @@ public class PiecePawn extends Piece {
                 //Unnecessary but need to check if this is valid moves.
                 _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col), false));
                 _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col), false));
+
+                if(tempBoard.isValid(row - 1, col - 1) && tempBoard.isValid(row - 1, col + 1)){
+                    if(checkEliminate(new Move(tempBoard.getCell(row - 1, col - 1)))){
+                        _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col - 1), true));
+                    }
+                    if(checkEliminate(new Move(tempBoard.getCell(row - 1, col + 1)))){
+                        _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col + 1), true));
+                    }
+                }
             }
             else{
                 if(tempBoard.isValid(row - 1, col)) {

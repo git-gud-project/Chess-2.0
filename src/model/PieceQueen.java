@@ -24,7 +24,7 @@ public class PieceQueen extends Piece {
      * @return _possibleMoves.iterator() containing all moves.
      */
     public Iterator<Move> getPossibleMoves(){
-        _possibleMoves = new ArrayList<Move>();
+        _possibleMoves = new ArrayList<>();
         getNextCellBishop(tempBoard);
         getNextCellRook(tempBoard);
         return _possibleMoves.iterator(); //Fix so we get the possibleMoves for a pawn. Probably check get the current pos, get posX+1 and so on.
