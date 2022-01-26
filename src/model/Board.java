@@ -1,5 +1,7 @@
 package model;
 
+import java.util.*;
+
 public class Board {
 
     private Cell[][] _cellArray;
@@ -36,6 +38,66 @@ public class Board {
 
     public boolean isValid(int row, int col) {
         return ((row < _gameSize && row >= 0) && (col < _gameSize && col >= 0));
+    }
+
+    public boolean isLegalMove(Piece piece, Move move) {
+        return true; // TODO: Check for if this creates an illegal checkmate
+    }
+
+    public void validateMoves(Piece piece, List<Move> moves) {
+        // Remove all illegal moves from the list
+        Iterator<Move> it = moves.iterator();
+        while(it.hasNext()) {
+            Move move = it.next();
+            if(!isLegalMove(piece, move)) {
+                it.remove();
+            }
+        }
+    }
+
+    public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol, int maxSteps, boolean skipOwn) {
+        Team team = piece.getTeam();
+        int row = piece.getCell().getRow();
+        int col = piece.getCell().getCol();
+        int step = 1;
+
+        // If maxSteps is 0, then the piece can move infinitely in that direction
+        if (maxSteps == 0) {
+            maxSteps = _gameSize;
+        }
+
+        while (step <= maxSteps) {
+            int nextRow = row + step * dirRow;
+            int nextCol = col + step * dirCol;
+            step++;
+            
+            if (!isValid(nextRow, nextCol)) {
+                break;
+            }
+
+            Cell nextCell = getCell(nextRow, nextCol);
+            
+            Piece otherPiece = nextCell.getPiece();
+            
+            if (otherPiece == null) {
+                registry.add(new Move(nextCell, false));
+            }
+            else if (otherPiece.getTeam() != team) {
+                registry.add(new Move(nextCell, true));
+                break;
+            }
+            else if (!skipOwn) {
+                break;
+            }
+        }
+    }
+
+    public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol, int maxSteps) {
+        calculateMoves(piece, registry, dirRow, dirCol, maxSteps, false);
+    }
+
+    public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol) {
+        calculateMoves(piece, registry, dirRow, dirCol, 0, false);
     }
 
     public String toFEN() {
