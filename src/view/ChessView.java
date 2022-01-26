@@ -29,6 +29,12 @@ public class ChessView extends JFrame {
 
     public final static Color BOARD_BACKGROUND_COLOR = Color.BLACK;
 
+    public final static Color HIGHLIGHT_COLOR_MOVE = Color.GREEN;
+    public final static Color HIGHLIGHT_COLOR_ATTACK = Color.RED;
+    public final static Color HIGHLIGHT_COLOR_PIECE = Color.YELLOW;
+    
+    public final static float HIGHLIGHT_ALPHA = 0.5f;
+
     private BoardPanel _boardPanel;
 
     private ChessModel _model;

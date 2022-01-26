@@ -57,12 +57,19 @@ public class BoardGridPanel extends JPanel {
 
         // If the cell was highlighted, move the selected piece to the cell
         if (_highlightedCells.contains(boardCell)) {
-            board
-            .getCell(_selectedCell.getRow(), _selectedCell.getCol())
-            .getPiece()
-            .move(board.getCell(boardCell.getRow(), boardCell.getCol()));
+            Piece piece = board.getCell(_selectedCell.getRow(), _selectedCell.getCol()).getPiece();
+
+            piece.move(board.getCell(boardCell.getRow(), boardCell.getCol()));
+
+            if(piece instanceof PiecePawn pawn){
+                pawn.setFirstMove();
+            }
 
             updateModel(model);
+        }
+
+        if (_selectedCell != null) {
+            _selectedCell.unhighlight();
         }
 
         _highlightedCells.clear();
@@ -75,6 +82,8 @@ public class BoardGridPanel extends JPanel {
 
         _selectedCell = boardCell;
 
+        _selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
+
         Iterator<Move> moves = piece.getPossibleMoves();
         while (moves.hasNext()) {
             Move move = moves.next();
@@ -83,10 +92,8 @@ public class BoardGridPanel extends JPanel {
 
             BoardCell possibleMove = _board[cell.getRow()][cell.getCol()];
 
-            if(piece instanceof PiecePawn){
-                ((PiecePawn) piece).setFirstMove();
-            }
-            possibleMove.highlight();
+            possibleMove.highlight(move.isEliminatable() ? ChessView.HIGHLIGHT_COLOR_ATTACK : ChessView.HIGHLIGHT_COLOR_MOVE);
+
             _highlightedCells.add(possibleMove);
         }
     }
