@@ -21,6 +21,9 @@ public class ChessView extends JFrame {
     public final static Dimension NUM_MIN_SIZE_V = new Dimension(20, 60);
     public final static Dimension NUM_IDEAL_SIZE_V = new Dimension(40, 80);
 
+    public final static Dimension NUM_MIN_SIZE_C = new Dimension(20, 20);
+    public final static Dimension NUM_IDEAL_SIZE_C = new Dimension(40, 40);
+
     public final static Color PRIMARY_COLOR = Color.DARK_GRAY;
     public final static Color SECONDARY_COLOR = Color.GRAY;
 
