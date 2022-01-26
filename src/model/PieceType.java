@@ -3,10 +3,10 @@ package model;
 public enum PieceType {
     BISHOP("b"),
     KING("k"),
-    KNIGHT("h"),
+    KNIGHT("n"),
     PAWN("p"),
     QUEEN("q"),
-    ROOK("t");
+    ROOK("r");
 
     private String _filePrefix;
 

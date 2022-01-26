@@ -41,6 +41,8 @@ public class ChessView extends JFrame {
     private BoardPanel _boardPanel;
 
     private ChessModel _model;
+
+    private InformationPanel _infoPanel;
     
     public ChessView(ChessModel model) {
         this.setTitle(DEFAULT_TITLE);
@@ -58,6 +60,11 @@ public class ChessView extends JFrame {
 
         this.add(_boardPanel, BorderLayout.CENTER);
 
+        // Add the information panel
+        _infoPanel = new InformationPanel();
+
+        this.add(_infoPanel, BorderLayout.EAST);
+
         this.pack();
 
         this.setVisible(true);
@@ -73,5 +80,6 @@ public class ChessView extends JFrame {
     
     public void updateModel() {
         _boardPanel.updateModel(_model);
+        _infoPanel.updateModel(_model);
     }
 }

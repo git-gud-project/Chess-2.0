@@ -38,4 +38,39 @@ public class Board {
         return ((row < _gameSize && row >= 0) && (col < _gameSize && col >= 0));
     }
 
+    public String toFEN() {
+        /**
+         * https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
+         */
+        String fen = "";
+        for(int row = 0; row < _gameSize; row++){
+            int emptyCells = 0;
+            for(int col = 0; col < _gameSize; col++){
+                if(_cellArray[row][col].getPiece() == null){
+                    emptyCells++;
+                }
+                else{
+                    if(emptyCells > 0){
+                        fen += emptyCells;
+                        emptyCells = 0;
+                    }
+                    Piece piece = _cellArray[row][col].getPiece();
+                    String character = piece.getPieceType().getFilePrefix();
+                    if (piece.getTeam() == _model.getTeamWhite()) {
+                        character = character.toUpperCase();
+                    }
+                    fen += character;
+                }
+            }
+            if(emptyCells > 0){
+                fen += emptyCells;
+            }
+            if(row != _gameSize - 1){
+                fen += "/";
+            }
+        }
+        // TODO: Add castling, en passant, and halfmove clock
+        return fen;
+    }
+
 }

@@ -65,7 +65,7 @@ public class BoardGridPanel extends JPanel {
                 pawn.setFirstMove();
             }
 
-            updateModel(model);
+            _view.updateModel();
         }
 
         if (_selectedCell != null) {

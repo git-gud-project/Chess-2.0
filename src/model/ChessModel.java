@@ -10,8 +10,8 @@ public class ChessModel {
     private Board _board;
 
     public ChessModel() {
-        _teamWhite = new Team(Color.WHITE, "w");
-        _teamBlack = new Team(Color.BLACK, "b");
+        _teamWhite = new Team(Color.WHITE, "w", "Player 1", 60 * 5);
+        _teamBlack = new Team(Color.BLACK, "b", "Player 2", 60 * 5);
         _board = new Board(this, GAMESIZE);
     }
 
