@@ -52,7 +52,7 @@ public class PieceQueen extends Piece {
             }
             else if(checkEliminate(new Move(currentBoard.getCell(row - inc, col - inc)))){
                 _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col - inc), true));
-                inc = 10;
+                break;
             }
             else{
                 break;
@@ -66,7 +66,7 @@ public class PieceQueen extends Piece {
             }
             else if(checkEliminate(new Move(currentBoard.getCell(row - inc, col + inc)))){
                 _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col + inc), true));
-                inc = 10;
+                break;
             }
             else{
                 break;
@@ -80,7 +80,7 @@ public class PieceQueen extends Piece {
             }
             else if(checkEliminate(new Move(currentBoard.getCell(row + inc, col + inc)))){
                 _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col + inc), true));
-                inc = 10;
+                break;
             }
             else{
                 break;
@@ -94,7 +94,7 @@ public class PieceQueen extends Piece {
             }
             else if(checkEliminate(new Move(currentBoard.getCell(row + inc, col - inc)))){
                 _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col - inc), true));
-                inc = 10;
+                break;
             }
             else{
                 break;
@@ -114,11 +114,11 @@ public class PieceQueen extends Piece {
         while(currentBoard.isValid(row, col - inc)){
             if(currentBoard.getCell(row, col - inc).getPiece() == null){
                 _possibleMoves.add(new Move(currentBoard.getCell(row, col - inc), false));
-                inc++;
+                break;
             }
             else if(checkEliminate(new Move(currentBoard.getCell(row, col - inc)))){
                 _possibleMoves.add(new Move(currentBoard.getCell(row, col - inc), true));
-                inc = 10;
+                break;
             }
             else{
                 break;
@@ -128,11 +128,11 @@ public class PieceQueen extends Piece {
         while(currentBoard.isValid(row, col + inc)){
             if(currentBoard.getCell(row, col + inc).getPiece() == null){
                 _possibleMoves.add(new Move(currentBoard.getCell(row, col + inc), false));
-                inc++;
+                break;
             }
             else if(checkEliminate(new Move(currentBoard.getCell(row, col + inc)))){
                 _possibleMoves.add(new Move(currentBoard.getCell(row, col + inc), true));
-                inc = 10;
+                break;
             }
             else{
                 break;
@@ -146,7 +146,7 @@ public class PieceQueen extends Piece {
             }
             else if(checkEliminate(new Move(currentBoard.getCell(row + inc, col)))){
                 _possibleMoves.add(new Move(currentBoard.getCell(row + inc, col), true));
-                inc = 10;
+                break;
             }
             else{
                 break;
@@ -160,7 +160,7 @@ public class PieceQueen extends Piece {
             }
             else if(checkEliminate(new Move(currentBoard.getCell(row - inc, col)))){
                 _possibleMoves.add(new Move(currentBoard.getCell(row - inc, col), true));
-                inc = 10;
+                break;
             }
             else{
                 break;
