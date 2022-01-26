@@ -6,19 +6,29 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Class for the Knight.
+ *
+ * Variables:
+ * - _possibleMoves: Contains all the moves that the pawn can do.
+ * - tempBoard: References to the game board.
+ */
 public class PieceKnight extends Piece {
     private ArrayList<Move> _possibleMoves;
-    Board tempBoard = this.getCell().getBoard();
+    private final Board tempBoard = this.getCell().getBoard();
 
     public PieceKnight(Cell cell, Team team) {
         super(cell, team,PieceType.KNIGHT);
     }
 
+    /**
+     * Returns the iterator with all possible move for this Knight-piece.
+     * @return _possibleMoves.iterator() containing all moves.
+     */
     public Iterator<Move> getPossibleMoves(){
         _possibleMoves = new ArrayList<>();
         int row = this.getCell().getRow();
         int col = this.getCell().getCol();
-        System.out.println(tempBoard.isValid(row + 2, col - 1));
         if(tempBoard.isValid(row + 2, col - 1)){
             if(checkEliminate(new Move(tempBoard.getCell(row + 2, col - 1)))){
                 _possibleMoves.add(new Move(tempBoard.getCell(row +2, col - 1), true));
