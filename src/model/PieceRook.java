@@ -5,92 +5,24 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class PieceRook extends Piece {
+    private ArrayList<Move> _possibleMoves;
 
     public PieceRook(Cell cell, Team team) {
         super(cell, team,PieceType.ROOK);
+        _possibleMoves = new ArrayList<Move>();
     }
 
     // Add all possible moves to the _possibleMoves list and return its iterator
     public Iterator<Move> getPossibleMoves(){
-        ArrayList<Move> _possibleMoves = new ArrayList<>();
-        int boardSize = this.getCell().getBoard().getGameSize();
-        Board currentBoard = this.getCell().getBoard();
-        int rookColPos = this.getCell().getCol();
-        int rookRowPos = this.getCell().getRow();
+        _possibleMoves.clear();
 
-        // Check to see how far the rook can move to the right
-        for(int i = rookColPos+1; i<boardSize; i++) {
-            // No piece is in the rooks way
-            if(currentBoard.isEmpty(rookRowPos, i)){
-                    _possibleMoves.add(new Move(currentBoard.getCell(rookRowPos, i), false));
-            }
-            // If a piece is in the rooks way
-            else {
-                // If the piece is on another team, it can be eliminated
-                if(currentBoard.getCell(rookRowPos, i).getPiece().getTeam() != this.getTeam()) {
-                    _possibleMoves.add(new Move(currentBoard.getCell(rookRowPos, i), true));
-                    break;
-                }
-                else {
-                   break;
-                }
-            }
-        }
-        // Check to see how far the rook can move to the left
-        for(int i = rookColPos-1; i>=0; i--) {
-            // No piece is in the rooks way
-            if(currentBoard.isEmpty(rookRowPos, i)) {
-                _possibleMoves.add(new Move(currentBoard.getCell(rookRowPos, i), false));
-            }
-            // If a piece is in the rooks way
-            else {
-                // If the piece is on another team, it can be eliminated
-                if(currentBoard.getCell(rookRowPos, i).getPiece().getTeam() != this.getTeam()) {
-                    _possibleMoves.add(new Move(currentBoard.getCell(rookRowPos, i), true));
-                    break;
-                }
-                else {
-                    break;
-                }
-            }
-        }
-        // Check to see how far the rook can move downwards
-        for(int i = rookRowPos+1; i<boardSize; i++) {
-            // No piece is in the rooks way
-            if(currentBoard.isEmpty(i, rookColPos)) {
-                _possibleMoves.add(new Move(currentBoard.getCell(i, rookColPos), false));
-            }
-            // If a piece is in the rooks way
-            else {
-                // If the piece is on another team, it can be eliminated
-                if(currentBoard.getCell(i, rookColPos).getPiece().getTeam() != this.getTeam()) {
-                    _possibleMoves.add(new Move(currentBoard.getCell(i, rookColPos), true));
-                    break;
-                }
-                else {
-                    break;
-                }
-            }
-        }
-        // Check to see how far the rook can move upwards
-        for(int i = rookRowPos-1; i>=0; i--) {
-            // No piece is in the rooks way
-            if(currentBoard.isEmpty(i, rookColPos)) {
-                _possibleMoves.add(new Move(currentBoard.getCell(i, rookColPos), false));
-            }
-            // If a piece is in the rooks way
-            else {
-                // If the piece is on another team, it can be eliminated
-                if(currentBoard.getCell(i, rookColPos).getPiece().getTeam() != this.getTeam()) {
-                    _possibleMoves.add(new Move(currentBoard.getCell(i, rookColPos), true));
-                    break;
-                }
-                // Otherwise its on the same team as the rook and the rook can not move to this position
-                else {
-                    break;
-                }
-            }
-        }
+        Board board = this.getCell().getBoard();
+
+        board.calculateMoves(this, _possibleMoves, 1, 0);
+        board.calculateMoves(this, _possibleMoves, -1, 0);
+        board.calculateMoves(this, _possibleMoves, 0, 1);
+        board.calculateMoves(this, _possibleMoves, 0, -1);
+
         return _possibleMoves.iterator();
     }
 
