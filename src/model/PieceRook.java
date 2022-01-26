@@ -12,14 +12,11 @@ public class PieceRook extends Piece {
 
     // Add all possible moves to the _possibleMoves list and return its iterator
     public Iterator<Move> getPossibleMoves(){
-
         ArrayList<Move> _possibleMoves = new ArrayList<>();
-
         int boardSize = this.getCell().getBoard().getGameSize();
         Board currentBoard = this.getCell().getBoard();
         int rookColPos = this.getCell().getCol();
         int rookRowPos = this.getCell().getRow();
-
 
         // Check to see how far the rook can move to the right
         for(int i = rookColPos+1; i<boardSize; i++) {
@@ -39,7 +36,6 @@ public class PieceRook extends Piece {
                 }
             }
         }
-
         // Check to see how far the rook can move to the left
         for(int i = rookColPos-1; i>=0; i--) {
             // No piece is in the rooks way
@@ -58,7 +54,6 @@ public class PieceRook extends Piece {
                 }
             }
         }
-
         // Check to see how far the rook can move downwards
         for(int i = rookRowPos+1; i<boardSize; i++) {
             // No piece is in the rooks way
@@ -77,7 +72,6 @@ public class PieceRook extends Piece {
                 }
             }
         }
-
         // Check to see how far the rook can move upwards
         for(int i = rookRowPos-1; i>=0; i--) {
             // No piece is in the rooks way
@@ -97,7 +91,6 @@ public class PieceRook extends Piece {
                 }
             }
         }
-
         return _possibleMoves.iterator();
     }
 
