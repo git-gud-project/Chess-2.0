@@ -43,10 +43,18 @@ public abstract class Piece {
         }
     }
 
+    public void onMove(Cell oldCell, Cell newCell) {}
+
     //moves the cell of the piece.
     public void move(Cell newCell) {
+        Cell oldCell = this.getCell();
         _cell.setPiece(null);
         _cell = newCell;
         _cell.setPiece(this);
+
+        ChessModel model = this.getCell().getBoard().getChessModel();
+        onMove(oldCell, newCell);
+        Team otherTeam = model.getOtherTeam(_team);
+        otherTeam.clearEnPassant();
     }
 }

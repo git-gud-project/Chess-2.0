@@ -3,6 +3,7 @@ package model;
 public class Move {
     private Cell _moveCell;
     private boolean _elimination;
+    private boolean _isEnPassant;
 
     public Move(Cell toCell) {
         this._moveCell = toCell;
@@ -19,5 +20,13 @@ public class Move {
 
     public boolean isEliminatable() {
         return _elimination;
+    }
+
+    public boolean getIsEnPassant() {
+        return _isEnPassant;
+    }
+
+    public void setIsEnPassant(boolean isEnPassant) {
+        this._isEnPassant = isEnPassant;
     }
 }

@@ -18,7 +18,6 @@ public class PiecePawn extends Piece {
 
     private boolean firstMove = true;
     private ArrayList<Move> _possibleMoves;
-    private final Board tempBoard = this.getCell().getBoard();
 
     public PiecePawn(Cell cell, Team team) {
         super(cell, team, PieceType.PAWN);
@@ -28,66 +27,43 @@ public class PiecePawn extends Piece {
     //TO-FIX: En croissant!
     public Iterator<Move> getPossibleMoves(){
         _possibleMoves = new ArrayList<>();
-        int row = this.getCell().getRow();
-        int col = this.getCell().getCol();
-        if(this.getTeam().getColor().equals(Color.white)){
-            if(firstMove){
-                //Unnecessary but need to check if this is valid moves.
-                if(!checkEliminate(new Move(tempBoard.getCell(row - 1, col)))) {
-                    _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col), false));
-                    if(!checkEliminate(new Move(tempBoard.getCell(row - 2, col)))) {
-                        _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col), false));
-                    }
-                }
 
-                if(tempBoard.isValid(row - 1, col - 1) && tempBoard.isValid(row - 1, col + 1)){
-                    if(checkEliminate(new Move(tempBoard.getCell(row - 1, col - 1)))){
-                        _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col - 1), true));
-                    }
-                    if(checkEliminate(new Move(tempBoard.getCell(row - 1, col + 1)))){
-                        _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col + 1), true));
-                    }
-                }
-            }
-            else{
-                if(tempBoard.isValid(row - 1, col)) {
-                    if(!checkEliminate(new Move(tempBoard.getCell(row - 1, col)))) {
-                        _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col), false));
-                    }
-                }
-                if(tempBoard.isValid(row - 1, col - 1) && tempBoard.isValid(row - 1, col + 1)){
-                    if(checkEliminate(new Move(tempBoard.getCell(row - 1, col - 1)))){
-                        _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col - 1), true));
-                    }
-                    if(checkEliminate(new Move(tempBoard.getCell(row - 1, col + 1)))){
-                        _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col + 1), true));
-                    }
-                }
-            }
+        Team team = this.getTeam();
+        Board board = this.getCell().getBoard();
+
+        int dirRow = team.getPawnDirectionRow();
+        
+        //If the pawn is on the first row, it can move 2 cells.
+        if (firstMove) {
+            board.calculateMoves(this, _possibleMoves, dirRow, 0, 2, false, true, false);
+        } else {
+            board.calculateMoves(this, _possibleMoves, dirRow, 0, 1, false, true, false);
         }
-        else{
-            if(firstMove){
-                //Unnecessary but need to check if this is valid moves.
-                _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col), false));
-                _possibleMoves.add(new Move(tempBoard.getCell(row + 2, col), false));
-            }
-            else{
-                if(tempBoard.isValid(row + 1, col)) {
-                    if(!checkEliminate(new Move(tempBoard.getCell(row + 1, col)))) {
-                        _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col), false));
-                    }
-                }
-                if(tempBoard.isValid(row + 1, col - 1) && tempBoard.isValid(row + 1, col + 1)){ //change to check if move isValid()
-                    if(checkEliminate(new Move(tempBoard.getCell(row + 1, col - 1)))){
-                        _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col - 1), true));
-                    }
-                    if(checkEliminate(new Move(tempBoard.getCell(row + 1, col + 1)))){
-                        _possibleMoves.add(new Move(tempBoard.getCell(row + 1, col + 1), true));
-                    }
-                }
-            }
-        }
+        
+        board.calculateMoves(this, _possibleMoves, dirRow, 1, 1, false, false, true);
+        board.calculateMoves(this, _possibleMoves, dirRow, -1, 1, false, false, true);
+
         return _possibleMoves.iterator();
+    }
+
+    @Override
+    public void onMove(Cell oldCell, Cell newCell) {
+        Team team = this.getTeam();
+        Board board = this.getCell().getBoard();
+        Team otherTeam = board.getChessModel().getOtherTeam(team);
+
+        // Check if we moved 2 cells.
+        if (firstMove && Math.abs(oldCell.getRow() - newCell.getRow()) == 2) {
+            team.setEnPassant(newCell.getRow() - this.getTeam().getPawnDirectionRow(), newCell.getCol(), this);
+        }
+
+        // Check if we did en passant.
+        if (otherTeam.isEnPassant(newCell.getRow(), newCell.getCol())) {
+            Piece piece = otherTeam.getEnPassantPiece();
+            piece.getCell().setPiece(null);
+        }
+
+        firstMove = false;
     }
 
     /**

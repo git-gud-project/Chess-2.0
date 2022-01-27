@@ -40,6 +40,13 @@ public class Board {
         return ((row < _gameSize && row >= 0) && (col < _gameSize && col >= 0));
     }
 
+    public boolean canCapture(Piece piece, int row, int col) {
+        if(!isValid(row, col)) return false;
+        if(isEmpty(row, col)) return false;
+        if(piece.getTeam() == _cellArray[row][col].getPiece().getTeam()) return false;
+        return true;
+    }
+
     public boolean isLegalMove(Piece piece, Move move) {
         return true; // TODO: Check for if this creates an illegal checkmate
     }
@@ -55,7 +62,7 @@ public class Board {
         }
     }
 
-    public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol, int maxSteps, boolean skipOwn) {
+    public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol, int maxSteps, boolean skipOwn, boolean cantCapture, boolean requireCapture) {
         Team team = piece.getTeam();
         int row = piece.getCell().getRow();
         int col = piece.getCell().getCol();
@@ -80,9 +87,30 @@ public class Board {
             Piece otherPiece = nextCell.getPiece();
             
             if (otherPiece == null) {
+                if (piece instanceof PiecePawn && requireCapture) {
+                    Team otherTeam = _model.getOtherTeam(team);
+
+                    // Check if we can capture en passant
+                    if (otherTeam.isEnPassant(nextRow, nextCol)) {
+                        Move move = new Move(nextCell, true);
+                        move.setIsEnPassant(true);
+                        registry.add(move);
+
+                        break;
+                    }
+                }
+
+                if (requireCapture) {
+                    break;
+                }
+                
                 registry.add(new Move(nextCell, false));
             }
             else if (otherPiece.getTeam() != team) {
+                if (cantCapture) {
+                    break;
+                }
+
                 registry.add(new Move(nextCell, true));
                 break;
             }
@@ -93,11 +121,11 @@ public class Board {
     }
 
     public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol, int maxSteps) {
-        calculateMoves(piece, registry, dirRow, dirCol, maxSteps, false);
+        calculateMoves(piece, registry, dirRow, dirCol, maxSteps, false, false, false);
     }
 
     public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol) {
-        calculateMoves(piece, registry, dirRow, dirCol, 0, false);
+        calculateMoves(piece, registry, dirRow, dirCol, 0, false, false, false);
     }
 
     public String toFEN() {

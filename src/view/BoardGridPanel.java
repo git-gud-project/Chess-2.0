@@ -61,10 +61,6 @@ public class BoardGridPanel extends JPanel {
 
             piece.move(board.getCell(boardCell.getRow(), boardCell.getCol()));
 
-            if(piece instanceof PiecePawn pawn){
-                pawn.setFirstMove();
-            }
-
             _view.updateModel();
         }
 
@@ -104,12 +100,12 @@ public class BoardGridPanel extends JPanel {
         for(int row=0;row<_size;row++){
             for(int col=0;col<_size;col++){
                 Piece p = b.getCell(row,col).getPiece();
-               if(p == null){
-                   _board[row][col].setIcon(null);
-               }
-               else{
-                   _board[row][col].setIcon(new ImageIcon("res/"+p.getPieceType().getFilePrefix()+p.getTeam().getFileSuffix()+".png"));
-               }
+                if(p == null){
+                    _board[row][col].setIcon(null);
+                }
+                else{
+                    _board[row][col].setIcon(new ImageIcon("res/"+p.getPieceType().getFilePrefix()+p.getTeam().getFileSuffix()+".png"));
+                }
             }
         }
     }
