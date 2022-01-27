@@ -15,7 +15,7 @@ public class BottomPanel extends JPanel {
     public BottomPanel() {
         _infoLabel = new JTextField();
         _infoLabel.setText("");
-        _infoLabel.setFont(new Font("Arial", Font.BOLD, 10));
+        _infoLabel.setFont(new Font("Arial", Font.BOLD, 9));
         _infoLabel.setForeground(ChessView.PRIMARY_SIDE_COLOR);
         _infoLabel.setEditable(false);
         this.setLayout(new BorderLayout());
