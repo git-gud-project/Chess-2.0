@@ -51,7 +51,7 @@ public class PiecePawn extends Piece {
                         _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col), false));
                     }
                 }
-                if(tempBoard.isValid(row - 1, col - 1) && tempBoard.isValid(row - 1, col + 1)){ //change to check if move isValid()
+                if(tempBoard.isValid(row - 1, col - 1) && tempBoard.isValid(row - 1, col + 1)){
                     if(checkEliminate(new Move(tempBoard.getCell(row - 1, col - 1)))){
                         _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col - 1), true));
                     }
