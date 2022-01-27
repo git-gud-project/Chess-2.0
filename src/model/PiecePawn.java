@@ -33,8 +33,12 @@ public class PiecePawn extends Piece {
         if(this.getTeam().getColor().equals(Color.white)){
             if(firstMove){
                 //Unnecessary but need to check if this is valid moves.
-                _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col), false));
-                _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col), false));
+                if(!checkEliminate(new Move(tempBoard.getCell(row - 1, col)))) {
+                    _possibleMoves.add(new Move(tempBoard.getCell(row - 1, col), false));
+                    if(!checkEliminate(new Move(tempBoard.getCell(row - 2, col)))) {
+                        _possibleMoves.add(new Move(tempBoard.getCell(row - 2, col), false));
+                    }
+                }
 
                 if(tempBoard.isValid(row - 1, col - 1) && tempBoard.isValid(row - 1, col + 1)){
                     if(checkEliminate(new Move(tempBoard.getCell(row - 1, col - 1)))){
