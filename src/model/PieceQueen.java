@@ -114,7 +114,7 @@ public class PieceQueen extends Piece {
         while(currentBoard.isValid(row, col - inc)){
             if(currentBoard.getCell(row, col - inc).getPiece() == null){
                 _possibleMoves.add(new Move(currentBoard.getCell(row, col - inc), false));
-                break;
+                inc++;
             }
             else if(checkEliminate(new Move(currentBoard.getCell(row, col - inc)))){
                 _possibleMoves.add(new Move(currentBoard.getCell(row, col - inc), true));
@@ -128,7 +128,7 @@ public class PieceQueen extends Piece {
         while(currentBoard.isValid(row, col + inc)){
             if(currentBoard.getCell(row, col + inc).getPiece() == null){
                 _possibleMoves.add(new Move(currentBoard.getCell(row, col + inc), false));
-                break;
+                inc++;
             }
             else if(checkEliminate(new Move(currentBoard.getCell(row, col + inc)))){
                 _possibleMoves.add(new Move(currentBoard.getCell(row, col + inc), true));

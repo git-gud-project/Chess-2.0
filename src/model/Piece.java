@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public abstract class Piece {
     private Cell _cell;
-    private final Team _team; //0 for white, 1 for black. Used for later scalability for XvX games.
+    private final Team _team;
     private PieceType _type;
 
     public Piece(Cell cell, Team team, PieceType type){
