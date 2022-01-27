@@ -62,6 +62,12 @@ public class Board {
         }
     }
 
+    public String positionToString(int row, int col) {
+        // Row numbers are reversed
+        row = _gameSize - row - 1;
+        return "" + (char)('a' + col) + (row + 1);
+    }
+
     public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol, int maxSteps, boolean skipOwn, boolean cantCapture, boolean requireCapture) {
         Team team = piece.getTeam();
         int row = piece.getCell().getRow();
@@ -159,8 +165,30 @@ public class Board {
                 fen += "/";
             }
         }
-        // TODO: Add castling, en passant, and halfmove clock
-        return fen;
+        
+        // Add 'w' or 'b' for the side to move
+        fen += " " + _model.getCurrentTeam().getFileSuffix();
+
+        // TODO: castling rights
+        fen += " KQkq";
+
+        // En passant target square
+        Team currentTeam = _model.getOtherTeam(_model.getCurrentTeam());
+
+        if (currentTeam.getEnPassantPiece() != null) {
+            fen += " " + positionToString(currentTeam.getEnPassantRow(), currentTeam.getEnPassantCol());
+        }
+        else {
+            fen += " -";
+        }
+
+        // Half move clock
+        fen += " " + _model.getHalfMoves();
+
+        // Full move number
+        fen += " " + _model.getFullMoves();
+
+        return fen; 
     }
 
 }

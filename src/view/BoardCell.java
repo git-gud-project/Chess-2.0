@@ -11,6 +11,7 @@ import model.*;
 public class BoardCell extends CellButton {
     private int _row;
     private int _col;
+    private boolean _isElimination;
 
     private Color _defaultColor;
     
@@ -27,6 +28,14 @@ public class BoardCell extends CellButton {
 
     public int getCol() {
         return _col;
+    }
+
+    public void setElimination(boolean isElimination) {
+        _isElimination = isElimination;
+    }
+
+    public boolean isElimination() {
+        return _isElimination;
     }
 
     public void highlight(Color color) {

@@ -52,9 +52,6 @@ public abstract class Piece {
         _cell = newCell;
         _cell.setPiece(this);
 
-        ChessModel model = this.getCell().getBoard().getChessModel();
         onMove(oldCell, newCell);
-        Team otherTeam = model.getOtherTeam(_team);
-        otherTeam.clearEnPassant();
     }
 }

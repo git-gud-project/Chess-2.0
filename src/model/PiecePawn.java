@@ -54,7 +54,7 @@ public class PiecePawn extends Piece {
 
         // Check if we moved 2 cells.
         if (firstMove && Math.abs(oldCell.getRow() - newCell.getRow()) == 2) {
-            team.setEnPassant(newCell.getRow() - this.getTeam().getPawnDirectionRow(), newCell.getCol(), this);
+            team.setEnPassant(this);
         }
 
         // Check if we did en passant.

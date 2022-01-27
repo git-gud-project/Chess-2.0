@@ -17,7 +17,7 @@ public class PlayerPanel extends JPanel {
          * 
          * On the bottom is the player's time, centered.
          */
-        this.setPreferredSize(new Dimension(200, 100));
+        this.setPreferredSize(new Dimension(220, 100));
 
         this.setLayout(new BorderLayout());
         this.setBackground(ChessView.BOARD_BACKGROUND_COLOR);

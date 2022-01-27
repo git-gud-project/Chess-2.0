@@ -51,21 +51,31 @@ public class BoardGridPanel extends JPanel {
         ChessModel model = _view.getModel();
         Board board = model.getBoard();
 
-        for (BoardCell cell : _highlightedCells) {
-            cell.unhighlight();
-        }
-
         // If the cell was highlighted, move the selected piece to the cell
         if (_highlightedCells.contains(boardCell)) {
             Piece piece = board.getCell(_selectedCell.getRow(), _selectedCell.getCol()).getPiece();
 
             piece.move(board.getCell(boardCell.getRow(), boardCell.getCol()));
 
+            Team otherTeam = model.getOtherTeam(model.getCurrentTeam());
+
+            // Halfmove clock: The number of halfmoves since the last capture or pawn advance, used for the fifty-move rule.
+            boolean halfMove = piece.getPieceType() != PieceType.PAWN && !boardCell.isElimination();
+
+            model.registerMove(halfMove);
+
             _view.updateModel();
+            
+            otherTeam.clearEnPassant();
         }
 
         if (_selectedCell != null) {
             _selectedCell.unhighlight();
+        }
+
+        for (BoardCell cell : _highlightedCells) {
+            cell.unhighlight();
+            cell.setElimination(false);
         }
 
         _highlightedCells.clear();
@@ -73,6 +83,10 @@ public class BoardGridPanel extends JPanel {
         Piece piece = model.getBoard().getCell(boardCell.getRow(), boardCell.getCol()).getPiece();
 
         if (piece == null) {
+            return;
+        }
+
+        if (piece.getTeam() != model.getCurrentTeam()) {
             return;
         }
 
@@ -89,6 +103,7 @@ public class BoardGridPanel extends JPanel {
             BoardCell possibleMove = _board[cell.getRow()][cell.getCol()];
 
             possibleMove.highlight(move.isEliminatable() ? ChessView.HIGHLIGHT_COLOR_ATTACK : ChessView.HIGHLIGHT_COLOR_MOVE);
+            possibleMove.setElimination(move.isEliminatable());
 
             _highlightedCells.add(possibleMove);
         }

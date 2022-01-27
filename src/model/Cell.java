@@ -59,5 +59,10 @@ public class Cell {
     public void setPiece(Piece piece) {
         this._piece = piece;
     }
+
+    @Override
+    public String toString() {
+        return _board.positionToString(_row, _col);
+    }
 }
 

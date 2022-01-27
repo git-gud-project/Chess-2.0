@@ -8,18 +8,14 @@ public class Team {
     private String _name;
     private float _time;
     private int _pawnDirectionRow;
-    private int _pawnDirectionCol;
-    private int _enPassantRow;
-    private int _enPassantCol;
     private Piece _enPassantPiece;
 
-    public Team(Color color, String fileSuffix, String name, float time, int pawnDirectionRow, int pawnDirectionCol) {
+    public Team(Color color, String fileSuffix, String name, float time, int pawnDirectionRow) {
         _teamColor = color;
         _fileSuffix = fileSuffix;
         _name = name;
         _time = time;
         _pawnDirectionRow = pawnDirectionRow;
-        _pawnDirectionCol = pawnDirectionCol;
     }
 
     public Color getColor() { 
@@ -42,27 +38,27 @@ public class Team {
         return _pawnDirectionRow;
     }
 
-    public int getPawnDirectionCol() {
-        return _pawnDirectionCol;
+    public int getEnPassantRow() {
+        return _enPassantPiece.getCell().getRow() - _pawnDirectionRow;
+    }
+
+    public int getEnPassantCol() {
+        return _enPassantPiece.getCell().getCol();
     }
 
     public boolean isEnPassant(int row, int col) {
-        return row == _enPassantRow && col == _enPassantCol;
+        return _enPassantPiece != null && _enPassantPiece.getCell().getRow() == row && _enPassantPiece.getCell().getCol() == col;
     }
 
     public Piece getEnPassantPiece() {
         return _enPassantPiece;
     }
 
-    public void setEnPassant(int row, int col, Piece piece) {
-        _enPassantRow = row;
-        _enPassantCol = col;
+    public void setEnPassant(Piece piece) {
         _enPassantPiece = piece;
     }
 
     public void clearEnPassant() {
-        _enPassantRow = -1;
-        _enPassantCol = -1;
         _enPassantPiece = null;
     }
 }
