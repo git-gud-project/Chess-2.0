@@ -1,8 +1,8 @@
 package model;
-
 import java.awt.*;
+import java.io.Serializable;
 
-public class ChessModel {
+public class ChessModel implements Serializable {
 
     private static final int GAMESIZE = 8;
 
