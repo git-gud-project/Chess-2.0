@@ -58,10 +58,12 @@ public class PiecePawn extends Piece {
         }
 
         // Check if we did en passant.
+
         if (otherTeam.isEnPassant(newCell.getRow(), newCell.getCol())) {
             Piece piece = otherTeam.getEnPassantPiece();
             piece.getCell().setPiece(null);
         }
+
 
         firstMove = false;
     }

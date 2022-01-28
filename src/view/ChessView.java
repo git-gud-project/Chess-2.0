@@ -38,6 +38,8 @@ public class ChessView extends JFrame {
     
     public final static float HIGHLIGHT_ALPHA = 0.5f;
 
+    private Menu _menuPanel;
+
     private BoardPanel _boardPanel;
 
     private ChessModel _model;
@@ -64,6 +66,11 @@ public class ChessView extends JFrame {
         _infoPanel = new InformationPanel();
 
         this.add(_infoPanel, BorderLayout.EAST);
+
+        //Add menu bar
+        _menuPanel = new Menu();
+
+        this.setJMenuBar(_menuPanel);
 
         this.pack();
 
