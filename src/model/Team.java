@@ -6,15 +6,15 @@ public class Team {
     private Color _teamColor;
     private String _fileSuffix;
     private String _name;
-    private float _time;
+    private Time _time;
     private int _pawnDirectionRow;
     private Piece _enPassantPiece;
 
-    public Team(Color color, String fileSuffix, String name, float time, int pawnDirectionRow) {
+    public Team(Color color, String fileSuffix, String name, int pawnDirectionRow) {
         _teamColor = color;
         _fileSuffix = fileSuffix;
         _name = name;
-        _time = time;
+        _time = new Time();
         _pawnDirectionRow = pawnDirectionRow;
     }
 
@@ -30,7 +30,7 @@ public class Team {
         return _name;
     }
 
-    public float getTime() {
+    public Time getTime() {
         return _time;
     }
 

@@ -37,9 +37,7 @@ public class PlayerPanel extends JPanel {
 
     public void updateFromTeam(Team team) {
         _playerName.setText(team.getName());
-        float time = team.getTime();
-        int minutes = (int) time / 60;
-        int seconds = (int) time % 60;
-        _playerTime.setText(String.format("%02d:%02d", minutes, seconds));
+        Time time = team.getTime();
+        _playerTime.setText(String.format("%02d:%02d:%02d", time.getMinutes(), time.getSeconds(), time.getMseconds()));
     }
 }
