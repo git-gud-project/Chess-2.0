@@ -47,7 +47,7 @@ public class Team {
     }
 
     public boolean isEnPassant(int row, int col) {
-        return _enPassantPiece != null && _enPassantPiece.getCell().getRow() == row && _enPassantPiece.getCell().getCol() == col;
+        return _enPassantPiece != null && getEnPassantRow() == row && getEnPassantCol() == col;
     }
 
     public Piece getEnPassantPiece() {
