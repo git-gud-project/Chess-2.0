@@ -1,6 +1,8 @@
 package view;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Menu extends JMenuBar {
 
@@ -14,6 +16,7 @@ public class Menu extends JMenuBar {
         JMenuItem load = new JMenuItem("Load");
         JMenuItem save = new JMenuItem("Save");
         file.add(newGame);
+        file.add(new JSeparator());
         file.add(load);
         file.add(save);
 
@@ -33,6 +36,10 @@ public class Menu extends JMenuBar {
         JMenu server = new JMenu("Server");
         this.add(server);
         JMenuItem startServer = new JMenuItem("Start server");
+        startServer.addActionListener(e -> {
+            JFrame f = new JFrame();
+            JOptionPane.showInputDialog(f, "Please select a port to start the server communication:");
+        });
         server.add(startServer);
     }
 
