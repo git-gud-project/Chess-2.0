@@ -1,10 +1,24 @@
 package view;
 
 import javax.swing.*;
+
+import utils.Delegate;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Menu extends JMenuBar {
+
+    private Delegate<Integer> _startServerDelegate;
+    private Delegate<Integer> _connectToServerDelegate;
+
+    public void setStartServerDelegate(Delegate<Integer> startServerDelegate) {
+        _startServerDelegate = startServerDelegate;
+    }
+
+    public void setConnectToServerDelegate(Delegate<Integer> connectToServerDelegate) {
+        _connectToServerDelegate = connectToServerDelegate;
+    }
 
     public Menu() {
         super();
@@ -36,15 +50,30 @@ public class Menu extends JMenuBar {
         this.add(help);
 
         //Creating server menu
-        JMenu server = new JMenu("Server");
+        JMenu server = new JMenu("Network");
         this.add(server);
         JMenuItem startServer = new JMenuItem("Start server");
         startServer.addActionListener(e -> {
             JFrame f = new JFrame();
             //TODO: The input value of the pop-up dialog is discarded. To use it, add a third parameter to the function call below. The input value will be stored in this variable.
-            JOptionPane.showInputDialog(f, "Please select a port to start the server communication:");
+            String port = JOptionPane.showInputDialog(f, "Please select a port to start the server communication:");
+            if (port != null) {
+                _startServerDelegate.invoke(Integer.parseInt(port));
+            }
         });
+
+        JMenuItem connectToServer = new JMenuItem("Connect to server");
+        connectToServer.addActionListener(e -> {
+            JFrame f = new JFrame();
+            
+            String port = JOptionPane.showInputDialog(f, "Please enter the port to connect to:");
+            if (port != null) {
+                _connectToServerDelegate.invoke(Integer.parseInt(port));
+            }
+        });
+
         server.add(startServer);
+        server.add(connectToServer);
     }
 
 }

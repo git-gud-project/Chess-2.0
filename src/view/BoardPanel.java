@@ -115,6 +115,10 @@ public class BoardPanel extends JPanel {
         this.add(_boardPanel, c);
     }
 
+    public BoardGridPanel getBoardGridPanel() {
+        return _boardPanel;
+    }
+
     public void updateModel(ChessModel model) {
         _boardPanel.updateModel(model);
     }

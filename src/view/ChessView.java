@@ -81,8 +81,24 @@ public class ChessView extends JFrame {
         updateModel();
     }
 
+    public Menu getMenu() {
+        return _menuPanel;
+    }
+
     public ChessModel getModel() {
         return _model;
+    }
+    
+    public BoardPanel getBoardPanel() {
+        return _boardPanel;
+    }
+
+    public InformationPanel getInfoPanel() {
+        return _infoPanel;
+    }
+
+    public BoardGridPanel getBoardGridPanel() {
+        return _boardPanel.getBoardGridPanel();
     }
     
     public void updateModel() {

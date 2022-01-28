@@ -1,6 +1,8 @@
 package view;
 
 import model.*;
+import utils.Delegate;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -10,15 +12,13 @@ public class BoardGridPanel extends JPanel {
     private int _size;
     private ChessView _view;
 
-    private BoardCell _selectedCell;
-    private ArrayList<BoardCell> _highlightedCells;
+    private Delegate<BoardCell> _clickDelegate;
 
     public BoardGridPanel(ChessView view, int size) {
         super(new GridLayout(size, size));
         _board = new BoardCell[size][size];
         _size = size;
         _view = view;
-        _highlightedCells = new ArrayList<BoardCell>();
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
@@ -47,65 +47,17 @@ public class BoardGridPanel extends JPanel {
         }
     }
 
+    public void setClickDelegate(Delegate<BoardCell> delegate) {
+        _clickDelegate = delegate;
+    }
+
+    public BoardCell getCell(int row, int col) {
+        return _board[row][col];
+    }
+
     private void handleClick(BoardCell boardCell) {
-        ChessModel model = _view.getModel();
-        Board board = model.getBoard();
-
-        // If the cell was highlighted, move the selected piece to the cell
-        if (_highlightedCells.contains(boardCell)) {
-            Piece piece = board.getCell(_selectedCell.getRow(), _selectedCell.getCol()).getPiece();
-
-            piece.move(board.getCell(boardCell.getRow(), boardCell.getCol()));
-
-            Team otherTeam = model.getOtherTeam(model.getCurrentTeam());
-
-            // Halfmove clock: The number of halfmoves since the last capture or pawn advance, used for the fifty-move rule.
-            boolean halfMove = piece.getPieceType() != PieceType.PAWN && !boardCell.isElimination();
-
-            model.registerMove(halfMove);
-
-            _view.updateModel();
-            
-            otherTeam.clearEnPassant();
-        }
-
-        if (_selectedCell != null) {
-            _selectedCell.unhighlight();
-        }
-
-        for (BoardCell cell : _highlightedCells) {
-            cell.unhighlight();
-            cell.setElimination(false);
-        }
-
-        _highlightedCells.clear();
-
-        Piece piece = model.getBoard().getCell(boardCell.getRow(), boardCell.getCol()).getPiece();
-
-        if (piece == null) {
-            return;
-        }
-
-        if (piece.getTeam() != model.getCurrentTeam()) {
-            return;
-        }
-
-        _selectedCell = boardCell;
-
-        _selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
-
-        Iterator<Move> moves = piece.getPossibleMoves();
-        while (moves.hasNext()) {
-            Move move = moves.next();
-
-            Cell cell = move.getCell();
-
-            BoardCell possibleMove = _board[cell.getRow()][cell.getCol()];
-
-            possibleMove.highlight(move.isEliminatable() ? ChessView.HIGHLIGHT_COLOR_ATTACK : ChessView.HIGHLIGHT_COLOR_MOVE);
-            possibleMove.setElimination(move.isEliminatable());
-
-            _highlightedCells.add(possibleMove);
+        if (_clickDelegate != null) {
+            _clickDelegate.invoke(boardCell);
         }
     }
 
