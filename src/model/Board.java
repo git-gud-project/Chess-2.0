@@ -1,6 +1,8 @@
 package model;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class Board {
 
@@ -49,6 +51,16 @@ public class Board {
 
     public boolean isLegalMove(Piece piece, Move move) {
         return true; // TODO: Check for if this creates an illegal checkmate
+    }
+
+    //Checks if the king is in check.
+    public boolean isCheck(List<Move> allEnemyMoves, Team team){
+        for(Move m:allEnemyMoves){
+            if(m.getCell().getPiece().getTeam().equals(team.getColor()) && m.getCell().getPiece().getPieceType().equals(PieceType.KING)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void validateMoves(Piece piece, List<Move> moves) {
