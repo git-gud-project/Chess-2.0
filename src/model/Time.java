@@ -21,7 +21,7 @@ public class Time {
     public int getMseconds() { return _mseconds; }
 
     public void tick() {
-        if(_minutes >= 0) {
+        if(_minutes > 0 || _seconds > 0 ||_mseconds > 0) {
             _mseconds--;
             if (_mseconds == -1) {
                 _mseconds = 9;
