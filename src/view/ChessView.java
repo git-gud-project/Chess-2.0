@@ -47,6 +47,12 @@ public class ChessView extends JFrame {
     private InformationPanel _infoPanel;
     
     public ChessView(ChessModel model) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            // This may fail without any consequences
+        }
+
         this.setTitle(DEFAULT_TITLE);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
