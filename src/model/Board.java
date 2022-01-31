@@ -30,6 +30,13 @@ public class Board {
         return _cellArray[row][col];
     }
 
+    public Cell getCell(String position) {
+        int row = position.charAt(1) - '1';
+        int col = position.charAt(0) - 'a';
+        row = _gameSize - row - 1;
+        return getCell(row, col);
+    }
+
     public ChessModel getChessModel() { return this._model; }
 
     public int getGameSize() { return this._gameSize; }
@@ -188,7 +195,9 @@ public class Board {
         Team currentTeam = _model.getOtherTeam(_model.getCurrentTeam());
 
         if (currentTeam.getEnPassantPiece() != null) {
-            fen += " " + positionToString(currentTeam.getEnPassantRow(), currentTeam.getEnPassantCol());
+            Piece enPassantPiece = currentTeam.getEnPassantPiece();
+            Cell enPassantCell = enPassantPiece.getCell();
+            fen += " " + positionToString(enPassantCell.getRow(), enPassantCell.getCol());
         }
         else {
             fen += " -";
@@ -203,4 +212,71 @@ public class Board {
         return fen; 
     }
 
+    public void loadFEN(String fen) {
+        String[] parts = fen.split(" ");
+        String[] rows = parts[0].split("/");
+        int row = 0;
+        int col = 0;
+        for(String rowString:rows){
+            for(int i = 0; i < rowString.length(); i++){
+                char c = rowString.charAt(i);
+                if(Character.isDigit(c)){
+                    for (int j = 0; j < Character.getNumericValue(c); j++) {
+                        Cell cell = getCell(row, col);
+                        cell.setPiece(null);
+                        col++;
+                    }
+                }
+                else{
+                    Piece piece = null;
+                    Team team = c == Character.toUpperCase(c) ? _model.getTeamWhite() : _model.getTeamBlack();
+                    Cell cell = getCell(row, col);
+                    switch(Character.toUpperCase(c)) {
+                        case 'K':
+                            piece = new PieceKing(cell, team);
+                            break;
+                        case 'Q':
+                            piece = new PieceQueen(cell, team);
+                            break;
+                        case 'R':
+                            piece = new PieceRook(cell, team);
+                            break;
+                        case 'B':
+                            piece = new PieceBishop(cell, team);
+                            break;
+                        case 'N':
+                            piece = new PieceKnight(cell, team);
+                            break;
+                        case 'P':
+                            piece = new PiecePawn(cell, team);
+                            break;
+                    }
+                    _cellArray[row][col].setPiece(piece);
+                    col++;
+                }
+            }
+            row++;
+            col = 0;
+        }
+
+        Team team = parts[1].equals("w") ? _model.getTeamWhite() : _model.getTeamBlack();
+        _model.setCurrentTeam(team);
+
+        // TODO: castling rights
+
+        // En passant target square
+        if (parts[3].equals("-")) {
+            _model.getOtherTeam(_model.getCurrentTeam()).clearEnPassant();
+        }
+        else {
+            Cell cell = getCell(parts[3]);
+            _model.getOtherTeam(_model.getCurrentTeam()).setEnPassant(cell.getPiece());
+        }
+
+        // Half move clock
+        _model.setHalfMoves(Integer.parseInt(parts[4]));
+
+        // Full move number
+        _model.setFullMoves(Integer.parseInt(parts[5]));
+    }
 }

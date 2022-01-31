@@ -4,11 +4,12 @@ import javax.swing.*;
 
 import utils.Delegate;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.nio.file.*;
+import java.io.*;
 
 public class Menu extends JMenuBar {
 
+    private ChessView _view;
     private Delegate<Integer> _startServerDelegate;
     private Delegate<Integer> _connectToServerDelegate;
 
@@ -20,8 +21,9 @@ public class Menu extends JMenuBar {
         _connectToServerDelegate = connectToServerDelegate;
     }
 
-    public Menu() {
+    public Menu(ChessView view) {
         super();
+        _view = view;
 
         //Creating file menu
         JMenu file = new JMenu("File");
@@ -34,6 +36,47 @@ public class Menu extends JMenuBar {
         file.add(load);
         file.add(save);
 
+        save.addActionListener((e) -> {
+            String content = _view.getModel().getBoard().toFEN();
+
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save FEN");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fileChooser.setSelectedFile(new File("fen.txt"));
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+            int returnValue = fileChooser.showSaveDialog(null);
+
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File chosenFile = fileChooser.getSelectedFile();
+                try {
+                    PrintWriter writer = new PrintWriter(chosenFile);
+                    writer.print(content);
+                    writer.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        load.addActionListener((e) -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Load FEN");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fileChooser.setSelectedFile(new File("fen.txt"));
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+            int returnValue = fileChooser.showOpenDialog(null);
+
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File chosenFile = fileChooser.getSelectedFile();
+                try {
+                    String content = Files.readString(chosenFile.toPath());
+                    _view.getModel().getBoard().loadFEN(content);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
         //Creating edit menu
         JMenu edit = new JMenu("Edit");
         //TODO: This menu could support functionality for pausing the game. If no other functionality for it is used it could also be removed.
@@ -41,8 +84,8 @@ public class Menu extends JMenuBar {
 
         //Creating view menu
         //TODO: Visual customization could be added to this part of the menu as part of the technical requirements for the project.
-        JMenu view = new JMenu("View");
-        this.add(view);
+        JMenu viewMenu = new JMenu("View");
+        this.add(viewMenu);
 
         //Creating help menu
         JMenu help = new JMenu("Help");
