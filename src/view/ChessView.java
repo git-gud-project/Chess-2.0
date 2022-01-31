@@ -7,9 +7,9 @@ import java.awt.*;
 
 public class ChessView extends JFrame {
 
-    public final static int DEFAULT_WINDOW_WIDTH = 600;
-    public final static int DEFAULT_WINDOW_HEIGHT = 600;
-    public final static boolean DEFAULT_RESIZABLE = false;
+    public final static int DEFAULT_WINDOW_WIDTH = 1190;
+    public final static int DEFAULT_WINDOW_HEIGHT = 773;
+    public final static boolean DEFAULT_RESIZABLE = true;
     public final static String DEFAULT_TITLE = "Chess Game";
 
     public final static Dimension CELL_MIN_SIZE = new Dimension(60, 60);
@@ -38,6 +38,8 @@ public class ChessView extends JFrame {
     
     public final static float HIGHLIGHT_ALPHA = 0.5f;
 
+    public final static float ASPECT_RATIO = (float) DEFAULT_WINDOW_WIDTH / DEFAULT_WINDOW_HEIGHT;
+
     private Menu _menuPanel;
 
     private BoardPanel _boardPanel;
@@ -45,6 +47,8 @@ public class ChessView extends JFrame {
     private ChessModel _model;
 
     private InformationPanel _infoPanel;
+
+    private java.lang.Thread _thread;
     
     public ChessView(ChessModel model) {
         try {
@@ -52,6 +56,9 @@ public class ChessView extends JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             // This may fail without any consequences
         }
+
+        Toolkit.getDefaultToolkit().setDynamicLayout(false);
+        
 
         this.setTitle(DEFAULT_TITLE);
         
@@ -62,6 +69,41 @@ public class ChessView extends JFrame {
         this.setResizable(DEFAULT_RESIZABLE);
 
         this.setLayout(new BorderLayout());
+
+        // On Resize
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                // Make sure the left mouse button is not pressed
+                if (evt.getComponent().getMousePosition() != null) {
+                    if (evt.getComponent().getMousePosition().getX() > 0) {
+                        return;
+                    }
+                }
+                
+                // In 100ms, ensure aspect ratio
+                if (_thread != null) _thread.interrupt();
+                _thread = new Thread(() -> {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        return;
+                    }
+                    int w = getWidth();
+                    int h = getHeight();
+                    if (w / h > ASPECT_RATIO) {
+                        setSize(new Dimension((int) (h * ASPECT_RATIO), h));
+                    } else {
+                        setSize(new Dimension(w, (int) (w / ASPECT_RATIO)));
+                    }
+
+                    if (w < DEFAULT_WINDOW_WIDTH || h < DEFAULT_WINDOW_HEIGHT) {
+                        setSize(new Dimension(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
+                    }
+                });
+                _thread.start();
+            }
+        });
 
         // Create board panel
         _boardPanel = new BoardPanel(this, 8);
