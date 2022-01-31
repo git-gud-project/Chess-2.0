@@ -58,21 +58,36 @@ public class Board {
 
     public boolean isLegalMove(Piece piece, Move move) {
         Cell tempCell = piece.getCell();
-        piece.move(move.getCell()); //1. Flyttar cellen.
-       /*if(isCheck(allEnemyMoves, piece.getTeam())){ //2. Kollar om det är schack efter flytten.
+        piece.move(move.getCell()); //1. Flyttar cellen
+
+        if(isCheck(allEnemyMoves(piece.getTeam()), piece.getTeam())){ //2. Kollar om det är schack efter flytten.
             piece.move(tempCell); //Om det är chack så flyttar vi tillbaks pjäsen.
             return false; //returnerar att det är falsk (en illegal move).
         }
         else{
             return true;
-        }*/
-        return true; // TODO: Check for if this creates an illegal checkmate
+        }
+    }
+
+    private List<Move> allEnemyMoves(Team playerTeam){
+        List<Move> enemyMovesList =new ArrayList<>();
+        for(int row=0;row<_gameSize;row++){
+            for(int col=0;col<_gameSize;col++){
+                if(_cellArray[row][col].getPiece()!=null && _cellArray[row][col].getPiece().getTeam()!=playerTeam){
+                    Iterator<Move> it =_cellArray[row][col].getPiece().getPossibleMoves();
+                    while(it.hasNext()) {
+                        enemyMovesList.add(it.next());
+                    }
+                }
+            }
+        }
+        return enemyMovesList;
     }
 
     //Checks if the king is in check.
     public boolean isCheck(List<Move> allEnemyMoves, Team team){
         for(Move m:allEnemyMoves){
-            if(m.getCell().getPiece().getTeam().equals(team.getColor()) && m.getCell().getPiece().getPieceType().equals(PieceType.KING)){
+            if(m.getCell().getPiece()!=null && m.getCell().getPiece().getTeam().equals(team) && m.getCell().getPiece().getPieceType().equals(PieceType.KING)){
                 return true;
             }
         }
@@ -152,6 +167,11 @@ public class Board {
                 break;
             }
         }
+        /* Kan kommenteras bort när isLegalMove är färdig och fungerar som tänkt
+        if(_model.getCurrentTeam()== piece.getTeam()) {
+            validateMoves(piece, registry);
+        }
+         */
     }
 
     public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol, int maxSteps) {
