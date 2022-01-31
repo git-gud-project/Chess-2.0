@@ -57,6 +57,15 @@ public class Board {
     }
 
     public boolean isLegalMove(Piece piece, Move move) {
+        Cell tempCell = piece.getCell();
+        piece.move(move.getCell()); //1. Flyttar cellen.
+       /*if(isCheck(allEnemyMoves, piece.getTeam())){ //2. Kollar om det är schack efter flytten.
+            piece.move(tempCell); //Om det är chack så flyttar vi tillbaks pjäsen.
+            return false; //returnerar att det är falsk (en illegal move).
+        }
+        else{
+            return true;
+        }*/
         return true; // TODO: Check for if this creates an illegal checkmate
     }
 
