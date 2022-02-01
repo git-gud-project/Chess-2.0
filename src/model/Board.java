@@ -75,15 +75,6 @@ public class Board {
             piece.setHasMoved(hasMoved);
             return true;
         }
-        /*
-        System.out.println("Moves: ");
-        List<Move> l = allEnemyMoves(piece.getTeam());
-        Iterator<Move> it = l.iterator();
-        while(it.hasNext()){
-            System.out.print(it.next().getCell()+" ");
-        }
-        System.out.println(""); */
-        //return false;
     }
 
     private List<Move> allEnemyMoves(Team playerTeam){

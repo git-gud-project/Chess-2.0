@@ -1,6 +1,7 @@
 package model;
 import java.awt.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ChessModel implements Serializable {
 
@@ -16,12 +17,15 @@ public class ChessModel implements Serializable {
 
     private int _halfMoves;
 
+    private ArrayList<MoveNotation> _latestMove;
+
     public ChessModel() {
         _teamWhite = new Team(this, Color.WHITE, "w", "Player 1",  -1);
         _teamBlack = new Team(this, Color.BLACK, "b", "Player 2",  1);
         _board = new Board(this, GAMESIZE);
         _currentTeam = _teamWhite;
         _fullMoves = 1;
+        _latestMove = new ArrayList<>();
     }
 
     public Team getTeamWhite() { return this._teamWhite; }
@@ -42,7 +46,7 @@ public class ChessModel implements Serializable {
 
     public void setHalfMoves(int halfMoves) { this._halfMoves = halfMoves; }
 
-    public void registerMove(boolean halfMove) {
+    public void registerMove(boolean halfMove, MoveNotation mN) {
         // Increment full moves if it's black's turn
         if (_currentTeam == _teamBlack) {
             _fullMoves++;
@@ -61,6 +65,9 @@ public class ChessModel implements Serializable {
         } else {
             _currentTeam = _teamWhite;
         }
+
+        _latestMove.add(mN);
+
     }
     
     public Team getOtherTeam(Team team) {
@@ -70,5 +77,9 @@ public class ChessModel implements Serializable {
 
     public boolean isEnPassant(int row, int col) {
         return _teamWhite.isEnPassant(row, col) || _teamBlack.isEnPassant(row, col);
+    }
+
+    public ArrayList<MoveNotation> getMoveList() {
+        return _latestMove;
     }
 }
