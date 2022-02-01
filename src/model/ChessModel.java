@@ -82,4 +82,23 @@ public class ChessModel implements Serializable {
     public ArrayList<MoveNotation> getMoveList() {
         return _latestMove;
     }
+
+    public Piece createPiece(PieceType type, Team team, Cell cell) {
+        switch (type) {
+            case PAWN:
+                return new PiecePawn(cell, team);
+            case ROOK:
+                return new PieceRook(cell, team);
+            case KNIGHT:
+                return new PieceKnight(cell, team);
+            case BISHOP:
+                return new PieceBishop(cell, team);
+            case QUEEN:
+                return new PieceQueen(cell, team);
+            case KING:
+                return new PieceKing(cell, team);
+            default:
+                throw new IllegalArgumentException("Invalid piece type");
+        }
+    }
 }

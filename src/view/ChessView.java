@@ -155,4 +155,25 @@ public class ChessView extends JFrame {
         _boardPanel.updateModel(_model);
         _infoPanel.updateModel(_model);
     }
+
+    public PieceType promotePawn() {
+        // Create a dialog to ask the user what piece to promote to
+        Object[] options = {"Queen", "Rook", "Bishop", "Knight"};
+        int n = JOptionPane.showOptionDialog(this, "What piece do you want to promote to?", "Promote Pawn", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (n == JOptionPane.CLOSED_OPTION) {
+            return null;
+        }
+        switch (n) {
+            case 0:
+                return PieceType.QUEEN;
+            case 1:
+                return PieceType.ROOK;
+            case 2:
+                return PieceType.BISHOP;
+            case 3:
+                return PieceType.KNIGHT;
+            default:
+                return null;
+        }
+    }
 }
