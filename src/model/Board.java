@@ -60,45 +60,16 @@ public class Board {
 
         Cell tempCell = piece.getCell();
         Piece originPiece = move.getCell().getPiece();
-        boolean firstMove = false;
         piece.move(move.getCell()); //1. Flyttar cellen
 
-        if(piece.getPieceType() == PieceType.ROOK){
-            firstMove = ((PieceRook) originPiece).getFirstMove();
-        }
-        else if(piece.getPieceType() == PieceType.PAWN){
-            firstMove = ((PiecePawn) originPiece).getFirstMove();
-        }
-        else if(piece.getPieceType() == PieceType.KING){
-            firstMove = ((PieceKing) originPiece).getFirstMove();
-        }
-
         if(isCheck(allEnemyMoves(piece.getTeam()), piece.getTeam())){ //2. Kollar om det är schack efter flytten.
-            piece.move(tempCell); //Om det är schack så flyttar vi tillbaks pjäsen.
+            piece.fakeMove(tempCell); //Om det är schack så flyttar vi tillbaks pjäsen.
             move.getCell().setPiece(originPiece);
-            if(piece.getPieceType() == PieceType.ROOK){
-                ((PieceRook) originPiece).setFirstMove(firstMove);
-            }
-            else if(piece.getPieceType() == PieceType.PAWN){
-                ((PiecePawn) originPiece).setFirstMove(firstMove);
-            }
-            else if(piece.getPieceType() == PieceType.KING){
-                ((PieceKing) originPiece).setFirstMove(firstMove);
-            }
             return false; //returnerar att det är falsk (en illegal move).
         }
         else{
-            piece.move(tempCell); //Om det inte är schack så flyttar vi tillbaks pjäs
+            piece.fakeMove(tempCell); //Om det inte är schack så flyttar vi tillbaks pjäs
             move.getCell().setPiece(originPiece);
-            if(piece.getPieceType() == PieceType.ROOK){
-                ((PieceRook) originPiece).setFirstMove(firstMove);
-            }
-            else if(piece.getPieceType() == PieceType.PAWN){
-                ((PiecePawn) originPiece).setFirstMove(firstMove);
-            }
-            else if(piece.getPieceType() == PieceType.KING){
-                ((PieceKing) originPiece).setFirstMove(firstMove);
-            }
             return true;
         }
         /*

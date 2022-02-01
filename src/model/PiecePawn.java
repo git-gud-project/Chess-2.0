@@ -47,7 +47,7 @@ public class PiecePawn extends Piece {
     }
 
     @Override
-    public void onMove(Cell oldCell, Cell newCell) {
+    public void onMove(Cell oldCell, Cell newCell, boolean state) {
         Team team = this.getTeam();
         Board board = this.getCell().getBoard();
         Team otherTeam = board.getChessModel().getOtherTeam(team);
@@ -64,8 +64,12 @@ public class PiecePawn extends Piece {
             piece.getCell().setPiece(null);
         }
 
-
-        firstMove = false;
+        if(state){
+            firstMove = false;
+        }
+        else{
+            firstMove = true;
+        }
     }
 
     public void setFirstMove(boolean firstMove){
