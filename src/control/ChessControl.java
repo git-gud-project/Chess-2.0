@@ -78,7 +78,6 @@ public class ChessControl {
         boolean halfMove = piece.getPieceType() != PieceType.PAWN && !isElimination;
 
         _model.registerMove(halfMove);
-
         _view.updateModel();
         
         otherTeam.clearEnPassant();
@@ -143,6 +142,8 @@ public class ChessControl {
         _selectedCell = boardCell;
 
         _selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
+
+//        Iterator<Move> moves = piece.getPossibleMoves();
 
         Iterator<Move> moves = piece.getPossibleMoves();
         while (moves.hasNext()) {

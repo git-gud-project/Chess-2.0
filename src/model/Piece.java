@@ -45,7 +45,7 @@ public abstract class Piece {
         }
     }
 
-    public void onMove(Cell oldCell, Cell newCell) {
+    public void onMove(Cell oldCell, Cell newCell, boolean State) {
         this._hasMoved = true;
     }
 
@@ -71,6 +71,15 @@ public abstract class Piece {
         _cell = newCell;
         _cell.setPiece(this);
 
-        onMove(oldCell, newCell);
+        onMove(oldCell, newCell, true);
+    }
+
+    public void fakeMove(Cell newCell) {
+        Cell oldCell = this.getCell();
+        _cell.setPiece(null);
+        _cell = newCell;
+        _cell.setPiece(this);
+
+        //onMove(oldCell, newCell, false);
     }
 }

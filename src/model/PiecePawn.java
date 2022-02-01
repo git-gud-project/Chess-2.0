@@ -16,7 +16,6 @@ import java.util.Iterator;
  */
 public class PiecePawn extends Piece {
 
-    private boolean firstMove = true;
     private ArrayList<Move> _possibleMoves;
 
     public PiecePawn(Cell cell, Team team) {
@@ -34,7 +33,7 @@ public class PiecePawn extends Piece {
         int dirRow = team.getPawnDirectionRow();
         
         //If the pawn is on the first row, it can move 2 cells.
-        if (firstMove) {
+        if (!hasMoved()) {
             board.calculateMoves(this, _possibleMoves, dirRow, 0, 2, false, true, false);
         } else {
             board.calculateMoves(this, _possibleMoves, dirRow, 0, 1, false, true, false);
@@ -47,15 +46,13 @@ public class PiecePawn extends Piece {
     }
 
     @Override
-    public void onMove(Cell oldCell, Cell newCell) {
-        super.onMove(oldCell, newCell);
-
+    public void onMove(Cell oldCell, Cell newCell, boolean state) {
         Team team = this.getTeam();
         Board board = this.getCell().getBoard();
         Team otherTeam = board.getChessModel().getOtherTeam(team);
 
         // Check if we moved 2 cells.
-        if (firstMove && Math.abs(oldCell.getRow() - newCell.getRow()) == 2) {
+        if (!hasMoved() && Math.abs(oldCell.getRow() - newCell.getRow()) == 2) {
             team.setEnPassant(this);
         }
 
@@ -65,16 +62,8 @@ public class PiecePawn extends Piece {
             Piece piece = otherTeam.getEnPassantPiece();
             piece.getCell().setPiece(null);
         }
-
-
-        firstMove = false;
-    }
-
-    /**
-     * Sets the firstMove variable to false indicating that the piece have moved once.
-     */
-    public void setFirstMove(){
-        this.firstMove = false;
+        
+        super.onMove(oldCell, newCell, state);
     }
 
     @Override
