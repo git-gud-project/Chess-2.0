@@ -11,8 +11,13 @@ import model.*;
 public class BottomPanel extends JPanel {
     private JTextField _infoLabel;
     private JButton _copyButton;
+    private ChessModel _model;
 
-    public BottomPanel() {
+    public BottomPanel(ChessModel model) {
+        super();
+
+        _model = model;
+
         _infoLabel = new JTextField();
         _infoLabel.setText("");
         _infoLabel.setFont(new Font("Arial", Font.BOLD, 8));
@@ -34,11 +39,25 @@ public class BottomPanel extends JPanel {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
         });
+
+        /**
+         * Setup events
+         */
+        
+        model.getOnTeamChangeEvent().addDelegate(team -> {
+            updateInfoLabel();
+        });
+
+        model.getOnGameLoadedEvent().addDelegate(fen -> {
+            _infoLabel.setText(fen);
+        });
+
+        updateInfoLabel();
     }
 
-    public void updateModel(ChessModel model) {
+    private void updateInfoLabel() {
         // Create a notation of the current board state
-        Board board = model.getBoard();
+        Board board = _model.getBoard();
 
         // Create a Forsyth–Edwards Notation (FEN) of the board
         String fen = board.toFEN();

@@ -30,6 +30,11 @@ public abstract class Piece {
     public Team getTeam(){
         return _team;
     }
+
+    public String getIconPath() {
+        return "res/" + _type.getFilePrefix() + _team.getFileSuffix() + ".png";
+    }
+
     // Common methods for all pieces.
     /**
      * A help method that checks if the move contains a possible eliminations of a piece.

@@ -1,15 +1,39 @@
 package model;
 import java.awt.*;
 
+import utils.Event;
+
 public class Team {
 
+    //
+    // Fields
+    //
+
     private ChessModel _model;
+
     private Color _teamColor;
+
     private String _fileSuffix;
+
     private String _name;
+
     private Time _time;
+
     private int _pawnDirectionRow;
+
     private Piece _enPassantPiece;
+
+    // 
+    // Events
+    //
+
+    private Event<String> _onNameChangedEvent = new Event<>();
+
+    private Event<Time> _onTimeChangedEvent = new Event<>();
+
+    //
+    // Constructors
+    //
 
     public Team(ChessModel model, Color color, String fileSuffix, String name, int pawnDirectionRow) {
         _model = model;
@@ -19,6 +43,10 @@ public class Team {
         _time = new Time();
         _pawnDirectionRow = pawnDirectionRow;
     }
+
+    //
+    // Getters
+    //
 
     public Color getColor() { 
         return _teamColor;
@@ -48,20 +76,8 @@ public class Team {
         return _enPassantPiece.getCell().getCol();
     }
 
-    public boolean isEnPassant(int row, int col) {
-        return _enPassantPiece != null && getEnPassantRow() == row && getEnPassantCol() == col;
-    }
-
     public Piece getEnPassantPiece() {
         return _enPassantPiece;
-    }
-
-    public void setEnPassant(Piece piece) {
-        _enPassantPiece = piece;
-    }
-
-    public void clearEnPassant() {
-        _enPassantPiece = null;
     }
 
     public int getKingRow() {
@@ -75,6 +91,47 @@ public class Team {
     public int getPromotionRow() {
         return _pawnDirectionRow == -1 ? 0 : 7;
     }
+
+    //
+    // Getters - Events
+    //
+
+    public Event<String> getOnNameChangedEvent() {
+        return _onNameChangedEvent;
+    }
+
+    public Event<Time> getOnTimeChangedEvent() {
+        return _onTimeChangedEvent;
+    }
+
+    //
+    // Methods
+    //
+
+    public void tickTime() {
+        _time.tick();
+        _onTimeChangedEvent.invoke(_time);
+    }
+
+    //
+    // En Passant
+    //
+
+    public boolean isEnPassant(int row, int col) {
+        return _enPassantPiece != null && getEnPassantRow() == row && getEnPassantCol() == col;
+    }
+
+    public void setEnPassant(Piece piece) {
+        _enPassantPiece = piece;
+    }
+
+    public void clearEnPassant() {
+        _enPassantPiece = null;
+    }
+
+    //
+    // Castling
+    //
 
     public boolean hasCastlingRightKingSide() {
         Board board = _model.getBoard();

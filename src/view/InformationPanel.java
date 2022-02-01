@@ -12,7 +12,7 @@ public class InformationPanel extends JPanel {
     private BottomPanel _bottomPanel;
     private MovesPanel _movesPanel;
 
-    public InformationPanel() {
+    public InformationPanel(ChessModel model) {
         /**
          * This is a side panel that displays the information of the game.
          * 
@@ -25,8 +25,8 @@ public class InformationPanel extends JPanel {
         this.setBackground(ChessView.SECONDARY_COLOR);
 
         JPanel playerPanel = new JPanel();
-        _playerPanel1 = new PlayerPanel();
-        _playerPanel2 = new PlayerPanel();
+        _playerPanel1 = new PlayerPanel(model.getTeamWhite());
+        _playerPanel2 = new PlayerPanel(model.getTeamBlack());
         JPanel moves = new JPanel();
 
         // Player 1 in north west, player 2 in north east, with a separator in the middle
@@ -60,7 +60,7 @@ public class InformationPanel extends JPanel {
         moves.setBackground(ChessView.SECONDARY_COLOR);
         
         // Create a panel to place the moves in
-        _movesPanel = new MovesPanel();
+        _movesPanel = new MovesPanel(model);
         moves.add(_movesPanel);
 
         // Add a border to the moves panel
@@ -70,14 +70,7 @@ public class InformationPanel extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Add the bottom panel
-        _bottomPanel = new BottomPanel();
+        _bottomPanel = new BottomPanel(model);
         this.add(_bottomPanel, BorderLayout.SOUTH);
-    }
-
-    public void updateModel(ChessModel model) {
-        _playerPanel1.updateFromTeam(model.getTeamWhite());
-        _playerPanel2.updateFromTeam(model.getTeamBlack());
-        _bottomPanel.updateModel(model);
-        _movesPanel.updateModel(model);
     }
 }

@@ -14,7 +14,7 @@ public class MovesPanel extends JPanel {
     private MoveNotation _lastMove;
     JScrollPane _scrollpane;
 
-    public MovesPanel() {
+    public MovesPanel(ChessModel model) {
         this.setLayout(new BorderLayout());
 
         _listModel = new DefaultListModel<>();
@@ -28,22 +28,26 @@ public class MovesPanel extends JPanel {
         _counter = 0;
 
         add(_scrollpane);
-    }
 
-    public void updateModel(ChessModel model) {
-        ArrayList<MoveNotation> moveList = model.getMoveList();
-        if(_counter != moveList.size()) {
-           _counter = moveList.size();
-            if (_counter % 2 == 1) {
-                _movesNr++;
-                _listModel.addElement(String.valueOf(_movesNr) + "     " + moveList.get(_counter-1));
-            } else {
-                String tmp = _listModel.lastElement();
-                _listModel.removeElementAt(_movesNr-1);
-                _listModel.addElement(tmp + "     " + moveList.get(_counter-1));
+        /**
+         * Setup events
+         */
+
+        model.getOnMoveEvent().addDelegate(move -> {
+            ArrayList<MoveNotation> moveList = model.getMoveList();
+            if(_counter != moveList.size()) {
+               _counter = moveList.size();
+                if (_counter % 2 == 1) {
+                    _movesNr++;
+                    _listModel.addElement(String.valueOf(_movesNr) + "     " + moveList.get(_counter-1));
+                } else {
+                    String tmp = _listModel.lastElement();
+                    _listModel.removeElementAt(_movesNr-1);
+                    _listModel.addElement(tmp + "     " + moveList.get(_counter-1));
+                }
             }
-        }
-        JScrollBar vertical = _scrollpane.getVerticalScrollBar();
-        vertical.setValue( vertical.getMaximum() );
+            JScrollBar vertical = _scrollpane.getVerticalScrollBar();
+            vertical.setValue( vertical.getMaximum() );
+        });
     }
 }

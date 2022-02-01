@@ -51,6 +51,8 @@ public class ChessView extends JFrame {
     private java.lang.Thread _thread;
     
     public ChessView(ChessModel model) {
+        _model = model;
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -111,7 +113,7 @@ public class ChessView extends JFrame {
         this.add(_boardPanel, BorderLayout.CENTER);
 
         // Add the information panel
-        _infoPanel = new InformationPanel();
+        _infoPanel = new InformationPanel(model);
 
         this.add(_infoPanel, BorderLayout.EAST);
 
@@ -123,10 +125,6 @@ public class ChessView extends JFrame {
         this.pack();
 
         this.setVisible(true);
-
-        _model = model;
-
-        updateModel();
     }
 
     public Menu getMenu() {
@@ -150,11 +148,6 @@ public class ChessView extends JFrame {
     }
 
     public void setModel(ChessModel model) { this._model = model; }
-    
-    public void updateModel() {
-        _boardPanel.updateModel(_model);
-        _infoPanel.updateModel(_model);
-    }
 
     public PieceType promotePawn() {
         // Create a dialog to ask the user what piece to promote to

@@ -20,6 +20,8 @@ public class BoardGridPanel extends JPanel {
         _size = size;
         _view = view;
 
+        Board board = view.getModel().getBoard();
+
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 
@@ -43,6 +45,26 @@ public class BoardGridPanel extends JPanel {
                 button.setPressedBackgroundColor(color);
 
                 _board[row][col] = button;
+
+                /**
+                 * Setup events
+                 */
+
+                Cell cell = board.getCell(row, col);
+
+                cell.getOnPieceChangedEvent().addDelegate(piece -> {
+                    if (piece == null) {
+                        button.setIcon(null);
+                    } else {
+                        button.setIcon(new ImageIcon(piece.getIconPath()));
+                    }
+                });
+
+                Piece piece = cell.getPiece();
+
+                if (piece != null) {
+                    button.setIcon(new ImageIcon(piece.getIconPath()));
+                }
             }
         }
     }
@@ -58,22 +80,6 @@ public class BoardGridPanel extends JPanel {
     private void handleClick(BoardCell boardCell) {
         if (_clickDelegate != null) {
             _clickDelegate.invoke(boardCell);
-        }
-    }
-
-    public void updateModel(ChessModel m) {
-        model.Board b= m.getBoard();
-
-        for(int row=0;row<_size;row++){
-            for(int col=0;col<_size;col++){
-                Piece p = b.getCell(row,col).getPiece();
-                if(p == null){
-                    _board[row][col].setIcon(null);
-                }
-                else{
-                    _board[row][col].setIcon(new ImageIcon("res/"+p.getPieceType().getFilePrefix()+p.getTeam().getFileSuffix()+".png"));
-                }
-            }
         }
     }
 }

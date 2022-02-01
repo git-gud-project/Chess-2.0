@@ -3,9 +3,15 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import utils.Event;
+
 public class ChessModel implements Serializable {
 
     private static final int GAMESIZE = 8;
+
+    //
+    // Fields
+    //
 
     private Team _teamWhite, _teamBlack;
 
@@ -19,6 +25,20 @@ public class ChessModel implements Serializable {
 
     private ArrayList<MoveNotation> _moveList;
 
+    //
+    // Events
+    //
+
+    private Event<Team> _onTeamChangeEvent = new Event<>();
+
+    private Event<MoveNotation> _onMoveEvent = new Event<>();
+
+    private Event<String> _onGameLoadedEvent = new Event<>();
+
+    //
+    // Constructors 
+    //
+
     public ChessModel() {
         _teamWhite = new Team(this, Color.WHITE, "w", "Player 1",  -1);
         _teamBlack = new Team(this, Color.BLACK, "b", "Player 2",  1);
@@ -27,6 +47,10 @@ public class ChessModel implements Serializable {
         _fullMoves = 1;
         _moveList = new ArrayList<>();
     }
+
+    //
+    // Getters
+    //
 
     public Team getTeamWhite() { return this._teamWhite; }
 
@@ -39,12 +63,39 @@ public class ChessModel implements Serializable {
     public int getFullMoves() { return this._fullMoves; }
 
     public int getHalfMoves() { return this._halfMoves; }
-    
-    public void setCurrentTeam(Team team) { this._currentTeam = team; }
+
+    //
+    // Getters - Events
+    //
+
+    public Event<Team> getOnTeamChangeEvent() {
+        return this._onTeamChangeEvent;
+    }
+
+    public Event<MoveNotation> getOnMoveEvent() {
+        return this._onMoveEvent;
+    }
+
+    public Event<String> getOnGameLoadedEvent() {
+        return this._onGameLoadedEvent;
+    }
+
+    //
+    // Setters
+    //
+
+    public void setCurrentTeam(Team team) { 
+        this._currentTeam = team;
+        this._onTeamChangeEvent.invoke(team);
+    }
 
     public void setFullMoves(int fullMoves) { this._fullMoves = fullMoves; }
 
     public void setHalfMoves(int halfMoves) { this._halfMoves = halfMoves; }
+
+    //
+    // Methods
+    //
 
     public void registerMove(boolean halfMove, MoveNotation mN) {
         // Increment full moves if it's black's turn
@@ -68,6 +119,9 @@ public class ChessModel implements Serializable {
 
         _moveList.add(mN);
 
+        // Invoke events
+        _onTeamChangeEvent.invoke(_currentTeam);
+        _onMoveEvent.invoke(mN);
     }
     
     public Team getOtherTeam(Team team) {

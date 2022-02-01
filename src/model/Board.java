@@ -387,5 +387,10 @@ public class Board {
 
         // Full move number
         _model.setFullMoves(Integer.parseInt(parts[5]));
+
+        /**
+         * Invoke events
+         */
+        _model.getOnGameLoadedEvent().invoke(fen);
     }
 }

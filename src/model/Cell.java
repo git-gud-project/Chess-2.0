@@ -1,13 +1,24 @@
 package model;
 
+import utils.Event;
+
 public class Cell {
 
     private final int _row;
     private final int _col;
-    private int _weatherEffect; //Datatype can be changed later.
 
     private Board _board;
     private Piece _piece;
+
+    //
+    // Events
+    //
+
+    private Event<Piece> _onPieceChangedEvent = new Event<>();
+
+    //
+    // Constructors
+    //
 
     public Cell(Board board, int row, int col){
         this._board = board;
@@ -34,11 +45,11 @@ public class Cell {
         }
     }
 
-    public Board getBoard () { return this._board; }
+    //
+    // Getters
+    //
 
-    public int getWeatherEffect() {
-        return _weatherEffect;
-    }
+    public Board getBoard () { return this._board; }
 
     public int getRow() {
         return _row;
@@ -48,16 +59,25 @@ public class Cell {
         return _col;
     }
 
-    public void setWeatherEffect(int weatherEffect){
-        this._weatherEffect = weatherEffect;
-    }
-
     public Piece getPiece() {
         return _piece;
     }
 
+    //
+    // Getters - Events
+    //
+
+    public Event<Piece> getOnPieceChangedEvent() {
+        return _onPieceChangedEvent;
+    }
+
+    //
+    // Setters
+    //
+
     public void setPiece(Piece piece) {
         this._piece = piece;
+        _onPieceChangedEvent.invoke(piece);
     }
 
     @Override

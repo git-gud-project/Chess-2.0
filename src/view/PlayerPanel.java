@@ -1,6 +1,7 @@
 package view;
 
 import model.*;
+import utils.Event;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +10,9 @@ public class PlayerPanel extends JPanel {
     private JLabel _playerName;
     private JLabel _playerTime;
 
-    public PlayerPanel() {
+    private Event<String> _playerNameChangedEvent = new Event<String>();
+
+    public PlayerPanel(Team team) {
         /**
          * This panel displays the information of the player.
          * 
@@ -33,11 +36,34 @@ public class PlayerPanel extends JPanel {
         _playerTime.setFont(new Font("Arial", Font.BOLD, 20));
         _playerTime.setForeground(ChessView.SECONDARY_SIDE_COLOR);
         this.add(_playerTime, BorderLayout.SOUTH);
-    }
 
-    public void updateFromTeam(Team team) {
+        /**
+         * Setup event listeners
+         */
+        team.getOnNameChangedEvent().addDelegate(name -> {
+            _playerName.setText(name);
+        });
+
+        team.getOnTimeChangedEvent().addDelegate(time -> {
+            _playerTime.setText(time.toString());
+        });
+
         _playerName.setText(team.getName());
-        Time time = team.getTime();
-        _playerTime.setText(String.format("%02d:%02d:%02d", time.getMinutes(), time.getSeconds(), time.getMseconds()));
+        _playerTime.setText(team.getTime().toString());
+
+        /**
+         * When double clicking on the player name, it will open a dialog to change
+         */
+        _playerName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    String newName = JOptionPane.showInputDialog(null, "Enter the new name", _playerName.getText());
+                    if (newName != null) {
+                        _playerName.setText(newName);
+                        _playerNameChangedEvent.invoke(newName);
+                    }
+                }
+            }
+        });
     }
 }

@@ -86,8 +86,6 @@ public class ChessControl {
 
         _model.registerMove(false, mN);
 
-        _view.updateModel();
-        
         otherTeam.clearEnPassant();
     }
 
@@ -140,7 +138,6 @@ public class ChessControl {
             check =  _view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
             check.highlight(Color.RED);
         }
-        _view.updateModel();
 
         otherTeam.clearEnPassant();
     }
@@ -336,17 +333,15 @@ public class ChessControl {
             JFrame f = new JFrame();
             int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
             if(answer == JOptionPane.YES_OPTION) {
-                _model = new ChessModel();
-                _view.setModel(_model);
-                _view.updateModel();
+                _model.getBoard().loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+                // TODO: Reset other variables
             }
         });
     }
 
     public class TimerListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            _model.getCurrentTeam().getTime().tick();
-            _view.updateModel();
+            _model.getCurrentTeam().tickTime();
         }
     }
 }
