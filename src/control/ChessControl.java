@@ -71,7 +71,7 @@ public class ChessControl {
         return isSinglePlayer() || _model.getCurrentTeam() == _team;
     }
 
-    private void promotePawn(int row, int col, PieceType type) {
+    private void promotePawn(int row, int col, PieceType type, boolean isElimination) {
         Board board = _model.getBoard();
         Piece piece = board.getCell(row, col).getPiece();
         Cell cell = piece.getCell();
@@ -79,6 +79,16 @@ public class ChessControl {
         cell.setPiece(null);
         Piece promoted = _model.createPiece(type, team, cell);
         cell.setPiece(promoted);
+
+        Team otherTeam = _model.getOtherTeam(_model.getCurrentTeam());
+
+        MoveNotation mN = new MoveNotation(cell.getRow() - team.getPawnDirectionRow(), row, col, piece, false, _model.getBoard());
+
+        _model.registerMove(false, mN);
+
+        _view.updateModel();
+        
+        otherTeam.clearEnPassant();
     }
 
     /**
@@ -102,17 +112,19 @@ public class ChessControl {
         // Halfmove clock: The number of halfmoves since the last capture or pawn advance, used for the fifty-move rule.
         boolean halfMove = piece.getPieceType() != PieceType.PAWN && !isElimination;
 
-        if (isMyTurn() && piece instanceof PiecePawn pawn) {
-            if (pawn.getCell().getRow() == piece.getTeam().getPromotionRow()) {
+        if (piece instanceof PiecePawn pawn && pawn.getCell().getRow() == piece.getTeam().getPromotionRow()) {
+            if (isMyTurn()) {
                 PieceType type = _view.promotePawn();
                 Cell cell = pawn.getCell();
 
                 if (!isSinglePlayer()) {
-                    _networkClient.sendMessage(new PromotePawnMessage(cell.getRow(), cell.getCol(), type));
+                    _networkClient.sendMessage(new PromotePawnMessage(cell.getRow(), cell.getCol(), type, isElimination));
                 } else {
-                    promotePawn(cell.getRow(), cell.getCol(), type);
+                    promotePawn(cell.getRow(), cell.getCol(), type, isElimination);
                 }
             }
+
+            return;
         }
         
         MoveNotation mN = new MoveNotation(fromCol ,toRow,toCol,piece,isElimination, _model.getBoard());
@@ -252,7 +264,7 @@ public class ChessControl {
 
         _networkClient.setMessageDelegate(PromotePawnMessage.class, message -> {
             PromotePawnMessage promotePawnMessage = (PromotePawnMessage) message;
-            promotePawn(promotePawnMessage.getRow(), promotePawnMessage.getCol(), promotePawnMessage.getPieceType());
+            promotePawn(promotePawnMessage.getRow(), promotePawnMessage.getCol(), promotePawnMessage.getPieceType(), promotePawnMessage.isElimination());
         });
     }
 
