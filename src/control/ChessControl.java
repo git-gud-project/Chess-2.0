@@ -8,6 +8,7 @@ import network.*;
 import javax.swing.*;
 import javax.swing.Timer;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -15,8 +16,8 @@ import java.net.SocketException;
 import java.util.*;
 
 public class ChessControl {
-    private final ChessModel _model;
-    private final ChessView _view;
+    private ChessModel _model;
+    private ChessView _view;
 
     /**
      * The selected cell, or null if no cell is selected.
@@ -143,7 +144,19 @@ public class ChessControl {
 
         _selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
 
-//        Iterator<Move> moves = piece.getPossibleMoves();
+        if(piece.getCell().getBoard().isCheck(piece.getTeam())){
+            for(int i = 0; i < _model.getBoard().getGameSize(); i++){
+                for(int j = 0; j < _model.getBoard().getGameSize(); j++){
+                    if(_model.getBoard().getCell(i, j).getPiece() != null
+                            && _model.getBoard().getCell(i, j).getPiece().getTeam() == piece.getTeam()){
+                        if(_model.getBoard().getCell(i, j).getPiece().getPieceType().equals(PieceType.KING)){
+                            BoardCell check = new BoardCell(i, j);
+                            check.highlight(Color.RED);
+                        }
+                    }
+                }
+            }
+        }
 
         Iterator<Move> moves = piece.getPossibleMoves();
         while (moves.hasNext()) {
@@ -243,6 +256,16 @@ public class ChessControl {
         // Setup listeners on the menu items
         _view.getMenu().setStartServerDelegate((port) -> startServer("localhost", port));
         _view.getMenu().setConnectToServerDelegate((port) -> startClient("localhost", port));
+
+        _view.getMenu().getNewGame().addActionListener((e) -> {
+            JFrame f = new JFrame();
+            int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
+            if(answer == JOptionPane.YES_OPTION) {
+                _model = new ChessModel();
+                _view.setModel(_model);
+                _view.updateModel();
+            }
+        });
     }
 
     public class TimerListener implements ActionListener{
