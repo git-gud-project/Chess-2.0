@@ -59,14 +59,17 @@ public class Board {
     public boolean isLegalMove(Piece piece, Move move) {
 
         Cell tempCell = piece.getCell();
+        Piece originPiece = move.getCell().getPiece();
         piece.move(move.getCell()); //1. Flyttar cellen
 
         if(isCheck(allEnemyMoves(piece.getTeam()), piece.getTeam())){ //2. Kollar om det är schack efter flytten.
             piece.move(tempCell); //Om det är schack så flyttar vi tillbaks pjäsen.
+            move.getCell().setPiece(originPiece);
             return false; //returnerar att det är falsk (en illegal move).
         }
         else{
             piece.move(tempCell); //Om det inte är schack så flyttar vi tillbaks pjäs
+            move.getCell().setPiece(originPiece);
             return true;
         }
         /*
@@ -178,11 +181,10 @@ public class Board {
                 break;
             }
         }
-        // Kan kommenteras bort när isLegalMove är färdig och fungerar som tänkt
-        /*
+
         if(_model.getCurrentTeam()== piece.getTeam()) {
             validateMoves(piece, registry);
-        }*/
+        }
 
     }
 
