@@ -10,6 +10,7 @@ public class InformationPanel extends JPanel {
     private PlayerPanel _playerPanel2;
 
     private BottomPanel _bottomPanel;
+    private MovesPanel _movesPanel;
 
     public InformationPanel() {
         /**
@@ -59,10 +60,8 @@ public class InformationPanel extends JPanel {
         moves.setBackground(ChessView.SECONDARY_COLOR);
         
         // Create a panel to place the moves in
-        JPanel movesPanel = new JPanel();
-        movesPanel.setLayout(new GridLayout(0, 1));
-        movesPanel.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
-        moves.add(movesPanel);
+        _movesPanel = new MovesPanel();
+        moves.add(_movesPanel);
 
         // Add a border to the moves panel
         moves.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -79,5 +78,6 @@ public class InformationPanel extends JPanel {
         _playerPanel1.updateFromTeam(model.getTeamWhite());
         _playerPanel2.updateFromTeam(model.getTeamBlack());
         _bottomPanel.updateModel(model);
+        _movesPanel.updateModel(model);
     }
 }

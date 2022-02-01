@@ -80,7 +80,10 @@ public class ChessControl {
         // Halfmove clock: The number of halfmoves since the last capture or pawn advance, used for the fifty-move rule.
         boolean halfMove = piece.getPieceType() != PieceType.PAWN && !isElimination;
 
-        _model.registerMove(halfMove);
+        MoveNotation mN = new MoveNotation(toRow,toCol,piece,isElimination, _model.getBoard());
+
+        _model.registerMove(halfMove, mN);
+
         _view.updateModel();
         
         otherTeam.clearEnPassant();
