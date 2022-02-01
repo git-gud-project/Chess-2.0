@@ -13,78 +13,6 @@ import utils.Delegate;
  * The server can be configured to listen on a specific port and which ip to listen on.
  */
 public class NetworkServer {
-    public class Client {
-        private Socket _socket;
-        private InputStream _in;
-        private OutputStream _out;
-        private Thread _messageThread;
-        private boolean _running;
-        private Delegate<Message> _messageDelegate;
-
-        public Client(Socket socket) {
-            _socket = socket;
-            try {
-                _in = _socket.getInputStream();
-                _out = _socket.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void sendMessage(Message message) {
-            try {
-                ObjectOutputStream out = new ObjectOutputStream(_out);
-                out.writeObject(message);
-                out.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void setMessageDelegate(Delegate<Message> messageDelegate) {
-            _messageDelegate = messageDelegate;
-        }
-
-        private void receiveLoop() {
-            while (_running) {
-                try {
-                    ObjectInputStream in = new ObjectInputStream(_in);
-                    Message message = (Message) in.readObject();
-
-                    if (message == null) {
-                        break;
-                    }
-
-                    if (_messageDelegate != null) {
-                        _messageDelegate.invoke(message);
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    break;
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                    break;
-                }
-            }
-        }
-
-        public void start() {
-            _running = true;
-            _messageThread = new Thread(() -> receiveLoop());
-            _messageThread.start();
-        }
-
-        public void stop() {
-            _running = false;
-            try {
-                _socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private int _port;
     private String _ip;
     private ServerSocket _serverSocket;
@@ -92,7 +20,8 @@ public class NetworkServer {
     private Thread _acceptionThread;
     private List<Client> _clients;
     private Delegate<Client> _onClientConnectedDelegate;
-    private HashMap<Type, Delegate<Message>> _messageDelegates;
+    private Delegate<Client> _onClientDisconnectedDelegate;
+    private HashMap<Type, MessageDelegate> _messageDelegates;
 
     /**
      * Creates a new server.
@@ -146,7 +75,11 @@ public class NetworkServer {
     /**
      * Stops the server.
      */
-    public void stop() {
+    public synchronized void stop() {
+        for (Client client : _clients) {
+            client.stop();
+        }
+
         _running = false;
         try {
             _serverSocket.close();
@@ -158,8 +91,15 @@ public class NetworkServer {
     /**
      * Sets the delegate that will be called when a client connects.
      */
-    public void setOnClientConnectedDelegate(Delegate<Client> onClientConnectedDelegate) {
+    public synchronized void setOnClientConnectedDelegate(Delegate<Client> onClientConnectedDelegate) {
         _onClientConnectedDelegate = onClientConnectedDelegate;
+    }
+
+    /**
+     * Sets the delegate that will be called when a client disconnects.
+     */
+    public synchronized void setOnClientDisconnectedDelegate(Delegate<Client> onClientDisconnectedDelegate) {
+        _onClientDisconnectedDelegate = onClientDisconnectedDelegate;
     }
 
     /**
@@ -168,40 +108,105 @@ public class NetworkServer {
      * @param type The type of message to listen for. Use <Message>.class.
      * @param delegate The delegate to call when a message of the specified type is received.
      */
-    public void setMessageDelegate(Type type, Delegate<Message> messageDelegate) {
+    public synchronized void setMessageDelegate(Type type, MessageDelegate messageDelegate) {
         _messageDelegates.put(type, messageDelegate);
     }
 
-    private void handleMessage(Client client, Message message) {
-        if (_messageDelegates.containsKey(message.getClass())) {
-            _messageDelegates.get(message.getClass()).invoke(message);
-        }
+    /**
+     * Sets the delegate that will be called when a message is received, not including the client that sent it.
+     * 
+     * @param type The type of message to listen for. Use <Message>.class.
+     * @param delegate The delegate to call when a message of the specified type is received.
+     */
+    public synchronized void setMessageDelegate(Type type, Delegate<Message> messageDelegate) {
+        _messageDelegates.put(type, (client, message) -> messageDelegate.invoke(message));
     }
 
-    public void broadcastMessage(Message message) {
+    /**
+     * Sends a message to all clients.
+     * 
+     * @param message The message to send.
+     */
+    public synchronized void broadcastMessage(Message message) {
         for (Client client : _clients) {
             client.sendMessage(message);
         }
     }
 
+    /**
+     * Close a client.
+     * 
+     * @param client The client to close.
+     */
+    public synchronized void closeClient(Client client) {
+        client.stop();
+    }
+
+    /**
+     * Handle an incoming message.
+     * 
+     * @param client The client that sent the message.
+     * @param message The message.
+     */
+    private synchronized void handleMessage(Client client, Message message) {
+        // Check if a delegate is registered for this message type.
+        if (_messageDelegates.containsKey(message.getClass())) {
+            // Invoke the delegate.
+            _messageDelegates.get(message.getClass()).invoke(client, message);
+        }
+    }
+
+    /**
+     * Handle a disconnection.
+     * 
+     * @param client The client that disconnected.
+     */
+    private synchronized void handleDisconnect(Client client) {
+        _clients.remove(client);
+        if (_onClientDisconnectedDelegate != null) {
+            _onClientDisconnectedDelegate.invoke(client);
+        }
+    }
+
+    /**
+     * Loop to accept new clients.
+     */
     private void acceptLoop() {
+        // Run while the server is running.
         while (_running) {
             try {
+                // Accept the socket. This blocks until a client connects.
                 Socket socket = _serverSocket.accept();
                 
+                // Create a new client.
                 Client client = new Client(socket);
 
+                // Setup handling of incoming messages for this client.
                 client.setMessageDelegate(message -> handleMessage(client, message));
+                
+                // Setup handling of disconnection for this client.
+                client.setOnDisconnectDelegate((c) -> handleDisconnect(c));
 
-                client.start();
-                _clients.add(client);
+                // The rest has to be done synchronously
+                synchronized(this) {
+                    // Start the client thread.
+                    client.start();
 
-                if (_onClientConnectedDelegate != null) {
-                    _onClientConnectedDelegate.invoke(client);
+                    // Add the client to the list of clients.
+                    _clients.add(client);
+
+                    // Invoke the delegate for new connections.
+                    if (_onClientConnectedDelegate != null) {
+                        _onClientConnectedDelegate.invoke(client);
+                    }
                 }
             } catch (IOException e) {
+                _running = false;
                 e.printStackTrace();
             }
         }
+
+        // Stop the server.
+        stop();
     }
 }

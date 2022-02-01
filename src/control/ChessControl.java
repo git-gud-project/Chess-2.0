@@ -11,6 +11,7 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.*;
 
 public class ChessControl {
@@ -163,9 +164,27 @@ public class ChessControl {
      */
     public void startClient(String host, int port) {
         _networkClient = new NetworkClient(host, port);
-        _networkClient.start();
+        
+        try {
+            _networkClient.start();
+        } catch (SocketException e) {
+            System.out.println("Could not connect to server.");
+
+            _networkClient = null;
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            
+            _networkClient = null;
+            return;
+        }
 
         _networkClient.sendMessage(new ClientReadyMessage());
+
+        _networkClient.setOnDisconnectDelegate(() -> {
+            System.out.println("Disconnected from server.");
+            _networkClient = null;
+        });
 
         _networkClient.setMessageDelegate(AffirmMoveMessage.class, message -> {
             AffirmMoveMessage affirmMoveMessage = (AffirmMoveMessage) message;
@@ -188,6 +207,10 @@ public class ChessControl {
 
         _networkServer.setOnClientConnectedDelegate((client) -> {
             System.out.println("Client connected");
+        });
+
+        _networkServer.setOnClientDisconnectedDelegate((client) -> {
+            System.out.println("Client disconnected");
         });
 
         _networkServer.setMessageDelegate(MovePieceMessage.class, (message) -> {
