@@ -30,6 +30,16 @@ public class ChessControl {
     private ArrayList<BoardCell> _highlightedCells;
 
     /**
+     * The team we are playing as.
+     */
+    private Team _team;
+
+    /**
+     * Has delegated white team.
+     */
+    private boolean _hasDelegatedWhiteTeam;
+
+    /**
      * Network server
      */
     private NetworkServer _networkServer;
@@ -55,6 +65,10 @@ public class ChessControl {
      */
     public boolean isHost() {
         return _networkServer != null;
+    }
+
+    public boolean isMyTurn() {
+        return isSinglePlayer() || _model.getCurrentTeam() == _team;
     }
 
     /**
@@ -84,6 +98,12 @@ public class ChessControl {
         _view.updateModel();
         
         otherTeam.clearEnPassant();
+
+        if (piece instanceof PiecePawn pawn) {
+            if (pawn.getCell().getRow() == piece.getTeam().getPromotionRow()) {
+                //_view.promotePawn(pawn);
+            }
+        }
     }
 
     /**
@@ -113,6 +133,10 @@ public class ChessControl {
     }
     
     private void handleClick(BoardCell boardCell) {
+        if (!isMyTurn()) {
+            return;
+        }
+
         ChessModel model = _view.getModel();
         BoardGridPanel grid = _view.getBoardGridPanel();
 
@@ -202,6 +226,15 @@ public class ChessControl {
             _networkClient = null;
         });
 
+        _networkClient.setMessageDelegate(SetTeamMessage.class, message -> {
+            SetTeamMessage setTeamMessage = (SetTeamMessage) message;
+            if (setTeamMessage.isWhite()) {
+                _team = _model.getTeamWhite();
+            } else {
+                _team = _model.getTeamBlack();
+            }
+        });
+
         _networkClient.setMessageDelegate(AffirmMoveMessage.class, message -> {
             AffirmMoveMessage affirmMoveMessage = (AffirmMoveMessage) message;
             executeMove(affirmMoveMessage.getFromRow(), affirmMoveMessage.getFromCol(), affirmMoveMessage.getToRow(), affirmMoveMessage.getToCol(), affirmMoveMessage.isElimination());
@@ -235,10 +268,14 @@ public class ChessControl {
             movePiece(movePieceMessage.getFromRow(), movePieceMessage.getFromCol(), movePieceMessage.getToRow(), movePieceMessage.getToCol(), movePieceMessage.isElimination());
         });
         
-        _networkServer.setMessageDelegate(ClientReadyMessage.class, (message) -> {
+        _networkServer.setMessageDelegate(ClientReadyMessage.class, (client, message) -> {
             ClientReadyMessage clientReadyMessage = (ClientReadyMessage) message;
             
             System.out.println("Client ready");
+
+            client.sendMessage(new SetTeamMessage(!_hasDelegatedWhiteTeam));
+
+            _hasDelegatedWhiteTeam = true;
         });
 
         startClient(host, port);
