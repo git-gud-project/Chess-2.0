@@ -148,6 +148,8 @@ public class ChessView extends JFrame {
     public BoardGridPanel getBoardGridPanel() {
         return _boardPanel.getBoardGridPanel();
     }
+
+    public void setModel(ChessModel model) { this._model = model; }
     
     public void updateModel() {
         _boardPanel.updateModel(_model);

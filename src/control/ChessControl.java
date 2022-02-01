@@ -15,8 +15,8 @@ import java.net.SocketException;
 import java.util.*;
 
 public class ChessControl {
-    private final ChessModel _model;
-    private final ChessView _view;
+    private ChessModel _model;
+    private ChessView _view;
 
     /**
      * The selected cell, or null if no cell is selected.
@@ -242,6 +242,16 @@ public class ChessControl {
         // Setup listeners on the menu items
         _view.getMenu().setStartServerDelegate((port) -> startServer("localhost", port));
         _view.getMenu().setConnectToServerDelegate((port) -> startClient("localhost", port));
+
+        _view.getMenu().getNewGame().addActionListener((e) -> {
+            JFrame f = new JFrame();
+            int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
+            if(answer == JOptionPane.YES_OPTION) {
+                _model = new ChessModel();
+                _view.setModel(_model);
+                _view.updateModel();
+            }
+        });
     }
 
     public class TimerListener implements ActionListener{

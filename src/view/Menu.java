@@ -13,6 +13,8 @@ public class Menu extends JMenuBar {
     private Delegate<Integer> _startServerDelegate;
     private Delegate<Integer> _connectToServerDelegate;
 
+    private JMenuItem _newGame;
+
     public void setStartServerDelegate(Delegate<Integer> startServerDelegate) {
         _startServerDelegate = startServerDelegate;
     }
@@ -28,10 +30,10 @@ public class Menu extends JMenuBar {
         //Creating file menu
         JMenu file = new JMenu("File");
         this.add(file);
-        JMenuItem newGame = new JMenuItem("New game");
+        this._newGame = new JMenuItem("New game");
         JMenuItem load = new JMenuItem("Load");
         JMenuItem save = new JMenuItem("Save");
-        file.add(newGame);
+        file.add(_newGame);
         file.add(new JSeparator());
         file.add(load);
         file.add(save);
@@ -98,7 +100,6 @@ public class Menu extends JMenuBar {
         JMenuItem startServer = new JMenuItem("Start server");
         startServer.addActionListener(e -> {
             JFrame f = new JFrame();
-            //TODO: The input value of the pop-up dialog is discarded. To use it, add a third parameter to the function call below. The input value will be stored in this variable.
             String port = JOptionPane.showInputDialog(f, "Please select a port to start the server communication:");
             if (port != null) {
                 _startServerDelegate.invoke(Integer.parseInt(port));
@@ -118,5 +119,7 @@ public class Menu extends JMenuBar {
         server.add(startServer);
         server.add(connectToServer);
     }
+
+    public JMenuItem getNewGame() { return _newGame; }
 
 }
