@@ -138,6 +138,20 @@ public class Board {
         return false;
     }
 
+    public Cell getKingCell(Team team){
+        Cell kingCell=null;
+        for(int row=0;row<_gameSize;row++){
+            for(int col=0;col<_gameSize;col++){
+                if(_cellArray[row][col].getPiece()!=null
+                   && _cellArray[row][col].getPiece().getPieceType().equals(PieceType.KING)
+                   && _cellArray[row][col].getPiece().getTeam().equals(team)){
+                    kingCell =  _cellArray[row][col];
+                }
+            }
+        }
+        return kingCell;
+    }
+
     public void validateMoves(Piece piece, List<Move> moves) {
         // Remove all illegal moves from the list
         Iterator<Move> it = moves.iterator();
