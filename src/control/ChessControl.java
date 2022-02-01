@@ -84,8 +84,19 @@ public class ChessControl {
 
         _model.registerMove(halfMove, mN);
 
+        //CHECK HIGHLIGHT
+        Cell c = _model.getBoard().getKingCell(piece.getTeam());
+        BoardCell check = _view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
+        check.unhighlight();
+        if(piece.getCell().getBoard().isCheck(_model.getOtherTeam(piece.getTeam()))){
+            System.out.print("TESTYTEST");
+            System.out.println(piece.getTeam());
+            c = _model.getBoard().getKingCell(_model.getOtherTeam(piece.getTeam()));
+            check =  _view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
+            check.highlight(Color.RED);
+        }
         _view.updateModel();
-        
+
         otherTeam.clearEnPassant();
     }
 
@@ -149,12 +160,6 @@ public class ChessControl {
 
         _selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
 
-        if(piece.getCell().getBoard().isCheck(piece.getTeam())){
-            Cell c = model.getBoard().getKingCell(piece.getTeam());
-            BoardCell check =  _view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
-            check.highlight(Color.RED);
-            _highlightedCells.add(check);
-        }
 
         Iterator<Move> moves = piece.getPossibleMoves();
         while (moves.hasNext()) {
