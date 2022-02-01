@@ -40,13 +40,8 @@ public class PieceKing extends Piece {
         return this.firstMove;
     }
 
-    public void setFirstMove(){
-        if(this.firstMove == false){
-            this.firstMove = false;
-        }
-        else{
-            this.firstMove = true;
-        }
+    public void setFirstMove(boolean firstMove){
+        this.firstMove = firstMove;
     }
 
 }

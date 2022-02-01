@@ -60,30 +60,30 @@ public class Board {
 
         Cell tempCell = piece.getCell();
         Piece originPiece = move.getCell().getPiece();
-        boolean firstMove;
+        boolean firstMove = false;
         piece.move(move.getCell()); //1. Flyttar cellen
 
         if(piece.getPieceType() == PieceType.ROOK){
-            firstMove = ((PieceRook) piece).getFirstMove();
+            firstMove = ((PieceRook) originPiece).getFirstMove();
         }
         else if(piece.getPieceType() == PieceType.PAWN){
-            firstMove = ((PiecePawn) piece).getFirstMove();
+            firstMove = ((PiecePawn) originPiece).getFirstMove();
         }
         else if(piece.getPieceType() == PieceType.KING){
-            firstMove = ((PieceKing) piece).getFirstMove();
+            firstMove = ((PieceKing) originPiece).getFirstMove();
         }
 
         if(isCheck(allEnemyMoves(piece.getTeam()), piece.getTeam())){ //2. Kollar om det är schack efter flytten.
             piece.move(tempCell); //Om det är schack så flyttar vi tillbaks pjäsen.
             move.getCell().setPiece(originPiece);
             if(piece.getPieceType() == PieceType.ROOK){
-                ((PieceRook) piece).setFirstMove();
+                ((PieceRook) originPiece).setFirstMove(firstMove);
             }
             else if(piece.getPieceType() == PieceType.PAWN){
-                ((PiecePawn) piece).setFirstMove();
+                ((PiecePawn) originPiece).setFirstMove(firstMove);
             }
             else if(piece.getPieceType() == PieceType.KING){
-                ((PieceKing) piece).setFirstMove();
+                ((PieceKing) originPiece).setFirstMove(firstMove);
             }
             return false; //returnerar att det är falsk (en illegal move).
         }
@@ -91,16 +91,25 @@ public class Board {
             piece.move(tempCell); //Om det inte är schack så flyttar vi tillbaks pjäs
             move.getCell().setPiece(originPiece);
             if(piece.getPieceType() == PieceType.ROOK){
-                ((PieceRook) piece).setFirstMove();
+                ((PieceRook) originPiece).setFirstMove(firstMove);
             }
             else if(piece.getPieceType() == PieceType.PAWN){
-                ((PiecePawn) piece).setFirstMove();
+                ((PiecePawn) originPiece).setFirstMove(firstMove);
             }
             else if(piece.getPieceType() == PieceType.KING){
-                ((PieceKing) piece).setFirstMove();
+                ((PieceKing) originPiece).setFirstMove(firstMove);
             }
             return true;
         }
+        /*
+        System.out.println("Moves: ");
+        List<Move> l = allEnemyMoves(piece.getTeam());
+        Iterator<Move> it = l.iterator();
+        while(it.hasNext()){
+            System.out.print(it.next().getCell()+" ");
+        }
+        System.out.println(""); */
+        //return false;
     }
 
     private List<Move> allEnemyMoves(Team playerTeam){
