@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class PieceRook extends Piece {
+    private boolean firstMove = false;
     private ArrayList<Move> _possibleMoves;
 
     public PieceRook(Cell cell, Team team) {
@@ -32,4 +33,16 @@ public class PieceRook extends Piece {
         return "BRook";
     }
 
+    public void setFirstMove(){
+        if(this.firstMove == false){
+            this.firstMove = false;
+        }
+        else{
+            this.firstMove = true;
+        }
+    }
+
+    public boolean getFirstMove(){
+        return this.firstMove;
+    }
 }

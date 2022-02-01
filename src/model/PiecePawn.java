@@ -68,8 +68,13 @@ public class PiecePawn extends Piece {
         firstMove = false;
     }
 
-    public void setFirstMove(boolean firstMove){
-        this.firstMove = firstMove;
+    public void setFirstMove(){
+        if(this.firstMove == false){
+            this.firstMove = false;
+        }
+        else{
+            this.firstMove = true;
+        }
     }
 
     public boolean getFirstMove(){return firstMove;}

@@ -60,27 +60,47 @@ public class Board {
 
         Cell tempCell = piece.getCell();
         Piece originPiece = move.getCell().getPiece();
+        boolean firstMove;
         piece.move(move.getCell()); //1. Flyttar cellen
+
+        if(piece.getPieceType() == PieceType.ROOK){
+            firstMove = ((PieceRook) piece).getFirstMove();
+        }
+        else if(piece.getPieceType() == PieceType.PAWN){
+            firstMove = ((PiecePawn) piece).getFirstMove();
+        }
+        else if(piece.getPieceType() == PieceType.KING){
+            firstMove = ((PieceKing) piece).getFirstMove();
+        }
 
         if(isCheck(allEnemyMoves(piece.getTeam()), piece.getTeam())){ //2. Kollar om det är schack efter flytten.
             piece.move(tempCell); //Om det är schack så flyttar vi tillbaks pjäsen.
             move.getCell().setPiece(originPiece);
+            if(piece.getPieceType() == PieceType.ROOK){
+                ((PieceRook) piece).setFirstMove();
+            }
+            else if(piece.getPieceType() == PieceType.PAWN){
+                ((PiecePawn) piece).setFirstMove();
+            }
+            else if(piece.getPieceType() == PieceType.KING){
+                ((PieceKing) piece).setFirstMove();
+            }
             return false; //returnerar att det är falsk (en illegal move).
         }
         else{
             piece.move(tempCell); //Om det inte är schack så flyttar vi tillbaks pjäs
             move.getCell().setPiece(originPiece);
+            if(piece.getPieceType() == PieceType.ROOK){
+                ((PieceRook) piece).setFirstMove();
+            }
+            else if(piece.getPieceType() == PieceType.PAWN){
+                ((PiecePawn) piece).setFirstMove();
+            }
+            else if(piece.getPieceType() == PieceType.KING){
+                ((PieceKing) piece).setFirstMove();
+            }
             return true;
         }
-        /*
-        System.out.println("Moves: ");
-        List<Move> l = allEnemyMoves(piece.getTeam());
-        Iterator<Move> it = l.iterator();
-        while(it.hasNext()){
-            System.out.print(it.next().getCell()+" ");
-        }
-        System.out.println(""); */
-        //return false;
     }
 
     private List<Move> allEnemyMoves(Team playerTeam){
@@ -96,6 +116,30 @@ public class Board {
             }
         }
         return enemyMovesList;
+    }
+
+    private List<Move> allTeamMoves(Team playerTeam){
+        List<Move> teamMovesList =new ArrayList<>();
+        for(int row=0;row<_gameSize;row++){
+            for(int col=0;col<_gameSize;col++){
+                if(_cellArray[row][col].getPiece()!=null && _cellArray[row][col].getPiece().getTeam()==playerTeam){
+                    Iterator<Move> it =_cellArray[row][col].getPiece().getPossibleMoves();
+                    while(it.hasNext()) {
+                        teamMovesList.add(it.next());
+                    }
+                }
+            }
+        }
+        return teamMovesList;
+    }
+
+    public boolean isCheckmate(Team currentPlayerTeam){
+        if(allTeamMoves(currentPlayerTeam).isEmpty()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     //Checks if the king is in check.

@@ -36,4 +36,17 @@ public class PieceKing extends Piece {
         return "BKing";
     }
 
+    public boolean getFirstMove(){
+        return this.firstMove;
+    }
+
+    public void setFirstMove(){
+        if(this.firstMove == false){
+            this.firstMove = false;
+        }
+        else{
+            this.firstMove = true;
+        }
+    }
+
 }
