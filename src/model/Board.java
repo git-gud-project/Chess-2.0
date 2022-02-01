@@ -343,6 +343,7 @@ public class Board {
                             break;
                         case 'P':
                             piece = new PiecePawn(cell, team);
+                            piece.setHasMoved(cell.getRow() != team.getKingRow() + team.getPawnDirectionRow());
                             break;
                     }
                     _cellArray[row][col].setPiece(piece);
@@ -356,7 +357,15 @@ public class Board {
         Team team = parts[1].equals("w") ? _model.getTeamWhite() : _model.getTeamBlack();
         _model.setCurrentTeam(team);
 
-        // TODO: castling rights
+        // Castling rights
+        String castlingRights = parts[2];
+        Team white = _model.getTeamWhite();
+        Team black = _model.getTeamBlack();
+        
+        white.setHasCastlingRightKingSide(castlingRights.contains("K"));
+        white.setHasCastlingRightQueenSide(castlingRights.contains("Q"));
+        black.setHasCastlingRightKingSide(castlingRights.contains("k"));
+        black.setHasCastlingRightQueenSide(castlingRights.contains("q"));
 
         // En passant target square
         if (parts[3].equals("-")) {

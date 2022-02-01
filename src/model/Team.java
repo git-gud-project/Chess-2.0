@@ -77,11 +77,24 @@ public class Team {
         Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
         Piece rook = board.getCell(getKingRow(), getKingCol() + 3).getPiece();
 
-        if (king == null || rook == null) {
+        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king instanceof PieceKing) || !(rook instanceof PieceRook)) {
             return false;
         }
 
         return !king.hasMoved() && !rook.hasMoved();
+    }
+
+    public void setHasCastlingRightKingSide(boolean hasCastlingRightKingSide) {
+        Board board = _model.getBoard();
+        Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
+        Piece rook = board.getCell(getKingRow(), getKingCol() + 3).getPiece();
+
+        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king instanceof PieceKing) || !(rook instanceof PieceRook)) {
+            return;
+        }
+
+        king.setHasMoved(!hasCastlingRightKingSide);
+        rook.setHasMoved(!hasCastlingRightKingSide);
     }
 
     public boolean hasCastlingRightQueenSide() {
@@ -89,11 +102,24 @@ public class Team {
         Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
         Piece rook = board.getCell(getKingRow(), getKingCol() - 4).getPiece();
 
-        if (king == null || rook == null) {
+        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king instanceof PieceKing) || !(rook instanceof PieceRook)) {
             return false;
         }
 
         return !king.hasMoved() && !rook.hasMoved();
+    }
+
+    public void setHasCastlingRightQueenSide(boolean hasCastlingRightQueenSide) {
+        Board board = _model.getBoard();
+        Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
+        Piece rook = board.getCell(getKingRow(), getKingCol() - 4).getPiece();
+
+        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king instanceof PieceKing) || !(rook instanceof PieceRook)) {
+            return;
+        }
+
+        king.setHasMoved(!hasCastlingRightQueenSide);
+        rook.setHasMoved(!hasCastlingRightQueenSide);
     }
 
     public boolean canCastleKingSide() {
