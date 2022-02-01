@@ -31,5 +31,4 @@ public class PieceRook extends Piece {
         if(getTeam().getColor().equals(Color.WHITE)) return "WRook";
         return "BRook";
     }
-
 }

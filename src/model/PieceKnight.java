@@ -38,7 +38,7 @@ public class PieceKnight extends Piece {
         board.calculateMoves(this, _possibleMoves, -2, 1, 1);
         board.calculateMoves(this, _possibleMoves, -2, -1, 1);
 
-        return _possibleMoves.iterator(); //Fix so we get the possibleMoves for a pawn. Probably check get the current pos, get posX+1 and so on.
+        return _possibleMoves.iterator();
     }
 
     @Override

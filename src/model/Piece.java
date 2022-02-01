@@ -6,12 +6,14 @@ public abstract class Piece {
     private Cell _cell;
     private final Team _team;
     private PieceType _type;
+    private boolean _hasMoved;
 
     public Piece(Cell cell, Team team, PieceType type){
         this._cell = cell;
         this._team = team;
         _type = type;
     }
+
     //Abstract classes
     public abstract Iterator<Move> getPossibleMoves();
 
@@ -43,15 +45,41 @@ public abstract class Piece {
         }
     }
 
-    public void onMove(Cell oldCell, Cell newCell) {}
+    public void onMove(Cell oldCell, Cell newCell, boolean State) {
+        this._hasMoved = true;
+    }
+
+    public void beforeMove(Cell oldCell, Cell newCell) {
+        
+    }
+
+    public boolean hasMoved() {
+        return _hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this._hasMoved = hasMoved;
+    }
 
     //moves the cell of the piece.
     public void move(Cell newCell) {
+        Cell oldCell = this.getCell();
+
+        beforeMove(oldCell, newCell);
+
+        _cell.setPiece(null);
+        _cell = newCell;
+        _cell.setPiece(this);
+
+        onMove(oldCell, newCell, true);
+    }
+
+    public void fakeMove(Cell newCell) {
         Cell oldCell = this.getCell();
         _cell.setPiece(null);
         _cell = newCell;
         _cell.setPiece(this);
 
-        onMove(oldCell, newCell);
+        //onMove(oldCell, newCell, false);
     }
 }
