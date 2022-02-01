@@ -75,6 +75,8 @@ public class ChessControl {
 
         Team otherTeam = _model.getOtherTeam(_model.getCurrentTeam());
 
+        System.out.println("Elimination: " + isElimination);
+
         // Halfmove clock: The number of halfmoves since the last capture or pawn advance, used for the fifty-move rule.
         boolean halfMove = piece.getPieceType() != PieceType.PAWN && !isElimination;
 
@@ -116,7 +118,7 @@ public class ChessControl {
 
         // If the cell was highlighted, move the selected piece to the cell
         if (_highlightedCells.contains(boardCell)) {
-            movePiece(_selectedCell.getRow(), _selectedCell.getCol(), boardCell.getRow(), boardCell.getCol(), _selectedCell.isElimination());
+            movePiece(_selectedCell.getRow(), _selectedCell.getCol(), boardCell.getRow(), boardCell.getCol(), boardCell.isElimination());
         }
 
         if (_selectedCell != null) {
