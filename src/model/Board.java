@@ -63,7 +63,7 @@ public class Board {
         boolean hasMoved = piece.hasMoved();
         piece.fakeMove(move.getCell()); //1. Flyttar cellen
 
-        if(isCheck(allEnemyMoves(piece.getTeam()), piece.getTeam())){ //2. Kollar om det är schack efter flytten.
+        if(isCheck(piece.getTeam())){ //2. Kollar om det är schack efter flytten.
             piece.fakeMove(tempCell); //Om det är schack så flyttar vi tillbaks pjäsen.
             move.getCell().setPiece(originPiece);
             piece.setHasMoved(hasMoved);
@@ -127,7 +127,8 @@ public class Board {
     }
 
     //Checks if the king is in check.
-    public boolean isCheck(List<Move> allEnemyMoves, Team team){
+    public boolean isCheck(Team team){
+        List<Move> allEnemyMoves = allEnemyMoves(team);
         for(Move m:allEnemyMoves){
             if(m.getCell().getPiece()!=null && m.getCell().getPiece().getTeam().equals(team) && m.getCell().getPiece().getPieceType().equals(PieceType.KING)){
                 System.out.println("SCHACK!");

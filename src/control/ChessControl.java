@@ -8,6 +8,7 @@ import network.*;
 import javax.swing.*;
 import javax.swing.Timer;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -143,7 +144,19 @@ public class ChessControl {
 
         _selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
 
-//        Iterator<Move> moves = piece.getPossibleMoves();
+        if(piece.getCell().getBoard().isCheck(piece.getTeam())){
+            for(int i = 0; i < _model.getBoard().getGameSize(); i++){
+                for(int j = 0; j < _model.getBoard().getGameSize(); j++){
+                    if(_model.getBoard().getCell(i, j).getPiece() != null
+                            && _model.getBoard().getCell(i, j).getPiece().getTeam() == piece.getTeam()){
+                        if(_model.getBoard().getCell(i, j).getPiece().getPieceType().equals(PieceType.KING)){
+                            BoardCell check = new BoardCell(i, j);
+                            check.highlight(Color.RED);
+                        }
+                    }
+                }
+            }
+        }
 
         Iterator<Move> moves = piece.getPossibleMoves();
         while (moves.hasNext()) {
