@@ -78,9 +78,6 @@ public class ChessControl {
         boolean halfMove = piece.getPieceType() != PieceType.PAWN && !isElimination;
 
         _model.registerMove(halfMove);
-        if(board.isCheckmate(otherTeam)){
-            System.out.println("SCHACKMATT!");
-        }
         _view.updateModel();
         
         otherTeam.clearEnPassant();

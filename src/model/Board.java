@@ -115,6 +115,7 @@ public class Board {
 
     public boolean isCheckmate(Team currentPlayerTeam){
         if(allTeamMoves(currentPlayerTeam).isEmpty()){
+            System.out.println("SCHACKMATT!");
             return true;
         }
         else{
@@ -126,6 +127,7 @@ public class Board {
     public boolean isCheck(List<Move> allEnemyMoves, Team team){
         for(Move m:allEnemyMoves){
             if(m.getCell().getPiece()!=null && m.getCell().getPiece().getTeam().equals(team) && m.getCell().getPiece().getPieceType().equals(PieceType.KING)){
+                System.out.println("SCHACK!");
                 return true;
             }
         }
