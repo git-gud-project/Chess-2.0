@@ -72,12 +72,6 @@ public class PiecePawn extends Piece {
         }
     }
 
-    public void setFirstMove(boolean firstMove){
-        this.firstMove = firstMove;
-    }
-
-    public boolean getFirstMove(){return firstMove;}
-
     @Override
     public String toString() {
         if(getTeam().getColor().equals(Color.WHITE)) return "WPawn";

@@ -27,17 +27,22 @@ public class PieceRook extends Piece {
         return _possibleMoves.iterator();
     }
 
+
+    @Override
+    public void onMove(Cell oldCell, Cell newCell, boolean state) {
+        //TODO: Fix castling.
+
+        if(state){
+            firstMove = false;
+        }
+        else{
+            firstMove = true;
+        }
+    }
+
     @Override
     public String toString() {
         if(getTeam().getColor().equals(Color.WHITE)) return "WRook";
         return "BRook";
-    }
-
-    public void setFirstMove(boolean firstMove){
-        this.firstMove = firstMove;
-    }
-
-    public boolean getFirstMove(){
-        return this.firstMove;
     }
 }

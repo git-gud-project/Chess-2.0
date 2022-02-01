@@ -31,17 +31,21 @@ public class PieceKing extends Piece {
     }
 
     @Override
+    public void onMove(Cell oldCell, Cell newCell, boolean state) {
+        //TODO: Fix castling.
+
+        if(state){
+            firstMove = false;
+        }
+        else{
+            firstMove = true;
+        }
+    }
+
+    @Override
     public String toString() {
         if(getTeam().getColor().equals(Color.WHITE)) return "WKing";
         return "BKing";
-    }
-
-    public boolean getFirstMove(){
-        return this.firstMove;
-    }
-
-    public void setFirstMove(boolean firstMove){
-        this.firstMove = firstMove;
     }
 
 }
