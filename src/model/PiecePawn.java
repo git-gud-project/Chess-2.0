@@ -68,12 +68,11 @@ public class PiecePawn extends Piece {
         firstMove = false;
     }
 
-    /**
-     * Sets the firstMove variable to false indicating that the piece have moved once.
-     */
-    public void setFirstMove(){
-        this.firstMove = false;
+    public void setFirstMove(boolean firstMove){
+        this.firstMove = firstMove;
     }
+
+    public boolean getFirstMove(){return firstMove;}
 
     @Override
     public String toString() {
