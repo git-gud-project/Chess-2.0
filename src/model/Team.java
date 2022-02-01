@@ -72,6 +72,10 @@ public class Team {
         return 4;
     }
 
+    public int getPromotionRow() {
+        return _pawnDirectionRow == -1 ? 0 : 7;
+    }
+
     public boolean hasCastlingRightKingSide() {
         Board board = _model.getBoard();
         Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();

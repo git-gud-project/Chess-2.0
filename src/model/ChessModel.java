@@ -17,7 +17,7 @@ public class ChessModel implements Serializable {
 
     private int _halfMoves;
 
-    private ArrayList<MoveNotation> _latestMove;
+    private ArrayList<MoveNotation> _moveList;
 
     public ChessModel() {
         _teamWhite = new Team(this, Color.WHITE, "w", "Player 1",  -1);
@@ -25,7 +25,7 @@ public class ChessModel implements Serializable {
         _board = new Board(this, GAMESIZE);
         _currentTeam = _teamWhite;
         _fullMoves = 1;
-        _latestMove = new ArrayList<>();
+        _moveList = new ArrayList<>();
     }
 
     public Team getTeamWhite() { return this._teamWhite; }
@@ -66,7 +66,7 @@ public class ChessModel implements Serializable {
             _currentTeam = _teamWhite;
         }
 
-        _latestMove.add(mN);
+        _moveList.add(mN);
 
     }
     
@@ -80,6 +80,25 @@ public class ChessModel implements Serializable {
     }
 
     public ArrayList<MoveNotation> getMoveList() {
-        return _latestMove;
+        return _moveList;
+    }
+
+    public Piece createPiece(PieceType type, Team team, Cell cell) {
+        switch (type) {
+            case PAWN:
+                return new PiecePawn(cell, team);
+            case ROOK:
+                return new PieceRook(cell, team);
+            case KNIGHT:
+                return new PieceKnight(cell, team);
+            case BISHOP:
+                return new PieceBishop(cell, team);
+            case QUEEN:
+                return new PieceQueen(cell, team);
+            case KING:
+                return new PieceKing(cell, team);
+            default:
+                throw new IllegalArgumentException("Invalid piece type");
+        }
     }
 }
