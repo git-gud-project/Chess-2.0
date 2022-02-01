@@ -102,8 +102,6 @@ public class ChessControl {
         // Halfmove clock: The number of halfmoves since the last capture or pawn advance, used for the fifty-move rule.
         boolean halfMove = piece.getPieceType() != PieceType.PAWN && !isElimination;
 
-        MoveNotation mN = new MoveNotation(toRow,toCol,piece,isElimination, _model.getBoard());
-        
         if (isMyTurn() && piece instanceof PiecePawn pawn) {
             if (pawn.getCell().getRow() == piece.getTeam().getPromotionRow()) {
                 PieceType type = _view.promotePawn();
@@ -116,6 +114,8 @@ public class ChessControl {
                 }
             }
         }
+        
+        MoveNotation mN = new MoveNotation(fromCol ,toRow,toCol,piece,isElimination, _model.getBoard());
 
         _model.registerMove(halfMove, mN);
 
@@ -133,7 +133,6 @@ public class ChessControl {
         // Forward to executeMove if no network.
         if (isSinglePlayer()) {
             executeMove(fromRow, fromCol, toRow, toCol, isElimination);
-            
             return;
         }
         
@@ -189,17 +188,10 @@ public class ChessControl {
         _selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
 
         if(piece.getCell().getBoard().isCheck(piece.getTeam())){
-            for(int i = 0; i < _model.getBoard().getGameSize(); i++){
-                for(int j = 0; j < _model.getBoard().getGameSize(); j++){
-                    if(_model.getBoard().getCell(i, j).getPiece() != null
-                            && _model.getBoard().getCell(i, j).getPiece().getTeam() == piece.getTeam()){
-                        if(_model.getBoard().getCell(i, j).getPiece().getPieceType().equals(PieceType.KING)){
-                            BoardCell check = new BoardCell(i, j);
-                            check.highlight(Color.RED);
-                        }
-                    }
-                }
-            }
+            Cell c = model.getBoard().getKingCell(piece.getTeam());
+            BoardCell check =  _view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
+            check.highlight(Color.RED);
+            _highlightedCells.add(check);
         }
 
         Iterator<Move> moves = piece.getPossibleMoves();

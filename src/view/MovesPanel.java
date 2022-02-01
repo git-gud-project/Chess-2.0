@@ -12,6 +12,7 @@ public class MovesPanel extends JPanel {
     private DefaultListModel<String> _listModel;
     private int _movesNr, _counter;
     private MoveNotation _lastMove;
+    JScrollPane _scrollpane;
 
     public MovesPanel() {
         this.setLayout(new BorderLayout());
@@ -21,12 +22,12 @@ public class MovesPanel extends JPanel {
 
         _moveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
         _moveList.setForeground(Color.WHITE);
-        _moveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
-        JScrollPane scrollpane = new JScrollPane(_moveList);
+        _moveList.setFont(new Font("Arial", Font.PLAIN, 32));
+        _scrollpane = new JScrollPane(_moveList);
         _movesNr = 0;
         _counter = 0;
 
-        add(scrollpane);
+        add(_scrollpane);
     }
 
     public void updateModel(ChessModel model) {
@@ -42,5 +43,7 @@ public class MovesPanel extends JPanel {
                 _listModel.addElement(tmp + "     " + moveList.get(_counter-1));
             }
         }
+        JScrollBar vertical = _scrollpane.getVerticalScrollBar();
+        vertical.setValue( vertical.getMaximum() );
     }
 }
