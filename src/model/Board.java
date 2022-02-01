@@ -217,8 +217,30 @@ public class Board {
         // Add 'w' or 'b' for the side to move
         fen += " " + _model.getCurrentTeam().getFileSuffix();
 
-        // TODO: castling rights
-        fen += " KQkq";
+        // Castling rights
+        Team white = _model.getTeamWhite();
+        Team black = _model.getTeamBlack();
+        boolean whiteKingSide = white.hasCastlingRightKingSide();
+        boolean whiteQueenSide = white.hasCastlingRightQueenSide();
+        boolean blackKingSide = black.hasCastlingRightKingSide();
+        boolean blackQueenSide = black.hasCastlingRightQueenSide();
+        fen += " ";
+        if (!whiteKingSide && !whiteQueenSide && !blackKingSide && !blackQueenSide) {
+            fen += "-";
+        } else {
+            if (whiteKingSide) {
+                fen += "K";
+            }
+            if (whiteQueenSide) {
+                fen += "Q";
+            }
+            if (blackKingSide) {
+                fen += "k";
+            }
+            if (blackQueenSide) {
+                fen += "q";
+            }
+        }
 
         // En passant target square
         Team currentTeam = _model.getOtherTeam(_model.getCurrentTeam());

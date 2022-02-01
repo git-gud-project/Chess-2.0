@@ -48,6 +48,8 @@ public class PiecePawn extends Piece {
 
     @Override
     public void onMove(Cell oldCell, Cell newCell) {
+        super.onMove(oldCell, newCell);
+
         Team team = this.getTeam();
         Board board = this.getCell().getBoard();
         Team otherTeam = board.getChessModel().getOtherTeam(team);

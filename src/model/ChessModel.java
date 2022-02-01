@@ -17,8 +17,8 @@ public class ChessModel implements Serializable {
     private int _halfMoves;
 
     public ChessModel() {
-        _teamWhite = new Team(Color.WHITE, "w", "Player 1",  -1);
-        _teamBlack = new Team(Color.BLACK, "b", "Player 2",  1);
+        _teamWhite = new Team(this, Color.WHITE, "w", "Player 1",  -1);
+        _teamBlack = new Team(this, Color.BLACK, "b", "Player 2",  1);
         _board = new Board(this, GAMESIZE);
         _currentTeam = _teamWhite;
         _fullMoves = 1;
