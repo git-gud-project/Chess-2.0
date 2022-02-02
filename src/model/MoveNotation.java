@@ -31,7 +31,7 @@ public class MoveNotation {
             String colAndRow = _board.positionToString(_row,_col);
             String piecePrefix = _piece.getPieceType().getFilePrefix();
             if(piecePrefix.equals("p")) {
-                if(_eliminates) return _board.positionToString(0,_fromCol).substring(0,1)+"x"+colAndRow;
+                if(_eliminates) return _board.positionToString(0,_fromCol).charAt(0)+"x"+colAndRow;
                 return colAndRow;
             }
             else if(_eliminates) {
