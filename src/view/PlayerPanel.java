@@ -9,10 +9,13 @@ import java.awt.*;
 public class PlayerPanel extends JPanel {
     private JLabel _playerName;
     private JLabel _playerTime;
+    private Team _team;
 
-    private Event<String> _playerNameChangedEvent = new Event<String>();
+    private Event<Team> _playerNameChangedEvent = new Event<Team>();
 
     public PlayerPanel(Team team) {
+        _team = team;
+
         /**
          * This panel displays the information of the player.
          * 
@@ -34,7 +37,7 @@ public class PlayerPanel extends JPanel {
         _playerTime = new JLabel("00:00");
         _playerTime.setHorizontalAlignment(JLabel.CENTER);
         _playerTime.setFont(new Font("Arial", Font.BOLD, 20));
-        _playerTime.setForeground(ChessView.SECONDARY_SIDE_COLOR);
+        _playerTime.setForeground(ChessView.PRIMARY_SIDE_COLOR);
         this.add(_playerTime, BorderLayout.SOUTH);
 
         /**
@@ -48,6 +51,22 @@ public class PlayerPanel extends JPanel {
             _playerTime.setText(time.toString());
         });
 
+        team.getModel().getOnTeamChangeEvent().addDelegate(newTeam -> {
+            // Hilight the player's name if it's the current team
+            if (newTeam == team) {
+                _playerName.setForeground(ChessView.SECONDARY_SIDE_COLOR);
+                _playerTime.setForeground(ChessView.SECONDARY_SIDE_COLOR);
+            } else {
+                _playerName.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+                _playerTime.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+            }
+        });
+
+        if (team == team.getModel().getCurrentTeam()) {
+            _playerName.setForeground(ChessView.SECONDARY_SIDE_COLOR);
+            _playerTime.setForeground(ChessView.SECONDARY_SIDE_COLOR);
+        }
+
         _playerName.setText(team.getName());
         _playerTime.setText(team.getTime().toString());
 
@@ -57,13 +76,17 @@ public class PlayerPanel extends JPanel {
         _playerName.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
-                    String newName = JOptionPane.showInputDialog(null, "Enter the new name", _playerName.getText());
-                    if (newName != null) {
-                        _playerName.setText(newName);
-                        _playerNameChangedEvent.invoke(newName);
-                    }
+                    _playerNameChangedEvent.invoke(_team);
                 }
             }
         });
+    }
+
+    public Team getTeam() {
+        return _team;
+    }
+
+    public Event<Team> getOnPlayerNameChangedEvent() {
+        return _playerNameChangedEvent;
     }
 }

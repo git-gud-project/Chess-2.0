@@ -2,6 +2,7 @@ package control;
 import view.BoardCell;
 import view.BoardGridPanel;
 import view.ChessView;
+import view.PlayerPanel;
 import model.*;
 import network.*;
 
@@ -69,6 +70,10 @@ public class ChessControl {
 
     public boolean isMyTurn() {
         return isSinglePlayer() || _model.getCurrentTeam() == _team;
+    }
+
+    public boolean hasAuthorityOver(Team team) {
+        return isSinglePlayer() || _team == team;
     }
 
     private void promotePawn(int row, int col, PieceType type, boolean isElimination) {
@@ -221,6 +226,26 @@ public class ChessControl {
         }
     }
 
+    private void handleChangeName(Team team) {
+        if (!hasAuthorityOver(team)) {
+            return;
+        }
+
+        // Open a dialog to get the new name.
+        String name = JOptionPane.showInputDialog(null, "Enter a new name for " + team.getName() + ":", "Change Name", JOptionPane.PLAIN_MESSAGE);
+
+        if (name == null || name.isEmpty()) {
+            return;
+        }
+
+        // Change the name.
+        if (!isSinglePlayer()) {
+            _networkClient.sendMessage(new ChangeNameMessage(name, team == _model.getTeamWhite()));
+        } else {
+            team.setName(name);
+        }
+    }
+
     /**
      * Start a client.
      */
@@ -265,6 +290,15 @@ public class ChessControl {
         _networkClient.setMessageDelegate(PromotePawnMessage.class, message -> {
             PromotePawnMessage promotePawnMessage = (PromotePawnMessage) message;
             promotePawn(promotePawnMessage.getRow(), promotePawnMessage.getCol(), promotePawnMessage.getPieceType(), promotePawnMessage.isElimination());
+        });
+
+        _networkClient.setMessageDelegate(ChangeNameMessage.class, message -> {
+            ChangeNameMessage changeNameMessage = (ChangeNameMessage) message;
+            if (changeNameMessage.isWhite()) {
+                _model.getTeamWhite().setName(changeNameMessage.getName());
+            } else {
+                _model.getTeamBlack().setName(changeNameMessage.getName());
+            }
         });
     }
 
@@ -311,6 +345,12 @@ public class ChessControl {
             _networkServer.broadcastMessage(message);
         });
 
+        _networkServer.setMessageDelegate(ChangeNameMessage.class, (client, message) -> {
+            ChangeNameMessage changeNameMessage = (ChangeNameMessage) message;
+
+            _networkServer.broadcastMessage(message);
+        });
+
         startClient(host, port);
     }
 
@@ -336,6 +376,14 @@ public class ChessControl {
                 _model.getBoard().loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
                 // TODO: Reset other variables
             }
+        });
+
+        _view.getInfoPanel().getPlayerPanel1().getOnPlayerNameChangedEvent().addDelegate(team -> {
+            handleChangeName(team);
+        });
+
+        _view.getInfoPanel().getPlayerPanel2().getOnPlayerNameChangedEvent().addDelegate(team -> {
+            handleChangeName(team);
         });
     }
 

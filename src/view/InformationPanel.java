@@ -73,4 +73,20 @@ public class InformationPanel extends JPanel {
         _bottomPanel = new BottomPanel(model);
         this.add(_bottomPanel, BorderLayout.SOUTH);
     }
+
+    public BottomPanel getBottomPanel() {
+        return _bottomPanel;
+    }
+
+    public MovesPanel getMovesPanel() {
+        return _movesPanel;
+    }
+
+    public PlayerPanel getPlayerPanel1() {
+        return _playerPanel1;
+    }
+
+    public PlayerPanel getPlayerPanel2() {
+        return _playerPanel2;
+    }
 }

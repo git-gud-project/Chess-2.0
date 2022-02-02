@@ -126,6 +126,8 @@ public class NetworkClient {
 
                 // Call the delegate
                 synchronized (this) {
+                    System.out.println("Received message: " + message.getClass().getName());
+    
                     if (_messageDelegates.containsKey(message.getClass())) {
                         _messageDelegates.get(message.getClass()).invoke(message);
                     }

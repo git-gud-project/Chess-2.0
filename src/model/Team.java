@@ -47,6 +47,10 @@ public class Team {
     //
     // Getters
     //
+    
+    public ChessModel getModel() {
+        return _model;
+    }
 
     public Color getColor() { 
         return _teamColor;
@@ -90,6 +94,15 @@ public class Team {
 
     public int getPromotionRow() {
         return _pawnDirectionRow == -1 ? 0 : 7;
+    }
+
+    //
+    // Setters
+    //
+
+    public void setName(String name) {
+        _name = name;
+        _onNameChangedEvent.invoke(name);
     }
 
     //
