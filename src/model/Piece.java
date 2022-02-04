@@ -3,9 +3,9 @@ package model;
 import java.util.Iterator;
 
 /**
- * Base class for all chess pieces.
+ * Class for all chess pieces.
  */
-public abstract class Piece {
+public class Piece {
     /**
      * The cell that the piece is currently in.
      */
@@ -19,12 +19,7 @@ public abstract class Piece {
     /**
      * The type of the piece.
      */
-    private PieceType type;
-
-    /**
-     * If this piece has moved from its starting position.
-     */
-    private boolean hasMoved;
+    private PieceBehavior behavior;
 
     /**
      * Constructs a new piece.
@@ -33,10 +28,10 @@ public abstract class Piece {
      * @param team the team that the piece belongs to
      * @param type the type of the piece
      */
-    public Piece(Cell cell, Team team, PieceType type) {
+    public Piece(Cell cell, Team team, PieceBehavior behavior) {
         this.cell = cell;
         this.team = team;
-        this.type = type;
+        this.behavior = behavior;
     }
 
     /**
@@ -63,7 +58,7 @@ public abstract class Piece {
      * @return the type of the piece
      */
     public PieceType getPieceType() {
-        return type;
+        return behavior.getPieceType();
     }
 
     /**
@@ -72,7 +67,7 @@ public abstract class Piece {
      * @return if the piece has moved from its starting position
      */
     public boolean hasMoved() {
-        return hasMoved;
+        return behavior.hasMoved();
     }
 
     /**
@@ -81,7 +76,7 @@ public abstract class Piece {
      * @param hasMoved if the piece has moved from its starting position
      */
     public void setHasMoved(boolean hasMoved) {
-        this.hasMoved = hasMoved;
+        behavior.setHasMoved(hasMoved);
     }
 
     /**
@@ -90,7 +85,8 @@ public abstract class Piece {
      * @return the path to the image file for the piece
      */
     public String getIconPath() {
-        return "res/" + type.getFilePrefix() + team.getFileSuffix() + ".png";
+        return behavior.getIconPath();
+        //return "res/" + type.getFilePrefix() + team.getFileSuffix() + ".png";
     }
 
     /**
@@ -98,27 +94,8 @@ public abstract class Piece {
      * 
      * @return all possible moves for this piece
      */
-    public abstract Iterator<Move> getPossibleMoves();
-
-    /**
-     * Called when the piece is moved.
-     * 
-     * @param oldCell the cell that the piece was in before it was moved
-     * @param newCell the cell that the piece is now in
-     * @param state if this is a fake move
-     */
-    public void onMove(Cell oldCell, Cell newCell, boolean state) {
-        this.hasMoved = true;
-    }
-
-    /**
-     * Called before the piece is moved.
-     * 
-     * @param oldCell the cell that the piece was in before it was moved
-     * @param newCell the cell that the piece is now in
-     */
-    public void beforeMove(Cell oldCell, Cell newCell) {
-        
+    public Iterator<Move> getPossibleMoves() {
+        return behavior.getPossibleMoves(cell);
     }
 
     /**
@@ -130,7 +107,7 @@ public abstract class Piece {
         Cell oldCell = this.getCell();
 
         // Call the beforeMove method
-        beforeMove(oldCell, newCell);
+        behavior.beforeMove(oldCell, newCell);
 
         // Move the piece
         cell.setPiece(null);
@@ -138,7 +115,7 @@ public abstract class Piece {
         cell.setPiece(this);
 
         // Call the onMove method
-        onMove(oldCell, newCell, true);
+        behavior.onMove(oldCell, newCell, true);
     }
 
     /**

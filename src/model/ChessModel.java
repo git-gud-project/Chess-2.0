@@ -276,7 +276,7 @@ public class ChessModel implements Serializable {
                             piece = new PieceRook(cell, team);
                             break;
                         case 'B':
-                            piece = new PieceBishop(cell, team);
+                            piece = new Piece(cell, team, new PieceBishop());
                             break;
                         case 'N':
                             piece = new PieceKnight(cell, team);

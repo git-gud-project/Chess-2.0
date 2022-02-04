@@ -4,31 +4,19 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class PieceBishop extends Piece {
+public class PieceBishop implements PieceBehavior {
     private ArrayList<Move> possibleMoves;
 
-    public PieceBishop(Cell cell, Team team) {
-        super(cell, team, PieceType.BISHOP);
-
-        possibleMoves = new ArrayList<Move>();
-    }
-
-    public Iterator<Move> getPossibleMoves() {
+    public Iterator<Move> getPossibleMoves(Cell cell) {
         possibleMoves.clear();
 
-        Board board = this.getCell().getBoard();
+        Board board = cell.getBoard();
 
-        board.calculateMoves(this, possibleMoves, 1, 1);
-        board.calculateMoves(this, possibleMoves, -1, 1);
-        board.calculateMoves(this, possibleMoves, 1, -1);
-        board.calculateMoves(this, possibleMoves, -1, -1);
+        board.calculateMoves(cell, possibleMoves, 1, 1);
+        board.calculateMoves(cell, possibleMoves, -1, 1);
+        board.calculateMoves(cell, possibleMoves, 1, -1);
+        board.calculateMoves(cell, possibleMoves, -1, -1);
 
         return possibleMoves.iterator();
     }
-
-    public String toString() {
-        if(getTeam().getColor().equals(Color.WHITE)) return "WBishop";
-        return "BBishop";
-    }
-
 }

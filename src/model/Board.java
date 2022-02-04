@@ -287,10 +287,11 @@ public class Board {
      * @param cantCapture whether to stop if a piece is found
      * @param requireCapture whether to require capturing
      */
-    public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol, int maxSteps, boolean skipOwn, boolean cantCapture, boolean requireCapture) {
+    public void calculateMoves(Cell cell, List<Move> registry, int dirRow, int dirCol, int maxSteps, boolean skipOwn, boolean cantCapture, boolean requireCapture) {
+        int row = cell.getRow();
+        int col = cell.getCol();
+        Piece piece = cell.getPiece();
         Team team = piece.getTeam();
-        int row = piece.getCell().getRow();
-        int col = piece.getCell().getCol();
         int step = 1;
 
         // If maxSteps is 0, then the piece can move infinitely in that direction
@@ -313,7 +314,7 @@ public class Board {
             
             if (otherPiece == null) {
                 // Check if we can capture en passant
-                if (piece instanceof PiecePawn && requireCapture) {
+                /*if (piece instanceof PiecePawn && requireCapture) {
                     Team otherTeam = model.getOtherTeam(team);
 
                     if (otherTeam.isEnPassant(nextRow, nextCol)) {
@@ -323,7 +324,7 @@ public class Board {
 
                         break;
                     }
-                }
+                }*/
 
                 if (requireCapture) {
                     break;
@@ -344,7 +345,7 @@ public class Board {
             }
         }
 
-        if(model.getCurrentTeam()== piece.getTeam()) {
+        if(model.getCurrentTeam() == team) {
             validateMoves(piece, registry);
         }
 
@@ -359,8 +360,8 @@ public class Board {
      * @param dirCol the column direction
      * @param maxSteps the maximum amount of steps
      */
-    public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol, int maxSteps) {
-        calculateMoves(piece, registry, dirRow, dirCol, maxSteps, false, false, false);
+    public void calculateMoves(Cell cell, List<Move> registry, int dirRow, int dirCol, int maxSteps) {
+        calculateMoves(cell, registry, dirRow, dirCol, maxSteps, false, false, false);
     }
 
     /**
@@ -371,7 +372,7 @@ public class Board {
      * @param dirRow the row direction
      * @param dirCol the column direction
      */
-    public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol) {
-        calculateMoves(piece, registry, dirRow, dirCol, 0, false, false, false);
+    public void calculateMoves(Cell cell, List<Move> registry, int dirRow, int dirCol) {
+        calculateMoves(cell, registry, dirRow, dirCol, 0, false, false, false);
     }
 }
