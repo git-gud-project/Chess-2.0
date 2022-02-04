@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -12,17 +11,17 @@ public class Board {
     /**
      * Matrix of cells.
      */
-    private Cell[][] _cellArray;
+    private Cell[][] cellArray;
 
     /**
      * The chess model.
      */
-    private ChessModel _model;
+    private ChessModel model;
 
     /**
      * The size of the board.
      */
-    private int _gameSize;
+    private int gameSize;
 
     /**
      * Constructs a new board.
@@ -31,8 +30,8 @@ public class Board {
      * @param gameSize the size of the board
      */
     public Board(ChessModel model, int gameSize){
-        this._model = model;
-        this._gameSize = gameSize;
+        this.model = model;
+        this.gameSize = gameSize;
         initCellArray(gameSize);
     }
 
@@ -42,10 +41,10 @@ public class Board {
      * @param gameSize the size of the board
      */
     private void initCellArray(int gameSize) {
-        _cellArray = new Cell[gameSize][gameSize];
+        cellArray = new Cell[gameSize][gameSize];
         for(int row = 0; row < gameSize; row++) {
             for(int col = 0; col < gameSize; col++) {
-                _cellArray[row][col] = new Cell(this, row, col);
+                cellArray[row][col] = new Cell(this, row, col);
             }
         }
     }
@@ -58,7 +57,7 @@ public class Board {
      * @return the cell at the specified position
      */
     public Cell getCell(int row, int col) {
-        return _cellArray[row][col];
+        return cellArray[row][col];
     }
 
     /**
@@ -70,7 +69,7 @@ public class Board {
     public Cell getCell(String position) {
         int row = position.charAt(1) - '1';
         int col = position.charAt(0) - 'a';
-        row = _gameSize - row - 1;
+        row = gameSize - row - 1;
         return getCell(row, col);
     }
 
@@ -79,14 +78,14 @@ public class Board {
      * 
      * @return the chess model
      */
-    public ChessModel getChessModel() { return this._model; }
+    public ChessModel getChessModel() { return this.model; }
 
     /**
      * Get the game size.
      * 
      * @return the game size
      */
-    public int getGameSize() { return this._gameSize; }
+    public int getGameSize() { return this.gameSize; }
 
     /**
      * If a cell is empty.
@@ -96,7 +95,7 @@ public class Board {
      * @return if the cell is empty
      */
     public boolean isEmpty(int row, int col) {
-        return (_cellArray[row][col].getPiece() == null);
+        return (cellArray[row][col].getPiece() == null);
     }
 
     /**
@@ -107,7 +106,7 @@ public class Board {
      * @return if the position is valid
      */
     public boolean isValid(int row, int col) {
-        return ((row < _gameSize && row >= 0) && (col < _gameSize && col >= 0));
+        return ((row < gameSize && row >= 0) && (col < gameSize && col >= 0));
     }
 
     /**
@@ -120,7 +119,7 @@ public class Board {
     public boolean canCapture(Piece piece, int row, int col) {
         if(!isValid(row, col)) return false;
         if(isEmpty(row, col)) return false;
-        if(piece.getTeam() == _cellArray[row][col].getPiece().getTeam()) return false;
+        if(piece.getTeam() == cellArray[row][col].getPiece().getTeam()) return false;
         return true;
     }
 
@@ -160,10 +159,10 @@ public class Board {
      */
     private List<Move> allEnemyMoves(Team playerTeam){
         List<Move> enemyMovesList =new ArrayList<>();
-        for(int row=0;row<_gameSize;row++){
-            for(int col=0;col<_gameSize;col++){
-                if(_cellArray[row][col].getPiece()!=null && _cellArray[row][col].getPiece().getTeam()!=playerTeam){
-                    Iterator<Move> it =_cellArray[row][col].getPiece().getPossibleMoves();
+        for(int row=0;row<gameSize;row++){
+            for(int col=0;col<gameSize;col++){
+                if(cellArray[row][col].getPiece()!=null && cellArray[row][col].getPiece().getTeam()!=playerTeam){
+                    Iterator<Move> it =cellArray[row][col].getPiece().getPossibleMoves();
                     while(it.hasNext()) {
                         enemyMovesList.add(it.next());
                     }
@@ -181,10 +180,10 @@ public class Board {
      */
     private List<Move> allTeamMoves(Team playerTeam){
         List<Move> teamMovesList =new ArrayList<>();
-        for(int row=0;row<_gameSize;row++){
-            for(int col=0;col<_gameSize;col++){
-                if(_cellArray[row][col].getPiece()!=null && _cellArray[row][col].getPiece().getTeam()==playerTeam){
-                    Iterator<Move> it =_cellArray[row][col].getPiece().getPossibleMoves();
+        for(int row=0;row<gameSize;row++){
+            for(int col=0;col<gameSize;col++){
+                if(cellArray[row][col].getPiece()!=null && cellArray[row][col].getPiece().getTeam()==playerTeam){
+                    Iterator<Move> it =cellArray[row][col].getPiece().getPossibleMoves();
                     while(it.hasNext()) {
                         teamMovesList.add(it.next());
                     }
@@ -234,12 +233,12 @@ public class Board {
      */
     public Cell getKingCell(Team team){
         Cell kingCell=null;
-        for(int row=0;row<_gameSize;row++){
-            for(int col=0;col<_gameSize;col++){
-                if(_cellArray[row][col].getPiece()!=null
-                   && _cellArray[row][col].getPiece().getPieceType().equals(PieceType.KING)
-                   && _cellArray[row][col].getPiece().getTeam().equals(team)){
-                    kingCell =  _cellArray[row][col];
+        for(int row=0;row<gameSize;row++){
+            for(int col=0;col<gameSize;col++){
+                if(cellArray[row][col].getPiece()!=null
+                   && cellArray[row][col].getPiece().getPieceType().equals(PieceType.KING)
+                   && cellArray[row][col].getPiece().getTeam().equals(team)){
+                    kingCell =  cellArray[row][col];
                 }
             }
         }
@@ -272,7 +271,7 @@ public class Board {
      */
     public String positionToString(int row, int col) {
         // Row numbers are reversed
-        row = _gameSize - row - 1;
+        row = gameSize - row - 1;
         return "" + (char)('a' + col) + (row + 1);
     }
 
@@ -296,7 +295,7 @@ public class Board {
 
         // If maxSteps is 0, then the piece can move infinitely in that direction
         if (maxSteps == 0) {
-            maxSteps = _gameSize;
+            maxSteps = gameSize;
         }
 
         while (step <= maxSteps) {
@@ -315,7 +314,7 @@ public class Board {
             if (otherPiece == null) {
                 // Check if we can capture en passant
                 if (piece instanceof PiecePawn && requireCapture) {
-                    Team otherTeam = _model.getOtherTeam(team);
+                    Team otherTeam = model.getOtherTeam(team);
 
                     if (otherTeam.isEnPassant(nextRow, nextCol)) {
                         Move move = new Move(nextCell, true);
@@ -345,7 +344,7 @@ public class Board {
             }
         }
 
-        if(_model.getCurrentTeam()== piece.getTeam()) {
+        if(model.getCurrentTeam()== piece.getTeam()) {
             validateMoves(piece, registry);
         }
 

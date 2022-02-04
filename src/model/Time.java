@@ -2,40 +2,40 @@ package model;
 
 public class Time {
 
-    private int _minutes, _seconds, _mseconds;
+    private int minutes, seconds, mseconds;
 
     public Time() {
-        _minutes = 5;
-        _seconds = 0;
-        _mseconds = 0;
+        minutes = 5;
+        seconds = 0;
+        mseconds = 0;
     }
 
     public Time(int minutes) {
-        this._minutes = minutes;
-        _seconds = 0;
-        _mseconds = 0;
+        this.minutes = minutes;
+        seconds = 0;
+        mseconds = 0;
     }
 
-    public int getMinutes() { return _minutes; }
-    public int getSeconds() { return _seconds; }
-    public int getMseconds() { return _mseconds; }
+    public int getMinutes() { return minutes; }
+    public int getSeconds() { return seconds; }
+    public int getMseconds() { return mseconds; }
 
     public void tick() {
-        if(_minutes > 0 || _seconds > 0 ||_mseconds > 0) {
-            _mseconds--;
-            if (_mseconds == -1) {
-                _mseconds = 9;
-                _seconds--;
+        if(minutes > 0 || seconds > 0 ||mseconds > 0) {
+            mseconds--;
+            if (mseconds == -1) {
+                mseconds = 9;
+                seconds--;
             }
-            if (_seconds == -1) {
-                _seconds = 59;
-                _minutes--;
+            if (seconds == -1) {
+                seconds = 59;
+                minutes--;
             }
         }
     }
 
     @Override
     public String toString() {
-        return String.format("%02d:%02d:%02d", _minutes, _seconds, _mseconds);
+        return String.format("%02d:%02d:%02d", minutes, seconds, mseconds);
     }
 }

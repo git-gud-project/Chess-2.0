@@ -1,20 +1,11 @@
 package model;
 
-import model.Piece;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/**
- * Class for the Knight.
- *
- * Variables:
- * - _possibleMoves: Contains all the moves that the pawn can do.
- * - tempBoard: References to the game board.
- */
 public class PieceKnight extends Piece {
-    private ArrayList<Move> _possibleMoves;
+    private ArrayList<Move> possibleMoves;
 
     public PieceKnight(Cell cell, Team team) {
         super(cell, team,PieceType.KNIGHT);
@@ -22,23 +13,23 @@ public class PieceKnight extends Piece {
 
     /**
      * Returns the iterator with all possible move for this Knight-piece.
-     * @return _possibleMoves.iterator() containing all moves.
+     * @return possibleMoves.iterator() containing all moves.
      */
     public Iterator<Move> getPossibleMoves(){
-        _possibleMoves = new ArrayList<>();
+        possibleMoves = new ArrayList<>();
 
         Board board = this.getCell().getBoard();
 
-        board.calculateMoves(this, _possibleMoves, 1, 2, 1);
-        board.calculateMoves(this, _possibleMoves, 1, -2, 1);
-        board.calculateMoves(this, _possibleMoves, -1, 2, 1);
-        board.calculateMoves(this, _possibleMoves, -1, -2, 1);
-        board.calculateMoves(this, _possibleMoves, 2, 1, 1);
-        board.calculateMoves(this, _possibleMoves, 2, -1, 1);
-        board.calculateMoves(this, _possibleMoves, -2, 1, 1);
-        board.calculateMoves(this, _possibleMoves, -2, -1, 1);
+        board.calculateMoves(this, possibleMoves, 1, 2, 1);
+        board.calculateMoves(this, possibleMoves, 1, -2, 1);
+        board.calculateMoves(this, possibleMoves, -1, 2, 1);
+        board.calculateMoves(this, possibleMoves, -1, -2, 1);
+        board.calculateMoves(this, possibleMoves, 2, 1, 1);
+        board.calculateMoves(this, possibleMoves, 2, -1, 1);
+        board.calculateMoves(this, possibleMoves, -2, 1, 1);
+        board.calculateMoves(this, possibleMoves, -2, -1, 1);
 
-        return _possibleMoves.iterator();
+        return possibleMoves.iterator();
     }
 
     @Override

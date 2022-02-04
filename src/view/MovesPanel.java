@@ -8,25 +8,25 @@ import java.util.ArrayList;
 
 // Right now only works for 2 players
 public class MovesPanel extends JPanel {
-    private final DefaultListModel<String> _listModel;
-    private int _turn, _moves, _spaceSize;
-    JScrollPane _scrollpane;
+    private final DefaultListModel<String> listModel;
+    private int turn, moves, spaceSize;
+    JScrollPane scrollpane;
 
     public MovesPanel(ChessModel model) {
         this.setLayout(new BorderLayout());
 
-        _listModel = new DefaultListModel<>();
-        JList<String >_moveList = new JList<>(_listModel);
+        listModel = new DefaultListModel<>();
+        JList<String> moveJList = new JList<>(listModel);
 
-        _moveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
-        _moveList.setForeground(Color.WHITE);
-        _moveList.setFont(new Font("Arial", Font.PLAIN, 32));
-        _scrollpane = new JScrollPane(_moveList);
-        _turn = 0;
-        _moves = 0;
-        _spaceSize = 0;
+        moveJList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        moveJList.setForeground(Color.WHITE);
+        moveJList.setFont(new Font("Arial", Font.PLAIN, 32));
+        scrollpane = new JScrollPane(moveJList);
+        turn = 0;
+        moves = 0;
+        spaceSize = 0;
 
-        add(_scrollpane);
+        add(scrollpane);
 
         /*
          * Setup events
@@ -36,24 +36,24 @@ public class MovesPanel extends JPanel {
 
         model.getOnMoveEvent().addDelegate(move -> {
             ArrayList<MoveNotation> moveList = model.getMoveList();
-            if(_moves != moveList.size()) {
-               _moves = moveList.size();
-                if (_moves % 2 == 1) {
-                    _turn++;
-                    _spaceSize = 8 - moveList.get(_moves-1).toString().length();  // The distance to be used between two notations
-                    System.out.println(_spaceSize);
-                    _listModel.addElement(String.valueOf(_turn) + "     " + moveList.get(_moves-1));
+            if(moves != moveList.size()) {
+               moves = moveList.size();
+                if (moves % 2 == 1) {
+                    turn++;
+                    spaceSize = 8 - moveList.get(moves-1).toString().length();  // The distance to be used between two notations
+                    System.out.println(spaceSize);
+                    listModel.addElement(String.valueOf(turn) + "     " + moveList.get(moves-1));
                 } else {
-                    String tmp = _listModel.lastElement();
-                    _listModel.removeElementAt(_turn-1);
+                    String tmp = listModel.lastElement();
+                    listModel.removeElementAt(turn-1);
                     String space = "";
-                    for(int i=0; i<_spaceSize; i++) {
+                    for(int i=0; i<spaceSize; i++) {
                         space = space.concat(" ");
                     }
-                    _listModel.addElement(tmp + space + moveList.get(_moves-1));
+                    listModel.addElement(tmp + space + moveList.get(moves-1));
                 }
             }
-            JScrollBar vertical = _scrollpane.getVerticalScrollBar();
+            JScrollBar vertical = scrollpane.getVerticalScrollBar();
             vertical.setValue( vertical.getMaximum() );
         });
     }

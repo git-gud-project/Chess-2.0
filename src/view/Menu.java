@@ -9,37 +9,37 @@ import java.io.*;
 
 public class Menu extends JMenuBar {
 
-    private ChessView _view;
-    private Delegate<Integer> _startServerDelegate;
-    private Delegate<Integer> _connectToServerDelegate;
+    private ChessView view;
+    private Delegate<Integer> startServerDelegate;
+    private Delegate<Integer> connectToServerDelegate;
 
-    private JMenuItem _newGame;
+    private JMenuItem newGame;
 
     public void setStartServerDelegate(Delegate<Integer> startServerDelegate) {
-        _startServerDelegate = startServerDelegate;
+        this.startServerDelegate = startServerDelegate;
     }
 
     public void setConnectToServerDelegate(Delegate<Integer> connectToServerDelegate) {
-        _connectToServerDelegate = connectToServerDelegate;
+        this.connectToServerDelegate = connectToServerDelegate;
     }
 
     public Menu(ChessView view) {
         super();
-        _view = view;
+        this.view = view;
 
         //Creating file menu
         JMenu file = new JMenu("File");
         this.add(file);
-        this._newGame = new JMenuItem("New game");
+        this.newGame = new JMenuItem("New game");
         JMenuItem load = new JMenuItem("Load");
         JMenuItem save = new JMenuItem("Save");
-        file.add(_newGame);
+        file.add(newGame);
         file.add(new JSeparator());
         file.add(load);
         file.add(save);
 
         save.addActionListener((e) -> {
-            String content = _view.getModel().toFEN();
+            String content = view.getModel().toFEN();
 
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save FEN");
@@ -72,7 +72,7 @@ public class Menu extends JMenuBar {
                 File chosenFile = fileChooser.getSelectedFile();
                 try {
                     String content = Files.readString(chosenFile.toPath());
-                    _view.getModel().loadFEN(content);
+                    view.getModel().loadFEN(content);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -102,7 +102,7 @@ public class Menu extends JMenuBar {
             JFrame f = new JFrame();
             String port = JOptionPane.showInputDialog(f, "Please select a port to start the server communication:");
             if (port != null) {
-                _startServerDelegate.invoke(Integer.parseInt(port));
+                startServerDelegate.invoke(Integer.parseInt(port));
             }
         });
 
@@ -112,7 +112,7 @@ public class Menu extends JMenuBar {
             
             String port = JOptionPane.showInputDialog(f, "Please enter the port to connect to:");
             if (port != null) {
-                _connectToServerDelegate.invoke(Integer.parseInt(port));
+                connectToServerDelegate.invoke(Integer.parseInt(port));
             }
         });
 
@@ -120,6 +120,6 @@ public class Menu extends JMenuBar {
         server.add(connectToServer);
     }
 
-    public JMenuItem getNewGame() { return _newGame; }
+    public JMenuItem getNewGame() { return newGame; }
 
 }

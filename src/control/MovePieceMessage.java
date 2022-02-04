@@ -3,34 +3,34 @@ package control;
 import network.Message;
 
 public class MovePieceMessage extends Message {
-    private int _fromRow, _fromCol, _toRow, _toCol;
-    private boolean _isElimination;
+    private int fromRow, fromCol, toRow, toCol;
+    private boolean isElimination;
 
     public MovePieceMessage(int fromRow, int fromCol, int toRow, int toCol, boolean isElimination) {
-        _fromRow = fromRow;
-        _fromCol = fromCol;
-        _toRow = toRow;
-        _toCol = toCol;
-        _isElimination = isElimination;
+        this.fromRow = fromRow;
+        this.fromCol = fromCol;
+        this.toRow = toRow;
+        this.toCol = toCol;
+        this.isElimination = isElimination;
     }
 
     public int getFromRow() {
-        return _fromRow;
+        return fromRow;
     }
 
     public int getFromCol() {
-        return _fromCol;
+        return fromCol;
     }
 
     public int getToRow() {
-        return _toRow;
+        return toRow;
     }
 
     public int getToCol() {
-        return _toCol;
+        return toCol;
     }
 
     public boolean isElimination() {
-        return _isElimination;
+        return isElimination;
     }
 }

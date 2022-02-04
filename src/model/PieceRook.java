@@ -5,25 +5,25 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class PieceRook extends Piece {
-    private ArrayList<Move> _possibleMoves;
+    private ArrayList<Move> possibleMoves;
 
     public PieceRook(Cell cell, Team team) {
         super(cell, team,PieceType.ROOK);
-        _possibleMoves = new ArrayList<Move>();
+        possibleMoves = new ArrayList<Move>();
     }
 
-    // Add all possible moves to the _possibleMoves list and return its iterator
+    // Add all possible moves to the possibleMoves list and return its iterator
     public Iterator<Move> getPossibleMoves(){
-        _possibleMoves.clear();
+        possibleMoves.clear();
 
         Board board = this.getCell().getBoard();
 
-        board.calculateMoves(this, _possibleMoves, 1, 0);
-        board.calculateMoves(this, _possibleMoves, -1, 0);
-        board.calculateMoves(this, _possibleMoves, 0, 1);
-        board.calculateMoves(this, _possibleMoves, 0, -1);
+        board.calculateMoves(this, possibleMoves, 1, 0);
+        board.calculateMoves(this, possibleMoves, -1, 0);
+        board.calculateMoves(this, possibleMoves, 0, 1);
+        board.calculateMoves(this, possibleMoves, 0, -1);
 
-        return _possibleMoves.iterator();
+        return possibleMoves.iterator();
     }
 
     @Override

@@ -1,7 +1,7 @@
 ClassName
 methodName
 argumentName
-_fieldName (privata instansvariabler)
+fieldName (privata instansvariabler)
 variableName
 CONST
 ENUM

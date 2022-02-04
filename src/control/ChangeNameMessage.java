@@ -3,19 +3,19 @@ package control;
 import network.Message;
 
 public class ChangeNameMessage extends Message {
-    public String _name;
-    public boolean _isWhite;
+    public String name;
+    public boolean isWhite;
 
     public ChangeNameMessage(String name, boolean isWhite) {
-        _name = name;
-        _isWhite = isWhite;
+        this.name = name;
+        this.isWhite = isWhite;
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
 
     public boolean isWhite() {
-        return _isWhite;
+        return isWhite;
     }
 }

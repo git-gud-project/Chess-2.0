@@ -13,15 +13,15 @@ import utils.Delegate;
  * The server can be configured to listen on a specific port and which ip to listen on.
  */
 public class NetworkServer {
-    private int _port;
-    private String _ip;
-    private ServerSocket _serverSocket;
-    private boolean _running;
-    private Thread _acceptionThread;
-    private List<Client> _clients;
-    private Delegate<Client> _onClientConnectedDelegate;
-    private Delegate<Client> _onClientDisconnectedDelegate;
-    private HashMap<Type, MessageDelegate> _messageDelegates;
+    private int port;
+    private String ip;
+    private ServerSocket serverSocket;
+    private boolean running;
+    private Thread acceptionThread;
+    private List<Client> clients;
+    private Delegate<Client> onClientConnectedDelegate;
+    private Delegate<Client> onClientDisconnectedDelegate;
+    private HashMap<Type, MessageDelegate> messageDelegates;
 
     /**
      * Creates a new server.
@@ -30,12 +30,12 @@ public class NetworkServer {
      * @param ip The ip to listen on.
      */
     public NetworkServer(int port, String ip) {
-        _port = port;
-        _ip = ip;
+        this.port = port;
+        this.ip = ip;
 
-        _running = false;
-        _clients = new ArrayList<>();
-        _messageDelegates = new HashMap<>();
+        running = false;
+        clients = new ArrayList<>();
+        messageDelegates = new HashMap<>();
     }
 
     /**
@@ -44,12 +44,12 @@ public class NetworkServer {
      * @param ip The ip to listen on.
      */
     public NetworkServer(int port) {
-        _port = port;
-        _ip = null;
+        this.port = port;
+        this.ip = null;
 
-        _running = false;
-        _clients = new ArrayList<>();
-        _messageDelegates = new HashMap<>();
+        running = false;
+        clients = new ArrayList<>();
+        messageDelegates = new HashMap<>();
     }
 
     /**
@@ -59,30 +59,30 @@ public class NetworkServer {
      */
     public void start() throws IOException {
         // Allows for running on a more restrictive network.
-        if (_ip == null) {
-            _serverSocket = new ServerSocket(_port);
+        if (ip == null) {
+            serverSocket = new ServerSocket(port);
         } else {
-            _serverSocket = new ServerSocket(_port, 0, InetAddress.getByName(_ip));
+            serverSocket = new ServerSocket(port, 0, InetAddress.getByName(ip));
         }
         
-        _running = true;
+        running = true;
 
-        _acceptionThread = new Thread(() -> acceptLoop());
+        acceptionThread = new Thread(() -> acceptLoop());
 
-        _acceptionThread.start();
+        acceptionThread.start();
     }
 
     /**
      * Stops the server.
      */
     public synchronized void stop() {
-        for (Client client : _clients) {
+        for (Client client : clients) {
             client.stop();
         }
 
-        _running = false;
+        running = false;
         try {
-            _serverSocket.close();
+            serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,14 +92,14 @@ public class NetworkServer {
      * Sets the delegate that will be called when a client connects.
      */
     public synchronized void setOnClientConnectedDelegate(Delegate<Client> onClientConnectedDelegate) {
-        _onClientConnectedDelegate = onClientConnectedDelegate;
+        this.onClientConnectedDelegate = onClientConnectedDelegate;
     }
 
     /**
      * Sets the delegate that will be called when a client disconnects.
      */
     public synchronized void setOnClientDisconnectedDelegate(Delegate<Client> onClientDisconnectedDelegate) {
-        _onClientDisconnectedDelegate = onClientDisconnectedDelegate;
+        this.onClientDisconnectedDelegate = onClientDisconnectedDelegate;
     }
 
     /**
@@ -109,7 +109,7 @@ public class NetworkServer {
      * @param delegate The delegate to call when a message of the specified type is received.
      */
     public synchronized void setMessageDelegate(Type type, MessageDelegate messageDelegate) {
-        _messageDelegates.put(type, messageDelegate);
+        messageDelegates.put(type, messageDelegate);
     }
 
     /**
@@ -119,7 +119,7 @@ public class NetworkServer {
      * @param delegate The delegate to call when a message of the specified type is received.
      */
     public synchronized void setMessageDelegate(Type type, Delegate<Message> messageDelegate) {
-        _messageDelegates.put(type, (client, message) -> messageDelegate.invoke(message));
+        messageDelegates.put(type, (client, message) -> messageDelegate.invoke(message));
     }
 
     /**
@@ -128,7 +128,7 @@ public class NetworkServer {
      * @param message The message to send.
      */
     public synchronized void broadcastMessage(Message message) {
-        for (Client client : _clients) {
+        for (Client client : clients) {
             client.sendMessage(message);
         }
     }
@@ -150,9 +150,9 @@ public class NetworkServer {
      */
     private synchronized void handleMessage(Client client, Message message) {
         // Check if a delegate is registered for this message type.
-        if (_messageDelegates.containsKey(message.getClass())) {
+        if (messageDelegates.containsKey(message.getClass())) {
             // Invoke the delegate.
-            _messageDelegates.get(message.getClass()).invoke(client, message);
+            messageDelegates.get(message.getClass()).invoke(client, message);
         }
     }
 
@@ -162,9 +162,9 @@ public class NetworkServer {
      * @param client The client that disconnected.
      */
     private synchronized void handleDisconnect(Client client) {
-        _clients.remove(client);
-        if (_onClientDisconnectedDelegate != null) {
-            _onClientDisconnectedDelegate.invoke(client);
+        clients.remove(client);
+        if (onClientDisconnectedDelegate != null) {
+            onClientDisconnectedDelegate.invoke(client);
         }
     }
 
@@ -173,10 +173,10 @@ public class NetworkServer {
      */
     private void acceptLoop() {
         // Run while the server is running.
-        while (_running) {
+        while (running) {
             try {
                 // Accept the socket. This blocks until a client connects.
-                Socket socket = _serverSocket.accept();
+                Socket socket = serverSocket.accept();
                 
                 // Create a new client.
                 Client client = new Client(socket);
@@ -193,15 +193,15 @@ public class NetworkServer {
                     client.start();
 
                     // Add the client to the list of clients.
-                    _clients.add(client);
+                    clients.add(client);
 
                     // Invoke the delegate for new connections.
-                    if (_onClientConnectedDelegate != null) {
-                        _onClientConnectedDelegate.invoke(client);
+                    if (onClientConnectedDelegate != null) {
+                        onClientConnectedDelegate.invoke(client);
                     }
                 }
             } catch (IOException e) {
-                _running = false;
+                running = false;
                 e.printStackTrace();
             }
         }

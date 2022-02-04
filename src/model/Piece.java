@@ -9,22 +9,22 @@ public abstract class Piece {
     /**
      * The cell that the piece is currently in.
      */
-    private Cell _cell;
+    private Cell cell;
 
     /**
      * The team that the piece belongs to.
      */
-    private final Team _team;
+    private final Team team;
 
     /**
      * The type of the piece.
      */
-    private PieceType _type;
+    private PieceType type;
 
     /**
      * If this piece has moved from its starting position.
      */
-    private boolean _hasMoved;
+    private boolean hasMoved;
 
     /**
      * Constructs a new piece.
@@ -34,9 +34,9 @@ public abstract class Piece {
      * @param type the type of the piece
      */
     public Piece(Cell cell, Team team, PieceType type) {
-        this._cell = cell;
-        this._team = team;
-        _type = type;
+        this.cell = cell;
+        this.team = team;
+        this.type = type;
     }
 
     /**
@@ -45,7 +45,7 @@ public abstract class Piece {
      * @return the cell that the piece is currently in
      */
     public Cell getCell() {
-        return this._cell;
+        return this.cell;
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class Piece {
      * @return the team that the piece belongs to
      */
     public Team getTeam() {
-        return _team;
+        return team;
     }
 
     /**
@@ -63,7 +63,7 @@ public abstract class Piece {
      * @return the type of the piece
      */
     public PieceType getPieceType() {
-        return _type;
+        return type;
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class Piece {
      * @return if the piece has moved from its starting position
      */
     public boolean hasMoved() {
-        return _hasMoved;
+        return hasMoved;
     }
 
     /**
@@ -81,7 +81,7 @@ public abstract class Piece {
      * @param hasMoved if the piece has moved from its starting position
      */
     public void setHasMoved(boolean hasMoved) {
-        this._hasMoved = hasMoved;
+        this.hasMoved = hasMoved;
     }
 
     /**
@@ -90,7 +90,7 @@ public abstract class Piece {
      * @return the path to the image file for the piece
      */
     public String getIconPath() {
-        return "res/" + _type.getFilePrefix() + _team.getFileSuffix() + ".png";
+        return "res/" + type.getFilePrefix() + team.getFileSuffix() + ".png";
     }
 
     /**
@@ -108,7 +108,7 @@ public abstract class Piece {
      * @param state if this is a fake move
      */
     public void onMove(Cell oldCell, Cell newCell, boolean state) {
-        this._hasMoved = true;
+        this.hasMoved = true;
     }
 
     /**
@@ -133,9 +133,9 @@ public abstract class Piece {
         beforeMove(oldCell, newCell);
 
         // Move the piece
-        _cell.setPiece(null);
-        _cell = newCell;
-        _cell.setPiece(this);
+        cell.setPiece(null);
+        cell = newCell;
+        cell.setPiece(this);
 
         // Call the onMove method
         onMove(oldCell, newCell, true);
@@ -148,8 +148,8 @@ public abstract class Piece {
      */
     public void fakeMove(Cell newCell) {
         // Move the piece
-        _cell.setPiece(null);
-        _cell = newCell;
-        _cell.setPiece(this);
+        cell.setPiece(null);
+        cell = newCell;
+        cell.setPiece(this);
     }
 }

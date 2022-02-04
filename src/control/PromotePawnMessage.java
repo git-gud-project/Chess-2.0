@@ -4,31 +4,31 @@ import model.PieceType;
 import network.Message;
 
 public class PromotePawnMessage extends Message {
-    private int _row;
-    private int _col;
-    private PieceType _pieceType;
-    private boolean _isElimination;
+    private int row;
+    private int col;
+    private PieceType pieceType;
+    private boolean isElimination;
 
     public PromotePawnMessage(int row, int col, PieceType pieceType, boolean isElimination) {
-        _row = row;
-        _col = col;
-        _pieceType = pieceType;
-        _isElimination = isElimination;
+        this.row = row;
+        this.col = col;
+        this.pieceType = pieceType;
+        this.isElimination = isElimination;
     }
 
     public int getRow() {
-        return _row;
+        return row;
     }
 
     public int getCol() {
-        return _col;
+        return col;
     }
 
     public PieceType getPieceType() {
-        return _pieceType;
+        return pieceType;
     }
 
     public boolean isElimination() {
-        return _isElimination;
+        return isElimination;
     }
 }

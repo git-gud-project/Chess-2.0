@@ -13,15 +13,15 @@ import utils.Delegate;
  * The client can be configured to connect to a specific ip and port.
  */
 public class NetworkClient {
-    private int _port;
-    private String _ip;
-    private Socket _socket;
-    private InputStream _in;
-    private OutputStream _out;
-    private Thread _messageThread;
-    private boolean _running;
-    private Runnable _onDisconnectDelegate;
-    private HashMap<Type, Delegate<Message>> _messageDelegates;
+    private int port;
+    private String ip;
+    private Socket socket;
+    private InputStream in;
+    private OutputStream out;
+    private Thread messageThread;
+    private boolean running;
+    private Runnable onDisconnectDelegate;
+    private HashMap<Type, Delegate<Message>> messageDelegates;
 
     /**
      * Creates a new client.
@@ -30,9 +30,9 @@ public class NetworkClient {
      * @param port The port to connect to.
      */
     public NetworkClient(String ip, int port) {
-        _ip = ip;
-        _port = port;
-        _messageDelegates = new HashMap<>();
+        this.ip = ip;
+        this.port = port;
+        this.messageDelegates = new HashMap<>();
     }
 
     /**
@@ -43,13 +43,13 @@ public class NetworkClient {
     public void sendMessage(Message message) {
         try {
             // Create an object output stream
-            ObjectOutputStream out = new ObjectOutputStream(_out);
+            ObjectOutputStream objectStream = new ObjectOutputStream(out);
             
             // Write the message
-            out.writeObject(message);
+            objectStream.writeObject(message);
 
             // Flush the stream
-            out.flush();
+            objectStream.flush();
         } catch (SocketException e) {
             // The socket was closed
             stop();
@@ -66,7 +66,7 @@ public class NetworkClient {
      * @param delegate The delegate to call when a message of the specified type is received.
      */
     public synchronized void setMessageDelegate(Type type, Delegate<Message> messageDelegate) {
-        _messageDelegates.put(type, messageDelegate);
+        messageDelegates.put(type, messageDelegate);
     }
 
     /**
@@ -75,50 +75,50 @@ public class NetworkClient {
      * @param delegate The delegate to call when the client disconnects.
      */
     public void setOnDisconnectDelegate(Runnable delegate) {
-        _onDisconnectDelegate = delegate;
+        onDisconnectDelegate = delegate;
     }
 
     public void stop() {
-        _running = false;
+        running = false;
 
         try {
-            if (!_socket.isClosed()) {
-                _socket.close();
+            if (!socket.isClosed()) {
+                socket.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         
-        if (_onDisconnectDelegate != null) {
-            _onDisconnectDelegate.run();
+        if (onDisconnectDelegate != null) {
+            onDisconnectDelegate.run();
         }
     }
 
     public void start() throws IOException {        
         // Connect to the server
-        _socket = new Socket(_ip, _port);
+        socket = new Socket(ip, port);
 
         // Collect the streams
-        _in = _socket.getInputStream();
-        _out = _socket.getOutputStream();
-        _running = true;
+        in = socket.getInputStream();
+        out = socket.getOutputStream();
+        running = true;
 
         // Start the message thread.
-        _messageThread = new Thread(() -> receiveLoop());
-        _messageThread.start();
+        messageThread = new Thread(() -> receiveLoop());
+        messageThread.start();
     }
 
     /**
      * Loop that reads messages from the server and calls the delegates.
      */
     private void receiveLoop() {
-        while (_running) {
+        while (running) {
             try {
                 // Create an object input stream
-                ObjectInputStream in = new ObjectInputStream(_in);
+                ObjectInputStream objectStream = new ObjectInputStream(in);
 
                 // Read the message
-                Message message = (Message) in.readObject();
+                Message message = (Message) objectStream.readObject();
 
                 if (message == null) {
                     break;
@@ -128,8 +128,8 @@ public class NetworkClient {
                 synchronized (this) {
                     System.out.println("Received message: " + message.getClass().getName());
     
-                    if (_messageDelegates.containsKey(message.getClass())) {
-                        _messageDelegates.get(message.getClass()).invoke(message);
+                    if (messageDelegates.containsKey(message.getClass())) {
+                        messageDelegates.get(message.getClass()).invoke(message);
                     }
                 }
 

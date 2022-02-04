@@ -8,13 +8,13 @@ public enum PieceType {
     QUEEN("q"),
     ROOK("r");
 
-    private String _filePrefix;
+    private String filePrefix;
 
     private PieceType(String prefix) {
-        _filePrefix = prefix;
+        filePrefix = prefix;
     }
     
     public String getFilePrefix() {
-        return _filePrefix;
+        return filePrefix;
     }
 }

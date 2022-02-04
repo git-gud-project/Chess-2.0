@@ -5,8 +5,8 @@ import java.awt.*;
 
 public class CellButton extends JButton {
 
-    private Color _hoverBackgroundColor;
-    private Color _pressedBackgroundColor;
+    private Color hoverBackgroundColor;
+    private Color pressedBackgroundColor;
 
     public CellButton() {
         this(null);
@@ -22,22 +22,22 @@ public class CellButton extends JButton {
         super.setMargin(new Insets(0, 0, 0, 0));
         super.setBackground(Color.WHITE);
     
-        _hoverBackgroundColor = Color.WHITE;
-        _pressedBackgroundColor = Color.WHITE;
+        hoverBackgroundColor = Color.WHITE;
+        pressedBackgroundColor = Color.WHITE;
     }
 
     public void setColorAll(Color color) {
         super.setBackground(color);
-        _hoverBackgroundColor = color;
-        _pressedBackgroundColor = color;
+        hoverBackgroundColor = color;
+        pressedBackgroundColor = color;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         if (getModel().isPressed()) {
-            g.setColor(_pressedBackgroundColor);
+            g.setColor(pressedBackgroundColor);
         } else if (getModel().isRollover()) {
-            g.setColor(_hoverBackgroundColor);
+            g.setColor(hoverBackgroundColor);
         } else {
             g.setColor(getBackground());
         }
@@ -50,18 +50,18 @@ public class CellButton extends JButton {
     }
 
     public Color getHoverBackgroundColor() {
-        return _hoverBackgroundColor;
+        return hoverBackgroundColor;
     }
 
     public void setHoverBackgroundColor(Color hoverBackgroundColor) {
-        this._hoverBackgroundColor = hoverBackgroundColor;
+        this.hoverBackgroundColor = hoverBackgroundColor;
     }
 
     public Color getPressedBackgroundColor() {
-        return _pressedBackgroundColor;
+        return pressedBackgroundColor;
     }
 
     public void setPressedBackgroundColor(Color pressedBackgroundColor) {
-        this._pressedBackgroundColor = pressedBackgroundColor;
+        this.pressedBackgroundColor = pressedBackgroundColor;
     }
 }

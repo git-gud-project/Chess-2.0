@@ -1,50 +1,50 @@
 package model;
 
 public class Move {
-    private Cell _moveCell;
-    private boolean _elimination;
-    private boolean _isEnPassant;
-    private boolean _isCastleKingSide;
-    private boolean _isCastleQueenSide;
+    private Cell moveCell;
+    private boolean elimination;
+    private boolean isEnPassant;
+    private boolean isCastleKingSide;
+    private boolean isCastleQueenSide;
 
     public Move(Cell toCell) {
-        this._moveCell = toCell;
+        this.moveCell = toCell;
     }
 
     public Move(Cell toCell, boolean eliminatable) {
-        this._moveCell = toCell;
-        this._elimination = eliminatable;
+        this.moveCell = toCell;
+        this.elimination = eliminatable;
     }
 
     public Cell getCell() {
-        return _moveCell;
+        return moveCell;
     }
 
     public boolean isEliminatable() {
-        return _elimination;
+        return elimination;
     }
 
     public boolean getIsEnPassant() {
-        return _isEnPassant;
+        return isEnPassant;
     }
 
     public void setIsEnPassant(boolean isEnPassant) {
-        this._isEnPassant = isEnPassant;
+        this.isEnPassant = isEnPassant;
     }
 
     public boolean getIsCastleKingSide() {
-        return _isCastleKingSide;
+        return isCastleKingSide;
     }
 
     public void setIsCastleKingSide(boolean isCastleKingSide) {
-        this._isCastleKingSide = isCastleKingSide;
+        this.isCastleKingSide = isCastleKingSide;
     }
 
     public boolean getIsCastleQueenSide() {
-        return _isCastleQueenSide;
+        return isCastleQueenSide;
     }
 
     public void setIsCastleQueenSide(boolean isCastleQueenSide) {
-        this._isCastleQueenSide = isCastleQueenSide;
+        this.isCastleQueenSide = isCastleQueenSide;
     }
 }

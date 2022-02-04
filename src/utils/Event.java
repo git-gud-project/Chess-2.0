@@ -3,22 +3,22 @@ package utils;
 import java.util.*;
 
 public class Event<T> {
-    private List<Delegate<T>> _delegates;
+    private List<Delegate<T>> delegates;
 
     public Event() {
-        _delegates = new ArrayList<Delegate<T>>();
+        delegates = new ArrayList<Delegate<T>>();
     }
 
     public void addDelegate(Delegate<T> delegate) {
-        _delegates.add(delegate);
+        delegates.add(delegate);
     }
 
     public void removeDelegate(Delegate<T> delegate) {
-        _delegates.remove(delegate);
+        delegates.remove(delegate);
     }
 
     public void invoke(T param) {
-        for (Delegate<T> delegate : _delegates) {
+        for (Delegate<T> delegate : delegates) {
             delegate.invoke(param);
         }
     }

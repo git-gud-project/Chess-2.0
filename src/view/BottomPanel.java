@@ -9,33 +9,33 @@ import java.awt.datatransfer.Clipboard;
 import model.*;
 
 public class BottomPanel extends JPanel {
-    private JTextField _infoLabel;
-    private JButton _copyButton;
-    private ChessModel _model;
+    private JTextField infoLabel;
+    private JButton copyButton;
+    private ChessModel model;
 
     public BottomPanel(ChessModel model) {
         super();
 
-        _model = model;
+        this.model = model;
 
-        _infoLabel = new JTextField();
-        _infoLabel.setText("");
-        _infoLabel.setFont(new Font("Arial", Font.BOLD, 8));
-        _infoLabel.setForeground(ChessView.PRIMARY_SIDE_COLOR);
-        _infoLabel.setEditable(false);
+        infoLabel = new JTextField();
+        infoLabel.setText("");
+        infoLabel.setFont(new Font("Arial", Font.BOLD, 8));
+        infoLabel.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+        infoLabel.setEditable(false);
         this.setLayout(new BorderLayout());
         this.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
-        this.add(_infoLabel, BorderLayout.CENTER);
+        this.add(infoLabel, BorderLayout.CENTER);
 
-        _copyButton = new JButton("Copy");
-        _copyButton.setFont(new Font("Arial", Font.BOLD, 10));
-        _copyButton.setForeground(ChessView.SECONDARY_SIDE_COLOR);
-        _copyButton.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
-        this.add(_copyButton, BorderLayout.EAST);
+        copyButton = new JButton("Copy");
+        copyButton.setFont(new Font("Arial", Font.BOLD, 10));
+        copyButton.setForeground(ChessView.SECONDARY_SIDE_COLOR);
+        copyButton.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        this.add(copyButton, BorderLayout.EAST);
 
         // When the button is pressed, copy the text to the clipboard
-        _copyButton.addActionListener((e) -> {
-            StringSelection selection = new StringSelection(_infoLabel.getText());
+        copyButton.addActionListener((e) -> {
+            StringSelection selection = new StringSelection(infoLabel.getText());
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
         });
@@ -49,7 +49,7 @@ public class BottomPanel extends JPanel {
         });
 
         model.getOnGameLoadedEvent().addDelegate(fen -> {
-            _infoLabel.setText(fen);
+            infoLabel.setText(fen);
         });
 
         updateInfoLabel();
@@ -57,9 +57,9 @@ public class BottomPanel extends JPanel {
 
     private void updateInfoLabel() {
         // Create a Forsyth–Edwards Notation (FEN) of the board
-        String fen = _model.toFEN();
+        String fen = model.toFEN();
 
         // Update the label with the FEN notation
-        _infoLabel.setText(fen);
+        infoLabel.setText(fen);
     }
 }

@@ -40,18 +40,18 @@ public class ChessView extends JFrame {
 
     public final static float ASPECT_RATIO = (float) DEFAULT_WINDOW_WIDTH / DEFAULT_WINDOW_HEIGHT;
 
-    private Menu _menuPanel;
+    private Menu menuPanel;
 
-    private BoardPanel _boardPanel;
+    private BoardPanel boardPanel;
 
-    private ChessModel _model;
+    private ChessModel model;
 
-    private InformationPanel _infoPanel;
+    private InformationPanel infoPanel;
 
-    private java.lang.Thread _thread;
+    private Thread thread;
     
     public ChessView(ChessModel model) {
-        _model = model;
+        this.model = model;
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -84,8 +84,8 @@ public class ChessView extends JFrame {
                 }
                 
                 // In 100ms, ensure aspect ratio
-                if (_thread != null) _thread.interrupt();
-                _thread = new Thread(() -> {
+                if (thread != null) thread.interrupt();
+                thread = new Thread(() -> {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException ex) {
@@ -103,24 +103,24 @@ public class ChessView extends JFrame {
                         setSize(new Dimension(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
                     }
                 });
-                _thread.start();
+                thread.start();
             }
         });
 
         // Create board panel
-        _boardPanel = new BoardPanel(this, 8);
+        boardPanel = new BoardPanel(this, 8);
 
-        this.add(_boardPanel, BorderLayout.CENTER);
+        this.add(boardPanel, BorderLayout.CENTER);
 
         // Add the information panel
-        _infoPanel = new InformationPanel(model);
+        infoPanel = new InformationPanel(model);
 
-        this.add(_infoPanel, BorderLayout.EAST);
+        this.add(infoPanel, BorderLayout.EAST);
 
         // Add menu bar
-        _menuPanel = new Menu(this);
+        menuPanel = new Menu(this);
 
-        this.setJMenuBar(_menuPanel);
+        this.setJMenuBar(menuPanel);
 
         this.pack();
 
@@ -128,26 +128,26 @@ public class ChessView extends JFrame {
     }
 
     public Menu getMenu() {
-        return _menuPanel;
+        return menuPanel;
     }
 
     public ChessModel getModel() {
-        return _model;
+        return model;
     }
     
     public BoardPanel getBoardPanel() {
-        return _boardPanel;
+        return boardPanel;
     }
 
     public InformationPanel getInfoPanel() {
-        return _infoPanel;
+        return infoPanel;
     }
 
     public BoardGridPanel getBoardGridPanel() {
-        return _boardPanel.getBoardGridPanel();
+        return boardPanel.getBoardGridPanel();
     }
 
-    public void setModel(ChessModel model) { this._model = model; }
+    public void setModel(ChessModel model) { this.model = model; }
 
     public PieceType promotePawn() {
         // Create a dialog to ask the user what piece to promote to

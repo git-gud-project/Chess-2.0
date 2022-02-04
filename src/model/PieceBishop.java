@@ -5,25 +5,25 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class PieceBishop extends Piece {
-    private ArrayList<Move> _possibleMoves;
+    private ArrayList<Move> possibleMoves;
 
     public PieceBishop(Cell cell, Team team) {
         super(cell, team, PieceType.BISHOP);
 
-        _possibleMoves = new ArrayList<Move>();
+        possibleMoves = new ArrayList<Move>();
     }
 
     public Iterator<Move> getPossibleMoves() {
-        _possibleMoves.clear();
+        possibleMoves.clear();
 
         Board board = this.getCell().getBoard();
 
-        board.calculateMoves(this, _possibleMoves, 1, 1);
-        board.calculateMoves(this, _possibleMoves, -1, 1);
-        board.calculateMoves(this, _possibleMoves, 1, -1);
-        board.calculateMoves(this, _possibleMoves, -1, -1);
+        board.calculateMoves(this, possibleMoves, 1, 1);
+        board.calculateMoves(this, possibleMoves, -1, 1);
+        board.calculateMoves(this, possibleMoves, 1, -1);
+        board.calculateMoves(this, possibleMoves, -1, -1);
 
-        return _possibleMoves.iterator();
+        return possibleMoves.iterator();
     }
 
     public String toString() {

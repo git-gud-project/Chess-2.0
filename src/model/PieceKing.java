@@ -5,26 +5,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class PieceKing extends Piece {
-    private ArrayList<Move> _possibleMoves;
+    private ArrayList<Move> possibleMoves;
 
     public PieceKing(Cell cell, Team team) {
         super(cell, team,PieceType.KING);
-        _possibleMoves = new ArrayList<Move>();
+        possibleMoves = new ArrayList<Move>();
     }
 
     public Iterator<Move> getPossibleMoves(){
-        _possibleMoves.clear();
+        possibleMoves.clear();
 
         Board board = this.getCell().getBoard();
         
-        board.calculateMoves(this, _possibleMoves, 1, 1, 1);
-        board.calculateMoves(this, _possibleMoves, -1, 1, 1);
-        board.calculateMoves(this, _possibleMoves, 1, -1, 1);
-        board.calculateMoves(this, _possibleMoves, -1, -1, 1);
-        board.calculateMoves(this, _possibleMoves, 1, 0, 1);
-        board.calculateMoves(this, _possibleMoves, -1, 0, 1);
-        board.calculateMoves(this, _possibleMoves, 0, 1, 1);
-        board.calculateMoves(this, _possibleMoves, 0, -1, 1);
+        board.calculateMoves(this, possibleMoves, 1, 1, 1);
+        board.calculateMoves(this, possibleMoves, -1, 1, 1);
+        board.calculateMoves(this, possibleMoves, 1, -1, 1);
+        board.calculateMoves(this, possibleMoves, -1, -1, 1);
+        board.calculateMoves(this, possibleMoves, 1, 0, 1);
+        board.calculateMoves(this, possibleMoves, -1, 0, 1);
+        board.calculateMoves(this, possibleMoves, 0, 1, 1);
+        board.calculateMoves(this, possibleMoves, 0, -1, 1);
 
         Team team = getTeam();
         boolean canCastleKingSide = team.canCastleKingSide();
@@ -33,16 +33,16 @@ public class PieceKing extends Piece {
         if (canCastleKingSide) {
             Move move = new Move(team.getCastlingKingSideCell());
             move.setIsCastleKingSide(true);
-            _possibleMoves.add(move);
+            possibleMoves.add(move);
         }
 
         if (canCastleQueenSide) {
             Move move = new Move(team.getCastlingQueenSideCell());
             move.setIsCastleQueenSide(true);
-            _possibleMoves.add(move);
+            possibleMoves.add(move);
         }
 
-        return _possibleMoves.iterator();
+        return possibleMoves.iterator();
     }
 
     @Override

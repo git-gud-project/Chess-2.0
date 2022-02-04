@@ -5,20 +5,19 @@ import utils.Delegate;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
 
 public class BoardGridPanel extends JPanel {
-    private BoardCell[][] _board;
-    private int _size;
-    private ChessView _view;
+    private BoardCell[][] cells;
+    private int size;
+    private ChessView view;
 
-    private Delegate<BoardCell> _clickDelegate;
+    private Delegate<BoardCell> clickDelegate;
 
     public BoardGridPanel(ChessView view, int size) {
         super(new GridLayout(size, size));
-        _board = new BoardCell[size][size];
-        _size = size;
-        _view = view;
+        this.cells = new BoardCell[size][size];
+        this.size = size;
+        this.view = view;
 
         Board board = view.getModel().getBoard();
 
@@ -44,7 +43,7 @@ public class BoardGridPanel extends JPanel {
                 button.setHoverBackgroundColor(color);
                 button.setPressedBackgroundColor(color);
 
-                _board[row][col] = button;
+                cells[row][col] = button;
 
                 /**
                  * Setup events
@@ -70,16 +69,16 @@ public class BoardGridPanel extends JPanel {
     }
 
     public void setClickDelegate(Delegate<BoardCell> delegate) {
-        _clickDelegate = delegate;
+        clickDelegate = delegate;
     }
 
     public BoardCell getCell(int row, int col) {
-        return _board[row][col];
+        return cells[row][col];
     }
 
     private void handleClick(BoardCell boardCell) {
-        if (_clickDelegate != null) {
-            _clickDelegate.invoke(boardCell);
+        if (clickDelegate != null) {
+            clickDelegate.invoke(boardCell);
         }
     }
 }

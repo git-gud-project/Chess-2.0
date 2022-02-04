@@ -3,10 +3,9 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import model.ChessModel;
 
 public class BoardPanel extends JPanel {
-    private BoardGridPanel _boardPanel;
+    private BoardGridPanel boardPanel;
 
     public BoardPanel(ChessView view, int size) {
         CellButton button;
@@ -124,7 +123,7 @@ public class BoardPanel extends JPanel {
             button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_C);
         }
 
-        _boardPanel = new BoardGridPanel(view, size);
+        boardPanel = new BoardGridPanel(view, size);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 8;
         c.weighty = 8;
@@ -132,7 +131,7 @@ public class BoardPanel extends JPanel {
         c.gridheight = size;
         c.gridx = 1;
         c.gridy = 1;
-        this.add(_boardPanel, c);
+        this.add(boardPanel, c);
         
         var container = this;
         this.addComponentListener(new ComponentAdapter() {
@@ -141,13 +140,13 @@ public class BoardPanel extends JPanel {
                 int w = container.getWidth();
                 int h = container.getHeight();
                 int size =  Math.min(w, h);
-                _boardPanel.setPreferredSize(new Dimension(size, size));
+                boardPanel.setPreferredSize(new Dimension(size, size));
                 container.revalidate();
             }
         });
     }
 
     public BoardGridPanel getBoardGridPanel() {
-        return _boardPanel;
+        return boardPanel;
     }
 }

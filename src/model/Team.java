@@ -9,39 +9,39 @@ public class Team {
     // Fields
     //
 
-    private ChessModel _model;
+    private ChessModel model;
 
-    private Color _teamColor;
+    private Color teamColor;
 
-    private String _fileSuffix;
+    private String fileSuffix;
 
-    private String _name;
+    private String name;
 
-    private Time _time;
+    private Time time;
 
-    private int _pawnDirectionRow;
+    private int pawnDirectionRow;
 
-    private Piece _enPassantPiece;
+    private Piece enPassantPiece;
 
     // 
     // Events
     //
 
-    private Event<String> _onNameChangedEvent = new Event<>();
+    private Event<String> onNameChangedEvent = new Event<>();
 
-    private Event<Time> _onTimeChangedEvent = new Event<>();
+    private Event<Time> onTimeChangedEvent = new Event<>();
 
     //
     // Constructors
     //
 
     public Team(ChessModel model, Color color, String fileSuffix, String name, int pawnDirectionRow) {
-        _model = model;
-        _teamColor = color;
-        _fileSuffix = fileSuffix;
-        _name = name;
-        _time = new Time();
-        _pawnDirectionRow = pawnDirectionRow;
+        this.model = model;
+        this.teamColor = color;
+        this.fileSuffix = fileSuffix;
+        this.name = name;
+        this.time = new Time();
+        this.pawnDirectionRow = pawnDirectionRow;
     }
 
     //
@@ -49,43 +49,43 @@ public class Team {
     //
     
     public ChessModel getModel() {
-        return _model;
+        return model;
     }
 
     public Color getColor() { 
-        return _teamColor;
+        return teamColor;
     }
 
     public String getFileSuffix() {
-        return _fileSuffix;
+        return fileSuffix;
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
 
     public Time getTime() {
-        return _time;
+        return time;
     }
 
     public int getPawnDirectionRow() {
-        return _pawnDirectionRow;
+        return pawnDirectionRow;
     }
 
     public int getEnPassantRow() {
-        return _enPassantPiece.getCell().getRow() - _pawnDirectionRow;
+        return enPassantPiece.getCell().getRow() - pawnDirectionRow;
     }
 
     public int getEnPassantCol() {
-        return _enPassantPiece.getCell().getCol();
+        return enPassantPiece.getCell().getCol();
     }
 
     public Piece getEnPassantPiece() {
-        return _enPassantPiece;
+        return enPassantPiece;
     }
 
     public int getKingRow() {
-        return _pawnDirectionRow == -1 ? 7 : 0;
+        return pawnDirectionRow == -1 ? 7 : 0;
     }
 
     public int getKingCol() {
@@ -93,7 +93,7 @@ public class Team {
     }
 
     public int getPromotionRow() {
-        return _pawnDirectionRow == -1 ? 0 : 7;
+        return pawnDirectionRow == -1 ? 0 : 7;
     }
 
     //
@@ -101,8 +101,8 @@ public class Team {
     //
 
     public void setName(String name) {
-        _name = name;
-        _onNameChangedEvent.invoke(name);
+        this.name = name;
+        onNameChangedEvent.invoke(name);
     }
 
     //
@@ -110,11 +110,11 @@ public class Team {
     //
 
     public Event<String> getOnNameChangedEvent() {
-        return _onNameChangedEvent;
+        return onNameChangedEvent;
     }
 
     public Event<Time> getOnTimeChangedEvent() {
-        return _onTimeChangedEvent;
+        return onTimeChangedEvent;
     }
 
     //
@@ -122,8 +122,8 @@ public class Team {
     //
 
     public void tickTime() {
-        _time.tick();
-        _onTimeChangedEvent.invoke(_time);
+        time.tick();
+        onTimeChangedEvent.invoke(time);
     }
 
     //
@@ -131,15 +131,15 @@ public class Team {
     //
 
     public boolean isEnPassant(int row, int col) {
-        return _enPassantPiece != null && getEnPassantRow() == row && getEnPassantCol() == col;
+        return enPassantPiece != null && getEnPassantRow() == row && getEnPassantCol() == col;
     }
 
     public void setEnPassant(Piece piece) {
-        _enPassantPiece = piece;
+        enPassantPiece = piece;
     }
 
     public void clearEnPassant() {
-        _enPassantPiece = null;
+        enPassantPiece = null;
     }
 
     //
@@ -147,7 +147,7 @@ public class Team {
     //
 
     public boolean hasCastlingRightKingSide() {
-        Board board = _model.getBoard();
+        Board board = model.getBoard();
         Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
         Piece rook = board.getCell(getKingRow(), getKingCol() + 3).getPiece();
 
@@ -159,7 +159,7 @@ public class Team {
     }
 
     public void setHasCastlingRightKingSide(boolean hasCastlingRightKingSide) {
-        Board board = _model.getBoard();
+        Board board = model.getBoard();
         Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
         Piece rook = board.getCell(getKingRow(), getKingCol() + 3).getPiece();
 
@@ -172,7 +172,7 @@ public class Team {
     }
 
     public boolean hasCastlingRightQueenSide() {
-        Board board = _model.getBoard();
+        Board board = model.getBoard();
         Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
         Piece rook = board.getCell(getKingRow(), getKingCol() - 4).getPiece();
 
@@ -184,7 +184,7 @@ public class Team {
     }
 
     public void setHasCastlingRightQueenSide(boolean hasCastlingRightQueenSide) {
-        Board board = _model.getBoard();
+        Board board = model.getBoard();
         Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
         Piece rook = board.getCell(getKingRow(), getKingCol() - 4).getPiece();
 
@@ -202,7 +202,7 @@ public class Team {
         }
 
         for (int i = getKingCol() + 1; i < getKingCol() + 3; i++) {
-            if (_model.getBoard().getCell(getKingRow(), i).getPiece() != null) {
+            if (model.getBoard().getCell(getKingRow(), i).getPiece() != null) {
                 return false;
             }
         }
@@ -216,7 +216,7 @@ public class Team {
         }
 
         for (int i = getKingCol() - 1; i > getKingCol() - 4; i--) {
-            if (_model.getBoard().getCell(getKingRow(), i).getPiece() != null) {
+            if (model.getBoard().getCell(getKingRow(), i).getPiece() != null) {
                 return false;
             }
         }
@@ -225,10 +225,10 @@ public class Team {
     }
 
     public Cell getCastlingKingSideCell() {
-        return _model.getBoard().getCell(getKingRow(), getKingCol() + 2);
+        return model.getBoard().getCell(getKingRow(), getKingCol() + 2);
     }
 
     public Cell getCastlingQueenSideCell() {
-        return _model.getBoard().getCell(getKingRow(), getKingCol() - 2);
+        return model.getBoard().getCell(getKingRow(), getKingCol() - 2);
     }
 }

@@ -9,13 +9,13 @@ import utils.Delegate;
  * Class representing a client communicating with our server.
  */
 public class Client {
-    private Socket _socket;
-    private InputStream _in;
-    private OutputStream _out;
-    private Thread _messageThread;
-    private boolean _running;
-    private Delegate<Message> _messageDelegate;
-    private Delegate<Client> _onDisconnectDelegate;
+    private Socket socket;
+    private InputStream in;
+    private OutputStream out;
+    private Thread messageThread;
+    private boolean running;
+    private Delegate<Message> messageDelegate;
+    private Delegate<Client> onDisconnectDelegate;
 
     /**
      * Creates a new client.
@@ -23,11 +23,11 @@ public class Client {
      * @param socket The socket to use for communication.
      */
     public Client(Socket socket) {
-        _socket = socket;
+        this.socket = socket;
         try {
             // Collect the streams
-            _in = _socket.getInputStream();
-            _out = _socket.getOutputStream();
+            in = socket.getInputStream();
+            out = socket.getOutputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,13 +41,13 @@ public class Client {
     public void sendMessage(Message message) {
         try {
             // Create an object output stream
-            ObjectOutputStream out = new ObjectOutputStream(_out);
+            ObjectOutputStream objectStream = new ObjectOutputStream(out);
 
             // Write the message
-            out.writeObject(message);
+            objectStream.writeObject(message);
 
             // Flush the stream
-            out.flush();
+            objectStream.flush();
         } catch (SocketException e) {
             // The socket was closed
             stop();
@@ -62,7 +62,7 @@ public class Client {
      * @param messageDelegate The delegate to call when a message is received.
      */
     public void setMessageDelegate(Delegate<Message> messageDelegate) {
-        _messageDelegate = messageDelegate;
+        this.messageDelegate = messageDelegate;
     }
 
     /**
@@ -71,38 +71,38 @@ public class Client {
      * @param onDisconnectDelegate The delegate to call when the client disconnects.
      */
     public void setOnDisconnectDelegate(Delegate<Client> onDisconnectDelegate) {
-        _onDisconnectDelegate = onDisconnectDelegate;
+        this.onDisconnectDelegate = onDisconnectDelegate;
     }
 
     /**
      * Starts the client.
      */
     public void start() {
-        _running = true;
+        running = true;
 
         // Start the thread that will receive messages
-        _messageThread = new Thread(() -> receiveLoop());
-        _messageThread.start();
+        messageThread = new Thread(() -> receiveLoop());
+        messageThread.start();
     }
 
     /**
      * Stops the client.
      */
     public void stop() {
-        _running = false;
+        running = false;
 
         try {
             // If the client is still connected, close the socket
-            if (!_socket.isClosed()) {
-                _socket.close();
+            if (!socket.isClosed()) {
+                socket.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // Call the disconnect delegate
-        if (_onDisconnectDelegate != null) {
-            _onDisconnectDelegate.invoke(this);
+        if (onDisconnectDelegate != null) {
+            onDisconnectDelegate.invoke(this);
         }
     }
     
@@ -110,13 +110,13 @@ public class Client {
      * Loop that receives messages from the client.
      */
     private void receiveLoop() {
-        while (_running) {
+        while (running) {
             try {
                 // Create an object input stream
-                ObjectInputStream in = new ObjectInputStream(_in);
+                ObjectInputStream objectStream = new ObjectInputStream(in);
 
                 // Read the message
-                Message message = (Message) in.readObject();
+                Message message = (Message) objectStream.readObject();
 
                 // If the message is null, the client has disconnected
                 if (message == null) {
@@ -124,8 +124,8 @@ public class Client {
                 }
 
                 // If there is a delegate for this message type, call it
-                if (_messageDelegate != null) {
-                    _messageDelegate.invoke(message);
+                if (messageDelegate != null) {
+                    messageDelegate.invoke(message);
                 }
 
             } catch (SocketException e) {

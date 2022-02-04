@@ -4,44 +4,44 @@ import utils.Event;
 
 public class Cell {
 
-    private final int _row;
-    private final int _col;
+    private final int row;
+    private final int col;
 
-    private Board _board;
-    private Piece _piece;
+    private Board board;
+    private Piece piece;
 
     //
     // Events
     //
 
-    private Event<Piece> _onPieceChangedEvent = new Event<>();
+    private Event<Piece> onPieceChangedEvent = new Event<>();
 
     //
     // Constructors
     //
 
     public Cell(Board board, int row, int col){
-        this._board = board;
-        this._row = row;
-        this._col = col;
+        this.board = board;
+        this.row = row;
+        this.col = col;
         selectPiece();
     }
 
     private void selectPiece() {
-        switch (_row * _board.getGameSize() + _col) {
-            case 8, 9, 10, 11, 12, 13, 14, 15 -> _piece = new PiecePawn(this, _board.getChessModel().getTeamBlack());
-            case 0, 7 -> _piece = new PieceRook(this, _board.getChessModel().getTeamBlack());
-            case 1, 6 -> _piece = new PieceKnight(this, _board.getChessModel().getTeamBlack());
-            case 2, 5 -> _piece = new PieceBishop(this, _board.getChessModel().getTeamBlack());
-            case 3 -> _piece = new PieceQueen(this, _board.getChessModel().getTeamBlack());
-            case 4 -> _piece = new PieceKing(this, _board.getChessModel().getTeamBlack());
-            case 48, 49, 50, 51, 52, 53, 54, 55 -> _piece = new PiecePawn(this, _board.getChessModel().getTeamWhite());
-            case 56, 63 -> _piece = new PieceRook(this, _board.getChessModel().getTeamWhite());
-            case 57, 62 -> _piece = new PieceKnight(this, _board.getChessModel().getTeamWhite());
-            case 58, 61 -> _piece = new PieceBishop(this, _board.getChessModel().getTeamWhite());
-            case 59 -> _piece = new PieceQueen(this, _board.getChessModel().getTeamWhite());
-            case 60 -> _piece = new PieceKing(this, _board.getChessModel().getTeamWhite());
-            default -> _piece = null;
+        switch (row * board.getGameSize() + col) {
+            case 8, 9, 10, 11, 12, 13, 14, 15 -> piece = new PiecePawn(this, board.getChessModel().getTeamBlack());
+            case 0, 7 -> piece = new PieceRook(this, board.getChessModel().getTeamBlack());
+            case 1, 6 -> piece = new PieceKnight(this, board.getChessModel().getTeamBlack());
+            case 2, 5 -> piece = new PieceBishop(this, board.getChessModel().getTeamBlack());
+            case 3 -> piece = new PieceQueen(this, board.getChessModel().getTeamBlack());
+            case 4 -> piece = new PieceKing(this, board.getChessModel().getTeamBlack());
+            case 48, 49, 50, 51, 52, 53, 54, 55 -> piece = new PiecePawn(this, board.getChessModel().getTeamWhite());
+            case 56, 63 -> piece = new PieceRook(this, board.getChessModel().getTeamWhite());
+            case 57, 62 -> piece = new PieceKnight(this, board.getChessModel().getTeamWhite());
+            case 58, 61 -> piece = new PieceBishop(this, board.getChessModel().getTeamWhite());
+            case 59 -> piece = new PieceQueen(this, board.getChessModel().getTeamWhite());
+            case 60 -> piece = new PieceKing(this, board.getChessModel().getTeamWhite());
+            default -> piece = null;
         }
     }
 
@@ -49,18 +49,18 @@ public class Cell {
     // Getters
     //
 
-    public Board getBoard () { return this._board; }
+    public Board getBoard () { return this.board; }
 
     public int getRow() {
-        return _row;
+        return row;
     }
 
     public int getCol(){
-        return _col;
+        return col;
     }
 
     public Piece getPiece() {
-        return _piece;
+        return piece;
     }
 
     //
@@ -68,7 +68,7 @@ public class Cell {
     //
 
     public Event<Piece> getOnPieceChangedEvent() {
-        return _onPieceChangedEvent;
+        return onPieceChangedEvent;
     }
 
     //
@@ -76,13 +76,13 @@ public class Cell {
     //
 
     public void setPiece(Piece piece) {
-        this._piece = piece;
-        _onPieceChangedEvent.invoke(piece);
+        this.piece = piece;
+        onPieceChangedEvent.invoke(piece);
     }
 
     @Override
     public String toString() {
-        return _board.positionToString(_row, _col);
+        return board.positionToString(row, col);
     }
 }
 
