@@ -7,9 +7,10 @@ public class MoveNotation {
     private int _row,_col, _fromCol;
     private Piece _piece;
     private boolean _eliminates;
-    private boolean _enPassant;
+    private boolean _enPassant, _promotion;
     private Board _board;
 
+    // For normal moves and captures
     public MoveNotation(int fromCol,int toRow, int toCol, Piece piece, boolean eliminates, Board board) {
         _row = toRow;
         _col = toCol;
@@ -17,16 +18,33 @@ public class MoveNotation {
         _piece = piece;
         _eliminates = eliminates;
         _enPassant = false;
+        _promotion = false;
         _board = board;
     }
 
+    // For en passant
     public MoveNotation(boolean enPassant) {
         _enPassant = true;
+    }
+
+    // For pawn promotion
+    public MoveNotation(int toRow, int toCol, Piece promotedTo, Board board) {
+        _enPassant = false;
+        _row = toRow;
+        _col = toCol;
+        _piece = promotedTo;
+        _board = board;
+        _promotion = true;
     }
 
 
     public String toString() {
         if(_enPassant) return "e.p";
+        else if(_promotion) {
+            String colAndRow = _board.positionToString(_row,_col);
+            String piecePrefix = _piece.getPieceType().getFilePrefix();
+            return colAndRow + piecePrefix;
+        }
         else {
             String colAndRow = _board.positionToString(_row,_col);
             String piecePrefix = _piece.getPieceType().getFilePrefix();

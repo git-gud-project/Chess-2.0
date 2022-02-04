@@ -87,7 +87,7 @@ public class ChessControl {
 
         Team otherTeam = _model.getOtherTeam(_model.getCurrentTeam());
 
-        MoveNotation mN = new MoveNotation(cell.getRow() - team.getPawnDirectionRow(), row, col, piece, false, _model.getBoard());
+        MoveNotation mN = new MoveNotation(row, col, promoted, _model.getBoard());
 
         _model.registerMove(false, mN);
 

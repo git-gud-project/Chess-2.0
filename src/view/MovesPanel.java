@@ -9,7 +9,7 @@ import java.util.ArrayList;
 // Right now only works for 2 players
 public class MovesPanel extends JPanel {
     private final DefaultListModel<String> _listModel;
-    private int _turn, _moves;
+    private int _turn, _moves, _spaceSize;
     JScrollPane _scrollpane;
 
     public MovesPanel(ChessModel model) {
@@ -24,6 +24,7 @@ public class MovesPanel extends JPanel {
         _scrollpane = new JScrollPane(_moveList);
         _turn = 0;
         _moves = 0;
+        _spaceSize = 0;
 
         add(_scrollpane);
 
@@ -31,17 +32,25 @@ public class MovesPanel extends JPanel {
          * Setup events
          */
 
+        // Ser att i ChessModels registerMove funktion så körs nu invoke(mN), kan man nu ändra denna funktion så att den inte längre måste kolla med moveList om den ändrats? - Isak
+
         model.getOnMoveEvent().addDelegate(move -> {
             ArrayList<MoveNotation> moveList = model.getMoveList();
             if(_moves != moveList.size()) {
                _moves = moveList.size();
                 if (_moves % 2 == 1) {
                     _turn++;
+                    _spaceSize = 8 - moveList.get(_moves-1).toString().length();  // The distance to be used between two notations
+                    System.out.println(_spaceSize);
                     _listModel.addElement(String.valueOf(_turn) + "     " + moveList.get(_moves-1));
                 } else {
                     String tmp = _listModel.lastElement();
                     _listModel.removeElementAt(_turn-1);
-                    _listModel.addElement(tmp + "     " + moveList.get(_moves-1));
+                    String space = "";
+                    for(int i=0; i<_spaceSize; i++) {
+                        space = space.concat(" ");
+                    }
+                    _listModel.addElement(tmp + space + moveList.get(_moves-1));
                 }
             }
             JScrollBar vertical = _scrollpane.getVerticalScrollBar();
