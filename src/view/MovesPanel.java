@@ -32,7 +32,6 @@ public class MovesPanel extends JPanel {
          * Setup events
          */
 
-        // Ser att i ChessModels registerMove funktion så körs nu invoke(mN), kan man nu ändra denna funktion så att den inte längre måste kolla med moveList om den ändrats? - Isak
 
         model.getOnMoveEvent().addDelegate(move -> {
             ArrayList<MoveNotation> moveList = model.getMoveList();
