@@ -4,32 +4,69 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+/**
+ * The board that the game is played on.
+ */
 public class Board {
 
+    /**
+     * Matrix of cells.
+     */
     private Cell[][] _cellArray;
 
+    /**
+     * The chess model.
+     */
     private ChessModel _model;
+
+    /**
+     * The size of the board.
+     */
     private int _gameSize;
 
+    /**
+     * Constructs a new board.
+     * 
+     * @param model the chess model
+     * @param gameSize the size of the board
+     */
     public Board(ChessModel model, int gameSize){
         this._model = model;
         this._gameSize = gameSize;
         initCellArray(gameSize);
     }
 
+    /**
+     * Initializes the cell matrix.
+     * 
+     * @param gameSize the size of the board
+     */
     private void initCellArray(int gameSize) {
         _cellArray = new Cell[gameSize][gameSize];
-        for(int row = 0; row < gameSize; row++){
-            for(int col = 0; col < gameSize; col++){
+        for(int row = 0; row < gameSize; row++) {
+            for(int col = 0; col < gameSize; col++) {
                 _cellArray[row][col] = new Cell(this, row, col);
             }
         }
     }
 
+    /**
+     * Get a cell from the cell matrix.
+     * 
+     * @param row the row of the cell
+     * @param col the column of the cell
+     * @return the cell at the specified position
+     */
     public Cell getCell(int row, int col) {
         return _cellArray[row][col];
     }
 
+    /**
+     * Get a cell from the cell matrix from a string, like "a1".
+     * 
+     * @param position the position of the cell
+     * @return the cell at the specified position
+     */
     public Cell getCell(String position) {
         int row = position.charAt(1) - '1';
         int col = position.charAt(0) - 'a';
@@ -37,18 +74,49 @@ public class Board {
         return getCell(row, col);
     }
 
+    /**
+     * Get the chess model.
+     * 
+     * @return the chess model
+     */
     public ChessModel getChessModel() { return this._model; }
 
+    /**
+     * Get the game size.
+     * 
+     * @return the game size
+     */
     public int getGameSize() { return this._gameSize; }
 
+    /**
+     * If a cell is empty.
+     * 
+     * @param row the row of the cell
+     * @param col the column of the cell
+     * @return if the cell is empty
+     */
     public boolean isEmpty(int row, int col) {
         return (_cellArray[row][col].getPiece() == null);
     }
 
+    /**
+     * If a position is valid.
+     * 
+     * @param row the row of the position
+     * @param col the column of the position
+     * @return if the position is valid
+     */
     public boolean isValid(int row, int col) {
         return ((row < _gameSize && row >= 0) && (col < _gameSize && col >= 0));
     }
 
+    /**
+     * If a piece can capture in this position.
+     * 
+     * @param piece the piece
+     * @param row the row of the position
+     * @param col the column of the position
+     */
     public boolean canCapture(Piece piece, int row, int col) {
         if(!isValid(row, col)) return false;
         if(isEmpty(row, col)) return false;
@@ -56,6 +124,13 @@ public class Board {
         return true;
     }
 
+    /**
+     * If a certain move is legal.
+     * 
+     * @param piece the piece
+     * @param move the move
+     * @return if the move is legal
+     */
     public boolean isLegalMove(Piece piece, Move move) {
 
         Cell tempCell = piece.getCell();
@@ -77,6 +152,12 @@ public class Board {
         }
     }
 
+    /**
+     * Get a list of all enemy moves.
+     * 
+     * @param playerTeam the team of the player
+     * @return the list of all enemy moves
+     */
     private List<Move> allEnemyMoves(Team playerTeam){
         List<Move> enemyMovesList =new ArrayList<>();
         for(int row=0;row<_gameSize;row++){
@@ -92,6 +173,12 @@ public class Board {
         return enemyMovesList;
     }
 
+    /**
+     * Get a list of all moves.
+     * 
+     * @param playerTeam the team of the player
+     * @return the list of all moves
+     */
     private List<Move> allTeamMoves(Team playerTeam){
         List<Move> teamMovesList =new ArrayList<>();
         for(int row=0;row<_gameSize;row++){
@@ -107,6 +194,11 @@ public class Board {
         return teamMovesList;
     }
 
+    /**
+     * if it is checkmate.
+     * 
+     * @param playerTeam the team of the player
+     */
     public boolean isCheckmate(Team currentPlayerTeam){
         if(allTeamMoves(currentPlayerTeam).isEmpty()){
             System.out.println("SCHACKMATT!");
@@ -117,7 +209,12 @@ public class Board {
         }
     }
 
-    //Checks if the king is in check.
+    /**
+     * Check if it is check.
+     * 
+     * @param team the team of the player
+     * @return if it is check
+     */
     public boolean isCheck(Team team){
         List<Move> allEnemyMoves = allEnemyMoves(team);
         for(Move m:allEnemyMoves){
@@ -129,6 +226,12 @@ public class Board {
         return false;
     }
 
+    /**
+     * Get the cell where the king is.
+     * 
+     * @param team the team of the player
+     * @return the cell where the king is
+     */
     public Cell getKingCell(Team team){
         Cell kingCell=null;
         for(int row=0;row<_gameSize;row++){
@@ -143,6 +246,12 @@ public class Board {
         return kingCell;
     }
 
+    /**
+     * Validate a list of moves, filter out illegal moves.
+     * 
+     * @param piece the piece
+     * @param moves the list of moves
+     */
     public void validateMoves(Piece piece, List<Move> moves) {
         // Remove all illegal moves from the list
         Iterator<Move> it = moves.iterator();
@@ -154,12 +263,31 @@ public class Board {
         }
     }
 
+    /**
+     * Transform a row/col to a string.
+     * 
+     * @param row the row of the cell
+     * @param col the column of the cell
+     * @return the string
+     */
     public String positionToString(int row, int col) {
         // Row numbers are reversed
         row = _gameSize - row - 1;
         return "" + (char)('a' + col) + (row + 1);
     }
 
+    /**
+     * Calculate a moveset.
+     * 
+     * @param piece the piece
+     * @param registry a registry of the moves, out parameter
+     * @param dirRow the row direction
+     * @param dirCol the column direction
+     * @param maxSteps the maximum amount of steps
+     * @param skipOwn whether to skip own pieces
+     * @param cantCapture whether to stop if a piece is found
+     * @param requireCapture whether to require capturing
+     */
     public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol, int maxSteps, boolean skipOwn, boolean cantCapture, boolean requireCapture) {
         Team team = piece.getTeam();
         int row = piece.getCell().getRow();
@@ -185,10 +313,10 @@ public class Board {
             Piece otherPiece = nextCell.getPiece();
             
             if (otherPiece == null) {
+                // Check if we can capture en passant
                 if (piece instanceof PiecePawn && requireCapture) {
                     Team otherTeam = _model.getOtherTeam(team);
 
-                    // Check if we can capture en passant
                     if (otherTeam.isEnPassant(nextRow, nextCol)) {
                         Move move = new Move(nextCell, true);
                         move.setIsEnPassant(true);
@@ -223,174 +351,28 @@ public class Board {
 
     }
 
+    /**
+     * Calculate a moveset.
+     * 
+     * @param piece the piece
+     * @param registry a registry of the moves, out parameter
+     * @param dirRow the row direction
+     * @param dirCol the column direction
+     * @param maxSteps the maximum amount of steps
+     */
     public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol, int maxSteps) {
         calculateMoves(piece, registry, dirRow, dirCol, maxSteps, false, false, false);
     }
 
+    /**
+     * Calculate a moveset.
+     * 
+     * @param piece the piece
+     * @param registry a registry of the moves, out parameter
+     * @param dirRow the row direction
+     * @param dirCol the column direction
+     */
     public void calculateMoves(Piece piece, List<Move> registry, int dirRow, int dirCol) {
         calculateMoves(piece, registry, dirRow, dirCol, 0, false, false, false);
-    }
-
-    public String toFEN() {
-        /**
-         * https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
-         */
-        String fen = "";
-        for(int row = 0; row < _gameSize; row++){
-            int emptyCells = 0;
-            for(int col = 0; col < _gameSize; col++){
-                if(_cellArray[row][col].getPiece() == null){
-                    emptyCells++;
-                }
-                else{
-                    if(emptyCells > 0){
-                        fen += emptyCells;
-                        emptyCells = 0;
-                    }
-                    Piece piece = _cellArray[row][col].getPiece();
-                    String character = piece.getPieceType().getFilePrefix();
-                    if (piece.getTeam() == _model.getTeamWhite()) {
-                        character = character.toUpperCase();
-                    }
-                    fen += character;
-                }
-            }
-            if(emptyCells > 0){
-                fen += emptyCells;
-            }
-            if(row != _gameSize - 1){
-                fen += "/";
-            }
-        }
-        
-        // Add 'w' or 'b' for the side to move
-        fen += " " + _model.getCurrentTeam().getFileSuffix();
-
-        // Castling rights
-        Team white = _model.getTeamWhite();
-        Team black = _model.getTeamBlack();
-        boolean whiteKingSide = white.hasCastlingRightKingSide();
-        boolean whiteQueenSide = white.hasCastlingRightQueenSide();
-        boolean blackKingSide = black.hasCastlingRightKingSide();
-        boolean blackQueenSide = black.hasCastlingRightQueenSide();
-        fen += " ";
-        if (!whiteKingSide && !whiteQueenSide && !blackKingSide && !blackQueenSide) {
-            fen += "-";
-        } else {
-            if (whiteKingSide) {
-                fen += "K";
-            }
-            if (whiteQueenSide) {
-                fen += "Q";
-            }
-            if (blackKingSide) {
-                fen += "k";
-            }
-            if (blackQueenSide) {
-                fen += "q";
-            }
-        }
-
-        // En passant target square
-        Team currentTeam = _model.getOtherTeam(_model.getCurrentTeam());
-
-        if (currentTeam.getEnPassantPiece() != null) {
-            Piece enPassantPiece = currentTeam.getEnPassantPiece();
-            Cell enPassantCell = enPassantPiece.getCell();
-            fen += " " + positionToString(enPassantCell.getRow(), enPassantCell.getCol());
-        }
-        else {
-            fen += " -";
-        }
-
-        // Half move clock
-        fen += " " + _model.getHalfMoves();
-
-        // Full move number
-        fen += " " + _model.getFullMoves();
-
-        return fen; 
-    }
-
-    public void loadFEN(String fen) {
-        String[] parts = fen.split(" ");
-        String[] rows = parts[0].split("/");
-        int row = 0;
-        int col = 0;
-        for(String rowString:rows){
-            for(int i = 0; i < rowString.length(); i++){
-                char c = rowString.charAt(i);
-                if(Character.isDigit(c)){
-                    for (int j = 0; j < Character.getNumericValue(c); j++) {
-                        Cell cell = getCell(row, col);
-                        cell.setPiece(null);
-                        col++;
-                    }
-                }
-                else{
-                    Piece piece = null;
-                    Team team = c == Character.toUpperCase(c) ? _model.getTeamWhite() : _model.getTeamBlack();
-                    Cell cell = getCell(row, col);
-                    switch(Character.toUpperCase(c)) {
-                        case 'K':
-                            piece = new PieceKing(cell, team);
-                            break;
-                        case 'Q':
-                            piece = new PieceQueen(cell, team);
-                            break;
-                        case 'R':
-                            piece = new PieceRook(cell, team);
-                            break;
-                        case 'B':
-                            piece = new PieceBishop(cell, team);
-                            break;
-                        case 'N':
-                            piece = new PieceKnight(cell, team);
-                            break;
-                        case 'P':
-                            piece = new PiecePawn(cell, team);
-                            piece.setHasMoved(cell.getRow() != team.getKingRow() + team.getPawnDirectionRow());
-                            break;
-                    }
-                    _cellArray[row][col].setPiece(piece);
-                    col++;
-                }
-            }
-            row++;
-            col = 0;
-        }
-
-        Team team = parts[1].equals("w") ? _model.getTeamWhite() : _model.getTeamBlack();
-        _model.setCurrentTeam(team);
-
-        // Castling rights
-        String castlingRights = parts[2];
-        Team white = _model.getTeamWhite();
-        Team black = _model.getTeamBlack();
-        
-        white.setHasCastlingRightKingSide(castlingRights.contains("K"));
-        white.setHasCastlingRightQueenSide(castlingRights.contains("Q"));
-        black.setHasCastlingRightKingSide(castlingRights.contains("k"));
-        black.setHasCastlingRightQueenSide(castlingRights.contains("q"));
-
-        // En passant target square
-        if (parts[3].equals("-")) {
-            _model.getOtherTeam(_model.getCurrentTeam()).clearEnPassant();
-        }
-        else {
-            Cell cell = getCell(parts[3]);
-            _model.getOtherTeam(_model.getCurrentTeam()).setEnPassant(cell.getPiece());
-        }
-
-        // Half move clock
-        _model.setHalfMoves(Integer.parseInt(parts[4]));
-
-        // Full move number
-        _model.setFullMoves(Integer.parseInt(parts[5]));
-
-        /**
-         * Invoke events
-         */
-        _model.getOnGameLoadedEvent().invoke(fen);
     }
 }

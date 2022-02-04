@@ -39,7 +39,7 @@ public class Menu extends JMenuBar {
         file.add(save);
 
         save.addActionListener((e) -> {
-            String content = _view.getModel().getBoard().toFEN();
+            String content = _view.getModel().toFEN();
 
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save FEN");
@@ -72,7 +72,7 @@ public class Menu extends JMenuBar {
                 File chosenFile = fileChooser.getSelectedFile();
                 try {
                     String content = Files.readString(chosenFile.toPath());
-                    _view.getModel().getBoard().loadFEN(content);
+                    _view.getModel().loadFEN(content);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

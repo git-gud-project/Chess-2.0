@@ -2,89 +2,154 @@ package model;
 
 import java.util.Iterator;
 
+/**
+ * Base class for all chess pieces.
+ */
 public abstract class Piece {
+    /**
+     * The cell that the piece is currently in.
+     */
     private Cell _cell;
+
+    /**
+     * The team that the piece belongs to.
+     */
     private final Team _team;
+
+    /**
+     * The type of the piece.
+     */
     private PieceType _type;
+
+    /**
+     * If this piece has moved from its starting position.
+     */
     private boolean _hasMoved;
 
-    public Piece(Cell cell, Team team, PieceType type){
+    /**
+     * Constructs a new piece.
+     * 
+     * @param cell the cell that the piece is currently in
+     * @param team the team that the piece belongs to
+     * @param type the type of the piece
+     */
+    public Piece(Cell cell, Team team, PieceType type) {
         this._cell = cell;
         this._team = team;
         _type = type;
     }
 
-    //Abstract classes
-    public abstract Iterator<Move> getPossibleMoves();
-
-    Iterable<Cell> iterateMoves() { return null; }
-
-    //Getters and Setters.
-
-    public PieceType getPieceType(){return _type;}
-
+    /**
+     * Get the cell that the piece is currently in.
+     * 
+     * @return the cell that the piece is currently in
+     */
     public Cell getCell() {
         return this._cell;
     }
 
-    public Team getTeam(){
+    /**
+     * Get the team that the piece belongs to.
+     * 
+     * @return the team that the piece belongs to
+     */
+    public Team getTeam() {
         return _team;
     }
 
-    public String getIconPath() {
-        return "res/" + _type.getFilePrefix() + _team.getFileSuffix() + ".png";
-    }
-
-    // Common methods for all pieces.
     /**
-     * A help method that checks if the move contains a possible eliminations of a piece.
-     * @param move - The move we want to move the piece to.
-     * @return true if there's a possible elimination or false if there's none.
+     * Get the type of the piece.
+     * 
+     * @return the type of the piece
      */
-    public boolean checkEliminate(Move move){
-        if((move.getCell().getPiece() != null) && (move.getCell().getPiece().getTeam() != this.getTeam())){
-            return true;
-        }
-        else{
-            return false;
-        }
+    public PieceType getPieceType() {
+        return _type;
     }
 
-    public void onMove(Cell oldCell, Cell newCell, boolean State) {
-        this._hasMoved = true;
-    }
-
-    public void beforeMove(Cell oldCell, Cell newCell) {
-        
-    }
-
+    /**
+     * Get if the piece has moved from its starting position.
+     * 
+     * @return if the piece has moved from its starting position
+     */
     public boolean hasMoved() {
         return _hasMoved;
     }
 
+    /**
+     * Sets if the piece has moved from its starting position.
+     * 
+     * @param hasMoved if the piece has moved from its starting position
+     */
     public void setHasMoved(boolean hasMoved) {
         this._hasMoved = hasMoved;
     }
 
-    //moves the cell of the piece.
+    /**
+     * Get the path to the image file for the piece.
+     * 
+     * @return the path to the image file for the piece
+     */
+    public String getIconPath() {
+        return "res/" + _type.getFilePrefix() + _team.getFileSuffix() + ".png";
+    }
+
+    /**
+     * Gets all possible moves for this piece.
+     * 
+     * @return all possible moves for this piece
+     */
+    public abstract Iterator<Move> getPossibleMoves();
+
+    /**
+     * Called when the piece is moved.
+     * 
+     * @param oldCell the cell that the piece was in before it was moved
+     * @param newCell the cell that the piece is now in
+     * @param state if this is a fake move
+     */
+    public void onMove(Cell oldCell, Cell newCell, boolean state) {
+        this._hasMoved = true;
+    }
+
+    /**
+     * Called before the piece is moved.
+     * 
+     * @param oldCell the cell that the piece was in before it was moved
+     * @param newCell the cell that the piece is now in
+     */
+    public void beforeMove(Cell oldCell, Cell newCell) {
+        
+    }
+
+    /**
+     * Move the piece to a new cell.
+     * 
+     * @param newCell the cell that the piece is now in
+     */
     public void move(Cell newCell) {
         Cell oldCell = this.getCell();
 
+        // Call the beforeMove method
         beforeMove(oldCell, newCell);
 
+        // Move the piece
         _cell.setPiece(null);
         _cell = newCell;
         _cell.setPiece(this);
 
+        // Call the onMove method
         onMove(oldCell, newCell, true);
     }
 
+    /**
+     * Performs a fake move.
+     * 
+     * @param newCell the cell that the piece is now in
+     */
     public void fakeMove(Cell newCell) {
-        Cell oldCell = this.getCell();
+        // Move the piece
         _cell.setPiece(null);
         _cell = newCell;
         _cell.setPiece(this);
-
-        //onMove(oldCell, newCell, false);
     }
 }

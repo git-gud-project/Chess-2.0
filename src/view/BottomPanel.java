@@ -56,11 +56,8 @@ public class BottomPanel extends JPanel {
     }
 
     private void updateInfoLabel() {
-        // Create a notation of the current board state
-        Board board = _model.getBoard();
-
         // Create a Forsyth–Edwards Notation (FEN) of the board
-        String fen = board.toFEN();
+        String fen = _model.toFEN();
 
         // Update the label with the FEN notation
         _infoLabel.setText(fen);

@@ -13,7 +13,7 @@ public class BoardCell extends CellButton {
     private int _col;
     private boolean _isElimination;
 
-    private Color _defaultColor;
+    private Color _defaultColor = null;
     
     public BoardCell(int row, int col) {
         super();
@@ -39,7 +39,9 @@ public class BoardCell extends CellButton {
     }
 
     public void highlight(Color color) {
-        _defaultColor = this.getBackground();
+        if (_defaultColor == null) {
+            _defaultColor = getBackground();
+        }
         // Take a color inbetween the default color and the highlight color, using ChessView.HIGHLIGHT_ALPHA
         Color highlightColor = new Color(
             (int) (color.getRed() * ChessView.HIGHLIGHT_ALPHA + _defaultColor.getRed() * (1 - ChessView.HIGHLIGHT_ALPHA)),
