@@ -7,6 +7,7 @@ import java.util.Iterator;
 public class PieceBishop implements PieceBehavior {
     private ArrayList<Move> possibleMoves;
 
+    @Override
     public Iterator<Move> getPossibleMoves(Cell cell) {
         possibleMoves.clear();
 
@@ -18,5 +19,10 @@ public class PieceBishop implements PieceBehavior {
         board.calculateMoves(cell, possibleMoves, -1, -1);
 
         return possibleMoves.iterator();
+    }
+
+    @Override
+    public PieceType getPieceType() {
+        return PieceType.BISHOP;
     }
 }

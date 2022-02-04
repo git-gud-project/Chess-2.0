@@ -15,8 +15,6 @@ public interface PieceBehavior {
         //
     }
 
-    public String getIconPath();
-
     /**
      * Called when the piece is moved.
      * 

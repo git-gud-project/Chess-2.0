@@ -146,7 +146,7 @@ public class ChessModel implements Serializable {
             case KNIGHT:
                 return new PieceKnight(cell, team);
             case BISHOP:
-                return new PieceBishop(cell, team);
+                return new Piece(cell, team, new PieceBishop());
             case QUEEN:
                 return new PieceQueen(cell, team);
             case KING:
