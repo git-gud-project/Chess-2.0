@@ -1,8 +1,16 @@
-package model;
+package model.pieces;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import model.Board;
+import model.Cell;
+import model.Move;
+import model.Piece;
+import model.PieceBehavior;
+import model.PieceType;
+import model.Team;
 
 public class PiecePawn implements PieceBehavior {
 

@@ -3,6 +3,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import model.pieces.*;
 import utils.Event;
 
 public class ChessModel implements Serializable {

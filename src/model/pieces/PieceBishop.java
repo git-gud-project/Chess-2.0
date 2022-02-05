@@ -1,10 +1,16 @@
-package model;
+package model.pieces;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class PieceQueen implements PieceBehavior {
+import model.Board;
+import model.Cell;
+import model.Move;
+import model.PieceBehavior;
+import model.PieceType;
+
+public class PieceBishop implements PieceBehavior {
     private ArrayList<Move> possibleMoves = new ArrayList<>();
 
     @Override
@@ -14,19 +20,15 @@ public class PieceQueen implements PieceBehavior {
         Board board = cell.getBoard();
 
         board.calculateMoves(cell, possibleMoves, 1, 1);
-        board.calculateMoves(cell, possibleMoves, 1, -1);
         board.calculateMoves(cell, possibleMoves, -1, 1);
+        board.calculateMoves(cell, possibleMoves, 1, -1);
         board.calculateMoves(cell, possibleMoves, -1, -1);
-        board.calculateMoves(cell, possibleMoves, 1, 0);
-        board.calculateMoves(cell, possibleMoves, -1, 0);
-        board.calculateMoves(cell, possibleMoves, 0, 1);
-        board.calculateMoves(cell, possibleMoves, 0, -1);
 
         return possibleMoves.iterator();
     }
 
     @Override
     public PieceType getPieceType() {
-        return PieceType.QUEEN;
+        return PieceType.BISHOP;
     }
 }

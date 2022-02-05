@@ -1,19 +1,28 @@
-package model;
+package model.pieces;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class PieceRook implements PieceBehavior{
+import model.Board;
+import model.Cell;
+import model.Move;
+import model.PieceBehavior;
+import model.PieceType;
+
+public class PieceQueen implements PieceBehavior {
     private ArrayList<Move> possibleMoves = new ArrayList<>();
 
-    private boolean hasMoved = false;
-
+    @Override
     public Iterator<Move> getPossibleMoves(Cell cell) {
         possibleMoves.clear();
 
         Board board = cell.getBoard();
 
+        board.calculateMoves(cell, possibleMoves, 1, 1);
+        board.calculateMoves(cell, possibleMoves, 1, -1);
+        board.calculateMoves(cell, possibleMoves, -1, 1);
+        board.calculateMoves(cell, possibleMoves, -1, -1);
         board.calculateMoves(cell, possibleMoves, 1, 0);
         board.calculateMoves(cell, possibleMoves, -1, 0);
         board.calculateMoves(cell, possibleMoves, 0, 1);
@@ -24,16 +33,6 @@ public class PieceRook implements PieceBehavior{
 
     @Override
     public PieceType getPieceType() {
-        return PieceType.ROOK;
-    }
-
-    @Override
-    public boolean hasMoved() {
-        return hasMoved;
-    }
-
-    @Override
-    public void setHasMoved(boolean hasMoved) {
-        this.hasMoved = hasMoved;
+        return PieceType.QUEEN;
     }
 }

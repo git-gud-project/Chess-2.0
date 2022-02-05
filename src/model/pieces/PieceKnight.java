@@ -1,8 +1,14 @@
-package model;
+package model.pieces;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import model.Board;
+import model.Cell;
+import model.Move;
+import model.PieceBehavior;
+import model.PieceType;
 
 public class PieceKnight implements PieceBehavior {
     private ArrayList<Move> possibleMoves = new ArrayList<>();
