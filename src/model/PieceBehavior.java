@@ -23,7 +23,7 @@ public interface PieceBehavior {
      * @param state if this is a fake move
      */
     public default void onMove(Cell oldCell, Cell newCell, boolean state) {
-        //
+        setHasMoved(true);
     }
 
     /**
