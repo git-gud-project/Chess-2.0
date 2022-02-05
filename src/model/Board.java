@@ -313,19 +313,6 @@ public class Board {
             Piece otherPiece = nextCell.getPiece();
             
             if (otherPiece == null) {
-                // Check if we can capture en passant
-                /*if (piece instanceof PiecePawn && requireCapture) {
-                    Team otherTeam = model.getOtherTeam(team);
-
-                    if (otherTeam.isEnPassant(nextRow, nextCol)) {
-                        Move move = new Move(nextCell, true);
-                        move.setIsEnPassant(true);
-                        registry.add(move);
-
-                        break;
-                    }
-                }*/
-
                 if (requireCapture) {
                     break;
                 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class PieceBishop implements PieceBehavior {
-    private ArrayList<Move> possibleMoves;
+    private ArrayList<Move> possibleMoves = new ArrayList<>();
 
     @Override
     public Iterator<Move> getPossibleMoves(Cell cell) {

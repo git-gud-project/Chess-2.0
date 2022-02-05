@@ -4,31 +4,36 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class PieceRook extends Piece {
-    private ArrayList<Move> possibleMoves;
+public class PieceRook implements PieceBehavior{
+    private ArrayList<Move> possibleMoves = new ArrayList<>();
 
-    public PieceRook(Cell cell, Team team) {
-        super(cell, team,PieceType.ROOK);
-        possibleMoves = new ArrayList<Move>();
-    }
+    private boolean hasMoved = false;
 
-    // Add all possible moves to the possibleMoves list and return its iterator
-    public Iterator<Move> getPossibleMoves(){
+    public Iterator<Move> getPossibleMoves(Cell cell) {
         possibleMoves.clear();
 
-        Board board = this.getCell().getBoard();
+        Board board = cell.getBoard();
 
-        board.calculateMoves(this, possibleMoves, 1, 0);
-        board.calculateMoves(this, possibleMoves, -1, 0);
-        board.calculateMoves(this, possibleMoves, 0, 1);
-        board.calculateMoves(this, possibleMoves, 0, -1);
+        board.calculateMoves(cell, possibleMoves, 1, 0);
+        board.calculateMoves(cell, possibleMoves, -1, 0);
+        board.calculateMoves(cell, possibleMoves, 0, 1);
+        board.calculateMoves(cell, possibleMoves, 0, -1);
 
         return possibleMoves.iterator();
     }
 
     @Override
-    public String toString() {
-        if(getTeam().getColor().equals(Color.WHITE)) return "WRook";
-        return "BRook";
+    public PieceType getPieceType() {
+        return PieceType.ROOK;
+    }
+
+    @Override
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    @Override
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
     }
 }

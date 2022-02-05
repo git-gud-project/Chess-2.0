@@ -140,17 +140,17 @@ public class ChessModel implements Serializable {
     public Piece createPiece(PieceType type, Team team, Cell cell) {
         switch (type) {
             case PAWN:
-                return new PiecePawn(cell, team);
+                return new Piece(new PiecePawn(), cell, team);
             case ROOK:
-                return new PieceRook(cell, team);
+                return new Piece(new PieceRook(), cell, team);
             case KNIGHT:
-                return new PieceKnight(cell, team);
+                return new Piece(new PieceKnight(), cell, team);
             case BISHOP:
-                return new Piece(cell, team, new PieceBishop());
+                return new Piece(new PieceBishop(), cell, team);
             case QUEEN:
-                return new PieceQueen(cell, team);
+                return new Piece(new PieceQueen(), cell, team);
             case KING:
-                return new PieceKing(cell, team);
+                return new Piece(new PieceKing(), cell, team);
             default:
                 throw new IllegalArgumentException("Invalid piece type");
         }
@@ -267,22 +267,22 @@ public class ChessModel implements Serializable {
                     Cell cell = board.getCell(row, col);
                     switch(Character.toUpperCase(c)) {
                         case 'K':
-                            piece = new PieceKing(cell, team);
+                            piece = new Piece(new PieceKing(), cell, team);
                             break;
                         case 'Q':
-                            piece = new PieceQueen(cell, team);
+                            piece = new Piece(new PieceQueen(), cell, team);
                             break;
                         case 'R':
-                            piece = new PieceRook(cell, team);
+                            piece = new Piece(new PieceRook(), cell, team);
                             break;
                         case 'B':
-                            piece = new Piece(cell, team, new PieceBishop());
+                            piece = new Piece(new PieceBishop(), cell, team);
                             break;
                         case 'N':
-                            piece = new PieceKnight(cell, team);
+                            piece = new Piece(new PieceKnight(), cell, team);
                             break;
                         case 'P':
-                            piece = new PiecePawn(cell, team);
+                            piece = new Piece(new PiecePawn(), cell, team);
                             piece.setHasMoved(cell.getRow() != team.getKingRow() + team.getPawnDirectionRow());
                             break;
                     }

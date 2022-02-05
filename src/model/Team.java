@@ -151,7 +151,7 @@ public class Team {
         Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
         Piece rook = board.getCell(getKingRow(), getKingCol() + 3).getPiece();
 
-        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king instanceof PieceKing) || !(rook instanceof PieceRook)) {
+        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king.getPieceType() == PieceType.KING) || !(rook.getPieceType() == PieceType.ROOK)) {
             return false;
         }
 
@@ -163,7 +163,7 @@ public class Team {
         Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
         Piece rook = board.getCell(getKingRow(), getKingCol() + 3).getPiece();
 
-        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king instanceof PieceKing) || !(rook instanceof PieceRook)) {
+        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king.getPieceType() == PieceType.KING) || !(rook.getPieceType() == PieceType.ROOK)) {
             return;
         }
 
@@ -176,7 +176,7 @@ public class Team {
         Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
         Piece rook = board.getCell(getKingRow(), getKingCol() - 4).getPiece();
 
-        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king instanceof PieceKing) || !(rook instanceof PieceRook)) {
+        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king.getPieceType() == PieceType.KING) || !(rook.getPieceType() == PieceType.ROOK)) {
             return false;
         }
 
@@ -188,7 +188,7 @@ public class Team {
         Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
         Piece rook = board.getCell(getKingRow(), getKingCol() - 4).getPiece();
 
-        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king instanceof PieceKing) || !(rook instanceof PieceRook)) {
+        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king.getPieceType() == PieceType.KING) || !(rook.getPieceType() == PieceType.ROOK)) {
             return;
         }
 

@@ -4,29 +4,28 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class PieceKing extends Piece {
-    private ArrayList<Move> possibleMoves;
+public class PieceKing implements PieceBehavior {
+    private ArrayList<Move> possibleMoves = new ArrayList<>();
 
-    public PieceKing(Cell cell, Team team) {
-        super(cell, team,PieceType.KING);
-        possibleMoves = new ArrayList<Move>();
-    }
+    private boolean hasMoved = false;
 
-    public Iterator<Move> getPossibleMoves(){
+    @Override
+    public Iterator<Move> getPossibleMoves(Cell cell) {
         possibleMoves.clear();
 
-        Board board = this.getCell().getBoard();
+        Board board = cell.getBoard();
         
-        board.calculateMoves(this, possibleMoves, 1, 1, 1);
-        board.calculateMoves(this, possibleMoves, -1, 1, 1);
-        board.calculateMoves(this, possibleMoves, 1, -1, 1);
-        board.calculateMoves(this, possibleMoves, -1, -1, 1);
-        board.calculateMoves(this, possibleMoves, 1, 0, 1);
-        board.calculateMoves(this, possibleMoves, -1, 0, 1);
-        board.calculateMoves(this, possibleMoves, 0, 1, 1);
-        board.calculateMoves(this, possibleMoves, 0, -1, 1);
+        board.calculateMoves(cell, possibleMoves, 1, 1, 1);
+        board.calculateMoves(cell, possibleMoves, -1, 1, 1);
+        board.calculateMoves(cell, possibleMoves, 1, -1, 1);
+        board.calculateMoves(cell, possibleMoves, -1, -1, 1);
+        board.calculateMoves(cell, possibleMoves, 1, 0, 1);
+        board.calculateMoves(cell, possibleMoves, -1, 0, 1);
+        board.calculateMoves(cell, possibleMoves, 0, 1, 1);
+        board.calculateMoves(cell, possibleMoves, 0, -1, 1);
 
-        Team team = getTeam();
+        Piece piece = cell.getPiece();
+        Team team = piece.getTeam();
         boolean canCastleKingSide = team.canCastleKingSide();
         boolean canCastleQueenSide = team.canCastleQueenSide();
 
@@ -47,8 +46,8 @@ public class PieceKing extends Piece {
 
     @Override
     public void beforeMove(Cell oldCell, Cell newCell) {
-        Team team = getTeam();
-        Board board = this.getCell().getBoard();
+        Team team = oldCell.getPiece().getTeam();
+        Board board = oldCell.getBoard();
         boolean canCastleKingSide = team.canCastleKingSide();
         boolean canCastleQueenSide = team.canCastleQueenSide();
 
@@ -63,14 +62,20 @@ public class PieceKing extends Piece {
             Piece rook = rookCell.getPiece();
             rook.move(board.getCell(newCell.getRow(), newCell.getCol() + 1));
         }
-
-        super.beforeMove(oldCell, newCell);
     }
 
     @Override
-    public String toString() {
-        if(getTeam().getColor().equals(Color.WHITE)) return "WKing";
-        return "BKing";
+    public PieceType getPieceType() {
+        return PieceType.KING;
     }
 
+    @Override
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    @Override
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
 }

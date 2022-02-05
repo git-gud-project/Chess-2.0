@@ -6,6 +6,12 @@ import java.util.Iterator;
  * Class for all chess pieces.
  */
 public class Piece {
+
+    /**
+     * The type of the piece.
+     */
+    private PieceBehavior behavior;
+
     /**
      * The cell that the piece is currently in.
      */
@@ -17,18 +23,13 @@ public class Piece {
     private final Team team;
 
     /**
-     * The type of the piece.
-     */
-    private PieceBehavior behavior;
-
-    /**
      * Constructs a new piece.
      * 
      * @param cell the cell that the piece is currently in
      * @param team the team that the piece belongs to
      * @param type the type of the piece
      */
-    public Piece(Cell cell, Team team, PieceBehavior behavior) {
+    public Piece(PieceBehavior behavior, Cell cell, Team team) {
         this.cell = cell;
         this.team = team;
         this.behavior = behavior;

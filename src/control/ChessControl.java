@@ -113,10 +113,10 @@ public class ChessControl {
         // Halfmove clock: The number of halfmoves since the last capture or pawn advance, used for the fifty-move rule.
         boolean halfMove = piece.getPieceType() != PieceType.PAWN && !isElimination;
 
-        if (piece instanceof PiecePawn pawn && pawn.getCell().getRow() == piece.getTeam().getPromotionRow()) {
+        if (piece.getPieceType() == PieceType.PAWN && piece.getCell().getRow() == piece.getTeam().getPromotionRow()) {
             if (isMyTurn()) {
                 PieceType type = view.promotePawn();
-                Cell cell = pawn.getCell();
+                Cell cell = piece.getCell();
 
                 if (!isSinglePlayer()) {
                     networkClient.sendMessage(new PromotePawnMessage(cell.getRow(), cell.getCol(), type, isElimination));
@@ -383,6 +383,8 @@ public class ChessControl {
         view.getInfoPanel().getPlayerPanel2().getOnPlayerNameChangedEvent().addDelegate(team -> {
             handleChangeName(team);
         });
+        
+        model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
 
     public class TimerListener implements ActionListener{

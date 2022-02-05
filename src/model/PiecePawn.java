@@ -4,61 +4,77 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class PiecePawn extends Piece {
+public class PiecePawn implements PieceBehavior {
 
-    private ArrayList<Move> possibleMoves;
+    private ArrayList<Move> possibleMoves = new ArrayList<>();
 
-    public PiecePawn(Cell cell, Team team) {
-        super(cell, team, PieceType.PAWN);
-    }
+    @Override
+    public Iterator<Move> getPossibleMoves(Cell cell) {
+        possibleMoves.clear();
 
-    //Getter for the iterator containing all possibleMoves.
-    //TO-FIX: En croissant!
-    public Iterator<Move> getPossibleMoves(){
-        possibleMoves = new ArrayList<>();
+        Board board = cell.getBoard();
 
-        Team team = this.getTeam();
-        Board board = this.getCell().getBoard();
+        Piece piece = cell.getPiece();
+
+        Team team = piece.getTeam();
 
         int dirRow = team.getPawnDirectionRow();
+
+        int row = cell.getRow();
+        int col = cell.getCol();
         
         //If the pawn is on the first row, it can move 2 cells.
-        if (!hasMoved()) {
-            board.calculateMoves(this, possibleMoves, dirRow, 0, 2, false, true, false);
+        if (row == team.getKingRow() + dirRow) {
+            board.calculateMoves(cell, possibleMoves, dirRow, 0, 2, false, true, false);
         } else {
-            board.calculateMoves(this, possibleMoves, dirRow, 0, 1, false, true, false);
+            board.calculateMoves(cell, possibleMoves, dirRow, 0, 1, false, true, false);
         }
         
-        board.calculateMoves(this, possibleMoves, dirRow, 1, 1, false, false, true);
-        board.calculateMoves(this, possibleMoves, dirRow, -1, 1, false, false, true);
+        board.calculateMoves(cell, possibleMoves, dirRow, 1, 1, false, false, true);
+        board.calculateMoves(cell, possibleMoves, dirRow, -1, 1, false, false, true);
+
+        // Check if we can capture en passant
+        Team otherTeam = board.getChessModel().getOtherTeam(team);
+
+        if (otherTeam.isEnPassant(row + dirRow, col + 1)) {
+            Move move = new Move(board.getCell(row + dirRow, col + 1), true);
+            move.setIsEnPassant(true);
+            possibleMoves.add(move);
+        } else if (otherTeam.isEnPassant(row + dirRow, col - 1)) {
+            Move move = new Move(board.getCell(row + dirRow, col - 1), true);
+            move.setIsEnPassant(true);
+            possibleMoves.add(move);
+        }
 
         return possibleMoves.iterator();
     }
 
     @Override
     public void onMove(Cell oldCell, Cell newCell, boolean state) {
-        Team team = this.getTeam();
-        Board board = this.getCell().getBoard();
+        Board board = newCell.getBoard();
+
+        Piece piece = newCell.getPiece();
+
+        Team team = piece.getTeam();
+
         Team otherTeam = board.getChessModel().getOtherTeam(team);
 
+        int dirRow = team.getPawnDirectionRow();
+
         // Check if we moved 2 cells.
-        if (!hasMoved() && Math.abs(oldCell.getRow() - newCell.getRow()) == 2) {
-            team.setEnPassant(this);
+        if (oldCell.getRow() == team.getKingRow() + dirRow && Math.abs(oldCell.getRow() - newCell.getRow()) == 2) {
+            team.setEnPassant(piece);
         }
 
         // Check if we did en passant.
-
         if (otherTeam.isEnPassant(newCell.getRow(), newCell.getCol())) {
-            Piece piece = otherTeam.getEnPassantPiece();
-            piece.getCell().setPiece(null);
+            Piece other = otherTeam.getEnPassantPiece();
+            other.getCell().setPiece(null);
         }
-        
-        super.onMove(oldCell, newCell, state);
     }
 
     @Override
-    public String toString() {
-        if(getTeam().getColor().equals(Color.WHITE)) return "WPawn";
-        return "BPawn";
+    public PieceType getPieceType() {
+        return PieceType.PAWN;
     }
 }
