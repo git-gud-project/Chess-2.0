@@ -133,19 +133,19 @@ public class Board {
     public boolean isLegalMove(Piece piece, Move move) {
 
         Cell tempCell = piece.getCell();
-        Piece originPiece = move.getCell().getPiece();
+        Piece originPiece = move.getToCell().getPiece();
         boolean hasMoved = piece.hasMoved();
-        piece.fakeMove(move.getCell()); //1. Flyttar cellen
+        piece.fakeMove(move.getToCell()); //1. Flyttar cellen
 
         if(isCheck(piece.getTeam())){ //2. Kollar om det är schack efter flytten.
             piece.fakeMove(tempCell); //Om det är schack så flyttar vi tillbaks pjäsen.
-            move.getCell().setPiece(originPiece);
+            move.getToCell().setPiece(originPiece);
             piece.setHasMoved(hasMoved);
             return false; //returnerar att det är falsk (en illegal move).
         }
         else{
             piece.fakeMove(tempCell); //Om det inte är schack så flyttar vi tillbaks pjäs
-            move.getCell().setPiece(originPiece);
+            move.getToCell().setPiece(originPiece);
             piece.setHasMoved(hasMoved);
             return true;
         }
@@ -217,7 +217,7 @@ public class Board {
     public boolean isCheck(Team team){
         List<Move> allEnemyMoves = allEnemyMoves(team);
         for(Move m:allEnemyMoves){
-            if(m.getCell().getPiece()!=null && m.getCell().getPiece().getTeam().equals(team) && m.getCell().getPiece().getPieceType().equals(PieceType.KING)){
+            if(m.getToCell().getPiece()!=null && m.getToCell().getPiece().getTeam().equals(team) && m.getToCell().getPiece().getPieceType().equals(PieceType.KING)){
                 System.out.println("SCHACK!");
                 return true;
             }
@@ -317,14 +317,14 @@ public class Board {
                     break;
                 }
                 
-                registry.add(new Move(nextCell, false));
+                registry.add(new Move(nextCell, cell,false));
             }
             else if (otherPiece.getTeam() != team) {
                 if (cantCapture) {
                     break;
                 }
 
-                registry.add(new Move(nextCell, true));
+                registry.add(new Move(nextCell, cell,true));
                 break;
             }
             else if (!skipOwn) {

@@ -45,11 +45,11 @@ public class PiecePawn implements PieceBehavior {
         Team otherTeam = board.getChessModel().getOtherTeam(team);
 
         if (otherTeam.isEnPassant(row + dirRow, col + 1)) {
-            Move move = new Move(board.getCell(row + dirRow, col + 1), true);
+            Move move = new Move(board.getCell(row + dirRow, col + 1), cell, true);
             move.setIsEnPassant(true);
             possibleMoves.add(move);
         } else if (otherTeam.isEnPassant(row + dirRow, col - 1)) {
-            Move move = new Move(board.getCell(row + dirRow, col - 1), true);
+            Move move = new Move(board.getCell(row + dirRow, col - 1), cell,true);
             move.setIsEnPassant(true);
             possibleMoves.add(move);
         }

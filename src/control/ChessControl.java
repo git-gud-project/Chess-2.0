@@ -29,6 +29,11 @@ public class ChessControl {
     private ArrayList<BoardCell> highlightedCells;
 
     /**
+     * The current list of available moves for selected piece
+     */
+    private HashMap<BoardCell, Move> currentMoveMap;
+
+    /**
      * The team we are playing as.
      */
     private Team team;
@@ -85,9 +90,9 @@ public class ChessControl {
 
         Team otherTeam = model.getOtherTeam(model.getCurrentTeam());
 
-        MoveNotation mN = new MoveNotation(row, col, promoted, model.getBoard());
+        Move move = new Move(new Cell(board, row, col), type);
 
-        model.registerMove(false, mN);
+        model.registerMove(false, move);
 
         otherTeam.clearEnPassant();
     }
@@ -95,18 +100,15 @@ public class ChessControl {
     /**
      * Moves the piece on the board.
      * 
-     * @param fromRow the row of the piece to move.
-     * @param fromCol the column of the piece to move.
-     * @param toRow the row to move the piece to.
-     * @param toCol the column to move the piece to.
-     * @param isElimination true if a piece is being eliminated.
+     * @param move The move that is being performed.
+     *
      */
-    private void executeMove(int fromRow, int fromCol, int toRow, int toCol, boolean isElimination) {
-        Board board = model.getBoard();
+    private void executeMove(Move move) {
+        boolean isElimination = move.isEliminatable();
 
-        Piece piece = board.getCell(fromRow, fromCol).getPiece();
+        Piece piece = move.getPiece();
 
-        piece.move(board.getCell(toRow, toCol));
+        piece.move(move.getToCell());
 
         Team otherTeam = model.getOtherTeam(model.getCurrentTeam());
 
@@ -127,10 +129,8 @@ public class ChessControl {
 
             return;
         }
-        
-        MoveNotation mN = new MoveNotation(fromCol ,toRow,toCol,piece,isElimination, model.getBoard());
 
-        model.registerMove(halfMove, mN);
+        model.registerMove(halfMove, move);
 
         //CHECK HIGHLIGHT, DOESNT WORK WHEN KING MOVES.
         Cell c = model.getBoard().getKingCell(piece.getTeam());
@@ -150,10 +150,16 @@ public class ChessControl {
      * 
      * Forwards to the network client if the game is in network mode.
      */
-    private void movePiece(int fromRow, int fromCol, int toRow, int toCol, boolean isElimination) {
+    private void movePiece(Move move) {
+        int fromRow = move.getFromCell().getRow();
+        int fromCol = move.getFromCell().getCol();
+        int toRow = move.getToCell().getRow();
+        int toCol = move.getToCell().getCol();
+        boolean isElimination = move.isEliminatable();
+
         // Forward to executeMove if no network.
         if (isSinglePlayer()) {
-            executeMove(fromRow, fromCol, toRow, toCol, isElimination);
+            executeMove(move);
             return;
         }
         
@@ -180,7 +186,7 @@ public class ChessControl {
 
         // If the cell was highlighted, move the selected piece to the cell
         if (highlightedCells.contains(boardCell)) {
-            movePiece(selectedCell.getRow(), selectedCell.getCol(), boardCell.getRow(), boardCell.getCol(), boardCell.isElimination());
+            movePiece(currentMoveMap.get(boardCell));
         }
 
         if (selectedCell != null) {
@@ -210,12 +216,15 @@ public class ChessControl {
 
 
         Iterator<Move> moves = piece.getPossibleMoves();
+        currentMoveMap = new HashMap<>();
         while (moves.hasNext()) {
             Move move = moves.next();
 
-            Cell cell = move.getCell();
+            Cell cell = move.getToCell();
 
             BoardCell possibleMove = grid.getCell(cell.getRow(), cell.getCol());
+
+            currentMoveMap.put(possibleMove, move);
 
             possibleMove.highlight(move.isEliminatable() ? ChessView.HIGHLIGHT_COLOR_ATTACK : ChessView.HIGHLIGHT_COLOR_MOVE);
             possibleMove.setElimination(move.isEliminatable());
@@ -282,7 +291,10 @@ public class ChessControl {
 
         networkClient.setMessageDelegate(AffirmMoveMessage.class, message -> {
             AffirmMoveMessage affirmMoveMessage = (AffirmMoveMessage) message;
-            executeMove(affirmMoveMessage.getFromRow(), affirmMoveMessage.getFromCol(), affirmMoveMessage.getToRow(), affirmMoveMessage.getToCol(), affirmMoveMessage.isElimination());
+            Cell fromCell = model.getBoard().getCell(affirmMoveMessage.getFromRow(), affirmMoveMessage.getFromCol());
+            Cell toCell = model.getBoard().getCell(affirmMoveMessage.getToRow(), affirmMoveMessage.getToCol());
+            Move move = new Move(toCell, fromCell, affirmMoveMessage.isElimination());
+            executeMove(move);
         });
 
         networkClient.setMessageDelegate(PromotePawnMessage.class, message -> {
@@ -324,7 +336,9 @@ public class ChessControl {
         networkServer.setMessageDelegate(MovePieceMessage.class, (message) -> {
             MovePieceMessage movePieceMessage = (MovePieceMessage) message;
 
-            movePiece(movePieceMessage.getFromRow(), movePieceMessage.getFromCol(), movePieceMessage.getToRow(), movePieceMessage.getToCol(), movePieceMessage.isElimination());
+            Move move = new Move(new Cell(model.getBoard(), movePieceMessage.getToRow(), movePieceMessage.getToCol()), new Cell(model.getBoard(), movePieceMessage.getFromRow(), movePieceMessage.getFromCol()),movePieceMessage.isElimination());
+
+            movePiece(move);
         });
         
         networkServer.setMessageDelegate(ClientReadyMessage.class, (client, message) -> {

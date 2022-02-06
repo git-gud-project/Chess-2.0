@@ -24,7 +24,7 @@ public class ChessModel implements Serializable {
 
     private int halfMoves;
 
-    private ArrayList<MoveNotation> moveList;
+    private ArrayList<Move> moveList;
 
     //
     // Events
@@ -32,7 +32,7 @@ public class ChessModel implements Serializable {
 
     private Event<Team> onTeamChangeEvent = new Event<>();
 
-    private Event<MoveNotation> onMoveEvent = new Event<>();
+    private Event<Move> onMoveEvent = new Event<>();
 
     private Event<String> onGameLoadedEvent = new Event<>();
 
@@ -73,7 +73,7 @@ public class ChessModel implements Serializable {
         return this.onTeamChangeEvent;
     }
 
-    public Event<MoveNotation> getOnMoveEvent() {
+    public Event<Move> getOnMoveEvent() {
         return this.onMoveEvent;
     }
 
@@ -98,7 +98,7 @@ public class ChessModel implements Serializable {
     // Methods
     //
 
-    public void registerMove(boolean halfMove, MoveNotation mN) {
+    public void registerMove(boolean halfMove, Move move) {
         // Increment full moves if it's black's turn
         if (currentTeam == teamBlack) {
             fullMoves++;
@@ -118,11 +118,11 @@ public class ChessModel implements Serializable {
             currentTeam = teamWhite;
         }
 
-        moveList.add(mN);
+        moveList.add(move);
 
         // Invoke events
         onTeamChangeEvent.invoke(currentTeam);
-        onMoveEvent.invoke(mN);
+        onMoveEvent.invoke(move);
     }
     
     public Team getOtherTeam(Team team) {
@@ -134,7 +134,7 @@ public class ChessModel implements Serializable {
         return teamWhite.isEnPassant(row, col) || teamBlack.isEnPassant(row, col);
     }
 
-    public ArrayList<MoveNotation> getMoveList() {
+    public ArrayList<Move> getMoveList() {
         return moveList;
     }
 

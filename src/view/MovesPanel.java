@@ -9,7 +9,7 @@ import java.util.ArrayList;
 // Right now only works for 2 players
 public class MovesPanel extends JPanel {
     private final DefaultListModel<String> listModel;
-    private int turn, moves, spaceSize;
+    private int turn, moves;
     JScrollPane scrollpane;
 
     public MovesPanel(ChessModel model) {
@@ -24,7 +24,6 @@ public class MovesPanel extends JPanel {
         scrollpane = new JScrollPane(moveJList);
         turn = 0;
         moves = 0;
-        spaceSize = 0;
 
         add(scrollpane);
 
@@ -34,24 +33,17 @@ public class MovesPanel extends JPanel {
 
 
         model.getOnMoveEvent().addDelegate(move -> {
-            ArrayList<MoveNotation> moveList = model.getMoveList();
-            if(moves != moveList.size()) {
-               moves = moveList.size();
+            ArrayList<Move> moveList = model.getMoveList();
+            moves++;
                 if (moves % 2 == 1) {
                     turn++;
-                    spaceSize = 8 - moveList.get(moves-1).toString().length();  // The distance to be used between two notations
-                    System.out.println(spaceSize);
                     listModel.addElement(String.valueOf(turn) + "     " + moveList.get(moves-1));
                 } else {
-                    String tmp = listModel.lastElement();
+                    String oldLine = listModel.lastElement();
                     listModel.removeElementAt(turn-1);
-                    String space = "";
-                    for(int i=0; i<spaceSize; i++) {
-                        space = space.concat(" ");
-                    }
-                    listModel.addElement(tmp + space + moveList.get(moves-1));
+                    String toBeAdded = String.format("%1$25s", moveList.get(moves-1).toString());
+                    listModel.addElement(oldLine + toBeAdded);
                 }
-            }
             JScrollBar vertical = scrollpane.getVerticalScrollBar();
             vertical.setValue( vertical.getMaximum() );
         });

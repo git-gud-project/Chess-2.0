@@ -38,13 +38,13 @@ public class PieceKing implements PieceBehavior {
         boolean canCastleQueenSide = team.canCastleQueenSide();
 
         if (canCastleKingSide) {
-            Move move = new Move(team.getCastlingKingSideCell());
+            Move move = new Move(team.getCastlingKingSideCell(), cell);
             move.setIsCastleKingSide(true);
             possibleMoves.add(move);
         }
 
         if (canCastleQueenSide) {
-            Move move = new Move(team.getCastlingQueenSideCell());
+            Move move = new Move(team.getCastlingQueenSideCell(), cell);
             move.setIsCastleQueenSide(true);
             possibleMoves.add(move);
         }
