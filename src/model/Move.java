@@ -8,6 +8,7 @@ public class Move {
     private boolean isCastleKingSide;
     private boolean isCastleQueenSide;
     private boolean isPromotion;
+    private PieceType promotedTo;
 
     public Move(Cell toCell, Cell fromCell) {
         this.moveCell = toCell;
@@ -25,6 +26,7 @@ public class Move {
     public Move(Cell toCell, PieceType type) {
         this.moveCell = toCell;
         this.isPromotion = true;
+        this.promotedTo = type;
     }
 
     public Cell getToCell() {
@@ -77,7 +79,7 @@ public class Move {
         else if(isCastleQueenSide) return "0-0-0";
         else if(isPromotion) {
             String colAndRow = moveCell.toString();
-            String piecePrefix = piece.getPieceType().getFilePrefix();
+            String piecePrefix = promotedTo.getFilePrefix();
             return colAndRow + piecePrefix;
         }
         else {

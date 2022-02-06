@@ -90,7 +90,7 @@ public class ChessControl {
 
         Team otherTeam = model.getOtherTeam(model.getCurrentTeam());
 
-        Move move = new Move(new Cell(board, row, col), type);
+        Move move = new Move(cell, type);
 
         model.registerMove(false, move);
 
