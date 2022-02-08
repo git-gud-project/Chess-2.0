@@ -43,10 +43,6 @@ public class ChessControl {
      */
     private boolean hasDelegatedWhiteTeam;
 
-    /**
-     * The game is paused.
-     */
-    private boolean paused;
 
     /**
      * Network server
@@ -186,7 +182,7 @@ public class ChessControl {
     }
 
     private void handleTimeTick() {
-        if (paused) {
+        if (model.getPaused()) {
             return;
         }
 
@@ -195,25 +191,25 @@ public class ChessControl {
 
     private void handlePause() {
         if (!isHost() && !isSinglePlayer()) {
-            networkClient.sendMessage(new PauseGameMessage(!paused));
+            networkClient.sendMessage(new PauseGameMessage(!model.getPaused()));
             return;
         }
 
-        setPaused(!paused);
+        setPaused(!model.getPaused());
 
         if (isHost()) {
-            networkServer.broadcastMessage(new PauseGameMessage(paused));
+            networkServer.broadcastMessage(new PauseGameMessage(model.getPaused()));
         }
     }
 
     private void setPaused(boolean paused) {
-        this.paused = paused;
+        model.setPaused(paused);
 
         view.getInfoPanel().getPauseButton().setText(paused ? "Resume" : "Pause");
     }
     
     private void handleClick(BoardCell boardCell) {
-        if (!isMyTurn() || paused) {
+        if (!isMyTurn() || model.getPaused()) {
             return;
         }
 
@@ -297,7 +293,7 @@ public class ChessControl {
             return;
         }
 
-        paused = true;
+        model.setPaused(true);
 
         networkClient = new NetworkClient(host, port);
         
@@ -379,7 +375,7 @@ public class ChessControl {
             return;
         }
 
-        paused = true;
+        model.setPaused(true);
 
         networkServer = new NetworkServer(port, host);
         try {
