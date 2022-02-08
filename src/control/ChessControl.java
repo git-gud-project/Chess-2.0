@@ -6,10 +6,10 @@ import network.*;
 
 import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.KeyStroke;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.SocketException;
 import java.util.*;
@@ -42,6 +42,11 @@ public class ChessControl {
      * Has delegated white team.
      */
     private boolean hasDelegatedWhiteTeam;
+
+    /**
+     * The game is paused.
+     */
+    private boolean paused;
 
     /**
      * Network server
@@ -175,9 +180,17 @@ public class ChessControl {
         // If we are the host, broadcast the move to all clients.
         networkServer.broadcastMessage(new AffirmMoveMessage(fromRow, fromCol, toRow, toCol, isElimination));
     }
+
+    private void handleTimeTick() {
+        if (paused) {
+            return;
+        }
+
+        model.getCurrentTeam().tickTime();
+    }
     
     private void handleClick(BoardCell boardCell) {
-        if (!isMyTurn()) {
+        if (!isMyTurn() || paused) {
             return;
         }
 
@@ -372,9 +385,6 @@ public class ChessControl {
     public ChessControl() {
         model = new ChessModel();
         view = new ChessView(model);
-        Timer t = new Timer(100, new TimerListener());
-        t.start();
-
         highlightedCells = new ArrayList<>();
 
         // Setup listener when clicking on a cell.
@@ -400,13 +410,25 @@ public class ChessControl {
         view.getInfoPanel().getPlayerPanel2().getOnPlayerNameChangedEvent().addDelegate(team -> {
             handleChangeName(team);
         });
+
+        Timer t = new Timer(100, (e) -> {
+            handleTimeTick();
+        });
+        
+        t.start();
+
+        KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+
+        view.getBoardPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(key, "escape");
+
+        // Lambda expression for the escape key
+        view.getBoardPanel().getActionMap().put("escape", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                paused = !paused;
+            }
+        });
         
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-    }
-
-    public class TimerListener implements ActionListener{
-        public void actionPerformed(ActionEvent e){
-            model.getCurrentTeam().tickTime();
-        }
     }
 }
