@@ -63,19 +63,18 @@ public class PlayerPanel extends JPanel {
         });
 
         team.getModel().getOnTeamChangeEvent().addDelegate(newTeam -> {
-            // Hilight the player's name if it's the current team
             if (newTeam == team) {
-                playerName.setForeground(ChessView.SECONDARY_SIDE_COLOR);
-                playerTime.setForeground(ChessView.SECONDARY_SIDE_COLOR);
+                // Set a yellow border
+                this.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
             } else {
-                playerName.setForeground(ChessView.PRIMARY_SIDE_COLOR);
-                playerTime.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+                // Set a color of the team
+                this.setBorder(BorderFactory.createLineBorder(team.getColor(), 5));
             }
         });
 
-        if (team == team.getModel().getCurrentTeam()) {
-            playerName.setForeground(ChessView.SECONDARY_SIDE_COLOR);
-            playerTime.setForeground(ChessView.SECONDARY_SIDE_COLOR);
+        /*if (team == team.getModel().getCurrentTeam())*/ {
+            playerName.setForeground(team.getOpponentColor());
+            playerTime.setForeground(team.getOpponentColor());
         }
 
         playerName.setText(team.getName());

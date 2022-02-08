@@ -188,6 +188,17 @@ public class ChessControl {
 
         model.getCurrentTeam().tickTime();
     }
+
+    private void handlePause() {
+        if (!isHost()) {
+            networkClient.sendMessage(new PauseGameMessage(!paused));
+            return;
+        }
+
+        paused = !paused;
+
+        networkServer.broadcastMessage(new PauseGameMessage(paused));
+    }
     
     private void handleClick(BoardCell boardCell) {
         if (!isMyTurn() || paused) {
@@ -326,6 +337,12 @@ public class ChessControl {
                 model.getTeamBlack().setName(changeNameMessage.getName());
             }
         });
+
+        networkClient.setMessageDelegate(PauseGameMessage.class, message -> {
+            PauseGameMessage pauseGameMessage = (PauseGameMessage) message;
+
+            paused = pauseGameMessage.isPaused();
+        });
     }
 
     /**
@@ -379,6 +396,12 @@ public class ChessControl {
             networkServer.broadcastMessage(message);
         });
 
+        networkServer.setMessageDelegate(PauseGameMessage.class, (client, message) -> {
+            //PauseGameMessage changeNameMessage = (PauseGameMessage) message;
+
+            networkServer.broadcastMessage(message);
+        });
+
         startClient(host, port);
     }
 
@@ -425,7 +448,7 @@ public class ChessControl {
         view.getBoardPanel().getActionMap().put("escape", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                paused = !paused;
+                handlePause();
             }
         });
         

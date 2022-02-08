@@ -144,6 +144,10 @@ public class Team {
         return enPassantPiece.getCell().getCol();
     }
 
+    public Color getOpponentColor() {
+        return new Color(255 - teamColor.getRed(), 255 - teamColor.getGreen(), 255 - teamColor.getBlue());
+    }
+
     //
     // Methods
     //
