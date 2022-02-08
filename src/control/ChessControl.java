@@ -190,14 +190,22 @@ public class ChessControl {
     }
 
     private void handlePause() {
-        if (!isHost()) {
+        if (!isHost() && !isSinglePlayer()) {
             networkClient.sendMessage(new PauseGameMessage(!paused));
             return;
         }
 
-        paused = !paused;
+        setPaused(!paused);
 
-        networkServer.broadcastMessage(new PauseGameMessage(paused));
+        if (isHost()) {
+            networkServer.broadcastMessage(new PauseGameMessage(paused));
+        }
+    }
+
+    private void setPaused(boolean paused) {
+        this.paused = paused;
+
+        view.getInfoPanel().getPauseButton().setText(paused ? "Resume" : "Pause");
     }
     
     private void handleClick(BoardCell boardCell) {
@@ -347,7 +355,7 @@ public class ChessControl {
         networkClient.setMessageDelegate(PauseGameMessage.class, message -> {
             PauseGameMessage pauseGameMessage = (PauseGameMessage) message;
 
-            paused = pauseGameMessage.isPaused();
+            setPaused(pauseGameMessage.isPaused());
         });
 
         networkClient.setMessageDelegate(LoadGameMessage.class, message -> {
@@ -454,6 +462,10 @@ public class ChessControl {
             handleChangeName(team);
         });
 
+        view.getInfoPanel().getOnPauseButtonClickedEvent().addDelegate(button -> {
+            handlePause();
+        });
+
         Timer t = new Timer(100, (e) -> {
             handleTimeTick();
         });
@@ -471,6 +483,10 @@ public class ChessControl {
                 handlePause();
             }
         });
+
+        setPaused(true);
+
+        view.getInfoPanel().getPauseButton().setText("Play");
         
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
