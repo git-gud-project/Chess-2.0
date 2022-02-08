@@ -345,7 +345,7 @@ public class Board {
     /**
      * Calculate a moveset.
      * 
-     * @param piece the cell containing the piece
+     * @param cell the cell containing the piece
      * @param registry a registry of the moves, out parameter
      * @param dirRow the row direction
      * @param dirCol the column direction
@@ -358,7 +358,7 @@ public class Board {
     /**
      * Calculate a moveset.
      * 
-     * @param piece the cell containing the piece
+     * @param cell the cell containing the piece
      * @param registry a registry of the moves, out parameter
      * @param dirRow the row direction
      * @param dirCol the column direction
