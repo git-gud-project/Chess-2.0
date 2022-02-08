@@ -453,8 +453,24 @@ public class ChessControl {
         view.getBoardGridPanel().setClickDelegate((BoardCell boardCell) -> handleClick(boardCell));
 
         // Setup listeners on the menu items
-        view.getMenu().setStartServerDelegate((port) -> startServer(null, port));
-        view.getMenu().setConnectToServerDelegate((port) -> startClient(null, port));
+        view.getMenu().setStartServerDelegate((ipAndPort) -> {
+            // Split the ip and port, if there is a :
+            if (ipAndPort.contains(":")) {
+                String[] ipAndPortSplit = ipAndPort.split(":");
+                startServer(ipAndPortSplit[0], Integer.parseInt(ipAndPortSplit[1]));
+            } else {
+                startServer(null, Integer.parseInt(ipAndPort));
+            }
+        });
+        view.getMenu().setConnectToServerDelegate((ipAndPort) -> {
+            // Split the ip and port, if there is a :
+            if (ipAndPort.contains(":")) {
+                String[] ipAndPortSplit = ipAndPort.split(":");
+                startClient(ipAndPortSplit[0], Integer.parseInt(ipAndPortSplit[1]));
+            } else {
+                startClient(null, Integer.parseInt(ipAndPort));
+            }
+        });
 
         view.getMenu().getNewGame().addActionListener((e) -> {
             JFrame f = new JFrame();

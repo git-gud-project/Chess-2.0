@@ -13,18 +13,18 @@ import model.*;
 public class Menu extends JMenuBar {
 
     private ChessView view;
-    private Delegate<Integer> startServerDelegate;
-    private Delegate<Integer> connectToServerDelegate;
+    private Delegate<String> startServerDelegate;
+    private Delegate<String> connectToServerDelegate;
 
     private JMenuItem newGame;
     private JMenuItem save;
     private JMenuItem load;
 
-    public void setStartServerDelegate(Delegate<Integer> startServerDelegate) {
+    public void setStartServerDelegate(Delegate<String> startServerDelegate) {
         this.startServerDelegate = startServerDelegate;
     }
 
-    public void setConnectToServerDelegate(Delegate<Integer> connectToServerDelegate) {
+    public void setConnectToServerDelegate(Delegate<String> connectToServerDelegate) {
         this.connectToServerDelegate = connectToServerDelegate;
     }
 
@@ -118,7 +118,7 @@ public class Menu extends JMenuBar {
             JFrame f = new JFrame();
             String port = JOptionPane.showInputDialog(f, "Please select a port to start the server communication:");
             if (port != null) {
-                startServerDelegate.invoke(Integer.parseInt(port));
+                startServerDelegate.invoke(port);
             }
         });
 
@@ -126,9 +126,9 @@ public class Menu extends JMenuBar {
         connectToServer.addActionListener(e -> {
             JFrame f = new JFrame();
             
-            String port = JOptionPane.showInputDialog(f, "Please enter the port to connect to:");
+            String port = JOptionPane.showInputDialog(f, "Please enter the server:port to connect to:");
             if (port != null) {
-                connectToServerDelegate.invoke(Integer.parseInt(port));
+                connectToServerDelegate.invoke(port);
             }
         });
 
