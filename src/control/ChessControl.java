@@ -385,8 +385,8 @@ public class ChessControl {
             JFrame f = new JFrame();
             int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
             if(answer == JOptionPane.YES_OPTION) {
-                model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-                // TODO: Reset other variables
+                model.resetState();
+                view.getInfoPanel().getMovesPanel().resetMovesPanel();
             }
         });
 
