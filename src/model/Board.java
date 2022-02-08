@@ -194,9 +194,9 @@ public class Board {
     }
 
     /**
-     * if it is checkmate.
+     * if it is checkmate or stalemate. If it is checkmate it returns 2. If it is stalemate it return 1. Else 0.
      * 
-     * @param playerTeam the team of the player
+     * @param enemyPlayerTeam the team of the player
      */
     public int isCheckmate(Team enemyPlayerTeam){
         if(allTeamMoves(enemyPlayerTeam).isEmpty() && isCheck(enemyPlayerTeam)){
@@ -282,7 +282,7 @@ public class Board {
     /**
      * Calculate a moveset.
      * 
-     * @param piece the piece
+     * @param cell the cell containing the piece
      * @param registry a registry of the moves, out parameter
      * @param dirRow the row direction
      * @param dirCol the column direction
@@ -345,7 +345,7 @@ public class Board {
     /**
      * Calculate a moveset.
      * 
-     * @param piece the piece
+     * @param cell the cell containing the piece
      * @param registry a registry of the moves, out parameter
      * @param dirRow the row direction
      * @param dirCol the column direction
@@ -358,7 +358,7 @@ public class Board {
     /**
      * Calculate a moveset.
      * 
-     * @param piece the piece
+     * @param cell the cell containing the piece
      * @param registry a registry of the moves, out parameter
      * @param dirRow the row direction
      * @param dirCol the column direction
