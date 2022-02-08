@@ -226,7 +226,7 @@ public class ChessModel implements Serializable {
         if (currentTeam.getEnPassantPiece() != null) {
             Piece enPassantPiece = currentTeam.getEnPassantPiece();
             Cell enPassantCell = enPassantPiece.getCell();
-            fen += " " + board.positionToString(enPassantCell.getRow(), enPassantCell.getCol());
+            fen += " " + board.positionToString(currentTeam.getEnPassantRow(), currentTeam.getEnPassantCol());
         }
         else {
             fen += " -";
@@ -313,8 +313,10 @@ public class ChessModel implements Serializable {
             getOtherTeam(getCurrentTeam()).clearEnPassant();
         }
         else {
+            Team other = getOtherTeam(getCurrentTeam());
             Cell cell = board.getCell(parts[3]);
-            getOtherTeam(getCurrentTeam()).setEnPassant(cell.getPiece());
+            cell = board.getCell(cell.getRow() + other.getPawnDirectionRow(), cell.getCol());
+            other.setEnPassant(cell.getPiece());
         }
 
         // Half move clock
