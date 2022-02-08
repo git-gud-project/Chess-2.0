@@ -44,6 +44,6 @@ public class Time implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%02d:%02d:%02d", minutes, seconds, mseconds);
+        return String.format("%02d:%02d:%d0", minutes, seconds, mseconds);
     }
 }
