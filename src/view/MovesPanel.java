@@ -22,7 +22,7 @@ public class MovesPanel extends JPanel {
 
         moveJList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
         moveJList.setForeground(Color.WHITE);
-        moveJList.setFont(new Font("Arial", Font.PLAIN, 32));
+        moveJList.setFont(new Font("Monospaced", Font.PLAIN, 32));
         scrollpane = new JScrollPane(moveJList);
         turn = 0;
         moves = 0;
@@ -43,15 +43,19 @@ public class MovesPanel extends JPanel {
             } else {
                 String oldLine = listModel.lastElement();
                 listModel.removeElementAt(turn-1);
-                String toBeAdded = String.format("%1$25s", moveList.get(moves-1));
-                listModel.addElement(oldLine + toBeAdded);
+                String toBeAdded = moveList.get(moves-1).toString();
+                StringBuilder spacing = new StringBuilder("");
+                for(int i=0; i<15-oldLine.length(); i++) {
+                    spacing.append(" ");
+                }
+                listModel.addElement(oldLine + spacing + toBeAdded);
             }
             JScrollBar vertical = scrollpane.getVerticalScrollBar();
             vertical.setValue( vertical.getMaximum() );
         });
     }
 
-    
+
     public void resetMovesPanel() {
         //Removes the list of moves from the previous game when creating a new one.
         remove(scrollpane);
@@ -89,19 +93,21 @@ public class MovesPanel extends JPanel {
             moves++;
             if (moves % 2 == 1) {
                 turn++;
-                listModel.addElement(String.valueOf(turn) + "     " + moveList.get(moves-1));
+                listModel.addElement(String.valueOf(turn) + "     " + moveList.get(moves - 1));
             } else {
                 String oldLine = listModel.lastElement();
-                listModel.removeElementAt(turn-1);
-                String toBeAdded = String.format("%1$25s", moveList.get(moves-1));
-                listModel.addElement(oldLine + toBeAdded);
+                listModel.removeElementAt(turn - 1);
+                String toBeAdded = moveList.get(moves - 1).toString();
+                StringBuilder spacing = new StringBuilder("");
+                for (int i = 0; i < 15 - oldLine.length(); i++) {
+                    spacing.append(" ");
+                }
+                listModel.addElement(oldLine + spacing + toBeAdded);
             }
         }
+            JScrollBar vertical = scrollpane.getVerticalScrollBar();
+            vertical.setValue( vertical.getMaximum() );
 
-        JScrollBar vertical = scrollpane.getVerticalScrollBar();
-        vertical.setValue( vertical.getMaximum() );
-
-
-        add(scrollpane);
-    }
+            add(scrollpane);
+        }
 }
