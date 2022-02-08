@@ -9,6 +9,7 @@ import java.awt.*;
 public class PlayerPanel extends JPanel {
     private JLabel playerName;
     private JLabel playerTime;
+    private JLabel playerAuthority;
     private Team team;
 
     private Event<Team> playerNameChangedEvent = new Event<Team>();
@@ -26,7 +27,7 @@ public class PlayerPanel extends JPanel {
         this.setPreferredSize(new Dimension(220, 100));
 
         this.setLayout(new BorderLayout());
-        this.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        this.setBackground(team.getColor());
         
         playerName = new JLabel("Player Name");
         playerName.setHorizontalAlignment(JLabel.CENTER);
@@ -40,6 +41,12 @@ public class PlayerPanel extends JPanel {
         playerTime.setForeground(ChessView.PRIMARY_SIDE_COLOR);
         this.add(playerTime, BorderLayout.SOUTH);
 
+        playerAuthority = new JLabel("");
+        playerAuthority.setHorizontalAlignment(JLabel.CENTER);
+        playerAuthority.setFont(new Font("Arial", Font.BOLD, 15));
+        playerAuthority.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+        this.add(playerAuthority, BorderLayout.CENTER);
+
         /**
          * Setup event listeners
          */
@@ -49,6 +56,10 @@ public class PlayerPanel extends JPanel {
 
         team.getOnTimeChangedEvent().addDelegate(time -> {
             playerTime.setText(time.toString());
+        });
+
+        team.getOnAuthorityChangedEvent().addDelegate(authority -> {
+            playerAuthority.setText(authority ? "" : "(Remote)");
         });
 
         team.getModel().getOnTeamChangeEvent().addDelegate(newTeam -> {

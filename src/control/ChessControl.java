@@ -287,6 +287,9 @@ public class ChessControl {
             } else {
                 team = model.getTeamBlack();
             }
+
+            team.setHasAuthority(true);
+            model.getOtherTeam(team).setHasAuthority(false);
         });
 
         networkClient.setMessageDelegate(AffirmMoveMessage.class, message -> {
