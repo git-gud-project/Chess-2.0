@@ -146,7 +146,7 @@ public class ChessModel implements Serializable {
             move.addCheckMate();
         }
         // Add '+' to notation if move resulted in check to other team
-        else if(board.isCheck(otherTeam)) move.addCheck();
+        else if(board.isCheck(currentTeam)) move.addCheck();
 
         moveList.add(move.toString());
 
