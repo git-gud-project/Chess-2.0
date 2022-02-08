@@ -39,13 +39,13 @@ public class MovesPanel extends JPanel {
             moves++;
             if (moves % 2 == 1) {
                 turn++;
-                listModel.addElement(String.valueOf(turn) + "     " + moveList.get(moves-1));
+                listModel.addElement(String.valueOf(turn) + "   " + moveList.get(moves-1));
             } else {
                 String oldLine = listModel.lastElement();
                 listModel.removeElementAt(turn-1);
                 String toBeAdded = moveList.get(moves-1).toString();
                 StringBuilder spacing = new StringBuilder("");
-                for(int i=0; i<15-oldLine.length(); i++) {
+                for(int i=0; i<16-oldLine.length(); i++) {
                     spacing.append(" ");
                 }
                 listModel.addElement(oldLine + spacing + toBeAdded);
@@ -65,7 +65,7 @@ public class MovesPanel extends JPanel {
         JList<String> _moveList = new JList<>(listModel);
         _moveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
         _moveList.setForeground(Color.WHITE);
-        _moveList.setFont(new Font("Arial", Font.PLAIN, 32));
+        _moveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
         scrollpane = new JScrollPane(_moveList);
         turn = 0;
         moves = 0;
@@ -84,7 +84,7 @@ public class MovesPanel extends JPanel {
         JList<String> _moveList = new JList<>(listModel);
         _moveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
         _moveList.setForeground(Color.WHITE);
-        _moveList.setFont(new Font("Arial", Font.PLAIN, 32));
+        _moveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
         scrollpane = new JScrollPane(_moveList);
         turn = 0;
         moves = 0;
@@ -93,13 +93,13 @@ public class MovesPanel extends JPanel {
             moves++;
             if (moves % 2 == 1) {
                 turn++;
-                listModel.addElement(String.valueOf(turn) + "     " + moveList.get(moves - 1));
+                listModel.addElement(String.valueOf(turn) + "   " + moveList.get(moves - 1));
             } else {
                 String oldLine = listModel.lastElement();
                 listModel.removeElementAt(turn - 1);
                 String toBeAdded = moveList.get(moves - 1).toString();
                 StringBuilder spacing = new StringBuilder("");
-                for (int i = 0; i < 15 - oldLine.length(); i++) {
+                for (int i = 0; i < 16 - oldLine.length(); i++) {
                     spacing.append(" ");
                 }
                 listModel.addElement(oldLine + spacing + toBeAdded);

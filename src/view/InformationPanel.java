@@ -36,13 +36,13 @@ public class InformationPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         playerPanel.add(playerPanel1, c);
-        c.gridx = 1;
+        c.gridx = 0;
         JSeparator separator = new JSeparator(JSeparator.VERTICAL);
         separator.setPreferredSize(new Dimension(10, 0));
         separator.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
         separator.setForeground(ChessView.BOARD_BACKGROUND_COLOR);
         playerPanel.add(separator, c);
-        c.gridx = 2;
+        c.gridx = 1;
         playerPanel.add(playerPanel2, c);
         this.add(playerPanel, BorderLayout.NORTH);
 

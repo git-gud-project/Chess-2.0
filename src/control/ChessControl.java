@@ -6,10 +6,10 @@ import network.*;
 
 import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.KeyStroke;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.SocketException;
 import java.util.*;
@@ -42,6 +42,11 @@ public class ChessControl {
      * Has delegated white team.
      */
     private boolean hasDelegatedWhiteTeam;
+
+    /**
+     * The game is paused.
+     */
+    private boolean paused;
 
     /**
      * Network server
@@ -179,9 +184,28 @@ public class ChessControl {
         // If we are the host, broadcast the move to all clients.
         networkServer.broadcastMessage(new AffirmMoveMessage(fromRow, fromCol, toRow, toCol, isElimination));
     }
+
+    private void handleTimeTick() {
+        if (paused) {
+            return;
+        }
+
+        model.getCurrentTeam().tickTime();
+    }
+
+    private void handlePause() {
+        if (!isHost()) {
+            networkClient.sendMessage(new PauseGameMessage(!paused));
+            return;
+        }
+
+        paused = !paused;
+
+        networkServer.broadcastMessage(new PauseGameMessage(paused));
+    }
     
     private void handleClick(BoardCell boardCell) {
-        if (!isMyTurn()) {
+        if (!isMyTurn() || paused) {
             return;
         }
 
@@ -261,6 +285,12 @@ public class ChessControl {
      * Start a client.
      */
     public void startClient(String host, int port) {
+        if (networkClient != null) {
+            return;
+        }
+
+        paused = true;
+
         networkClient = new NetworkClient(host, port);
         
         try {
@@ -291,6 +321,9 @@ public class ChessControl {
             } else {
                 team = model.getTeamBlack();
             }
+
+            team.setHasAuthority(true);
+            model.getOtherTeam(team).setHasAuthority(false);
         });
 
         networkClient.setMessageDelegate(AffirmMoveMessage.class, message -> {
@@ -314,6 +347,18 @@ public class ChessControl {
                 model.getTeamBlack().setName(changeNameMessage.getName());
             }
         });
+
+        networkClient.setMessageDelegate(PauseGameMessage.class, message -> {
+            PauseGameMessage pauseGameMessage = (PauseGameMessage) message;
+
+            paused = pauseGameMessage.isPaused();
+        });
+
+        networkClient.setMessageDelegate(LoadGameMessage.class, message -> {
+            LoadGameMessage loadGameMessage = (LoadGameMessage) message;
+
+            model.loadModel(loadGameMessage.getModel());
+        });
     }
 
     /**
@@ -322,6 +367,12 @@ public class ChessControl {
      * Also starts a client which is connected to the server.
      */
     public void startServer(String host, int port) {
+        if (networkServer != null) {
+            return;
+        }
+
+        paused = true;
+
         networkServer = new NetworkServer(port, host);
         try {
             networkServer.start();
@@ -353,6 +404,8 @@ public class ChessControl {
             client.sendMessage(new SetTeamMessage(!hasDelegatedWhiteTeam));
 
             hasDelegatedWhiteTeam = true;
+
+            client.sendMessage(new LoadGameMessage(new SerialModel(model)));
         });
 
         networkServer.setMessageDelegate(PromotePawnMessage.class, (client, message) -> {
@@ -367,15 +420,18 @@ public class ChessControl {
             networkServer.broadcastMessage(message);
         });
 
+        networkServer.setMessageDelegate(PauseGameMessage.class, (client, message) -> {
+            //PauseGameMessage changeNameMessage = (PauseGameMessage) message;
+
+            networkServer.broadcastMessage(message);
+        });
+
         startClient(host, port);
     }
 
     public ChessControl() {
         model = new ChessModel();
         view = new ChessView(model);
-        Timer t = new Timer(100, new TimerListener());
-        t.start();
-
         highlightedCells = new ArrayList<>();
 
         // Setup listener when clicking on a cell.
@@ -389,8 +445,8 @@ public class ChessControl {
             JFrame f = new JFrame();
             int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
             if(answer == JOptionPane.YES_OPTION) {
-                model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-                // TODO: Reset other variables
+                model.resetState();
+                view.getInfoPanel().getMovesPanel().resetMovesPanel();
             }
         });
 
@@ -401,13 +457,25 @@ public class ChessControl {
         view.getInfoPanel().getPlayerPanel2().getOnPlayerNameChangedEvent().addDelegate(team -> {
             handleChangeName(team);
         });
+
+        Timer t = new Timer(100, (e) -> {
+            handleTimeTick();
+        });
+        
+        t.start();
+
+        KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+
+        view.getBoardPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(key, "escape");
+
+        // Lambda expression for the escape key
+        view.getBoardPanel().getActionMap().put("escape", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handlePause();
+            }
+        });
         
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-    }
-
-    public class TimerListener implements ActionListener{
-        public void actionPerformed(ActionEvent e){
-            model.getCurrentTeam().tickTime();
-        }
     }
 }

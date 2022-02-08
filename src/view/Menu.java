@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import utils.Delegate;
 
+import java.awt.event.KeyEvent;
 import java.nio.file.*;
 import java.io.*;
 
@@ -16,6 +17,8 @@ public class Menu extends JMenuBar {
     private Delegate<Integer> connectToServerDelegate;
 
     private JMenuItem newGame;
+    private JMenuItem save;
+    private JMenuItem load;
 
     public void setStartServerDelegate(Delegate<Integer> startServerDelegate) {
         this.startServerDelegate = startServerDelegate;
@@ -33,8 +36,11 @@ public class Menu extends JMenuBar {
         JMenu file = new JMenu("File");
         this.add(file);
         this.newGame = new JMenuItem("New game");
-        JMenuItem load = new JMenuItem("Load");
-        JMenuItem save = new JMenuItem("Save");
+        this.newGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
+        this.load = new JMenuItem("Load");
+        this.load.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+        this.save = new JMenuItem("Save");
+        this.save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
         file.add(newGame);
         file.add(new JSeparator());
         file.add(load);

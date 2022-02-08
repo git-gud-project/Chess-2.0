@@ -130,22 +130,27 @@ public class ChessModel implements Serializable {
             halfMoves = 0;
         }
 
-        // Add "+" to notation if move resulted in check to other team
-        Team otherTeam = getOtherTeam(currentTeam);
-        if(board.isCheck(otherTeam)) move.addCheck();
-
-
         // Switch teams
         if (currentTeam == teamWhite) {
             currentTeam = teamBlack;
         } else {
             currentTeam = teamWhite;
         }
-        
         moveList.add(move.toString());
 
         // Invoke events
         onTeamChangeEvent.invoke(currentTeam);
+
+        Team otherTeam = getOtherTeam(currentTeam);
+        // Add '#' if move resulted in checkmate on other team
+        if(board.isCheckmate(currentTeam)){
+            move.addCheckMate();
+        }
+        // Add '+' to notation if move resulted in check to other team
+        else if(board.isCheck(otherTeam)) move.addCheck();
+
+        moveList.add(move.toString());
+
         onMoveEvent.invoke(move);
 
 

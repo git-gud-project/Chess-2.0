@@ -9,6 +9,7 @@ import java.awt.*;
 public class PlayerPanel extends JPanel {
     private JLabel playerName;
     private JLabel playerTime;
+    private JLabel playerAuthority;
     private Team team;
 
     private Event<Team> playerNameChangedEvent = new Event<Team>();
@@ -26,7 +27,7 @@ public class PlayerPanel extends JPanel {
         this.setPreferredSize(new Dimension(220, 100));
 
         this.setLayout(new BorderLayout());
-        this.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        this.setBackground(team.getColor());
         
         playerName = new JLabel("Player Name");
         playerName.setHorizontalAlignment(JLabel.CENTER);
@@ -40,6 +41,12 @@ public class PlayerPanel extends JPanel {
         playerTime.setForeground(ChessView.PRIMARY_SIDE_COLOR);
         this.add(playerTime, BorderLayout.SOUTH);
 
+        playerAuthority = new JLabel("");
+        playerAuthority.setHorizontalAlignment(JLabel.CENTER);
+        playerAuthority.setFont(new Font("Arial", Font.BOLD, 15));
+        playerAuthority.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+        this.add(playerAuthority, BorderLayout.CENTER);
+
         /**
          * Setup event listeners
          */
@@ -51,20 +58,23 @@ public class PlayerPanel extends JPanel {
             playerTime.setText(time.toString());
         });
 
+        team.getOnAuthorityChangedEvent().addDelegate(authority -> {
+            playerAuthority.setText(authority ? "" : "(Remote)");
+        });
+
         team.getModel().getOnTeamChangeEvent().addDelegate(newTeam -> {
-            // Hilight the player's name if it's the current team
             if (newTeam == team) {
-                playerName.setForeground(ChessView.SECONDARY_SIDE_COLOR);
-                playerTime.setForeground(ChessView.SECONDARY_SIDE_COLOR);
+                // Set a yellow border
+                this.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
             } else {
-                playerName.setForeground(ChessView.PRIMARY_SIDE_COLOR);
-                playerTime.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+                // Set a color of the team
+                this.setBorder(BorderFactory.createLineBorder(team.getColor(), 5));
             }
         });
 
-        if (team == team.getModel().getCurrentTeam()) {
-            playerName.setForeground(ChessView.SECONDARY_SIDE_COLOR);
-            playerTime.setForeground(ChessView.SECONDARY_SIDE_COLOR);
+        /*if (team == team.getModel().getCurrentTeam())*/ {
+            playerName.setForeground(team.getOpponentColor());
+            playerTime.setForeground(team.getOpponentColor());
         }
 
         playerName.setText(team.getName());

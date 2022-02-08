@@ -23,6 +23,8 @@ public class Team {
 
     private Piece enPassantPiece;
 
+    private boolean hasAuthority;
+
     // 
     // Events
     //
@@ -30,6 +32,8 @@ public class Team {
     private Event<String> onNameChangedEvent = new Event<>();
 
     private Event<Time> onTimeChangedEvent = new Event<>();
+
+    private Event<Boolean> onAuthorityChangedEvent = new Event<>();
 
     //
     // Constructors
@@ -42,6 +46,7 @@ public class Team {
         this.name = name;
         this.time = new Time();
         this.pawnDirectionRow = pawnDirectionRow;
+        this.hasAuthority = true;
     }
 
     //
@@ -68,25 +73,56 @@ public class Team {
         return time;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
     public int getPawnDirectionRow() {
         return pawnDirectionRow;
-    }
-
-    public int getEnPassantRow() {
-        return enPassantPiece.getCell().getRow() - pawnDirectionRow;
-    }
-
-    public int getEnPassantCol() {
-        return enPassantPiece.getCell().getCol();
     }
 
     public Piece getEnPassantPiece() {
         return enPassantPiece;
     }
+
+    public boolean getHasAuthority() {
+        return hasAuthority;
+    }
+
+    //
+    // Setters
+    //
+
+    public void setName(String name) {
+        this.name = name;
+        onNameChangedEvent.invoke(name);
+    }
+
+    public void setHasAuthority(boolean hasAuthority) {
+        this.hasAuthority = hasAuthority;
+        onAuthorityChangedEvent.invoke(hasAuthority);
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+        onTimeChangedEvent.invoke(time);
+    }
+
+    //
+    // Getters - Events
+    //
+
+    public Event<String> getOnNameChangedEvent() {
+        return onNameChangedEvent;
+    }
+
+    public Event<Time> getOnTimeChangedEvent() {
+        return onTimeChangedEvent;
+    }
+
+    public Event<Boolean> getOnAuthorityChangedEvent() {
+        return onAuthorityChangedEvent;
+    }
+
+    //
+    // Getters - Utility
+    //
 
     public int getKingRow() {
         return pawnDirectionRow == -1 ? 7 : 0;
@@ -100,25 +136,16 @@ public class Team {
         return pawnDirectionRow == -1 ? 0 : 7;
     }
 
-    //
-    // Setters
-    //
-
-    public void setName(String name) {
-        this.name = name;
-        onNameChangedEvent.invoke(name);
+    public int getEnPassantRow() {
+        return enPassantPiece.getCell().getRow() - pawnDirectionRow;
     }
 
-    //
-    // Getters - Events
-    //
-
-    public Event<String> getOnNameChangedEvent() {
-        return onNameChangedEvent;
+    public int getEnPassantCol() {
+        return enPassantPiece.getCell().getCol();
     }
 
-    public Event<Time> getOnTimeChangedEvent() {
-        return onTimeChangedEvent;
+    public Color getOpponentColor() {
+        return new Color(255 - teamColor.getRed(), 255 - teamColor.getGreen(), 255 - teamColor.getBlue());
     }
 
     //
