@@ -136,6 +136,7 @@ public class ChessModel implements Serializable {
         } else {
             currentTeam = teamWhite;
         }
+        moveList.add(move.toString());
 
         // Invoke events
         onTeamChangeEvent.invoke(currentTeam);
@@ -151,6 +152,8 @@ public class ChessModel implements Serializable {
         moveList.add(move.toString());
 
         onMoveEvent.invoke(move);
+
+
     }
     
     public Team getOtherTeam(Team team) {
