@@ -43,7 +43,6 @@ public class ChessControl {
      */
     private boolean hasDelegatedWhiteTeam;
 
-
     /**
      * Network server
      */
@@ -105,6 +104,11 @@ public class ChessControl {
      *
      */
     private void executeMove(Move move) {
+        if (!model.getStarted()) {
+            setPaused(false);
+            model.setStarted(true);
+        }
+
         boolean isElimination = move.isEliminatable();
 
         Piece piece = move.getPiece();
@@ -190,6 +194,10 @@ public class ChessControl {
     }
 
     private void handlePause() {
+        if (!model.getStarted()) {
+            return;
+        }
+
         if (!isHost() && !isSinglePlayer()) {
             networkClient.sendMessage(new PauseGameMessage(!model.getPaused()));
             return;
@@ -205,11 +213,13 @@ public class ChessControl {
     private void setPaused(boolean paused) {
         model.setPaused(paused);
 
-        view.getInfoPanel().getPauseButton().setText(paused ? "Resume" : "Pause");
+        JButton button = view.getInfoPanel().getPauseButton();
+        button.setText(paused ? "Resume" : "Pause");
+        button.setEnabled(true);
     }
     
     private void handleClick(BoardCell boardCell) {
-        if (!isMyTurn() || model.getPaused()) {
+        if (!isMyTurn() || model.getPaused() && model.getStarted()) {
             return;
         }
 
@@ -362,6 +372,7 @@ public class ChessControl {
             LoadGameMessage loadGameMessage = (LoadGameMessage) message;
 
             model.loadModel(loadGameMessage.getModel());
+            setPaused(model.getPaused());
         });
     }
 
@@ -442,8 +453,8 @@ public class ChessControl {
         view.getBoardGridPanel().setClickDelegate((BoardCell boardCell) -> handleClick(boardCell));
 
         // Setup listeners on the menu items
-        view.getMenu().setStartServerDelegate((port) -> startServer("localhost", port));
-        view.getMenu().setConnectToServerDelegate((port) -> startClient("localhost", port));
+        view.getMenu().setStartServerDelegate((port) -> startServer(null, port));
+        view.getMenu().setConnectToServerDelegate((port) -> startClient(null, port));
 
         view.getMenu().getNewGame().addActionListener((e) -> {
             JFrame f = new JFrame();
@@ -486,7 +497,8 @@ public class ChessControl {
 
         setPaused(true);
 
-        view.getInfoPanel().getPauseButton().setText("Play");
+        view.getInfoPanel().getPauseButton().setEnabled(false);
+        view.getInfoPanel().getPauseButton().setText("Make a move to start");
         
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
