@@ -1,6 +1,7 @@
 package view;
 
 import model.*;
+import utils.Event;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,8 +10,12 @@ public class InformationPanel extends JPanel {
     private PlayerPanel playerPanel1;
     private PlayerPanel playerPanel2;
 
+    private JButton pauseButton;
+
     private BottomPanel bottomPanel;
     private MovesPanel movesPanel;
+
+    private Event<JButton> onPauseButtonClickedEvent = new Event<>();
 
     public InformationPanel(ChessModel model) {
         /**
@@ -51,7 +56,7 @@ public class InformationPanel extends JPanel {
         // Add some margin to the player panels
         playerPanel1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         playerPanel2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
+        
         // Moves in center
         this.add(moves, BorderLayout.CENTER);
 
@@ -69,9 +74,29 @@ public class InformationPanel extends JPanel {
         // Add some margin to this panel
         this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        JPanel southContainer = new JPanel();
+        southContainer.setLayout(new BorderLayout());
+        this.add(southContainer, BorderLayout.SOUTH);
+
+        // Pause button in the center
+        pauseButton = new JButton("Pause");
+        pauseButton.setPreferredSize(new Dimension(100, 50));
+        pauseButton.setBackground(ChessView.PRIMARY_SIDE_COLOR);
+        pauseButton.setForeground(ChessView.SECONDARY_COLOR);
+        pauseButton.setFont(new Font("Arial", Font.BOLD, 20));
+        pauseButton.setFocusPainted(false);
+        southContainer.add(pauseButton, BorderLayout.NORTH);
+        
         // Add the bottom panel
         bottomPanel = new BottomPanel(model);
-        this.add(bottomPanel, BorderLayout.SOUTH);
+        southContainer.add(bottomPanel, BorderLayout.SOUTH);
+
+        //
+        // Setup events
+        //
+
+        // Pause button
+        pauseButton.addActionListener(e -> onPauseButtonClickedEvent.invoke(pauseButton));
     }
 
     public BottomPanel getBottomPanel() {
@@ -88,5 +113,13 @@ public class InformationPanel extends JPanel {
 
     public PlayerPanel getPlayerPanel2() {
         return playerPanel2;
+    }
+
+    public JButton getPauseButton() {
+        return pauseButton;
+    }
+
+    public Event<JButton> getOnPauseButtonClickedEvent() {
+        return onPauseButtonClickedEvent;
     }
 }

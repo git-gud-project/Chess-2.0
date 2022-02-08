@@ -43,10 +43,6 @@ public class ChessControl {
      */
     private boolean hasDelegatedWhiteTeam;
 
-    /**
-     * The game is paused.
-     */
-    private boolean paused;
 
     /**
      * Network server
@@ -186,7 +182,7 @@ public class ChessControl {
     }
 
     private void handleTimeTick() {
-        if (paused) {
+        if (model.getPaused()) {
             return;
         }
 
@@ -194,18 +190,26 @@ public class ChessControl {
     }
 
     private void handlePause() {
-        if (!isHost()) {
-            networkClient.sendMessage(new PauseGameMessage(!paused));
+        if (!isHost() && !isSinglePlayer()) {
+            networkClient.sendMessage(new PauseGameMessage(!model.getPaused()));
             return;
         }
 
-        paused = !paused;
+        setPaused(!model.getPaused());
 
-        networkServer.broadcastMessage(new PauseGameMessage(paused));
+        if (isHost()) {
+            networkServer.broadcastMessage(new PauseGameMessage(model.getPaused()));
+        }
+    }
+
+    private void setPaused(boolean paused) {
+        model.setPaused(paused);
+
+        view.getInfoPanel().getPauseButton().setText(paused ? "Resume" : "Pause");
     }
     
     private void handleClick(BoardCell boardCell) {
-        if (!isMyTurn() || paused) {
+        if (!isMyTurn() || model.getPaused()) {
             return;
         }
 
@@ -289,7 +293,7 @@ public class ChessControl {
             return;
         }
 
-        paused = true;
+        model.setPaused(true);
 
         networkClient = new NetworkClient(host, port);
         
@@ -351,7 +355,7 @@ public class ChessControl {
         networkClient.setMessageDelegate(PauseGameMessage.class, message -> {
             PauseGameMessage pauseGameMessage = (PauseGameMessage) message;
 
-            paused = pauseGameMessage.isPaused();
+            setPaused(pauseGameMessage.isPaused());
         });
 
         networkClient.setMessageDelegate(LoadGameMessage.class, message -> {
@@ -371,7 +375,7 @@ public class ChessControl {
             return;
         }
 
-        paused = true;
+        model.setPaused(true);
 
         networkServer = new NetworkServer(port, host);
         try {
@@ -458,6 +462,10 @@ public class ChessControl {
             handleChangeName(team);
         });
 
+        view.getInfoPanel().getOnPauseButtonClickedEvent().addDelegate(button -> {
+            handlePause();
+        });
+
         Timer t = new Timer(100, (e) -> {
             handleTimeTick();
         });
@@ -475,6 +483,10 @@ public class ChessControl {
                 handlePause();
             }
         });
+
+        setPaused(true);
+
+        view.getInfoPanel().getPauseButton().setText("Play");
         
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }

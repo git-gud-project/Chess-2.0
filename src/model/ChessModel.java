@@ -21,6 +21,8 @@ public class ChessModel implements Serializable {
 
     private Team currentTeam;
 
+    private boolean paused;
+
     private int fullMoves;
 
     private int halfMoves;
@@ -46,6 +48,7 @@ public class ChessModel implements Serializable {
         teamBlack = new Team(this, Color.BLACK, "b", "Player 2",  1);
         board = new Board(this, GAMESIZE);
         currentTeam = teamWhite;
+        paused = true;
         fullMoves = 1;
         moveList = new ArrayList<>();
     }
@@ -80,6 +83,8 @@ public class ChessModel implements Serializable {
 
     public Team getCurrentTeam() { return this.currentTeam; }
 
+    public boolean getPaused() { return this.paused; }
+
     public int getFullMoves() { return this.fullMoves; }
 
     public int getHalfMoves() { return this.halfMoves; }
@@ -107,6 +112,10 @@ public class ChessModel implements Serializable {
     public void setCurrentTeam(Team team) { 
         this.currentTeam = team;
         this.onTeamChangeEvent.invoke(team);
+    }
+
+    public void setPaused(boolean paused){
+        this.paused = paused;
     }
 
     public void setFullMoves(int fullMoves) { this.fullMoves = fullMoves; }
