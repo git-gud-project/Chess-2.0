@@ -65,7 +65,7 @@ public class MovesPanel extends JPanel {
         JList<String> _moveList = new JList<>(listModel);
         _moveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
         _moveList.setForeground(Color.WHITE);
-        _moveList.setFont(new Font("Arial", Font.PLAIN, 32));
+        _moveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
         scrollpane = new JScrollPane(_moveList);
         turn = 0;
         moves = 0;
@@ -84,7 +84,7 @@ public class MovesPanel extends JPanel {
         JList<String> _moveList = new JList<>(listModel);
         _moveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
         _moveList.setForeground(Color.WHITE);
-        _moveList.setFont(new Font("Arial", Font.PLAIN, 32));
+        _moveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
         scrollpane = new JScrollPane(_moveList);
         turn = 0;
         moves = 0;
