@@ -161,7 +161,7 @@ public class ChessModel implements Serializable {
 
         Team otherTeam = getOtherTeam(currentTeam);
         // Add '#' if move resulted in checkmate on other team
-        if(board.isCheckmate(currentTeam)){
+        if(board.isCheckmate(currentTeam) == 2){
             move.addCheckMate();
         }
         // Add '+' to notation if move resulted in check to other team

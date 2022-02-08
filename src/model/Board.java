@@ -198,13 +198,17 @@ public class Board {
      * 
      * @param playerTeam the team of the player
      */
-    public boolean isCheckmate(Team enemyPlayerTeam){
-        if(allTeamMoves(enemyPlayerTeam).isEmpty()){
+    public int isCheckmate(Team enemyPlayerTeam){
+        if(allTeamMoves(enemyPlayerTeam).isEmpty() && isCheck(enemyPlayerTeam)){
             System.out.println("SCHACKMATT!");
-            return true;
+            return 2;
+        }
+        else if(allTeamMoves(enemyPlayerTeam).isEmpty() && !isCheck(enemyPlayerTeam)){
+            System.out.println("REMI!");
+            return 1;
         }
         else{
-            return false;
+            return 0;
         }
     }
 
