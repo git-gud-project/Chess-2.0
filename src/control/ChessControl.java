@@ -453,8 +453,8 @@ public class ChessControl {
         view.getBoardGridPanel().setClickDelegate((BoardCell boardCell) -> handleClick(boardCell));
 
         // Setup listeners on the menu items
-        view.getMenu().setStartServerDelegate((port) -> startServer("localhost", port));
-        view.getMenu().setConnectToServerDelegate((port) -> startClient("localhost", port));
+        view.getMenu().setStartServerDelegate((port) -> startServer(null, port));
+        view.getMenu().setConnectToServerDelegate((port) -> startClient(null, port));
 
         view.getMenu().getNewGame().addActionListener((e) -> {
             JFrame f = new JFrame();
