@@ -7,6 +7,8 @@ import utils.Delegate;
 import java.nio.file.*;
 import java.io.*;
 
+import model.*;
+
 public class Menu extends JMenuBar {
 
     private ChessView view;
@@ -40,20 +42,20 @@ public class Menu extends JMenuBar {
 
         save.addActionListener((e) -> {
             String content = view.getModel().toFEN();
-
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Save FEN");
+            fileChooser.setDialogTitle("Save");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            fileChooser.setSelectedFile(new File("fen.txt"));
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
             int returnValue = fileChooser.showSaveDialog(null);
 
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
+            if (returnValue == JFileChooser.APPROVE_OPTION){
                 File chosenFile = fileChooser.getSelectedFile();
                 try {
-                    PrintWriter writer = new PrintWriter(chosenFile);
-                    writer.print(content);
-                    writer.close();
+                    FileOutputStream fOut = new FileOutputStream(chosenFile);
+                    ObjectOutputStream stream = new ObjectOutputStream(fOut);
+                    stream.writeObject(new SerialModel(view.getModel()));
+                    stream.flush();
+                    stream.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -62,17 +64,21 @@ public class Menu extends JMenuBar {
 
         load.addActionListener((e) -> {
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Load FEN");
+            fileChooser.setDialogTitle("Load");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            fileChooser.setSelectedFile(new File("fen.txt"));
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
             int returnValue = fileChooser.showOpenDialog(null);
 
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                File chosenFile = fileChooser.getSelectedFile();
+            if(returnValue == JFileChooser.APPROVE_OPTION){
                 try {
-                    String content = Files.readString(chosenFile.toPath());
-                    view.getModel().loadFEN(content);
+                    File chosenFile = fileChooser.getSelectedFile();
+                    FileInputStream fIn = new FileInputStream(chosenFile);
+                    ObjectInputStream stream = new ObjectInputStream(fIn);
+                    SerialModel newModel = (SerialModel) stream.readObject();
+                    view.getModel().loadModel(newModel);
+                    view.getInfoPanel().getMovesPanel().loadMovesPanel();
+                    view.getModel().getTeamBlack().getOnTimeChangedEvent().invoke(view.getModel().getTeamBlack().getTime());
+                    stream.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

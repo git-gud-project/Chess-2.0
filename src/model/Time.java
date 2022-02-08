@@ -1,6 +1,8 @@
 package model;
 
-public class Time {
+import java.io.Serializable;
+
+public class Time implements Serializable {
 
     private int minutes, seconds, mseconds;
 
@@ -32,6 +34,12 @@ public class Time {
                 minutes--;
             }
         }
+    }
+    
+    public void reset() {
+        this.minutes = 5;
+        this.seconds = 0;
+        this.mseconds = 0;
     }
 
     @Override

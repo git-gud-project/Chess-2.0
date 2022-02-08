@@ -68,6 +68,10 @@ public class Team {
         return time;
     }
 
+    public void setTime(Time time) {
+        this.time = time;
+    }
+
     public int getPawnDirectionRow() {
         return pawnDirectionRow;
     }

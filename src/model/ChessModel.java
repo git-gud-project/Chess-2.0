@@ -1,6 +1,7 @@
 package model;
 import java.awt.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.ArrayList;
 
 import model.pieces.*;
@@ -24,7 +25,7 @@ public class ChessModel implements Serializable {
 
     private int halfMoves;
 
-    private ArrayList<Move> moveList;
+    private List<String> moveList;
 
     //
     // Events
@@ -47,6 +48,24 @@ public class ChessModel implements Serializable {
         currentTeam = teamWhite;
         fullMoves = 1;
         moveList = new ArrayList<>();
+    }
+
+    public void resetState() {
+        loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        teamBlack.getTime().reset();
+        teamBlack.getOnTimeChangedEvent().invoke(teamBlack.getTime());
+        teamWhite.getTime().reset();
+        moveList = new ArrayList<>();
+        currentTeam = teamWhite;
+    }
+
+    public void loadModel(SerialModel smodel){
+        teamWhite.setName(smodel.getWhiteName());
+        teamBlack.setName(smodel.getBlackName());
+        teamWhite.setTime(smodel.getWhiteTime());
+        teamBlack.setTime(smodel.getBlackTime());
+        moveList = smodel.getMoveList();
+        loadFEN(smodel.getFen());
     }
 
     //
@@ -118,7 +137,7 @@ public class ChessModel implements Serializable {
             currentTeam = teamWhite;
         }
 
-        moveList.add(move);
+        moveList.add(move.toString());
 
         // Invoke events
         onTeamChangeEvent.invoke(currentTeam);
@@ -134,7 +153,7 @@ public class ChessModel implements Serializable {
         return teamWhite.isEnPassant(row, col) || teamBlack.isEnPassant(row, col);
     }
 
-    public ArrayList<Move> getMoveList() {
+    public List<String> getMoveList() {
         return moveList;
     }
 
