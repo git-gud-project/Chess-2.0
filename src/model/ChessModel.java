@@ -14,71 +14,71 @@ public class ChessModel implements Serializable {
     // Fields
     //
 
-    private Team teamWhite, teamBlack;
+    private Team _teamWhite, _teamBlack;
 
-    private Board board;
+    private Board _board;
 
-    private Team currentTeam;
+    private Team _currentTeam;
 
-    private int fullMoves;
+    private int _fullMoves;
 
-    private int halfMoves;
+    private int _halfMoves;
 
-    private ArrayList<Move> moveList;
+    private ArrayList<Move> _moveList;
 
     //
     // Events
     //
 
-    private Event<Team> onTeamChangeEvent = new Event<>();
+    private Event<Team> _onTeamChangeEvent = new Event<>();
 
-    private Event<Move> onMoveEvent = new Event<>();
+    private Event<Move> _onMoveEvent = new Event<>();
 
-    private Event<String> onGameLoadedEvent = new Event<>();
+    private Event<String> _onGameLoadedEvent = new Event<>();
 
     //
     // Constructors 
     //
 
     public ChessModel() {
-        teamWhite = new Team(this, Color.WHITE, "w", "Player 1",  -1);
-        teamBlack = new Team(this, Color.BLACK, "b", "Player 2",  1);
-        board = new Board(this, GAMESIZE);
-        currentTeam = teamWhite;
-        fullMoves = 1;
-        moveList = new ArrayList<>();
+        _teamWhite = new Team(this, Color.WHITE, "w", "Player 1",  -1);
+        _teamBlack = new Team(this, Color.BLACK, "b", "Player 2",  1);
+        _board = new Board(this, GAMESIZE);
+        _currentTeam = _teamWhite;
+        _fullMoves = 1;
+        _moveList = new ArrayList<>();
     }
 
     //
     // Getters
     //
 
-    public Team getTeamWhite() { return this.teamWhite; }
+    public Team getTeamWhite() { return this._teamWhite; }
 
-    public Team getTeamBlack() { return this.teamBlack; }
+    public Team getTeamBlack() { return this._teamBlack; }
 
-    public Board getBoard() { return this.board; }
+    public Board getBoard() { return this._board; }
 
-    public Team getCurrentTeam() { return this.currentTeam; }
+    public Team getCurrentTeam() { return this._currentTeam; }
 
-    public int getFullMoves() { return this.fullMoves; }
+    public int getFullMoves() { return this._fullMoves; }
 
-    public int getHalfMoves() { return this.halfMoves; }
+    public int getHalfMoves() { return this._halfMoves; }
 
     //
     // Getters - Events
     //
 
     public Event<Team> getOnTeamChangeEvent() {
-        return this.onTeamChangeEvent;
+        return this._onTeamChangeEvent;
     }
 
     public Event<Move> getOnMoveEvent() {
-        return this.onMoveEvent;
+        return this._onMoveEvent;
     }
 
     public Event<String> getOnGameLoadedEvent() {
-        return this.onGameLoadedEvent;
+        return this._onGameLoadedEvent;
     }
 
     //
@@ -86,13 +86,24 @@ public class ChessModel implements Serializable {
     //
 
     public void setCurrentTeam(Team team) { 
-        this.currentTeam = team;
-        this.onTeamChangeEvent.invoke(team);
+        this._currentTeam = team;
+        this._onTeamChangeEvent.invoke(team);
     }
 
-    public void setFullMoves(int fullMoves) { this.fullMoves = fullMoves; }
+    public void setFullMoves(int fullMoves) { this._fullMoves = fullMoves; }
 
-    public void setHalfMoves(int halfMoves) { this.halfMoves = halfMoves; }
+    public void setHalfMoves(int halfMoves) { this._halfMoves = halfMoves; }
+
+    public void resetState() {
+        loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        _teamBlack.getTime().reset();
+        _teamBlack.getOnTimeChangedEvent().invoke(_teamBlack.getTime());
+        _teamWhite.getTime().reset();
+        this._fullMoves = 1;
+        this._halfMoves = 0;
+        _moveList = new ArrayList<>();
+        _currentTeam = _teamWhite;
+    }
 
     //
     // Methods
@@ -100,42 +111,42 @@ public class ChessModel implements Serializable {
 
     public void registerMove(boolean halfMove, Move move) {
         // Increment full moves if it's black's turn
-        if (currentTeam == teamBlack) {
-            fullMoves++;
+        if (_currentTeam == _teamBlack) {
+            _fullMoves++;
         }
 
         // Half moves are either incremented or reset
         if (halfMove) {
-            halfMoves++;
+            _halfMoves++;
         } else {
-            halfMoves = 0;
+            _halfMoves = 0;
         }
 
         // Switch teams
-        if (currentTeam == teamWhite) {
-            currentTeam = teamBlack;
+        if (_currentTeam == _teamWhite) {
+            _currentTeam = _teamBlack;
         } else {
-            currentTeam = teamWhite;
+            _currentTeam = _teamWhite;
         }
 
-        moveList.add(move);
+        _moveList.add(move);
 
         // Invoke events
-        onTeamChangeEvent.invoke(currentTeam);
-        onMoveEvent.invoke(move);
+        _onTeamChangeEvent.invoke(_currentTeam);
+        _onMoveEvent.invoke(move);
     }
     
     public Team getOtherTeam(Team team) {
-        if (team == teamWhite) return teamBlack;
-        return teamWhite;
+        if (team == _teamWhite) return _teamBlack;
+        return _teamWhite;
     }
 
     public boolean isEnPassant(int row, int col) {
-        return teamWhite.isEnPassant(row, col) || teamBlack.isEnPassant(row, col);
+        return _teamWhite.isEnPassant(row, col) || _teamBlack.isEnPassant(row, col);
     }
 
     public ArrayList<Move> getMoveList() {
-        return moveList;
+        return _moveList;
     }
 
     public Piece createPiece(PieceType type, Team team, Cell cell) {
@@ -168,7 +179,7 @@ public class ChessModel implements Serializable {
         for(int row = 0; row < GAMESIZE; row++){
             int emptyCells = 0;
             for(int col = 0; col < GAMESIZE; col++){
-                if(board.isEmpty(row, col)){
+                if(_board.isEmpty(row, col)){
                     emptyCells++;
                 }
                 else{
@@ -176,7 +187,7 @@ public class ChessModel implements Serializable {
                         fen += emptyCells;
                         emptyCells = 0;
                     }
-                    Piece piece = board.getCell(row, col).getPiece();
+                    Piece piece = _board.getCell(row, col).getPiece();
                     String character = piece.getPieceType().getFilePrefix();
                     if (piece.getTeam() == getTeamWhite()) {
                         character = character.toUpperCase();
@@ -224,7 +235,7 @@ public class ChessModel implements Serializable {
         Team currentTeam = getOtherTeam(getCurrentTeam());
 
         if (currentTeam.getEnPassantPiece() != null) {
-            fen += " " + board.positionToString(currentTeam.getEnPassantRow(), currentTeam.getEnPassantCol());
+            fen += " " + _board.positionToString(currentTeam.getEnPassantRow(), currentTeam.getEnPassantCol());
         }
         else {
             fen += " -";
@@ -255,7 +266,7 @@ public class ChessModel implements Serializable {
                 char c = rowString.charAt(i);
                 if(Character.isDigit(c)){
                     for (int j = 0; j < Character.getNumericValue(c); j++) {
-                        Cell cell = board.getCell(row, col);
+                        Cell cell = _board.getCell(row, col);
                         cell.setPiece(null);
                         col++;
                     }
@@ -263,7 +274,7 @@ public class ChessModel implements Serializable {
                 else{
                     Piece piece = null;
                     Team team = c == Character.toUpperCase(c) ? getTeamWhite() : getTeamBlack();
-                    Cell cell = board.getCell(row, col);
+                    Cell cell = _board.getCell(row, col);
                     switch(Character.toUpperCase(c)) {
                         case 'K':
                             piece = new Piece(new PieceKing(), cell, team);
@@ -285,7 +296,7 @@ public class ChessModel implements Serializable {
                             piece.setHasMoved(cell.getRow() != team.getKingRow() + team.getPawnDirectionRow());
                             break;
                     }
-                    board.getCell(row, col).setPiece(piece);
+                    _board.getCell(row, col).setPiece(piece);
                     col++;
                 }
             }
@@ -312,8 +323,8 @@ public class ChessModel implements Serializable {
         }
         else {
             Team other = getOtherTeam(getCurrentTeam());
-            Cell cell = board.getCell(parts[3]);
-            cell = board.getCell(cell.getRow() + other.getPawnDirectionRow(), cell.getCol());
+            Cell cell = _board.getCell(parts[3]);
+            cell = _board.getCell(cell.getRow() + other.getPawnDirectionRow(), cell.getCol());
             other.setEnPassant(cell.getPiece());
         }
 
@@ -327,5 +338,38 @@ public class ChessModel implements Serializable {
          * Invoke events
          */
         getOnGameLoadedEvent().invoke(fen);
+    }
+
+    public void setupMoveList(SerialModel smodel){
+        _moveList = new ArrayList<>();
+        /*
+        ArrayList<SerialMoveNotation> modelList = smodel.getSerialMoveList();
+        for (SerialMoveNotation sMN : modelList) {
+            Team team = sMN.getTeam().equals("white") ? new Team(this, Color.WHITE, "w", _teamWhite.getName(), -1) :
+                    new Team(this, Color.BLACK, "b", _teamBlack.getName(), 1);
+            Piece piece;
+            switch (sMN.getPiece()) {
+                case "rook": piece = new PieceRook(new Cell(this.getBoard(), sMN.getRow(), sMN.getCol()), team); break;
+                case "bishop": piece = new PieceBishop(new Cell(this.getBoard(), sMN.getRow(), sMN.getCol()), team); break;
+                case "knight": piece = new PieceKnight(new Cell(this.getBoard(), sMN.getRow(), sMN.getCol()), team); break;
+                case "queen": piece = new PieceQueen(new Cell(this.getBoard(), sMN.getRow(), sMN.getCol()), team); break;
+                case "king": piece = new PieceKing(new Cell(this.getBoard(), sMN.getRow(), sMN.getCol()), team); break;
+                default: piece = new PiecePawn(new Cell(this.getBoard(), sMN.getRow(), sMN.getCol()), team); break;
+            }
+            MoveNotation mN = new MoveNotation(sMN.getFromCol(), sMN.getRow(), sMN.getCol(), piece, sMN.getEliminates(), this.getBoard());
+            _moveList.add(mN);
+        }
+        */
+    }
+
+    public void loadModel(SerialModel smodel){
+        _teamWhite.setName(smodel.getWhiteName());
+        _teamBlack.setName(smodel.getBlackName());
+        _teamWhite.getTime().setTime(smodel.getWhiteMinutes(), smodel.getWhiteSeconds(), smodel.getWhiteMseconds());
+        _teamBlack.getTime().setTime(smodel.getBlackMinutes(), smodel.getBlackSeconds(), smodel.getBlackMseconds());
+        _fullMoves = smodel.getFullMoves();
+        _halfMoves = smodel.getHalfMoves();
+        setupMoveList(smodel);
+        loadFEN(smodel.getFEN());
     }
 }

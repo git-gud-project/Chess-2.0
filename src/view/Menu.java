@@ -3,43 +3,67 @@ package view;
 import javax.swing.*;
 
 import utils.Delegate;
+import model.ChessModel;
+import model.SerialModel;
 
 import java.nio.file.*;
 import java.io.*;
 
 public class Menu extends JMenuBar {
 
-    private ChessView view;
-    private Delegate<Integer> startServerDelegate;
-    private Delegate<Integer> connectToServerDelegate;
+    private ChessView _view;
+    private Delegate<Integer> _startServerDelegate;
+    private Delegate<Integer> _connectToServerDelegate;
 
-    private JMenuItem newGame;
+    private JMenuItem _newGame;
 
     public void setStartServerDelegate(Delegate<Integer> startServerDelegate) {
-        this.startServerDelegate = startServerDelegate;
+        _startServerDelegate = startServerDelegate;
     }
 
     public void setConnectToServerDelegate(Delegate<Integer> connectToServerDelegate) {
-        this.connectToServerDelegate = connectToServerDelegate;
+        _connectToServerDelegate = connectToServerDelegate;
     }
 
     public Menu(ChessView view) {
         super();
-        this.view = view;
+        _view = view;
 
         //Creating file menu
         JMenu file = new JMenu("File");
         this.add(file);
-        this.newGame = new JMenuItem("New game");
+        this._newGame = new JMenuItem("New game");
         JMenuItem load = new JMenuItem("Load");
         JMenuItem save = new JMenuItem("Save");
-        file.add(newGame);
+        file.add(_newGame);
         file.add(new JSeparator());
         file.add(load);
         file.add(save);
 
         save.addActionListener((e) -> {
-            String content = view.getModel().toFEN();
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+            int returnValue = fileChooser.showSaveDialog(null);
+
+            if (returnValue == JFileChooser.APPROVE_OPTION){
+                File chosenFile = fileChooser.getSelectedFile();
+                try {
+                    FileOutputStream fOut = new FileOutputStream(chosenFile);
+                    ObjectOutputStream stream = new ObjectOutputStream(fOut);
+                    stream.writeObject(new SerialModel(_view.getModel()));
+                    stream.flush();
+                    stream.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        /*
+        save.addActionListener((e) -> {
+            String content = _view.getModel().toFEN();
 
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save FEN");
@@ -59,7 +83,33 @@ public class Menu extends JMenuBar {
                 }
             }
         });
+         */
 
+        load.addActionListener((e) -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("load");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+            int returnValue = fileChooser.showOpenDialog(null);
+
+            if(returnValue == JFileChooser.APPROVE_OPTION){
+                try {
+                    File chosenFile = fileChooser.getSelectedFile();
+                    FileInputStream fIn = new FileInputStream(chosenFile);
+                    ObjectInputStream stream = new ObjectInputStream(fIn);
+                    SerialModel newModel = (SerialModel) stream.readObject();
+                    _view.getModel().loadModel(newModel);
+                    _view.getInfoPanel().getMovesPanel().loadMovesPanel();
+                    _view.getModel().getTeamBlack().getOnTimeChangedEvent().invoke( _view.getModel().getTeamBlack().getTime());
+                    stream.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+
+        /*
         load.addActionListener((e) -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Load FEN");
@@ -72,12 +122,13 @@ public class Menu extends JMenuBar {
                 File chosenFile = fileChooser.getSelectedFile();
                 try {
                     String content = Files.readString(chosenFile.toPath());
-                    view.getModel().loadFEN(content);
+                    _view.getModel().loadFEN(content);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         });
+         */
 
         //Creating edit menu
         JMenu edit = new JMenu("Edit");
@@ -102,7 +153,7 @@ public class Menu extends JMenuBar {
             JFrame f = new JFrame();
             String port = JOptionPane.showInputDialog(f, "Please select a port to start the server communication:");
             if (port != null) {
-                startServerDelegate.invoke(Integer.parseInt(port));
+                _startServerDelegate.invoke(Integer.parseInt(port));
             }
         });
 
@@ -112,7 +163,7 @@ public class Menu extends JMenuBar {
             
             String port = JOptionPane.showInputDialog(f, "Please enter the port to connect to:");
             if (port != null) {
-                connectToServerDelegate.invoke(Integer.parseInt(port));
+                _connectToServerDelegate.invoke(Integer.parseInt(port));
             }
         });
 
@@ -120,6 +171,6 @@ public class Menu extends JMenuBar {
         server.add(connectToServer);
     }
 
-    public JMenuItem getNewGame() { return newGame; }
+    public JMenuItem getNewGame() { return _newGame; }
 
 }

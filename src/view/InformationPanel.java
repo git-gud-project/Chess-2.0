@@ -6,11 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class InformationPanel extends JPanel {
-    private PlayerPanel playerPanel1;
-    private PlayerPanel playerPanel2;
+    private PlayerPanel _playerPanel1;
+    private PlayerPanel _playerPanel2;
 
-    private BottomPanel bottomPanel;
-    private MovesPanel movesPanel;
+    private BottomPanel _bottomPanel;
+    private MovesPanel _movesPanel;
 
     public InformationPanel(ChessModel model) {
         /**
@@ -25,8 +25,8 @@ public class InformationPanel extends JPanel {
         this.setBackground(ChessView.SECONDARY_COLOR);
 
         JPanel playerPanel = new JPanel();
-        playerPanel1 = new PlayerPanel(model.getTeamWhite());
-        playerPanel2 = new PlayerPanel(model.getTeamBlack());
+        _playerPanel1 = new PlayerPanel(model.getTeamWhite());
+        _playerPanel2 = new PlayerPanel(model.getTeamBlack());
         JPanel moves = new JPanel();
 
         // Player 1 in north west, player 2 in north east, with a separator in the middle
@@ -35,7 +35,7 @@ public class InformationPanel extends JPanel {
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
         c.gridy = 0;
-        playerPanel.add(playerPanel1, c);
+        playerPanel.add(_playerPanel1, c);
         c.gridx = 1;
         JSeparator separator = new JSeparator(JSeparator.VERTICAL);
         separator.setPreferredSize(new Dimension(10, 0));
@@ -43,14 +43,14 @@ public class InformationPanel extends JPanel {
         separator.setForeground(ChessView.BOARD_BACKGROUND_COLOR);
         playerPanel.add(separator, c);
         c.gridx = 2;
-        playerPanel.add(playerPanel2, c);
+        playerPanel.add(_playerPanel2, c);
         this.add(playerPanel, BorderLayout.NORTH);
 
         playerPanel.setBackground(ChessView.SECONDARY_COLOR);
 
         // Add some margin to the player panels
-        playerPanel1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        playerPanel2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        _playerPanel1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        _playerPanel2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Moves in center
         this.add(moves, BorderLayout.CENTER);
@@ -60,8 +60,8 @@ public class InformationPanel extends JPanel {
         moves.setBackground(ChessView.SECONDARY_COLOR);
         
         // Create a panel to place the moves in
-        movesPanel = new MovesPanel(model);
-        moves.add(movesPanel);
+        _movesPanel = new MovesPanel(model);
+        moves.add(_movesPanel);
 
         // Add a border to the moves panel
         moves.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -70,23 +70,25 @@ public class InformationPanel extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Add the bottom panel
-        bottomPanel = new BottomPanel(model);
-        this.add(bottomPanel, BorderLayout.SOUTH);
+        _bottomPanel = new BottomPanel(model);
+        this.add(_bottomPanel, BorderLayout.SOUTH);
     }
 
     public BottomPanel getBottomPanel() {
-        return bottomPanel;
+        return _bottomPanel;
     }
 
     public MovesPanel getMovesPanel() {
-        return movesPanel;
+        return _movesPanel;
     }
 
     public PlayerPanel getPlayerPanel1() {
-        return playerPanel1;
+        return _playerPanel1;
     }
 
     public PlayerPanel getPlayerPanel2() {
-        return playerPanel2;
+        return _playerPanel2;
     }
+
+    public void resetMovesPanel() { _movesPanel.resetMovesPanel(); }
 }

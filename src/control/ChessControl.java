@@ -1,6 +1,8 @@
 package control;
-
-import view.*;
+import view.BoardCell;
+import view.BoardGridPanel;
+import view.ChessView;
+import view.PlayerPanel;
 import model.*;
 import network.*;
 
@@ -15,18 +17,18 @@ import java.net.SocketException;
 import java.util.*;
 
 public class ChessControl {
-    private ChessModel model;
-    private ChessView view;
+    private ChessModel _model;
+    private ChessView _view;
 
     /**
      * The selected cell, or null if no cell is selected.
      */
-    private BoardCell selectedCell;
+    private BoardCell _selectedCell;
 
     /**
      * The currently highlighted cells.
      */
-    private ArrayList<BoardCell> highlightedCells;
+    private ArrayList<BoardCell> _highlightedCells;
 
     /**
      * The current list of available moves for selected piece
@@ -36,22 +38,22 @@ public class ChessControl {
     /**
      * The team we are playing as.
      */
-    private Team team;
+    private Team _team;
 
     /**
      * Has delegated white team.
      */
-    private boolean hasDelegatedWhiteTeam;
+    private boolean _hasDelegatedWhiteTeam;
 
     /**
      * Network server
      */
-    private NetworkServer networkServer;
+    private NetworkServer _networkServer;
 
     /**
      * Network client
      */
-    private NetworkClient networkClient;
+    private NetworkClient _networkClient;
 
     /**
      * Returns true if the game is in simple player mode.
@@ -59,7 +61,7 @@ public class ChessControl {
      * @return true if the game is in simple player mode.
      */
     public boolean isSinglePlayer() {
-        return networkServer == null && networkClient == null;
+        return _networkServer == null && _networkClient == null;
     }
 
     /**
@@ -68,31 +70,31 @@ public class ChessControl {
      * @return true if this application is running as a server.
      */
     public boolean isHost() {
-        return networkServer != null;
+        return _networkServer != null;
     }
 
     public boolean isMyTurn() {
-        return isSinglePlayer() || model.getCurrentTeam() == team;
+        return isSinglePlayer() || _model.getCurrentTeam() == _team;
     }
 
     public boolean hasAuthorityOver(Team team) {
-        return isSinglePlayer() || this.team == team;
+        return isSinglePlayer() || _team == team;
     }
 
     private void promotePawn(int row, int col, PieceType type, boolean isElimination) {
-        Board board = model.getBoard();
+        Board board = _model.getBoard();
         Piece piece = board.getCell(row, col).getPiece();
         Cell cell = piece.getCell();
         Team team = piece.getTeam();
         cell.setPiece(null);
-        Piece promoted = model.createPiece(type, team, cell);
+        Piece promoted = _model.createPiece(type, team, cell);
         cell.setPiece(promoted);
 
-        Team otherTeam = model.getOtherTeam(model.getCurrentTeam());
+        Team otherTeam = _model.getOtherTeam(_model.getCurrentTeam());
 
         Move move = new Move(cell, type);
 
-        model.registerMove(false, move);
+        _model.registerMove(false, move);
 
         otherTeam.clearEnPassant();
     }
@@ -106,22 +108,24 @@ public class ChessControl {
     private void executeMove(Move move) {
         boolean isElimination = move.isEliminatable();
 
+        Board board = _model.getBoard();
+
         Piece piece = move.getPiece();
 
         piece.move(move.getToCell());
 
-        Team otherTeam = model.getOtherTeam(model.getCurrentTeam());
+        Team otherTeam = _model.getOtherTeam(_model.getCurrentTeam());
 
         // Halfmove clock: The number of halfmoves since the last capture or pawn advance, used for the fifty-move rule.
         boolean halfMove = piece.getPieceType() != PieceType.PAWN && !isElimination;
 
         if (piece.getPieceType() == PieceType.PAWN && piece.getCell().getRow() == piece.getTeam().getPromotionRow()) {
             if (isMyTurn()) {
-                PieceType type = view.promotePawn();
+                PieceType type = _view.promotePawn();
                 Cell cell = piece.getCell();
 
                 if (!isSinglePlayer()) {
-                    networkClient.sendMessage(new PromotePawnMessage(cell.getRow(), cell.getCol(), type, isElimination));
+                    _networkClient.sendMessage(new PromotePawnMessage(cell.getRow(), cell.getCol(), type, isElimination));
                 } else {
                     promotePawn(cell.getRow(), cell.getCol(), type, isElimination);
                 }
@@ -129,16 +133,16 @@ public class ChessControl {
 
             return;
         }
-
-        model.registerMove(halfMove, move);
+        
+        _model.registerMove(halfMove, move);
 
         //CHECK HIGHLIGHT, DOESNT WORK WHEN KING MOVES.
-        Cell c = model.getBoard().getKingCell(piece.getTeam());
-        BoardCell check = view.getBoardGridPanel().getCell(c.getRow(),c.getCol()); //FAULT HERE.
+        Cell c = _model.getBoard().getKingCell(piece.getTeam());
+        BoardCell check = _view.getBoardGridPanel().getCell(c.getRow(),c.getCol()); //FAULT HERE.
         check.unhighlight();
-        if(piece.getCell().getBoard().isCheck(model.getOtherTeam(piece.getTeam()))){
-            c = model.getBoard().getKingCell(model.getOtherTeam(piece.getTeam()));
-            check =  view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
+        if(piece.getCell().getBoard().isCheck(_model.getOtherTeam(piece.getTeam()))){
+            c = _model.getBoard().getKingCell(_model.getOtherTeam(piece.getTeam()));
+            check =  _view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
             check.highlight(Color.RED);
         }
 
@@ -165,7 +169,7 @@ public class ChessControl {
         
         // If we are not the host, send a request to the host.
         if (!isHost()) {
-            networkClient.sendMessage(new MovePieceMessage(fromRow, fromCol, toRow, toCol, isElimination));
+            _networkClient.sendMessage(new MovePieceMessage(fromRow, fromCol, toRow, toCol, isElimination));
 
             return;
         }
@@ -173,7 +177,7 @@ public class ChessControl {
         // TODO: Validate move.
         
         // If we are the host, broadcast the move to all clients.
-        networkServer.broadcastMessage(new AffirmMoveMessage(fromRow, fromCol, toRow, toCol, isElimination));
+        _networkServer.broadcastMessage(new AffirmMoveMessage(fromRow, fromCol, toRow, toCol, isElimination));
     }
     
     private void handleClick(BoardCell boardCell) {
@@ -181,24 +185,24 @@ public class ChessControl {
             return;
         }
 
-        ChessModel model = view.getModel();
-        BoardGridPanel grid = view.getBoardGridPanel();
+        ChessModel model = _view.getModel();
+        BoardGridPanel grid = _view.getBoardGridPanel();
 
         // If the cell was highlighted, move the selected piece to the cell
-        if (highlightedCells.contains(boardCell)) {
+        if (_highlightedCells.contains(boardCell)) {
             movePiece(currentMoveMap.get(boardCell));
         }
 
-        if (selectedCell != null) {
-            selectedCell.unhighlight();
+        if (_selectedCell != null) {
+            _selectedCell.unhighlight();
         }
 
-        for (BoardCell cell : highlightedCells) {
+        for (BoardCell cell : _highlightedCells) {
             cell.unhighlight();
             cell.setElimination(false);
         }
 
-        highlightedCells.clear();
+        _highlightedCells.clear();
 
         Piece piece = model.getBoard().getCell(boardCell.getRow(), boardCell.getCol()).getPiece();
 
@@ -210,9 +214,9 @@ public class ChessControl {
             return;
         }
 
-        selectedCell = boardCell;
+        _selectedCell = boardCell;
 
-        selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
+        _selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
 
 
         Iterator<Move> moves = piece.getPossibleMoves();
@@ -229,7 +233,7 @@ public class ChessControl {
             possibleMove.highlight(move.isEliminatable() ? ChessView.HIGHLIGHT_COLOR_ATTACK : ChessView.HIGHLIGHT_COLOR_MOVE);
             possibleMove.setElimination(move.isEliminatable());
 
-            highlightedCells.add(possibleMove);
+            _highlightedCells.add(possibleMove);
         }
     }
 
@@ -247,7 +251,7 @@ public class ChessControl {
 
         // Change the name.
         if (!isSinglePlayer()) {
-            networkClient.sendMessage(new ChangeNameMessage(name, team == model.getTeamWhite()));
+            _networkClient.sendMessage(new ChangeNameMessage(name, team == _model.getTeamWhite()));
         } else {
             team.setName(name);
         }
@@ -257,57 +261,57 @@ public class ChessControl {
      * Start a client.
      */
     public void startClient(String host, int port) {
-        networkClient = new NetworkClient(host, port);
+        _networkClient = new NetworkClient(host, port);
         
         try {
-            networkClient.start();
+            _networkClient.start();
         } catch (SocketException e) {
             System.out.println("Could not connect to server.");
 
-            networkClient = null;
+            _networkClient = null;
             return;
         } catch (IOException e) {
             e.printStackTrace();
             
-            networkClient = null;
+            _networkClient = null;
             return;
         }
 
-        networkClient.sendMessage(new ClientReadyMessage());
+        _networkClient.sendMessage(new ClientReadyMessage());
 
-        networkClient.setOnDisconnectDelegate(() -> {
+        _networkClient.setOnDisconnectDelegate(() -> {
             System.out.println("Disconnected from server.");
-            networkClient = null;
+            _networkClient = null;
         });
 
-        networkClient.setMessageDelegate(SetTeamMessage.class, message -> {
+        _networkClient.setMessageDelegate(SetTeamMessage.class, message -> {
             SetTeamMessage setTeamMessage = (SetTeamMessage) message;
             if (setTeamMessage.isWhite()) {
-                team = model.getTeamWhite();
+                _team = _model.getTeamWhite();
             } else {
-                team = model.getTeamBlack();
+                _team = _model.getTeamBlack();
             }
         });
 
-        networkClient.setMessageDelegate(AffirmMoveMessage.class, message -> {
+        _networkClient.setMessageDelegate(AffirmMoveMessage.class, message -> {
             AffirmMoveMessage affirmMoveMessage = (AffirmMoveMessage) message;
-            Cell fromCell = model.getBoard().getCell(affirmMoveMessage.getFromRow(), affirmMoveMessage.getFromCol());
-            Cell toCell = model.getBoard().getCell(affirmMoveMessage.getToRow(), affirmMoveMessage.getToCol());
+            Cell fromCell = _model.getBoard().getCell(affirmMoveMessage.getFromRow(), affirmMoveMessage.getFromCol());
+            Cell toCell = _model.getBoard().getCell(affirmMoveMessage.getToRow(), affirmMoveMessage.getToCol());
             Move move = new Move(toCell, fromCell, affirmMoveMessage.isElimination());
             executeMove(move);
         });
 
-        networkClient.setMessageDelegate(PromotePawnMessage.class, message -> {
+        _networkClient.setMessageDelegate(PromotePawnMessage.class, message -> {
             PromotePawnMessage promotePawnMessage = (PromotePawnMessage) message;
             promotePawn(promotePawnMessage.getRow(), promotePawnMessage.getCol(), promotePawnMessage.getPieceType(), promotePawnMessage.isElimination());
         });
 
-        networkClient.setMessageDelegate(ChangeNameMessage.class, message -> {
+        _networkClient.setMessageDelegate(ChangeNameMessage.class, message -> {
             ChangeNameMessage changeNameMessage = (ChangeNameMessage) message;
             if (changeNameMessage.isWhite()) {
-                model.getTeamWhite().setName(changeNameMessage.getName());
+                _model.getTeamWhite().setName(changeNameMessage.getName());
             } else {
-                model.getTeamBlack().setName(changeNameMessage.getName());
+                _model.getTeamBlack().setName(changeNameMessage.getName());
             }
         });
     }
@@ -318,92 +322,92 @@ public class ChessControl {
      * Also starts a client which is connected to the server.
      */
     public void startServer(String host, int port) {
-        networkServer = new NetworkServer(port, host);
+        _networkServer = new NetworkServer(port, host);
         try {
-            networkServer.start();
+            _networkServer.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        networkServer.setOnClientConnectedDelegate((client) -> {
+        _networkServer.setOnClientConnectedDelegate((client) -> {
             System.out.println("Client connected");
         });
 
-        networkServer.setOnClientDisconnectedDelegate((client) -> {
+        _networkServer.setOnClientDisconnectedDelegate((client) -> {
             System.out.println("Client disconnected");
         });
 
-        networkServer.setMessageDelegate(MovePieceMessage.class, (message) -> {
+        _networkServer.setMessageDelegate(MovePieceMessage.class, (message) -> {
             MovePieceMessage movePieceMessage = (MovePieceMessage) message;
 
-            Move move = new Move(new Cell(model.getBoard(), movePieceMessage.getToRow(), movePieceMessage.getToCol()), new Cell(model.getBoard(), movePieceMessage.getFromRow(), movePieceMessage.getFromCol()),movePieceMessage.isElimination());
+            Move move = new Move(new Cell(_model.getBoard(), movePieceMessage.getToRow(), movePieceMessage.getToCol()), new Cell(_model.getBoard(), movePieceMessage.getFromRow(), movePieceMessage.getFromCol()),movePieceMessage.isElimination());
 
             movePiece(move);
         });
         
-        networkServer.setMessageDelegate(ClientReadyMessage.class, (client, message) -> {
-            //ClientReadyMessage clientReadyMessage = (ClientReadyMessage) message;
+        _networkServer.setMessageDelegate(ClientReadyMessage.class, (client, message) -> {
+            ClientReadyMessage clientReadyMessage = (ClientReadyMessage) message;
             
             System.out.println("Client ready");
 
-            client.sendMessage(new SetTeamMessage(!hasDelegatedWhiteTeam));
+            client.sendMessage(new SetTeamMessage(!_hasDelegatedWhiteTeam));
 
-            hasDelegatedWhiteTeam = true;
+            _hasDelegatedWhiteTeam = true;
         });
 
-        networkServer.setMessageDelegate(PromotePawnMessage.class, (client, message) -> {
-            //PromotePawnMessage promotePawnMessage = (PromotePawnMessage) message;
+        _networkServer.setMessageDelegate(PromotePawnMessage.class, (client, message) -> {
+            PromotePawnMessage promotePawnMessage = (PromotePawnMessage) message;
 
-            networkServer.broadcastMessage(message);
+            _networkServer.broadcastMessage(message);
         });
 
-        networkServer.setMessageDelegate(ChangeNameMessage.class, (client, message) -> {
-            //ChangeNameMessage changeNameMessage = (ChangeNameMessage) message;
+        _networkServer.setMessageDelegate(ChangeNameMessage.class, (client, message) -> {
+            ChangeNameMessage changeNameMessage = (ChangeNameMessage) message;
 
-            networkServer.broadcastMessage(message);
+            _networkServer.broadcastMessage(message);
         });
 
         startClient(host, port);
     }
 
     public ChessControl() {
-        model = new ChessModel();
-        view = new ChessView(model);
+        _model = new ChessModel();
+        _view = new ChessView(_model);
         Timer t = new Timer(100, new TimerListener());
         t.start();
 
-        highlightedCells = new ArrayList<>();
+        _highlightedCells = new ArrayList<>();
 
         // Setup listener when clicking on a cell.
-        view.getBoardGridPanel().setClickDelegate((BoardCell boardCell) -> handleClick(boardCell));
+        _view.getBoardGridPanel().setClickDelegate((BoardCell boardCell) -> handleClick(boardCell));
 
         // Setup listeners on the menu items
-        view.getMenu().setStartServerDelegate((port) -> startServer("localhost", port));
-        view.getMenu().setConnectToServerDelegate((port) -> startClient("localhost", port));
+        _view.getMenu().setStartServerDelegate((port) -> startServer("localhost", port));
+        _view.getMenu().setConnectToServerDelegate((port) -> startClient("localhost", port));
 
-        view.getMenu().getNewGame().addActionListener((e) -> {
+        _view.getMenu().getNewGame().addActionListener((e) -> {
             JFrame f = new JFrame();
             int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
             if(answer == JOptionPane.YES_OPTION) {
-                model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-                // TODO: Reset other variables
+                _model.resetState();
+                _view.getInfoPanel().resetMovesPanel();
             }
         });
 
-        view.getInfoPanel().getPlayerPanel1().getOnPlayerNameChangedEvent().addDelegate(team -> {
+        _view.getInfoPanel().getPlayerPanel1().getOnPlayerNameChangedEvent().addDelegate(team -> {
             handleChangeName(team);
         });
 
-        view.getInfoPanel().getPlayerPanel2().getOnPlayerNameChangedEvent().addDelegate(team -> {
+        _view.getInfoPanel().getPlayerPanel2().getOnPlayerNameChangedEvent().addDelegate(team -> {
             handleChangeName(team);
         });
         
-        model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        _model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
 
     public class TimerListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            model.getCurrentTeam().tickTime();
+            _model.getCurrentTeam().tickTime();
         }
     }
 }

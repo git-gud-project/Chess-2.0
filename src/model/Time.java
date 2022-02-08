@@ -2,40 +2,52 @@ package model;
 
 public class Time {
 
-    private int minutes, seconds, mseconds;
+    private int _minutes, _seconds, _mseconds;
 
     public Time() {
-        minutes = 5;
-        seconds = 0;
-        mseconds = 0;
+        this._minutes = 5;
+        this._seconds = 0;
+        this._mseconds = 0;
     }
 
     public Time(int minutes) {
-        this.minutes = minutes;
-        seconds = 0;
-        mseconds = 0;
+        this._minutes = minutes;
+        this._seconds = 0;
+        this._mseconds = 0;
     }
 
-    public int getMinutes() { return minutes; }
-    public int getSeconds() { return seconds; }
-    public int getMseconds() { return mseconds; }
+    public int getMinutes() { return this._minutes; }
+    public int getSeconds() { return this._seconds; }
+    public int getMseconds() { return this._mseconds; }
 
     public void tick() {
-        if(minutes > 0 || seconds > 0 ||mseconds > 0) {
-            mseconds--;
-            if (mseconds == -1) {
-                mseconds = 9;
-                seconds--;
+        if(_minutes > 0 || _seconds > 0 ||_mseconds > 0) {
+            _mseconds--;
+            if (_mseconds == -1) {
+                _mseconds = 9;
+                _seconds--;
             }
-            if (seconds == -1) {
-                seconds = 59;
-                minutes--;
+            if (_seconds == -1) {
+                _seconds = 59;
+                _minutes--;
             }
         }
     }
 
+    public void setTime(int minutes, int seconds, int mseconds){
+        this._minutes = minutes;
+        this._seconds = seconds;
+        this._mseconds = mseconds;
+    }
+
+    public void reset() {
+        this._minutes = 5;
+        this._seconds = 0;
+        this._mseconds = 0;
+    }
+
     @Override
     public String toString() {
-        return String.format("%02d:%02d:%02d", minutes, seconds, mseconds);
+        return String.format("%02d:%02d:%02d", _minutes, _seconds, _mseconds);
     }
 }
