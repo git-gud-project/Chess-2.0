@@ -224,8 +224,6 @@ public class ChessModel implements Serializable {
         Team currentTeam = getOtherTeam(getCurrentTeam());
 
         if (currentTeam.getEnPassantPiece() != null) {
-            Piece enPassantPiece = currentTeam.getEnPassantPiece();
-            Cell enPassantCell = enPassantPiece.getCell();
             fen += " " + board.positionToString(currentTeam.getEnPassantRow(), currentTeam.getEnPassantCol());
         }
         else {
