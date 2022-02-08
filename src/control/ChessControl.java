@@ -281,6 +281,12 @@ public class ChessControl {
      * Start a client.
      */
     public void startClient(String host, int port) {
+        if (networkClient != null) {
+            return;
+        }
+
+        paused = true;
+
         networkClient = new NetworkClient(host, port);
         
         try {
@@ -343,6 +349,12 @@ public class ChessControl {
 
             paused = pauseGameMessage.isPaused();
         });
+
+        networkClient.setMessageDelegate(LoadGameMessage.class, message -> {
+            LoadGameMessage loadGameMessage = (LoadGameMessage) message;
+
+            model.loadModel(loadGameMessage.getModel());
+        });
     }
 
     /**
@@ -351,6 +363,12 @@ public class ChessControl {
      * Also starts a client which is connected to the server.
      */
     public void startServer(String host, int port) {
+        if (networkServer != null) {
+            return;
+        }
+
+        paused = true;
+
         networkServer = new NetworkServer(port, host);
         try {
             networkServer.start();
@@ -382,6 +400,8 @@ public class ChessControl {
             client.sendMessage(new SetTeamMessage(!hasDelegatedWhiteTeam));
 
             hasDelegatedWhiteTeam = true;
+
+            client.sendMessage(new LoadGameMessage(new SerialModel(model)));
         });
 
         networkServer.setMessageDelegate(PromotePawnMessage.class, (client, message) -> {
