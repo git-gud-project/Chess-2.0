@@ -9,6 +9,7 @@ public class Move {
     private boolean isCastleQueenSide;
     private boolean isPromotion;
     private boolean isCheck;
+    private boolean isCheckMate;
     private PieceType promotedTo;
 
     public Move(Cell toCell, Cell fromCell) {
@@ -16,6 +17,7 @@ public class Move {
         this.fromCell = fromCell;
         this.piece = fromCell.getPiece();
         this.isCheck = false;
+        this.isCheckMate = false;
     }
 
     public Move(Cell toCell, Cell fromCell, boolean eliminatable) {
@@ -24,6 +26,7 @@ public class Move {
         this.piece = fromCell.getPiece();
         this.elimination = eliminatable;
         this.isCheck = false;
+        this.isCheckMate = false;
     }
 
     public Move(Cell toCell, PieceType type) {
@@ -31,6 +34,7 @@ public class Move {
         this.isPromotion = true;
         this.promotedTo = type;
         this.isCheck = false;
+        this.isCheckMate = false;
     }
 
     public Cell getToCell() {
@@ -81,6 +85,10 @@ public class Move {
         this.isCheck = true;
     }
 
+    public void addCheckMate() {
+        this.isCheckMate = true;
+    }
+
     public String toString() {
         if(isCastleKingSide) return "0-0";
         else if(isCastleQueenSide) return "0-0-0";
@@ -106,6 +114,7 @@ public class Move {
             else result.append(piecePrefix+colAndRow);
 
             if(isCheck) result.append("+");
+            else if(isCheckMate) result.append("#");
 
             return result.toString();
         }

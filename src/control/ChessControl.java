@@ -139,13 +139,17 @@ public class ChessControl {
 
         //CHECK HIGHLIGHT, DOESNT WORK WHEN KING MOVES.
         Cell c = model.getBoard().getKingCell(piece.getTeam());
-        BoardCell check = view.getBoardGridPanel().getCell(c.getRow(),c.getCol()); //FAULT HERE.
-        check.unhighlight();
+        BoardCell check = view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
+        if(check.getBackground().equals(new Color(191, 64,64)) || check.getBackground().equals(new Color(223, 96, 96))){
+            check.unhighlight();
+        }
+
         if(piece.getCell().getBoard().isCheck(model.getOtherTeam(piece.getTeam()))){
             c = model.getBoard().getKingCell(model.getOtherTeam(piece.getTeam()));
             check =  view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
             check.highlight(Color.RED);
         }
+
 
         otherTeam.clearEnPassant();
     }
