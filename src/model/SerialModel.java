@@ -8,6 +8,7 @@ public class SerialModel implements Serializable {
     private String fen;
     private String whiteName, blackName;
     private Time whiteTime, blackTime;
+    private boolean paused, started;
 
     public SerialModel(ChessModel model) {
         moveList = model.getMoveList();
@@ -16,6 +17,8 @@ public class SerialModel implements Serializable {
         blackName = model.getTeamBlack().getName();
         whiteTime = model.getTeamWhite().getTime();
         blackTime = model.getTeamBlack().getTime();
+        paused = model.getPaused();
+        started = model.getStarted();
     }
 
     public List<String> getMoveList() {
@@ -40,5 +43,13 @@ public class SerialModel implements Serializable {
     
     public Time getBlackTime() {
         return blackTime;
+    }
+
+    public boolean getPaused() {
+        return paused;
+    }
+
+    public boolean getStarted() {
+        return started;
     }
 }

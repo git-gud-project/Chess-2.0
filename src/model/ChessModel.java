@@ -23,6 +23,8 @@ public class ChessModel implements Serializable {
 
     private boolean paused;
 
+    private boolean started;
+
     private int fullMoves;
 
     private int halfMoves;
@@ -69,6 +71,8 @@ public class ChessModel implements Serializable {
         teamBlack.setTime(smodel.getBlackTime());
         moveList = smodel.getMoveList();
         loadFEN(smodel.getFen());
+        paused = smodel.getPaused();
+        started = smodel.getStarted();   
     }
 
     //
@@ -84,6 +88,8 @@ public class ChessModel implements Serializable {
     public Team getCurrentTeam() { return this.currentTeam; }
 
     public boolean getPaused() { return this.paused; }
+
+    public boolean getStarted() { return this.started; }
 
     public int getFullMoves() { return this.fullMoves; }
 
@@ -116,6 +122,10 @@ public class ChessModel implements Serializable {
 
     public void setPaused(boolean paused){
         this.paused = paused;
+    }
+
+    public void setStarted(boolean started){
+        this.started = started;
     }
 
     public void setFullMoves(int fullMoves) { this.fullMoves = fullMoves; }
