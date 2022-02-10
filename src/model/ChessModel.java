@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import model.pieces.*;
 import utils.Event;
 
-public class ChessModel implements Serializable {
+public class ChessModel {
 
     private static final int GAMESIZE = 8;
 
@@ -159,7 +159,6 @@ public class ChessModel implements Serializable {
         // Invoke events
         onTeamChangeEvent.invoke(currentTeam);
 
-        Team otherTeam = getOtherTeam(currentTeam);
         // Add '#' if move resulted in checkmate on other team
         if(board.isCheckmate(currentTeam) == 2){
             move.addCheckMate();
@@ -170,7 +169,6 @@ public class ChessModel implements Serializable {
         moveList.add(move.toString());
 
         onMoveEvent.invoke(move);
-
 
     }
     
