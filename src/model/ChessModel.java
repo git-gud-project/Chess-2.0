@@ -60,6 +60,9 @@ public class ChessModel {
         teamBlack.getTime().reset();
         teamBlack.getOnTimeChangedEvent().invoke(teamBlack.getTime());
         teamWhite.getTime().reset();
+        setPaused(true);
+        setStarted(false);
+        teamWhite.getOnTimeChangedEvent().invoke(teamWhite.getTime());
         moveList = new ArrayList<>();
         currentTeam = teamWhite;
     }
@@ -71,8 +74,8 @@ public class ChessModel {
         teamBlack.setTime(smodel.getBlackTime());
         moveList = smodel.getMoveList();
         loadFEN(smodel.getFen());
-        paused = smodel.getPaused();
-        started = smodel.getStarted();   
+        setPaused(true);
+        setStarted(false);
     }
 
     //
