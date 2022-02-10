@@ -8,4 +8,9 @@
 
 ## OSCAR TEST 
 
-## Isak Test
+## Isak Test 
+
+## How to run .jar file maven, in cmd do:
+## * cd "runpath"
+## * mvn clean compile assembly:single
+## * java -jar /target/chess-1.0-with-dependencies.jar
