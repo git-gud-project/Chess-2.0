@@ -98,6 +98,10 @@ public class ChessModel implements Serializable {
 
     public int getHalfMoves() { return this.halfMoves; }
 
+    public boolean getGameOver(){
+        return this.isGameOver;
+    }
+
     //
     // Getters - Events
     //

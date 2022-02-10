@@ -135,9 +135,11 @@ public class ChessControl {
             return;
         }
 
-        model.registerMove(halfMove, move);
-        
+
         checkHighlight(piece);
+
+        model.registerMove(halfMove, move);
+
 
         if(model.getBoard().isCheckmate(model.getOtherTeam(piece.getTeam())) == 2){
             model.setGameOver();
