@@ -169,4 +169,21 @@ public class ChessView extends JFrame {
                 return null;
         }
     }
+
+    private void gameOver(){
+
+        Object[] options = {"New game.", "Exit"};
+        int n = JOptionPane.showOptionDialog(this, "Game over", "CONGRATULATION! YOU'VE WON!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (n == JOptionPane.CLOSED_OPTION) {
+            System.out.println("Closed");
+        }
+        switch (n) {
+            case 0:
+                System.out.println("Start new game");
+            case 1:
+                System.out.println("Closed");
+            default:
+                System.out.println("Closed");
+        }
+    }
 }

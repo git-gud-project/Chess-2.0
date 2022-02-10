@@ -135,9 +135,14 @@ public class ChessControl {
             return;
         }
 
+        checkHighlight(piece);
+
         model.registerMove(halfMove, move);
 
-        //CHECK HIGHLIGHT, DOESNT WORK WHEN KING MOVES.
+        otherTeam.clearEnPassant();
+    }
+
+    private void checkHighlight(Piece piece){
         Cell c = model.getBoard().getKingCell(piece.getTeam());
         BoardCell check = view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
         if(check.getBackground().equals(new Color(191, 64,64)) || check.getBackground().equals(new Color(223, 96, 96))){
@@ -150,8 +155,6 @@ public class ChessControl {
             check.highlight(Color.RED);
         }
 
-
-        otherTeam.clearEnPassant();
     }
 
     /**
