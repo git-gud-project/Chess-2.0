@@ -29,6 +29,8 @@ public class ChessModel implements Serializable {
 
     private int halfMoves;
 
+    private boolean isGameOver;
+
     private List<String> moveList;
 
     //
@@ -52,6 +54,7 @@ public class ChessModel implements Serializable {
         currentTeam = teamWhite;
         paused = true;
         fullMoves = 1;
+        isGameOver = false;
         moveList = new ArrayList<>();
     }
 
@@ -131,6 +134,10 @@ public class ChessModel implements Serializable {
     public void setFullMoves(int fullMoves) { this.fullMoves = fullMoves; }
 
     public void setHalfMoves(int halfMoves) { this.halfMoves = halfMoves; }
+
+    public void setGameOver(){
+        this.isGameOver = true;
+    }
 
     //
     // Methods

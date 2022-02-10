@@ -120,6 +120,8 @@ public class ChessView extends JFrame {
         // Add menu bar
         menuPanel = new Menu(this);
 
+
+
         this.setJMenuBar(menuPanel);
 
         this.pack();
