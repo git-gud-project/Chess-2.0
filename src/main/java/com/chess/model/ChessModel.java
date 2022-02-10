@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import com.chess.model.pieces.*;
 import com.chess.utils.Event;
 
-public class ChessModel implements Serializable {
+public class ChessModel {
 
     private static final int GAMESIZE = 8;
 
@@ -60,6 +60,9 @@ public class ChessModel implements Serializable {
         teamBlack.getTime().reset();
         teamBlack.getOnTimeChangedEvent().invoke(teamBlack.getTime());
         teamWhite.getTime().reset();
+        setPaused(true);
+        setStarted(false);
+        teamWhite.getOnTimeChangedEvent().invoke(teamWhite.getTime());
         moveList = new ArrayList<>();
         currentTeam = teamWhite;
     }
@@ -71,8 +74,8 @@ public class ChessModel implements Serializable {
         teamBlack.setTime(smodel.getBlackTime());
         moveList = smodel.getMoveList();
         loadFEN(smodel.getFen());
-        paused = smodel.getPaused();
-        started = smodel.getStarted();   
+        setPaused(true);
+        setStarted(false);
     }
 
     //
@@ -169,7 +172,6 @@ public class ChessModel implements Serializable {
         moveList.add(move.toString());
 
         onMoveEvent.invoke(move);
-
 
     }
     

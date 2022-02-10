@@ -46,7 +46,8 @@ public class Menu extends JMenuBar {
         file.add(save);
 
         save.addActionListener((e) -> {
-            view.getModel().setPaused(true);
+            boolean paused = view.getModel().getPaused();
+            if(!paused) view.getModel().setPaused(true);
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -65,11 +66,12 @@ public class Menu extends JMenuBar {
                     ex.printStackTrace();
                 }
             }
-            view.getModel().setPaused(false);
+            if(!paused) view.getModel().setPaused(false);
         });
 
         load.addActionListener((e) -> {
-            view.getModel().setPaused(true);
+            boolean paused = view.getModel().getPaused();
+            if(!paused) view.getModel().setPaused(true);
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Load");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -89,8 +91,9 @@ public class Menu extends JMenuBar {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+            } else {
+                if(!paused) view.getModel().setPaused(false);
             }
-            view.getModel().setPaused(false);
         });
 
         //Creating edit menu
