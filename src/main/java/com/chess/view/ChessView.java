@@ -170,7 +170,7 @@ public class ChessView extends JFrame {
         }
     }
 
-    private void gameOver(){
+    public void gameOver(){
 
         Object[] options = {"New game.", "Exit"};
         int n = JOptionPane.showOptionDialog(this, "Game over", "CONGRATULATION! YOU'VE WON!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
