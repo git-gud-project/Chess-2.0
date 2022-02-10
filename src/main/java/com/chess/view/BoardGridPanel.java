@@ -5,6 +5,7 @@ import com.chess.utils.Delegate;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class BoardGridPanel extends JPanel {
     private BoardCell[][] cells;
@@ -55,14 +56,24 @@ public class BoardGridPanel extends JPanel {
                     if (piece == null) {
                         button.setIcon(null);
                     } else {
-                        button.setIcon(new ImageIcon(piece.getIconPath()));
+                        String path = piece.getIconPath();
+                        // Load an image from the resources folder
+                        URL url = getClass().getResource(path);
+                        Image image = Toolkit.getDefaultToolkit().getImage(url);
+                        ImageIcon icon = new ImageIcon(image);
+                        button.setIcon(icon);
                     }
                 });
 
                 Piece piece = cell.getPiece();
 
                 if (piece != null) {
-                    button.setIcon(new ImageIcon(piece.getIconPath()));
+                    String path = piece.getIconPath();
+                    // Load an image from the resources folder
+                    URL url = getClass().getResource(path);
+                    Image image = Toolkit.getDefaultToolkit().getImage(url);
+                    ImageIcon icon = new ImageIcon(image);
+                    button.setIcon(icon);
                 }
             }
         }

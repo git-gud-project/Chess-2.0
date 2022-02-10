@@ -86,7 +86,7 @@ public class Piece {
      * @return the path to the image file for the piece
      */
     public String getIconPath() {
-        return "res/" + getPieceType().getFilePrefix() + team.getFileSuffix() + ".png";
+        return "/images/" + getPieceType().getFilePrefix() + team.getFileSuffix() + ".png";
     }
 
     /**
