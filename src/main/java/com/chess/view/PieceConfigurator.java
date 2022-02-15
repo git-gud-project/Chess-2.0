@@ -4,10 +4,15 @@ import javax.swing.*;
 
 import com.chess.model.ChessModel;
 import com.chess.model.PieceType;
+import com.chess.model.SerialModel;
 import com.chess.model.Team;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class PieceConfigurator extends JPanel {
@@ -28,6 +33,7 @@ public class PieceConfigurator extends JPanel {
         this.view = view;
         this.frame = new JFrame("Customize pieces");
         this.frame.setUndecorated(true);
+        this.frame.setAlwaysOnTop(true);
         this.setLayout(new BorderLayout());
         this.frame.add(this);
         setupUI();
@@ -106,7 +112,9 @@ public class PieceConfigurator extends JPanel {
                 imageLabel.setIcon(getImageIcon("/skins/" + getFileName(i * 3 + j)));
             }
         } else {
-            imageLabel.setIcon(getImageIcon(getFileName(i * 3 + j)));
+            Image image = Toolkit.getDefaultToolkit().getImage(getFileName(i*3 + j));
+            image = image.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+            imageLabel.setIcon(new ImageIcon(image));
         }
         panel.add(imageLabel, BorderLayout.CENTER);
 
@@ -138,6 +146,40 @@ public class PieceConfigurator extends JPanel {
 
         left.addActionListener((e) -> {
             handleLeftClick(i * 3 + j, imageLabel);
+        });
+
+        plus.addActionListener((e) -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Choose an image file");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+            int returnValue = fileChooser.showSaveDialog(null);
+
+            if (returnValue == JFileChooser.APPROVE_OPTION){
+                File chosenFile = fileChooser.getSelectedFile();
+                String absolutePath = chosenFile.getAbsolutePath();
+
+                //Loading image to be displayed if the image is not in png format
+                ImageIcon imageIcon = getImageIcon("/images/filenotfound.png");
+                Image oldImage = imageIcon.getImage();
+                Image newImage = oldImage.getScaledInstance(60,60, Image.SCALE_SMOOTH);
+                imageIcon = new ImageIcon(newImage);
+
+                //Checking if the selected file is in png format and then loading said image to the corresponding label.
+                if(absolutePath.substring(absolutePath.length() - 3).equals("png")){
+                    Image image1 = Toolkit.getDefaultToolkit().getImage(absolutePath);
+                    Image image2 = image1.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+                    imageIcon = new ImageIcon(image2);
+                    saveNewFile(i*3 + j, absolutePath);
+                } else {
+                    imageLabel.setIcon(imageIcon);
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(new JFrame(), "The selected file is not in png format!");
+                }
+
+                imageLabel.setIcon(imageIcon);
+
+            }
         });
 
         return panel;
@@ -472,6 +514,24 @@ public class PieceConfigurator extends JPanel {
             return model.getTeamWhite().getOwnSkin(n);
         } else {
             return model.getTeamBlack().getOwnSkin(n - 6);
+        }
+    }
+
+    private void saveNewFile(int n, String path){
+        switch(n){
+            case 0: model.getTeamWhite().setOwnSkin(0, true); model.getTeamWhite().setSkin(PieceType.PAWN, path); break;
+            case 1: model.getTeamWhite().setOwnSkin(1, true); model.getTeamWhite().setSkin(PieceType.ROOK, path); break;
+            case 2: model.getTeamWhite().setOwnSkin(2, true); model.getTeamWhite().setSkin(PieceType.KNIGHT, path); break;
+            case 3: model.getTeamWhite().setOwnSkin(3, true); model.getTeamWhite().setSkin(PieceType.BISHOP, path); break;
+            case 4: model.getTeamWhite().setOwnSkin(4, true); model.getTeamWhite().setSkin(PieceType.QUEEN, path); break;
+            case 5: model.getTeamWhite().setOwnSkin(5, true); model.getTeamWhite().setSkin(PieceType.KING, path); break;
+            case 6: model.getTeamBlack().setOwnSkin(0, true); model.getTeamBlack().setSkin(PieceType.PAWN, path); break;
+            case 7: model.getTeamBlack().setOwnSkin(1, true); model.getTeamBlack().setSkin(PieceType.ROOK, path); break;
+            case 8: model.getTeamBlack().setOwnSkin(2, true); model.getTeamBlack().setSkin(PieceType.KNIGHT, path); break;
+            case 9: model.getTeamBlack().setOwnSkin(3, true); model.getTeamBlack().setSkin(PieceType.BISHOP, path); break;
+            case 10: model.getTeamBlack().setOwnSkin(4, true); model.getTeamBlack().setSkin(PieceType.QUEEN, path); break;
+            case 11: model.getTeamBlack().setOwnSkin(5, true); model.getTeamBlack().setSkin(PieceType.KING, path); break;
+            default: break;
         }
     }
 }
