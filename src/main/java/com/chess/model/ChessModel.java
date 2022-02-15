@@ -1,6 +1,5 @@
 package com.chess.model;
 import java.awt.*;
-import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -172,7 +171,7 @@ public class ChessModel {
         onTeamChangeEvent.invoke(currentTeam);
 
         // Add '#' if move resulted in checkmate on other team
-        if(board.isCheckmate(currentTeam) == 2){
+        if(board.isGameOver(currentTeam) == 2){
             move.addCheckMate();
         }
         // Add '+' to notation if move resulted in check to other team
