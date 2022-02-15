@@ -7,6 +7,9 @@ import com.chess.utils.Resources;
 import javax.swing.*;
 import java.awt.*;
 
+/** Create a new view panel of a Chess board based on data from a model. This class also set up listeners for all the cells.
+ *
+ */
 public class BoardGridPanel extends JPanel {
     private BoardCell[][] cells;
     private int size;
@@ -14,6 +17,10 @@ public class BoardGridPanel extends JPanel {
 
     private Delegate<BoardCell> clickDelegate;
 
+    /** Set up a new panel with a chess board made up of buttons.
+     * @param view The JFrame that the board grid will be added to.
+     * @param size The size of the chess board to be created. For a normal game of chess the size is 8.
+     */
     public BoardGridPanel(ChessView view, int size) {
         super(new GridLayout(size, size));
         this.cells = new BoardCell[size][size];
@@ -77,10 +84,19 @@ public class BoardGridPanel extends JPanel {
         clickDelegate = delegate;
     }
 
+    /** Given a row and a column it returns the cell in that coordinate
+     * @param row The row of the sought after cell
+     * @param col The column of the sought after cell
+     * @return The Cell at coordinate (row,col)
+     */
     public BoardCell getCell(int row, int col) {
         return cells[row][col];
     }
 
+
+    /** TODO
+     * @param boardCell
+     */
     private void handleClick(BoardCell boardCell) {
         if (clickDelegate != null) {
             clickDelegate.invoke(boardCell);

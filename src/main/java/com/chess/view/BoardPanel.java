@@ -4,9 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * todo
+ */
 public class BoardPanel extends JPanel {
     private BoardGridPanel boardPanel;
 
+    /** todo
+     * @param view
+     * @param size
+     */
     public BoardPanel(ChessView view, int size) {
         CellButton button;
 
@@ -146,6 +153,9 @@ public class BoardPanel extends JPanel {
         });
     }
 
+    /** todo
+     * @return
+     */
     public BoardGridPanel getBoardGridPanel() {
         return boardPanel;
     }
