@@ -7,7 +7,8 @@ import javax.sound.sampled.*;
 public class SoundPlayer {
 
     /**
-     *
+     * Play a sound clip once
+     * Will print to console if no file could be found
      * @param map The map in which the sound file lays
      * @param sound The sound to be played
      */

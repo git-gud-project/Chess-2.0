@@ -162,6 +162,7 @@ public class Move {
      * The toString of this class. Makes a string in the form of chess notation based on this move
      * @return A chess notation in String form
      */
+    @Override
     public String toString() {
         if(isCastleKingSide) return "0-0";
         else if(isCastleQueenSide) return "0-0-0";
