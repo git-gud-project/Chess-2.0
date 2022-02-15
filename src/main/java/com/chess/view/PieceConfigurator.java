@@ -5,6 +5,7 @@ import javax.swing.*;
 import com.chess.model.ChessModel;
 
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.net.URL;
 
 public class PieceConfigurator extends JPanel {
@@ -59,6 +60,15 @@ public class PieceConfigurator extends JPanel {
         c.insets = new Insets(5, 20, 5, 20);
         acceptCancelPanel.add(accept, c);
         acceptCancelPanel.add(cancel, c);
+
+        //Adding action listeners to the buttons.
+        accept.addActionListener((e) -> {
+            //TODO: Placeholder behavior, should accept and perform the changes later on.
+            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        });
+        cancel.addActionListener((e) -> {
+            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        });
 
         //Adding the panels to the main panel displayed in the frame.
         this.add(buttonsPanel, BorderLayout.CENTER);
