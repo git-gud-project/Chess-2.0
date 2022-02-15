@@ -22,7 +22,7 @@ public interface PieceBehavior {
      * @param newCell the cell that the piece is now in
      * @param state if this is a fake move
      */
-    public default void onMove(Cell oldCell, Cell newCell, boolean state) {
+    public default void onMove(Cell oldCell, Cell newCell) {
         setHasMoved(true);
     }
 

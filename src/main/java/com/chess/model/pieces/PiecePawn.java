@@ -57,7 +57,7 @@ public class PiecePawn implements PieceBehavior {
     }
 
     @Override
-    public void onMove(Cell oldCell, Cell newCell, boolean state) {
+    public void onMove(Cell oldCell, Cell newCell) {
         Board board = newCell.getBoard();
 
         Piece piece = newCell.getPiece();
