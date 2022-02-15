@@ -95,6 +95,8 @@ public class ChessControl {
         model.registerMove(false, move);
 
         otherTeam.clearEnPassant();
+
+        playSound("pawnPromotion");
     }
 
     /**
@@ -140,10 +142,39 @@ public class ChessControl {
         model.registerMove(halfMove, move);
         System.out.print(model.getBoard().isCheckmate(model.getCurrentTeam()));
         if(model.getBoard().isCheckmate(model.getCurrentTeam()) != 0){
-            view.gameOver();
+            gameOver();
+            playSound("checkmate");
         }
+        else if(model.getBoard().isCheck(model.getCurrentTeam())) {
+            playSound("check");
+        }
+        else if(move.getIsCastleKingSide() || move.getIsCastleQueenSide()) {
+            playSound("castling");
+        }
+        else if(move.isEliminatable()) {
+            playSound("pieceCapture");
+        }
+        else playSound("pieceMove");
 
         otherTeam.clearEnPassant();
+    }
+
+    public void gameOver(){
+
+        Object[] options = {"New game.", "Exit"};
+        int n = JOptionPane.showOptionDialog(view.getOwner(), "Game over!\n" + model.getCurrentTeam() + " has won!", "Game over!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (n == JOptionPane.CLOSED_OPTION) {
+            System.exit(0);
+        }
+        switch (n) {
+            case 0:
+                checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
+                model.resetState();
+                view.getInfoPanel().getMovesPanel().resetMovesPanel();
+                break;
+            case 1:
+                System.exit(0);
+        }
     }
 
     private void checkHighlight(Piece piece){
@@ -532,4 +563,10 @@ public class ChessControl {
         
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
+
+    private void playSound(String sound) {
+        String soundMap = view.getSoundMap();
+        SoundPlayer.playSound(soundMap,sound);
+    }
+
 }

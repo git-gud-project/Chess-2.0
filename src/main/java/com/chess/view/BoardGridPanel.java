@@ -2,10 +2,10 @@ package com.chess.view;
 
 import com.chess.model.*;
 import com.chess.utils.Delegate;
+import com.chess.utils.Resources;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URL;
 
 public class BoardGridPanel extends JPanel {
     private BoardCell[][] cells;
@@ -56,11 +56,8 @@ public class BoardGridPanel extends JPanel {
                     if (piece == null) {
                         button.setIcon(null);
                     } else {
-                        String path = piece.getIconPath();
-                        // Load an image from the resources folder
-                        URL url = getClass().getResource(path);
-                        Image image = Toolkit.getDefaultToolkit().getImage(url);
-                        ImageIcon icon = new ImageIcon(image);
+                        ImageIcon icon = Resources.getImageIcon(piece.getIconPath());
+                        
                         button.setIcon(icon);
                     }
                 });
@@ -68,11 +65,8 @@ public class BoardGridPanel extends JPanel {
                 Piece piece = cell.getPiece();
 
                 if (piece != null) {
-                    String path = piece.getIconPath();
-                    // Load an image from the resources folder
-                    URL url = getClass().getResource(path);
-                    Image image = Toolkit.getDefaultToolkit().getImage(url);
-                    ImageIcon icon = new ImageIcon(image);
+                    ImageIcon icon = Resources.getImageIcon(piece.getIconPath());
+                    
                     button.setIcon(icon);
                 }
             }
