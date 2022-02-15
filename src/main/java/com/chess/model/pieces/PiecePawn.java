@@ -65,10 +65,9 @@ public class PiecePawn implements PieceBehavior {
     }
 
     /**
-     * Used to determine if En Passant is achievable or not.
+     * Used to set if En Passant is achievable or not for this piece's team.
      * @param oldCell the cell that the piece was in before it was moved
      * @param newCell the cell that the piece is now in
-     * @param state if this is a fake move
      */
     @Override
     public void onMove(Cell oldCell, Cell newCell) {
