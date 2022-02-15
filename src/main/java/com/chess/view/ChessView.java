@@ -186,4 +186,8 @@ public class ChessView extends JFrame {
                 System.out.println("Closed");
         }
     }
+
+    public String getSoundMap() {
+        return menuPanel.getSoundMap();
+    }
 }

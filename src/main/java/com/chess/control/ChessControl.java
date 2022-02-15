@@ -95,6 +95,8 @@ public class ChessControl {
         model.registerMove(false, move);
 
         otherTeam.clearEnPassant();
+
+        playSound("pawnPromotion");
     }
 
     /**
@@ -138,12 +140,25 @@ public class ChessControl {
         checkHighlight(piece);
 
         model.registerMove(halfMove, move);
-        System.out.print(model.getBoard().isCheckmate(model.getCurrentTeam()));
+
         if(model.getBoard().isCheckmate(model.getCurrentTeam()) != 0){
             view.gameOver();
+            playSound("checkmate");
         }
+        else if(model.getBoard().isCheck(model.getCurrentTeam())) {
+            playSound("check");
+        }
+        else if(move.getIsCastleKingSide() || move.getIsCastleQueenSide()) {
+            playSound("casteling");
+        }
+        else if(move.isEliminatable()) {
+            playSound("pieceCapture");
+        }
+        else playSound("pieceMove");
 
         otherTeam.clearEnPassant();
+
+
     }
 
     private void checkHighlight(Piece piece){
@@ -525,4 +540,10 @@ public class ChessControl {
         
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
+
+    private void playSound(String sound) {
+        String soundMap = view.getSoundMap();
+        SoundPlayer.playSound(soundMap,sound);
+    }
+
 }

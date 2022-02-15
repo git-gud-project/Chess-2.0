@@ -2,10 +2,10 @@ package com.chess.view;
 
 import com.chess.model.*;
 import com.chess.utils.Delegate;
+import com.chess.utils.Resources;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URL;
 
 public class BoardGridPanel extends JPanel {
     private BoardCell[][] cells;

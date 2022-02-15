@@ -22,6 +22,11 @@ public class Menu extends JMenuBar {
 
     private JMenuItem customizePieces;
 
+    private JMenuItem classic;
+    private JMenuItem notClassic;
+
+    private String choosenSoundMap;
+
     public void setStartServerDelegate(Delegate<String> startServerDelegate) {
         this.startServerDelegate = startServerDelegate;
     }
@@ -115,6 +120,24 @@ public class Menu extends JMenuBar {
             new PieceConfigurator(view);
         });
 
+        //Creating sound menu
+        JMenu soundMenu = new JMenu("Sound");
+        this.add(soundMenu);
+        this.classic = new JMenuItem("Classic");
+        this.notClassic = new JMenuItem("Not Classic");
+        soundMenu.add(this.classic);
+        soundMenu.add(this.notClassic);
+
+        this.choosenSoundMap = "classic";
+
+        this.classic.addActionListener((e) -> {
+            this.choosenSoundMap = "classic";
+        });
+        this.notClassic.addActionListener((e) -> {
+            this.choosenSoundMap = "notClassic";
+        });
+
+
         //Creating help menu
         JMenu help = new JMenu("Help");
         //TODO: This menu could mostly serve to display miscellaneous information to the user upon request.
@@ -147,5 +170,9 @@ public class Menu extends JMenuBar {
     }
 
     public JMenuItem getNewGame() { return newGame; }
+
+    public String getSoundMap() {
+        return this.choosenSoundMap;
+    }
 
 }
