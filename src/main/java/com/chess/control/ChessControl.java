@@ -159,7 +159,12 @@ public class ChessControl {
         otherTeam.clearEnPassant();
     }
 
-    public void gameOver(int endingState){
+    /**
+     * The game over process that announces the winner or stalemate. Also handles if the user wants to start a new game
+     * or exit.
+     * @param endingState - contains the information if the game ends in with a win (= 1) or a stalemate (= 2).
+     */
+    private void gameOver(int endingState){
 
         Object[] options = {"New game.", "Exit"};
         switch (endingState){
@@ -197,6 +202,11 @@ public class ChessControl {
 
     }
 
+
+    /**
+     * Highlights and unhighlights the cell containing the teams king piece.
+     * @param piece - the moved piece.
+     */
     private void checkHighlight(Piece piece){
         Cell c = model.getBoard().getKingCell(piece.getTeam());
         BoardCell check = view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
