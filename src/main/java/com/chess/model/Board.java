@@ -194,11 +194,11 @@ public class Board {
     }
 
     /**
-     * if it is checkmate or stalemate. If it is checkmate it returns 2. If it is stalemate it return 1. Else 0.
+     * Checks if it is checkmate or stalemate. If it is checkmate it returns 2. If it is stalemate it return 1. Else 0.
      * 
-     * @param enemyPlayerTeam the team of the player
+     * @param enemyPlayerTeam the team of the enemy player
      */
-    public int isCheckmate(Team enemyPlayerTeam){
+    public int isGameOver(Team enemyPlayerTeam){
         if(allTeamMoves(enemyPlayerTeam).isEmpty() && isCheck(enemyPlayerTeam)){
             return 2;
         }
@@ -217,7 +217,7 @@ public class Board {
      * @return if it is check
      */
     public boolean isCheck(Team team){
-        if(isCheckmate(model.getOtherTeam(team)) != 0){
+        if(isGameOver(model.getOtherTeam(team)) != 0){
             return false;
         }
         List<Move> allEnemyMoves = allEnemyMoves(team);
