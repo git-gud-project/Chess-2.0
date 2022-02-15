@@ -142,8 +142,8 @@ public class ChessControl {
         model.registerMove(halfMove, move);
 
         if(model.getBoard().isGameOver(model.getCurrentTeam()) != 0){
-            gameOver(model.getBoard().isGameOver(model.getCurrentTeam()));
             playSound("checkmate");
+            gameOver(model.getBoard().isGameOver(model.getCurrentTeam()));
         }
         else if(model.getBoard().isCheck(model.getCurrentTeam())) {
             playSound("check");
