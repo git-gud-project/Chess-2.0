@@ -225,7 +225,6 @@ public class Board {
         List<Move> allEnemyMoves = allEnemyMoves(team);
         for(Move m:allEnemyMoves){
             if(m.getToCell().getPiece()!=null && m.getToCell().getPiece().getTeam().equals(team) && m.getToCell().getPiece().getPieceType().equals(PieceType.KING)){
-                System.out.println("SCHACK!");
                 return true;
             }
         }
