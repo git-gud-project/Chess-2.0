@@ -239,7 +239,14 @@ public class ChessControl {
         }
 
         if (selectedCell != null) {
-            selectedCell.unhighlight();
+            if(model.getBoard().getCell(selectedCell.getRow(),selectedCell.getCol()).getPiece()==null){
+                selectedCell.unhighlight();
+            } else if(!model.getBoard().getCell(selectedCell.getRow(),selectedCell.getCol()).getPiece().getPieceType().equals(PieceType.KING)){
+                selectedCell.unhighlight();
+            } else if(model.getBoard().isCheck(model.getCurrentTeam())){
+                selectedCell.unhighlight();
+                selectedCell.highlight(Color.RED);
+            }
         }
 
         for (BoardCell cell : highlightedCells) {
