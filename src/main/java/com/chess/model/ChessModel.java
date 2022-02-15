@@ -43,6 +43,8 @@ public class ChessModel {
 
     private Event<String> onGameLoadedEvent = new Event<>();
 
+    private Event<SerialModel> onModelLoadedEvent = new Event<>();
+
     //
     // Constructors 
     //
@@ -68,6 +70,8 @@ public class ChessModel {
         teamWhite.getOnTimeChangedEvent().invoke(teamWhite.getTime());
         moveList = new ArrayList<>();
         currentTeam = teamWhite;
+
+        onModelLoadedEvent.invoke(new SerialModel(this));
     }
 
     public void loadModel(SerialModel smodel){
@@ -78,7 +82,9 @@ public class ChessModel {
         moveList = smodel.getMoveList();
         loadFEN(smodel.getFen());
         setPaused(true);
-        setStarted(false);
+        setStarted(smodel.getStarted());
+
+        onModelLoadedEvent.invoke(smodel);
     }
 
     //
@@ -117,6 +123,10 @@ public class ChessModel {
 
     public Event<String> getOnGameLoadedEvent() {
         return this.onGameLoadedEvent;
+    }
+
+    public Event<SerialModel> getOnModelLoadedEvent() {
+        return this.onModelLoadedEvent;
     }
 
     //

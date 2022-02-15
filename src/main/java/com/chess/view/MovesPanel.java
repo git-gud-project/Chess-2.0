@@ -53,6 +53,10 @@ public class MovesPanel extends JPanel {
             JScrollBar vertical = scrollpane.getVerticalScrollBar();
             vertical.setValue( vertical.getMaximum() );
         });
+
+        model.getOnModelLoadedEvent().addDelegate((serialModel) -> {
+            resetMovesPanel();
+        });
     }
 
 

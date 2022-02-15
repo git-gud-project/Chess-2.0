@@ -2,9 +2,8 @@ package com.chess.view;
 
 import javax.swing.*;
 
-import com.chess.utils.Delegate;
+import com.chess.utils.Event;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.*;
 
@@ -13,22 +12,27 @@ import com.chess.model.*;
 public class Menu extends JMenuBar {
 
     private ChessView view;
-    private Delegate<String> startServerDelegate;
-    private Delegate<String> connectToServerDelegate;
+
+    //
+    // Buttons
+    //
 
     private JMenuItem newGame;
     private JMenuItem save;
     private JMenuItem load;
-
+    private JMenuItem startServer;
+    private JMenuItem connectToServer;
     private JMenuItem customizePieces;
+    private JMenuItem disconnect;
+    
+    //
+    // Events
+    //
 
-    public void setStartServerDelegate(Delegate<String> startServerDelegate) {
-        this.startServerDelegate = startServerDelegate;
-    }
-
-    public void setConnectToServerDelegate(Delegate<String> connectToServerDelegate) {
-        this.connectToServerDelegate = connectToServerDelegate;
-    }
+    private Event<String> onStartServerEvent = new Event<>();
+    private Event<String> onConnectToServerEvent = new Event<>();
+    private Event<JMenuItem> onDisconnectEvent = new Event<>();
+    private Event<SerialModel> onLoadGameEvent = new Event<>();
 
     public Menu(ChessView view) {
         super();
@@ -87,9 +91,7 @@ public class Menu extends JMenuBar {
                     FileInputStream fIn = new FileInputStream(chosenFile);
                     ObjectInputStream stream = new ObjectInputStream(fIn);
                     SerialModel newModel = (SerialModel) stream.readObject();
-                    view.getModel().loadModel(newModel);
-                    view.getInfoPanel().getMovesPanel().loadMovesPanel();
-                    view.getModel().getTeamBlack().getOnTimeChangedEvent().invoke(view.getModel().getTeamBlack().getTime());
+                    onLoadGameEvent.invoke(newModel);
                     stream.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -120,32 +122,59 @@ public class Menu extends JMenuBar {
         //TODO: This menu could mostly serve to display miscellaneous information to the user upon request.
         this.add(help);
 
-        //Creating server menu
+        //
+        // Create network menu
+        //
+
         JMenu server = new JMenu("Network");
         this.add(server);
-        JMenuItem startServer = new JMenuItem("Start server");
+        startServer = new JMenuItem("Start server");
         startServer.addActionListener(e -> {
             JFrame f = new JFrame();
             String port = JOptionPane.showInputDialog(f, "Please select a port to start the server communication:");
             if (port != null) {
-                startServerDelegate.invoke(port);
+                onStartServerEvent.invoke(port);
             }
         });
 
-        JMenuItem connectToServer = new JMenuItem("Connect to server");
+        connectToServer = new JMenuItem("Connect to server");
         connectToServer.addActionListener(e -> {
             JFrame f = new JFrame();
             
             String port = JOptionPane.showInputDialog(f, "Please enter the server:port to connect to:");
             if (port != null) {
-                connectToServerDelegate.invoke(port);
+                onConnectToServerEvent.invoke(port);
             }
         });
 
+        disconnect = new JMenuItem("Disconnect");
+        disconnect.addActionListener(e -> {
+            onDisconnectEvent.invoke(disconnect);
+        });
+        disconnect.setEnabled(false);
+
         server.add(startServer);
         server.add(connectToServer);
+        server.add(disconnect);
     }
 
     public JMenuItem getNewGame() { return newGame; }
 
+    public JMenuItem getSave() { return save; }
+
+    public JMenuItem getLoad() { return load; }
+
+    public JMenuItem getStartServer() { return startServer; }
+
+    public JMenuItem getConnectToServer() { return connectToServer; }
+
+    public JMenuItem getDisconnect() { return disconnect; }
+    
+    public Event<String> getOnStartServerEvent() { return onStartServerEvent; }
+
+    public Event<String> getOnConnectToServerEvent() { return onConnectToServerEvent; }
+
+    public Event<JMenuItem> getOnDisconnectEvent() { return onDisconnectEvent; }
+    
+    public Event<SerialModel> getOnLoadGameEvent() { return onLoadGameEvent; }
 }

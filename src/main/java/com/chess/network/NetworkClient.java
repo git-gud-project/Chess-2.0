@@ -36,6 +36,15 @@ public class NetworkClient {
     }
 
     /**
+     * Creates a new client from host details.
+     * 
+     * @param host The host to connect to.
+     */
+    public NetworkClient(HostDetails host) {
+        this(host.getIp(), host.getPort());
+    }
+
+    /**
      * Send a message to the server.
      * 
      * @param message The message to send.
@@ -79,6 +88,10 @@ public class NetworkClient {
     }
 
     public void stop() {
+        if (!running) {
+            return;
+        }
+
         running = false;
 
         try {
@@ -86,8 +99,10 @@ public class NetworkClient {
                 socket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            // Failed to close the socket, not much we can do about it
         }
+
+        socket = null;
         
         if (onDisconnectDelegate != null) {
             onDisconnectDelegate.run();
@@ -137,9 +152,10 @@ public class NetworkClient {
                 // Disconnected from the server
                 break;
             } catch (IOException e) {
-                e.printStackTrace();
+                // Here we should also disconnect from the server, can happen when the server is closed
                 break;
             } catch (ClassNotFoundException e) {
+                // Something went wrong, disconnect from the server
                 e.printStackTrace();
                 break;
             }
