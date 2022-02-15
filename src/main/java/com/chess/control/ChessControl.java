@@ -149,7 +149,7 @@ public class ChessControl {
             playSound("check");
         }
         else if(move.getIsCastleKingSide() || move.getIsCastleQueenSide()) {
-            playSound("casteling");
+            playSound("castling");
         }
         else if(move.isEliminatable()) {
             playSound("pieceCapture");
