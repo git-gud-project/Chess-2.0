@@ -56,11 +56,8 @@ public class BoardGridPanel extends JPanel {
                     if (piece == null) {
                         button.setIcon(null);
                     } else {
-                        String path = piece.getIconPath();
-                        // Load an image from the resources folder
-                        URL url = getClass().getResource(path);
-                        Image image = Toolkit.getDefaultToolkit().getImage(url);
-                        ImageIcon icon = new ImageIcon(image);
+                        ImageIcon icon = Resources.getImageIcon(piece.getIconPath());
+                        
                         button.setIcon(icon);
                     }
                 });
@@ -68,11 +65,8 @@ public class BoardGridPanel extends JPanel {
                 Piece piece = cell.getPiece();
 
                 if (piece != null) {
-                    String path = piece.getIconPath();
-                    // Load an image from the resources folder
-                    URL url = getClass().getResource(path);
-                    Image image = Toolkit.getDefaultToolkit().getImage(url);
-                    ImageIcon icon = new ImageIcon(image);
+                    ImageIcon icon = Resources.getImageIcon(piece.getIconPath());
+                    
                     button.setIcon(icon);
                 }
             }
