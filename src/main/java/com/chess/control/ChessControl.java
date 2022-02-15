@@ -140,10 +140,27 @@ public class ChessControl {
         model.registerMove(halfMove, move);
         System.out.print(model.getBoard().isCheckmate(model.getCurrentTeam()));
         if(model.getBoard().isCheckmate(model.getCurrentTeam()) != 0){
-            view.gameOver();
+            gameOver();
         }
 
         otherTeam.clearEnPassant();
+    }
+
+    public void gameOver(){
+
+        Object[] options = {"New game.", "Exit"};
+        int n = JOptionPane.showOptionDialog(view.getOwner(), "Game over", "CONGRATULATION! YOU'VE WON!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (n == JOptionPane.CLOSED_OPTION) {
+            System.exit(0);
+        }
+        switch (n) {
+            case 0:
+                checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
+                model.resetState();
+                break;
+            case 1:
+                System.exit(0);
+        }
     }
 
     private void checkHighlight(Piece piece){
@@ -480,6 +497,7 @@ public class ChessControl {
         });
 
         view.getMenu().getNewGame().addActionListener((e) -> {
+            checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
             JFrame f = new JFrame();
             int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
             if(answer == JOptionPane.YES_OPTION) {

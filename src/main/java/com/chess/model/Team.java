@@ -262,4 +262,8 @@ public class Team {
     public Cell getCastlingQueenSideCell() {
         return model.getBoard().getCell(getKingRow(), getKingCol() - 2);
     }
+
+    public String toString(){
+        return this.name;
+    }
 }
