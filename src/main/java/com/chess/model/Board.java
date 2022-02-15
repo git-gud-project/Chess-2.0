@@ -200,11 +200,9 @@ public class Board {
      */
     public int isCheckmate(Team enemyPlayerTeam){
         if(allTeamMoves(enemyPlayerTeam).isEmpty() && isCheck(enemyPlayerTeam)){
-            System.out.println("SCHACKMATT!");
             return 2;
         }
         else if(allTeamMoves(enemyPlayerTeam).isEmpty() && !isCheck(enemyPlayerTeam)){
-            System.out.println("REMI!");
             return 1;
         }
         else{

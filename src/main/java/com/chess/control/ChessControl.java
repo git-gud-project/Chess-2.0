@@ -138,7 +138,6 @@ public class ChessControl {
         checkHighlight(piece);
 
         model.registerMove(halfMove, move);
-        System.out.print(model.getBoard().isCheckmate(model.getCurrentTeam()));
 
         if(model.getBoard().isCheckmate(model.getCurrentTeam()) != 0){
             gameOver(model.getBoard().isCheckmate(model.getCurrentTeam()));
