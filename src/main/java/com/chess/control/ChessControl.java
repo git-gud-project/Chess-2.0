@@ -149,7 +149,7 @@ public class ChessControl {
     public void gameOver(){
 
         Object[] options = {"New game.", "Exit"};
-        int n = JOptionPane.showOptionDialog(view.getOwner(), "Game over", "CONGRATULATION! YOU'VE WON!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int n = JOptionPane.showOptionDialog(view.getOwner(), "Game over!\n" + model.getCurrentTeam() + " has won!", "Game over!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (n == JOptionPane.CLOSED_OPTION) {
             System.exit(0);
         }
@@ -157,6 +157,7 @@ public class ChessControl {
             case 0:
                 checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
                 model.resetState();
+                view.getInfoPanel().getMovesPanel().resetMovesPanel();
                 break;
             case 1:
                 System.exit(0);
