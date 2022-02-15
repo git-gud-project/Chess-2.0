@@ -1,4 +1,4 @@
-package com.chess.control;
+package com.chess.control.messages;
 
 public class AffirmMoveMessage extends MovePieceMessage {
 

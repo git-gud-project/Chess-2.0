@@ -22,6 +22,7 @@ public class NetworkServer {
     private Delegate<Client> onClientConnectedDelegate;
     private Delegate<Client> onClientDisconnectedDelegate;
     private HashMap<Type, MessageDelegate> messageDelegates;
+    private Runnable onCloseDelegate;
 
     /**
      * Creates a new server.
@@ -29,13 +30,22 @@ public class NetworkServer {
      * @param port The port to listen on.
      * @param ip The ip to listen on.
      */
-    public NetworkServer(int port, String ip) {
+    public NetworkServer(String ip, int port) {
         this.port = port;
         this.ip = ip;
 
         running = false;
         clients = new ArrayList<>();
         messageDelegates = new HashMap<>();
+    }
+
+    /**
+     * Creates a new server from host details.
+     * 
+     * @param host The host to connect to.
+     */
+    public NetworkServer(HostDetails host) {
+        this(host.getIp(), host.getPort());
     }
 
     /**
@@ -76,7 +86,13 @@ public class NetworkServer {
      * Stops the server.
      */
     public synchronized void stop() {
-        for (Client client : clients) {
+        if (!running) {
+            return;
+        }
+
+        // Copy the clients list
+        List<Client> clientsSnapshot = new ArrayList<>(clients);
+        for (Client client : clientsSnapshot) {
             client.stop();
         }
 
@@ -85,6 +101,10 @@ public class NetworkServer {
             serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if (onCloseDelegate != null) {
+            onCloseDelegate.run();
         }
     }
 
@@ -100,6 +120,13 @@ public class NetworkServer {
      */
     public synchronized void setOnClientDisconnectedDelegate(Delegate<Client> onClientDisconnectedDelegate) {
         this.onClientDisconnectedDelegate = onClientDisconnectedDelegate;
+    }
+
+    /**
+     * Sets the delegate that will be called when the server closes.
+     */
+    public void setOnCloseDelegate(Runnable onCloseDelegate) {
+        this.onCloseDelegate = onCloseDelegate;
     }
 
     /**
@@ -200,9 +227,12 @@ public class NetworkServer {
                         onClientConnectedDelegate.invoke(client);
                     }
                 }
+            } catch (SocketException e) {
+                // Server was closed.
+                break;
             } catch (IOException e) {
-                running = false;
                 e.printStackTrace();
+                break;
             }
         }
 

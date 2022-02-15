@@ -1,4 +1,4 @@
-package com.chess.control;
+package com.chess.control.messages;
 
 import com.chess.model.SerialModel;
 import com.chess.network.Message;

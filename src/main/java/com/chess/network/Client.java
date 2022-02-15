@@ -132,9 +132,10 @@ public class Client {
                 // The socket was closed
                 break;
             } catch (IOException e) {
-                e.printStackTrace();
+                // Can occur when the client disconnects, close it
                 break;
             } catch (ClassNotFoundException e) {
+                // Something went wrong, close the socket
                 e.printStackTrace();
                 break;
             }
