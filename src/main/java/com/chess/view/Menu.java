@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import com.chess.utils.Delegate;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.*;
 
@@ -18,6 +19,8 @@ public class Menu extends JMenuBar {
     private JMenuItem newGame;
     private JMenuItem save;
     private JMenuItem load;
+
+    private JMenuItem customizePieces;
 
     public void setStartServerDelegate(Delegate<String> startServerDelegate) {
         this.startServerDelegate = startServerDelegate;
@@ -105,6 +108,12 @@ public class Menu extends JMenuBar {
         //TODO: Visual customization could be added to this part of the menu as part of the technical requirements for the project.
         JMenu viewMenu = new JMenu("View");
         this.add(viewMenu);
+        this.customizePieces = new JMenuItem("Customize Pieces");
+        viewMenu.add(customizePieces);
+
+        customizePieces.addActionListener((e) -> {
+            new PieceConfigurator(view);
+        });
 
         //Creating help menu
         JMenu help = new JMenu("Help");
