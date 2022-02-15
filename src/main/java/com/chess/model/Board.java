@@ -219,6 +219,9 @@ public class Board {
      * @return if it is check
      */
     public boolean isCheck(Team team){
+        if(isCheckmate(model.getOtherTeam(team)) != 0){
+            return false;
+        }
         List<Move> allEnemyMoves = allEnemyMoves(team);
         for(Move m:allEnemyMoves){
             if(m.getToCell().getPiece()!=null && m.getToCell().getPiece().getTeam().equals(team) && m.getToCell().getPiece().getPieceType().equals(PieceType.KING)){
