@@ -39,7 +39,11 @@ public class MovesPanel extends JPanel {
             moves++;
             if (moves % 2 == 1) {
                 turn++;
-                listModel.addElement(String.valueOf(turn) + "   " + moveList.get(moves-1));
+                StringBuilder spacing = new StringBuilder("");
+                for(int i=0; i<4-String.valueOf(turn).length(); i++) {
+                    spacing.append(" ");
+                }
+                listModel.addElement(String.valueOf(turn) + spacing + moveList.get(moves-1));
             } else {
                 String oldLine = listModel.lastElement();
                 listModel.removeElementAt(turn-1);
