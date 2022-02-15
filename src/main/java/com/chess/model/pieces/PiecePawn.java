@@ -11,6 +11,14 @@ import com.chess.model.PieceBehavior;
 import com.chess.model.PieceType;
 import com.chess.model.Team;
 
+/**
+ * The class for the Pawn.
+ * Is in charge of:
+ *  - Adding all possible moves for the Pawn piece and returning it to the game.
+ *  - Checking if the pawn can take two moves or only one.
+ *  - Checking if the pawn can capture in a diagonal cell.
+ *  - Checking if En Passant is achievable.
+ */
 public class PiecePawn implements PieceBehavior {
 
     private ArrayList<Move> possibleMoves = new ArrayList<>();
@@ -56,6 +64,12 @@ public class PiecePawn implements PieceBehavior {
         return possibleMoves.iterator();
     }
 
+    /**
+     * Used to determine if En Passant is achievable or not.
+     * @param oldCell the cell that the piece was in before it was moved
+     * @param newCell the cell that the piece is now in
+     * @param state if this is a fake move
+     */
     @Override
     public void onMove(Cell oldCell, Cell newCell) {
         Board board = newCell.getBoard();
@@ -80,6 +94,10 @@ public class PiecePawn implements PieceBehavior {
         }
     }
 
+    /**
+     * Returns the piece type of the current piece.
+     * @return PieceType.PAWN
+     */
     @Override
     public PieceType getPieceType() {
         return PieceType.PAWN;
