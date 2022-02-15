@@ -194,17 +194,15 @@ public class Board {
     }
 
     /**
-     * if it is checkmate or stalemate. If it is checkmate it returns 2. If it is stalemate it return 1. Else 0.
+     * Checks if it is checkmate or stalemate. If it is checkmate it returns 2. If it is stalemate it return 1. Else 0.
      * 
-     * @param enemyPlayerTeam the team of the player
+     * @param enemyPlayerTeam the team of the enemy player
      */
-    public int isCheckmate(Team enemyPlayerTeam){
+    public int isGameOver(Team enemyPlayerTeam){
         if(allTeamMoves(enemyPlayerTeam).isEmpty() && isCheck(enemyPlayerTeam)){
-            System.out.println("SCHACKMATT!");
             return 2;
         }
         else if(allTeamMoves(enemyPlayerTeam).isEmpty() && !isCheck(enemyPlayerTeam)){
-            System.out.println("REMI!");
             return 1;
         }
         else{
@@ -219,10 +217,12 @@ public class Board {
      * @return if it is check
      */
     public boolean isCheck(Team team){
+        if(isGameOver(model.getOtherTeam(team)) != 0){
+            return false;
+        }
         List<Move> allEnemyMoves = allEnemyMoves(team);
         for(Move m:allEnemyMoves){
             if(m.getToCell().getPiece()!=null && m.getToCell().getPiece().getTeam().equals(team) && m.getToCell().getPiece().getPieceType().equals(PieceType.KING)){
-                System.out.println("SCHACK!");
                 return true;
             }
         }

@@ -1,6 +1,5 @@
 package com.chess.model;
 import java.awt.*;
-import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -49,6 +48,9 @@ public class ChessModel {
     // Constructors 
     //
 
+    /**
+     * Construct a new ChessModel
+     */
     public ChessModel() {
         teamWhite = new Team(this, Color.WHITE, "w", "Player 1",  -1);
         teamBlack = new Team(this, Color.BLACK, "b", "Player 2",  1);
@@ -60,6 +62,9 @@ public class ChessModel {
         moveList = new ArrayList<>();
     }
 
+    /**
+     * Reset the state of this ChessModel to its starting state
+     */
     public void resetState() {
         loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         teamBlack.getTime().reset();
@@ -74,6 +79,10 @@ public class ChessModel {
         onModelLoadedEvent.invoke(new SerialModel(this));
     }
 
+    /**
+     * Load another model over this model
+     * @param smodel The model to load over the existing model
+     */
     public void loadModel(SerialModel smodel){
         teamWhite.setName(smodel.getWhiteName());
         teamBlack.setName(smodel.getBlackName());
@@ -87,26 +96,58 @@ public class ChessModel {
         onModelLoadedEvent.invoke(smodel);
     }
 
-    //
-    // Getters
-    //
-
+    /**
+     * Get the team class instance which represents the white team
+     * @return The white team instance
+     */
     public Team getTeamWhite() { return this.teamWhite; }
 
+    /**
+     * Get the team class instance which represents the black team
+     * @return The black team instance
+     */
     public Team getTeamBlack() { return this.teamBlack; }
 
+    /**
+     * Get the board for this model
+     * @return The board for this model
+     */
     public Board getBoard() { return this.board; }
 
+    /**
+     * Get which team whose turn it currently is
+     * @return The current team
+     */
     public Team getCurrentTeam() { return this.currentTeam; }
 
+    /**
+     * Get info of whether the game is paused or not
+     * @return True if the game is paused
+     */
     public boolean getPaused() { return this.paused; }
 
+    /**
+     * Get info of whether the game has started or not
+     * @return True if the game has started
+     */
     public boolean getStarted() { return this.started; }
 
+    /**
+     * Get the amount of full moves made this game
+     * @return The number of full moves
+     */
     public int getFullMoves() { return this.fullMoves; }
 
+    /**
+     * Get the amount of half moves made this game
+     * @return The number of half moves
+     */
     public int getHalfMoves() { return this.halfMoves; }
 
+    /**
+     * Get if this game is over
+     * @return True if game is over
+     */
     public boolean getGameOver(){return this.isGameOver;}
 
     //
@@ -182,7 +223,7 @@ public class ChessModel {
         onTeamChangeEvent.invoke(currentTeam);
 
         // Add '#' if move resulted in checkmate on other team
-        if(board.isCheckmate(currentTeam) == 2){
+        if(board.isGameOver(currentTeam) == 2){
             move.addCheckMate();
         }
         // Add '+' to notation if move resulted in check to other team

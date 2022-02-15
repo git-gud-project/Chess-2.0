@@ -1,5 +1,6 @@
 package com.chess.model;
 import java.awt.*;
+import java.util.HashMap;
 
 import com.chess.utils.Event;
 
@@ -24,6 +25,10 @@ public class Team {
     private Piece enPassantPiece;
 
     private boolean hasAuthority;
+
+    private HashMap<PieceType, String> skinMap;
+
+    private byte[] skinIndex = {0, 0, 0, 0, 0, 0};
 
     // 
     // Events
@@ -144,9 +149,34 @@ public class Team {
         return enPassantPiece.getCell().getCol();
     }
 
+    public byte getPawnSkin() { return this.skinIndex[0]; }
+    public byte getRookSkin() { return this.skinIndex[1]; }
+    public byte getKnightSkin() { return this.skinIndex[2]; }
+    public byte getBishopSkin() { return this.skinIndex[3]; }
+    public byte getQueenSkin() { return this.skinIndex[4]; }
+    public byte getKingSkin() { return this.skinIndex[5]; }
+
     public Color getOpponentColor() {
         return new Color(255 - teamColor.getRed(), 255 - teamColor.getGreen(), 255 - teamColor.getBlue());
     }
+
+    //
+    // Setters - Utility
+    //
+
+    public void incPawnSkin() { this.skinIndex[0]++; }
+    public void incRookSkin() { this.skinIndex[1]++; }
+    public void incKnightSkin() { this.skinIndex[2]++; }
+    public void incBishopSkin() { this.skinIndex[3]++; }
+    public void incQueenSkin() { this.skinIndex[4]++; }
+    public void incKingSkin() { this.skinIndex[5]++; }
+
+    public void decPawnSkin() { this.skinIndex[0]--; }
+    public void decRookSkin() { this.skinIndex[1]--; }
+    public void decKnightSkin() { this.skinIndex[2]--; }
+    public void decBishopSkin() { this.skinIndex[3]--; }
+    public void decQueenSkin() { this.skinIndex[4]--; }
+    public void decKingSkin() { this.skinIndex[5]--; }
 
     //
     // Methods
@@ -261,5 +291,9 @@ public class Team {
 
     public Cell getCastlingQueenSideCell() {
         return model.getBoard().getCell(getKingRow(), getKingCol() - 2);
+    }
+
+    public String toString(){
+        return this.name;
     }
 }

@@ -13,6 +13,8 @@ public class Menu extends JMenuBar {
 
     private ChessView view;
 
+    private String choosenSoundMap;
+
     //
     // Buttons
     //
@@ -24,7 +26,9 @@ public class Menu extends JMenuBar {
     private JMenuItem connectToServer;
     private JMenuItem customizePieces;
     private JMenuItem disconnect;
-    
+    private JMenuItem classic;
+    private JMenuItem notClassic;
+
     //
     // Events
     //
@@ -117,6 +121,24 @@ public class Menu extends JMenuBar {
             new PieceConfigurator(view);
         });
 
+        //Creating sound menu
+        JMenu soundMenu = new JMenu("Sound");
+        this.add(soundMenu);
+        this.classic = new JMenuItem("Classic");
+        this.notClassic = new JMenuItem("Not Classic");
+        soundMenu.add(this.classic);
+        soundMenu.add(this.notClassic);
+
+        this.choosenSoundMap = "classic";
+
+        this.classic.addActionListener((e) -> {
+            this.choosenSoundMap = "classic";
+        });
+        this.notClassic.addActionListener((e) -> {
+            this.choosenSoundMap = "notClassic";
+        });
+
+
         //Creating help menu
         JMenu help = new JMenu("Help");
         //TODO: This menu could mostly serve to display miscellaneous information to the user upon request.
@@ -177,4 +199,8 @@ public class Menu extends JMenuBar {
     public Event<JMenuItem> getOnDisconnectEvent() { return onDisconnectEvent; }
     
     public Event<SerialModel> getOnLoadGameEvent() { return onLoadGameEvent; }
+
+    public String getSoundMap() {
+        return this.choosenSoundMap;
+    }
 }
