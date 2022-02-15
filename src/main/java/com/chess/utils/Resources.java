@@ -1,7 +1,9 @@
-package com.chess.view;
+package com.chess.utils;
 
 import java.awt.*;
 import java.net.*;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 public final class Resources {

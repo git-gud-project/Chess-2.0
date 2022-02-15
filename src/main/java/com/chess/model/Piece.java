@@ -24,10 +24,10 @@ public class Piece {
 
     /**
      * Constructs a new piece.
-     * 
+     *
+     * @param behavior the PieceBehavior for this new piece
      * @param cell the cell that the piece is currently in
      * @param team the team that the piece belongs to
-     * @param type the type of the piece
      */
     public Piece(PieceBehavior behavior, Cell cell, Team team) {
         this.cell = cell;
@@ -101,7 +101,7 @@ public class Piece {
     /**
      * Move the piece to a new cell.
      * 
-     * @param newCell the cell that the piece is now in
+     * @param newCell the cell that the piece is moving to
      */
     public void move(Cell newCell) {
         Cell oldCell = this.getCell();
@@ -115,13 +115,13 @@ public class Piece {
         cell.setPiece(this);
 
         // Call the onMove method
-        behavior.onMove(oldCell, newCell, true);
+        behavior.onMove(oldCell, newCell);
     }
 
     /**
-     * Performs a fake move.
+     * Performs a fake move. Like a regular move but does not trigger events for beforeMove or onMove in piece behavior
      * 
-     * @param newCell the cell that the piece is now in
+     * @param newCell the cell that the piece is making a fake move to
      */
     public void fakeMove(Cell newCell) {
         // Move the piece

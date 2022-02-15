@@ -2,13 +2,20 @@ package com.chess.view;
 
 import java.awt.*;
 
+/**BoardCell extends class CellButton by containing row and column values as well as containing information regarding eliminations.
+ *
+ */
 public class BoardCell extends CellButton {
     private int row;
     private int col;
     private boolean isElimination;
 
     private Color defaultColor = null;
-    
+
+    /** Constructs a new cell with coordinates (row,col)
+     * @param row Used to set the row for the cell
+     * @param col Used to set the col for the cell
+     */
     public BoardCell(int row, int col) {
         super();
 
@@ -16,22 +23,37 @@ public class BoardCell extends CellButton {
         this.col = col;
     }
 
+    /** Used to get the row of the cell
+     * @return The index for the row of the cell
+     */
     public int getRow() {
         return row;
     }
 
+    /** Used to get the column of the cell
+     * @return The index for the column of the cell
+     */
     public int getCol() {
         return col;
     }
 
+    /** Set to true if move is an elimination or false if it isn't
+     * @param isElimination if input value is true it is an elimination if, otherwise it is not an elimination
+     */
     public void setElimination(boolean isElimination) {
         this.isElimination = isElimination;
     }
 
+    /** Returns true if it is an elimination, false if not
+     * @return Boolean value true if it is an elimination false otherwise
+     */
     public boolean isElimination() {
         return isElimination;
     }
 
+    /** Highlights the cell in the parameter color. The firs call of this method sets the defaultColor of the Cell to the parameter value
+     * @param color Color of the highlight
+     */
     public void highlight(Color color) {
         if (defaultColor == null) {
             defaultColor = getBackground();
@@ -46,6 +68,10 @@ public class BoardCell extends CellButton {
         this.setBackground(highlightColor);
     }
 
+
+    /**
+     * Unhighlight this cell, that is set the background to the default background
+     */
     public void unhighlight() {
         this.setBackground(defaultColor);
     }

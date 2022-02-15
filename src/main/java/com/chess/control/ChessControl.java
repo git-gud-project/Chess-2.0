@@ -95,6 +95,8 @@ public class ChessControl {
         model.registerMove(false, move);
 
         otherTeam.clearEnPassant();
+
+        playSound("pawnPromotion");
     }
 
     /**
@@ -138,32 +140,73 @@ public class ChessControl {
         checkHighlight(piece);
 
         model.registerMove(halfMove, move);
-        System.out.print(model.getBoard().isCheckmate(model.getCurrentTeam()));
-        if(model.getBoard().isCheckmate(model.getCurrentTeam()) != 0){
-            gameOver();
+
+        if(model.getBoard().isGameOver(model.getCurrentTeam()) != 0){
+            gameOver(model.getBoard().isGameOver(model.getCurrentTeam()));
+            playSound("checkmate");
         }
+        else if(model.getBoard().isCheck(model.getCurrentTeam())) {
+            playSound("check");
+        }
+        else if(move.getIsCastleKingSide() || move.getIsCastleQueenSide()) {
+            playSound("castling");
+        }
+        else if(move.isEliminatable()) {
+            playSound("pieceCapture");
+        }
+        else playSound("pieceMove");
 
         otherTeam.clearEnPassant();
     }
 
-    public void gameOver(){
+    /**
+     * The game over process that announces the winner or stalemate. Also handles if the user wants to start a new game
+     * or exit.
+     * @param endingState - contains the information if the game ends in with a win (= 1) or a stalemate (= 2).
+     */
+    private void gameOver(int endingState){
 
         Object[] options = {"New game.", "Exit"};
-        int n = JOptionPane.showOptionDialog(view.getOwner(), "Game over!\n" + model.getCurrentTeam() + " has won!", "Game over!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-        if (n == JOptionPane.CLOSED_OPTION) {
-            System.exit(0);
-        }
-        switch (n) {
-            case 0:
-                checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
-                model.resetState();
-                view.getInfoPanel().getMovesPanel().resetMovesPanel();
-                break;
+        switch (endingState){
             case 1:
+            int n = JOptionPane.showOptionDialog(view.getOwner(), "Game over!\nThe game ended in a stalemate.", "Game over!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                if (n == JOptionPane.CLOSED_OPTION) {
                 System.exit(0);
+            }
+            switch (n) {
+                case 0:
+                    checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
+                    model.resetState();
+                    view.getInfoPanel().getMovesPanel().resetMovesPanel();
+                    break;
+                case 1:
+                    System.exit(0);
+            }
+                break;
+            case 2:
+                n = JOptionPane.showOptionDialog(view.getOwner(), "Game over!\n" + model.getOtherTeam(model.getCurrentTeam()) + " has won!", "Game over!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                if (n == JOptionPane.CLOSED_OPTION) {
+                    System.exit(0);
+                }
+                switch (n) {
+                    case 0:
+                        checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
+                        model.resetState();
+                        view.getInfoPanel().getMovesPanel().resetMovesPanel();
+                        break;
+                    case 1:
+                        System.exit(0);
+                }
+                break;
         }
+
     }
 
+
+    /**
+     * Highlights and unhighlights the cell containing the teams king piece.
+     * @param piece - the moved piece.
+     */
     private void checkHighlight(Piece piece){
         Cell c = model.getBoard().getKingCell(piece.getTeam());
         BoardCell check = view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
@@ -257,7 +300,16 @@ public class ChessControl {
         }
 
         if (selectedCell != null) {
-            selectedCell.unhighlight();
+            if(model.getBoard().getCell(selectedCell.getRow(),selectedCell.getCol()).getPiece()==null){
+                selectedCell.unhighlight();
+            } else if(!model.getBoard().getCell(selectedCell.getRow(),selectedCell.getCol()).getPiece().getPieceType().equals(PieceType.KING)){
+                selectedCell.unhighlight();
+            } else {
+                selectedCell.unhighlight();
+                if(model.getBoard().isCheck(model.getCurrentTeam())) {
+                    selectedCell.highlight(Color.RED);
+                }
+            }
         }
 
         for (BoardCell cell : highlightedCells) {
@@ -498,7 +550,6 @@ public class ChessControl {
         });
 
         view.getMenu().getNewGame().addActionListener((e) -> {
-            checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
             JFrame f = new JFrame();
             int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
             if(answer == JOptionPane.YES_OPTION) {
@@ -544,4 +595,10 @@ public class ChessControl {
         
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
+
+    private void playSound(String sound) {
+        String soundMap = view.getSoundMap();
+        SoundPlayer.playSound(soundMap,sound);
+    }
+
 }
