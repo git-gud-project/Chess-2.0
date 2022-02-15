@@ -195,6 +195,10 @@ public class ChessModel {
         this.isGameOver = true;
     }
 
+    public void setTeamWhite(Team teamWhite) { this.teamWhite = teamWhite; }
+
+    public void setTeamBlack(Team teamBlack) { this.teamBlack = teamBlack; }
+
     //
     // Methods
     //

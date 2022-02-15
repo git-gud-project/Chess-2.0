@@ -28,7 +28,12 @@ public class Team {
 
     private HashMap<PieceType, String> skinMap;
 
-    private byte[] skinIndex = {0, 0, 0, 0, 0, 0};
+    private boolean[] ownSkin = {false, false, false, false, false, false};
+    private int[] skinIndex = {0, 0, 0, 0, 0, 0};
+
+    private static final PieceType[] orderedNames = {PieceType.PAWN, PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN, PieceType.KING};
+    private static final String[] whiteNames = {"pw.png", "rw.png", "nw.png", "bw.png", "qw.png", "kw.png"};
+    private static final String[] blackNames = {"pb.png", "rb.png", "nb.png", "bb.png", "qb.png", "kb.png"};
 
     // 
     // Events
@@ -52,6 +57,21 @@ public class Team {
         this.time = new Time();
         this.pawnDirectionRow = pawnDirectionRow;
         this.hasAuthority = true;
+        initHashMap();
+    }
+
+    public Team(ChessModel model, Color color, String fileSuffix, String name, Time time, int pawnDirectionRow, Piece enPassantPiece, boolean hasAuthority, HashMap<PieceType, String> skinMap, boolean[] ownSkin, int[] skinIndex){
+        this.model = model;
+        this.teamColor = color;
+        this.fileSuffix = fileSuffix;
+        this.name = name;
+        this.time = time.cloneTime();
+        this.pawnDirectionRow = pawnDirectionRow;
+        this.enPassantPiece = enPassantPiece;
+        this.hasAuthority = hasAuthority;
+        this.skinMap = cloneHashMap(skinMap);
+        this.ownSkin = ownSkin.clone();
+        this.skinIndex = skinIndex.clone();
     }
 
     //
@@ -149,12 +169,12 @@ public class Team {
         return enPassantPiece.getCell().getCol();
     }
 
-    public byte getPawnSkin() { return this.skinIndex[0]; }
-    public byte getRookSkin() { return this.skinIndex[1]; }
-    public byte getKnightSkin() { return this.skinIndex[2]; }
-    public byte getBishopSkin() { return this.skinIndex[3]; }
-    public byte getQueenSkin() { return this.skinIndex[4]; }
-    public byte getKingSkin() { return this.skinIndex[5]; }
+    public int getPawnSkin() { return this.skinIndex[0]; }
+    public int getRookSkin() { return this.skinIndex[1]; }
+    public int getKnightSkin() { return this.skinIndex[2]; }
+    public int getBishopSkin() { return this.skinIndex[3]; }
+    public int getQueenSkin() { return this.skinIndex[4]; }
+    public int getKingSkin() { return this.skinIndex[5]; }
 
     public Color getOpponentColor() {
         return new Color(255 - teamColor.getRed(), 255 - teamColor.getGreen(), 255 - teamColor.getBlue());
@@ -295,5 +315,54 @@ public class Team {
 
     public String toString(){
         return this.name;
+    }
+
+    private void initHashMap(){
+        this.skinMap = new HashMap<>();
+        if(this.teamColor.equals(Color.WHITE)){
+            for(int i = 0; i < orderedNames.length; i++){
+                this.skinMap.put(orderedNames[i], whiteNames[i]);
+            }
+        } else {
+            for(int i = 0; i < orderedNames.length; i++){
+                this.skinMap.put(orderedNames[i], blackNames[i]);
+            }
+        }
+    }
+
+    public String getSkin(PieceType p){
+        return this.skinMap.get(p);
+    }
+
+    public void setSkin(PieceType p, String s){
+        this.skinMap.put(p, s);
+    }
+
+    public int getSkinIndex(int i){
+        return this.skinIndex[i];
+    }
+
+    public void setSkinIndex(int index, int newValue){
+        this.skinIndex[index] = newValue;
+    }
+
+    public boolean getOwnSkin(int i){
+        return this.ownSkin[i];
+    }
+
+    public void setOwnSkin(int i, boolean b){
+        this.ownSkin[i] = b;
+    }
+
+    private HashMap<PieceType, String> cloneHashMap(HashMap<PieceType, String> skinMap){
+        HashMap<PieceType, String> clone = new HashMap<>();
+        for(PieceType p : orderedNames){
+            clone.put(p, skinMap.get(p));
+        }
+        return clone;
+    }
+
+    public Team cloneTeam(){
+        return new Team(this.model, this.teamColor, this.fileSuffix, this.name, this.time, this.pawnDirectionRow, this.enPassantPiece, this.hasAuthority, this.skinMap, this.ownSkin, this.skinIndex);
     }
 }
