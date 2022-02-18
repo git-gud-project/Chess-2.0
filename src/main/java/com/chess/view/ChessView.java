@@ -76,12 +76,14 @@ public class ChessView extends JFrame {
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentResized(java.awt.event.ComponentEvent evt) {
+                /*
                 // Make sure the left mouse button is not pressed
                 if (evt.getComponent().getMousePosition() != null) {
                     if (evt.getComponent().getMousePosition().getX() > 0) {
                         return;
                     }
                 }
+                */
                 
                 // In 100ms, ensure aspect ratio
                 if (thread != null) thread.interrupt();
