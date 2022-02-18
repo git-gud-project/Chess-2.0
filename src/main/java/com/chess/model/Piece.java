@@ -125,8 +125,8 @@ public class Piece {
      */
     public void fakeMove(Cell newCell) {
         // Move the piece
-        cell.setPiece(null);
+        cell.setPiece(null, false);
         cell = newCell;
-        cell.setPiece(this);
+        cell.setPiece(this, false);
     }
 }
