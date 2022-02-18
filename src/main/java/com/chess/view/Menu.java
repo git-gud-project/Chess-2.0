@@ -19,15 +19,15 @@ public class Menu extends JMenuBar {
     // Buttons
     //
 
-    private JMenuItem newGame;
-    private JMenuItem save;
-    private JMenuItem load;
-    private JMenuItem startServer;
-    private JMenuItem connectToServer;
-    private JMenuItem customizePieces;
-    private JMenuItem disconnect;
-    private JMenuItem classic;
-    private JMenuItem notClassic;
+    private final JMenuItem newGame;
+    private final JMenuItem save;
+    private final JMenuItem load;
+    private final JMenuItem startServer;
+    private final JMenuItem connectToServer;
+    private final JMenuItem customizePieces;
+    private final JMenuItem disconnect;
+    private final JMenuItem classic;
+    private final JMenuItem notClassic;
 
     //
     // Events
@@ -55,6 +55,14 @@ public class Menu extends JMenuBar {
         file.add(new JSeparator());
         file.add(load);
         file.add(save);
+
+        newGame.addActionListener((e) -> {
+            JFrame f = new JFrame();
+            int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
+            if(answer == JOptionPane.YES_OPTION) {
+                view.getModel().resetState();
+            }
+        });
 
         save.addActionListener((e) -> {
             boolean paused = view.getModel().getPaused();
