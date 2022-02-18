@@ -13,14 +13,51 @@ import com.chess.utils.Delegate;
  * The client can be configured to connect to a specific ip and port.
  */
 public class NetworkClient {
+    /**
+     * The port we are connected to.
+     */
     private int port;
+
+    /**
+     * The ip we are connected to.
+     */
     private String ip;
+
+    /**
+     * The socket used to communicate with the server.
+     */
     private Socket socket;
+
+    /**
+     * The input stream used to read messages from the server.
+     */
     private InputStream in;
+
+    /**
+     * The output stream used to send messages to the server.
+     */
     private OutputStream out;
+
+    /**
+     * The thread used to listen for messages from the server.
+     */
     private Thread messageThread;
+
+    /**
+     * Indicates if the receiver thread is running and we are connected to the server.
+     */
     private boolean running;
+
+    /**
+     * Callback for when we are disconnected from the server.
+     */
     private Runnable onDisconnectDelegate;
+
+    /**
+     * HashMap of delegates for each message type.
+     * 
+     * The key is the type of the message, the value is the delegate to call when we receive a message of that type.
+     */
     private HashMap<Type, Delegate<Message>> messageDelegates;
 
     /**
@@ -87,13 +124,21 @@ public class NetworkClient {
         onDisconnectDelegate = delegate;
     }
 
+    /**
+     * Stop the client.
+     * 
+     * This will disconnect the client from the server if it is connected.
+     */
     public void stop() {
+        // If we are not running, return
         if (!running) {
             return;
         }
 
+        // Set running to false, this will safely stop the receive loop
         running = false;
 
+        // Attempt to close the socket
         try {
             if (!socket.isClosed()) {
                 socket.close();
@@ -104,11 +149,17 @@ public class NetworkClient {
 
         socket = null;
         
+        // Run the disconnect delegate
         if (onDisconnectDelegate != null) {
             onDisconnectDelegate.run();
         }
     }
 
+    /**
+     * Start the client. This will start a receive loop that will receive messages from the server.
+     * 
+     * @throws IOException If the client could not connect to the server.
+     */
     public void start() throws IOException {        
         // Connect to the server
         socket = new Socket(ip, port);
@@ -144,7 +195,7 @@ public class NetworkClient {
                     System.out.println("Received message: " + message.getClass().getName());
     
                     if (messageDelegates.containsKey(message.getClass())) {
-                        messageDelegates.get(message.getClass()).invoke(message);
+                        messageDelegates.get(message.getClass()).trigger(message);
                     }
                 }
 

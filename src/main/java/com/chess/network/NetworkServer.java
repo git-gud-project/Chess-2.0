@@ -13,16 +13,57 @@ import com.chess.utils.Delegate;
  * The server can be configured to listen on a specific port and which ip to listen on.
  */
 public class NetworkServer {
+    /**
+     * The port we are listening on.
+     */
     private int port;
+
+    /**
+     * The ip we are listening on.
+     */
     private String ip;
+
+    /**
+     * The server socket used to listen for connections.
+     */
     private ServerSocket serverSocket;
+
+    /**
+     * Indicates if the server is listening for connections.
+     */
     private boolean running;
+
+    /**
+     * The thread used to listen for connections.
+     */
     private Thread acceptionThread;
+
+    /**
+     * List of connected clients.
+     */
     private List<Client> clients;
+
+    /**
+     * Delegete for when a client connects.
+     */
     private Delegate<Client> onClientConnectedDelegate;
+
+    /**
+     * Delegate for when a client disconnects.
+     */
     private Delegate<Client> onClientDisconnectedDelegate;
-    private HashMap<Type, MessageDelegate> messageDelegates;
+    
+    /**
+     * Delegete for when the server closes.
+     */
     private Runnable onCloseDelegate;
+
+    /**
+     * HashMap of delegates for each message type.
+     * 
+     * The key is the type of the message, the value is the delegate to call when we receive a message of that type.
+     */
+    private HashMap<Type, MessageDelegate> messageDelegates;
 
     /**
      * Creates a new server.
@@ -146,7 +187,7 @@ public class NetworkServer {
      * @param delegate The delegate to call when a message of the specified type is received.
      */
     public synchronized void setMessageDelegate(Type type, Delegate<Message> messageDelegate) {
-        messageDelegates.put(type, (client, message) -> messageDelegate.invoke(message));
+        messageDelegates.put(type, (client, message) -> messageDelegate.trigger(message));
     }
 
     /**
@@ -179,7 +220,7 @@ public class NetworkServer {
         // Check if a delegate is registered for this message type.
         if (messageDelegates.containsKey(message.getClass())) {
             // Invoke the delegate.
-            messageDelegates.get(message.getClass()).invoke(client, message);
+            messageDelegates.get(message.getClass()).onMessage(client, message);
         }
     }
 
@@ -191,7 +232,7 @@ public class NetworkServer {
     private synchronized void handleDisconnect(Client client) {
         clients.remove(client);
         if (onClientDisconnectedDelegate != null) {
-            onClientDisconnectedDelegate.invoke(client);
+            onClientDisconnectedDelegate.trigger(client);
         }
     }
 
@@ -224,7 +265,7 @@ public class NetworkServer {
 
                     // Invoke the delegate for new connections.
                     if (onClientConnectedDelegate != null) {
-                        onClientConnectedDelegate.invoke(client);
+                        onClientConnectedDelegate.trigger(client);
                     }
                 }
             } catch (SocketException e) {

@@ -68,15 +68,15 @@ public class ChessModel {
     public void resetState() {
         loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         teamBlack.getTime().reset();
-        teamBlack.getOnTimeChangedEvent().invoke(teamBlack.getTime());
+        teamBlack.getOnTimeChangedEvent().trigger(teamBlack.getTime());
         teamWhite.getTime().reset();
         setPaused(true);
         setStarted(false);
-        teamWhite.getOnTimeChangedEvent().invoke(teamWhite.getTime());
+        teamWhite.getOnTimeChangedEvent().trigger(teamWhite.getTime());
         moveList = new ArrayList<>();
         currentTeam = teamWhite;
 
-        onModelLoadedEvent.invoke(new SerialModel(this));
+        onModelLoadedEvent.trigger(new SerialModel(this));
     }
 
     /**
@@ -93,7 +93,7 @@ public class ChessModel {
         setPaused(true);
         setStarted(smodel.getStarted());
 
-        onModelLoadedEvent.invoke(smodel);
+        onModelLoadedEvent.trigger(smodel);
     }
 
     /**
@@ -176,7 +176,7 @@ public class ChessModel {
 
     public void setCurrentTeam(Team team) { 
         this.currentTeam = team;
-        this.onTeamChangeEvent.invoke(team);
+        this.onTeamChangeEvent.trigger(team);
     }
 
     public void setPaused(boolean paused){
@@ -203,6 +203,10 @@ public class ChessModel {
     // Methods
     //
 
+    /**
+     * @param halfMove
+     * @param move
+     */
     public void registerMove(boolean halfMove, Move move) {
         // Increment full moves if it's black's turn
         if (currentTeam == teamBlack) {
@@ -224,7 +228,7 @@ public class ChessModel {
         }
 
         // Invoke events
-        onTeamChangeEvent.invoke(currentTeam);
+        onTeamChangeEvent.trigger(currentTeam);
 
         // Add '#' if move resulted in checkmate on other team
         if(board.isGameOver(currentTeam) == 2){
@@ -235,23 +239,33 @@ public class ChessModel {
 
         moveList.add(move.toString());
 
-        onMoveEvent.invoke(move);
+        onMoveEvent.trigger(move);
 
     }
-    
+
+    /** Given a team, this method returns the opposite team
+     * @param team The team you want to find opposite team for
+     * @return The opposite team
+     */
     public Team getOtherTeam(Team team) {
         if (team == teamWhite) return teamBlack;
         return teamWhite;
     }
 
-    public boolean isEnPassant(int row, int col) {
-        return teamWhite.isEnPassant(row, col) || teamBlack.isEnPassant(row, col);
-    }
-
+    /** Getter for move list
+     * @return list of moves as strings.
+     */
     public List<String> getMoveList() {
         return moveList;
     }
 
+
+    /** Create a new piece of type given by PieceType on given team at the given cell.
+     * @param type The type of piece to be created (one of: pawn, rook, knight, bishop, queen or king)
+     * @param team The team the piece should belong to, black or white.
+     * @param cell The cell where the piece should be placed.
+     * @return A full piece with team, position and full piece behaviour.
+     */
     public Piece createPiece(PieceType type, Team team, Cell cell) {
         switch (type) {
             case PAWN:
@@ -437,9 +451,9 @@ public class ChessModel {
         // Full move number
         setFullMoves(Integer.parseInt(parts[5]));
 
-        /**
+        /*
          * Invoke events
          */
-        getOnGameLoadedEvent().invoke(fen);
+        getOnGameLoadedEvent().trigger(fen);
     }
 }

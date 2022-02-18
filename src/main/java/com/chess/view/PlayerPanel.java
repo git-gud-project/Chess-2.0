@@ -86,7 +86,7 @@ public class PlayerPanel extends JPanel {
         playerName.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
-                    playerNameChangedEvent.invoke(team);
+                    playerNameChangedEvent.trigger(team);
                 }
             }
         });

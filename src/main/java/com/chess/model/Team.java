@@ -116,17 +116,17 @@ public class Team {
 
     public void setName(String name) {
         this.name = name;
-        onNameChangedEvent.invoke(name);
+        onNameChangedEvent.trigger(name);
     }
 
     public void setHasAuthority(boolean hasAuthority) {
         this.hasAuthority = hasAuthority;
-        onAuthorityChangedEvent.invoke(hasAuthority);
+        onAuthorityChangedEvent.trigger(hasAuthority);
     }
 
     public void setTime(Time time) {
         this.time = time;
-        onTimeChangedEvent.invoke(time);
+        onTimeChangedEvent.trigger(time);
     }
 
     //
@@ -204,7 +204,7 @@ public class Team {
 
     public void tickTime() {
         time.tick();
-        onTimeChangedEvent.invoke(time);
+        onTimeChangedEvent.trigger(time);
     }
 
     //

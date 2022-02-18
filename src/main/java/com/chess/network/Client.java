@@ -9,12 +9,39 @@ import com.chess.utils.Delegate;
  * Class representing a client communicating with our server.
  */
 public class Client {
+    /**
+     * The socket used to communicate with the client.
+     */
     private Socket socket;
+
+    /**
+     * The input stream used to read messages from the client.
+     */
     private InputStream in;
+
+    /**
+     * The output stream used to send messages to the client.
+     */    
     private OutputStream out;
+
+    /**
+     * The thread used to listen for messages from the client.
+     */
     private Thread messageThread;
+
+    /**
+     * Indicates if the receiver thread is running and we are connected to the client.
+     */
     private boolean running;
+
+    /**
+     * The delegate to call when the server receives a message from the client.
+     */
     private Delegate<Message> messageDelegate;
+
+    /**
+     * The delegate to call when the client disconnects.
+     */
     private Delegate<Client> onDisconnectDelegate;
 
     /**
@@ -76,6 +103,8 @@ public class Client {
 
     /**
      * Starts the client.
+     * 
+     * This will start a thread that will listen for messages from the client.
      */
     public void start() {
         running = true;
@@ -89,6 +118,11 @@ public class Client {
      * Stops the client.
      */
     public void stop() {
+        // If we are not running, return
+        if (!running) {
+            return;
+        }
+
         running = false;
 
         try {
@@ -102,7 +136,7 @@ public class Client {
 
         // Call the disconnect delegate
         if (onDisconnectDelegate != null) {
-            onDisconnectDelegate.invoke(this);
+            onDisconnectDelegate.trigger(this);
         }
     }
     
@@ -125,7 +159,7 @@ public class Client {
 
                 // If there is a delegate for this message type, call it
                 if (messageDelegate != null) {
-                    messageDelegate.invoke(message);
+                    messageDelegate.trigger(message);
                 }
 
             } catch (SocketException e) {
