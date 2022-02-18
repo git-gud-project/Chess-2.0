@@ -68,15 +68,15 @@ public class ChessModel {
     public void resetState() {
         loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         teamBlack.getTime().reset();
-        teamBlack.getOnTimeChangedEvent().invoke(teamBlack.getTime());
+        teamBlack.getOnTimeChangedEvent().trigger(teamBlack.getTime());
         teamWhite.getTime().reset();
         setPaused(true);
         setStarted(false);
-        teamWhite.getOnTimeChangedEvent().invoke(teamWhite.getTime());
+        teamWhite.getOnTimeChangedEvent().trigger(teamWhite.getTime());
         moveList = new ArrayList<>();
         currentTeam = teamWhite;
 
-        onModelLoadedEvent.invoke(new SerialModel(this));
+        onModelLoadedEvent.trigger(new SerialModel(this));
     }
 
     /**
@@ -93,7 +93,7 @@ public class ChessModel {
         setPaused(true);
         setStarted(smodel.getStarted());
 
-        onModelLoadedEvent.invoke(smodel);
+        onModelLoadedEvent.trigger(smodel);
     }
 
     /**
@@ -176,7 +176,7 @@ public class ChessModel {
 
     public void setCurrentTeam(Team team) { 
         this.currentTeam = team;
-        this.onTeamChangeEvent.invoke(team);
+        this.onTeamChangeEvent.trigger(team);
     }
 
     public void setPaused(boolean paused){
@@ -224,7 +224,7 @@ public class ChessModel {
         }
 
         // Invoke events
-        onTeamChangeEvent.invoke(currentTeam);
+        onTeamChangeEvent.trigger(currentTeam);
 
         // Add '#' if move resulted in checkmate on other team
         if(board.isGameOver(currentTeam) == 2){
@@ -235,7 +235,7 @@ public class ChessModel {
 
         moveList.add(move.toString());
 
-        onMoveEvent.invoke(move);
+        onMoveEvent.trigger(move);
 
     }
     
@@ -440,6 +440,6 @@ public class ChessModel {
         /**
          * Invoke events
          */
-        getOnGameLoadedEvent().invoke(fen);
+        getOnGameLoadedEvent().trigger(fen);
     }
 }

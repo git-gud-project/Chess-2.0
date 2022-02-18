@@ -99,7 +99,7 @@ public class BoardGridPanel extends JPanel {
      */
     private void handleClick(BoardCell boardCell) {
         if (clickDelegate != null) {
-            clickDelegate.invoke(boardCell);
+            clickDelegate.trigger(boardCell);
         }
     }
 }

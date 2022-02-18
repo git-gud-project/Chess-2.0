@@ -1,7 +1,19 @@
 package com.chess.network;
 
+/**
+ * Represents a host's details.
+ * 
+ * Includes the host's ip and port.
+ */
 public class HostDetails {
+    /**
+     * The host's ip.
+     */
     private String ip;
+
+    /**
+     * The host's port.
+     */
     private int port;
 
     /**

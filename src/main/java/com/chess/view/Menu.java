@@ -95,7 +95,7 @@ public class Menu extends JMenuBar {
                     FileInputStream fIn = new FileInputStream(chosenFile);
                     ObjectInputStream stream = new ObjectInputStream(fIn);
                     SerialModel newModel = (SerialModel) stream.readObject();
-                    onLoadGameEvent.invoke(newModel);
+                    onLoadGameEvent.trigger(newModel);
                     stream.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -155,7 +155,7 @@ public class Menu extends JMenuBar {
             JFrame f = new JFrame();
             String port = JOptionPane.showInputDialog(f, "Please select a port to start the server communication:");
             if (port != null) {
-                onStartServerEvent.invoke(port);
+                onStartServerEvent.trigger(port);
             }
         });
 
@@ -165,13 +165,13 @@ public class Menu extends JMenuBar {
             
             String port = JOptionPane.showInputDialog(f, "Please enter the server:port to connect to:");
             if (port != null) {
-                onConnectToServerEvent.invoke(port);
+                onConnectToServerEvent.trigger(port);
             }
         });
 
         disconnect = new JMenuItem("Disconnect");
         disconnect.addActionListener(e -> {
-            onDisconnectEvent.invoke(disconnect);
+            onDisconnectEvent.trigger(disconnect);
         });
         disconnect.setEnabled(false);
 

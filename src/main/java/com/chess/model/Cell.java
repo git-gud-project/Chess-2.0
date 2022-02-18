@@ -72,7 +72,7 @@ public class Cell {
      */
     public void setPiece(Piece piece) {
         this.piece = piece;
-        onPieceChangedEvent.invoke(piece);
+        onPieceChangedEvent.trigger(piece);
     }
 
     /**

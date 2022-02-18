@@ -96,7 +96,7 @@ public class InformationPanel extends JPanel {
         //
 
         // Pause button
-        pauseButton.addActionListener(e -> onPauseButtonClickedEvent.invoke(pauseButton));
+        pauseButton.addActionListener(e -> onPauseButtonClickedEvent.trigger(pauseButton));
     }
 
     public BottomPanel getBottomPanel() {
