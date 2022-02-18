@@ -90,7 +90,7 @@ public class ChessControl {
 
         Move move = new Move(cell, type);
 
-        model.registerMove(false, move);
+        //model.registerMove(false, move);
 
         otherTeam.clearEnPassant();
 
@@ -132,7 +132,7 @@ public class ChessControl {
                 }
             }
 
-            return;
+            //return;
         }
 
         checkHighlight(piece);
@@ -175,7 +175,7 @@ public class ChessControl {
                 case 0:
                     checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
                     model.resetState();
-                    view.getInfoPanel().getMovesPanel().resetMovesPanel();
+                    view.getBoardGridPanel().unHighlightAll();
                     break;
                 case 1:
                     System.exit(0);
@@ -190,7 +190,7 @@ public class ChessControl {
                     case 0:
                         checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
                         model.resetState();
-                        view.getInfoPanel().getMovesPanel().resetMovesPanel();
+                        view.getBoardGridPanel().unHighlightAll();
                         break;
                     case 1:
                         System.exit(0);
@@ -244,8 +244,6 @@ public class ChessControl {
 
             return;
         }
-
-        // TODO: Validate move.
         
         // If we are the host, broadcast the move to all clients.
         networkControl.broadcastMessage(new AffirmMoveMessage(fromRow, fromCol, toRow, toCol, isElimination));

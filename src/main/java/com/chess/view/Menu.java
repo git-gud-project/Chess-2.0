@@ -64,6 +64,7 @@ public class Menu extends JMenuBar {
             JFrame f = new JFrame();
             int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
             if(answer == JOptionPane.YES_OPTION) {
+                view.getBoardGridPanel().unHighlightAll();
                 view.getModel().resetState();
             }
         });
