@@ -119,8 +119,8 @@ public class BoardGridPanel extends JPanel {
 
     //todo fix with dynamic size
     public void unHighlightAll (){
-        for(int row=0;row<8;row++){
-            for(int col=0;col<8;col++){
+        for(int row=0;row<size;row++){
+            for(int col=0;col<size;col++){
                 cells[row][col].unhighlight();
                 Color color = row % 2 == col % 2 ? ChessView.PRIMARY_COLOR : ChessView.SECONDARY_COLOR;
                 // Set the background color of the button, black or white
