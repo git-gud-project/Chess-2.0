@@ -6,13 +6,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-// Right now only works for 2 players
 public class MovesPanel extends JPanel {
     private DefaultListModel<String> listModel;
     private int turn, moves;
     private JScrollPane scrollpane;
     private ChessModel model;
 
+    /**
+     * Constructor for MovesPanel. Creates a window with a list in it for move notations
+     * @param model a reference for the current model
+     */
     public MovesPanel(ChessModel model) {
         this.setLayout(new BorderLayout());
         this.model = model;
@@ -33,7 +36,6 @@ public class MovesPanel extends JPanel {
          * Setup events
          */
 
-
         model.getOnMoveEvent().addDelegate(move -> {
             List<String> moveList = model.getMoveList();
             moves++;
@@ -43,13 +45,13 @@ public class MovesPanel extends JPanel {
                 for(int i=0; i<4-String.valueOf(turn).length(); i++) {
                     spacing.append(" ");
                 }
-                listModel.addElement(String.valueOf(turn) + spacing + moveList.get(moves-1));
+                listModel.addElement(String.valueOf(turn) + "." + spacing + moveList.get(moves-1));
             } else {
                 String oldLine = listModel.lastElement();
                 listModel.removeElementAt(turn-1);
                 String toBeAdded = moveList.get(moves-1).toString();
                 StringBuilder spacing = new StringBuilder("");
-                for(int i=0; i<16-oldLine.length(); i++) {
+                for(int i=0; i<14-oldLine.length(); i++) {
                     spacing.append(" ");
                 }
                 listModel.addElement(oldLine + spacing + toBeAdded);
@@ -63,7 +65,9 @@ public class MovesPanel extends JPanel {
         });
     }
 
-
+    /**
+     * Clears all notation from this panel
+     */
     public void resetMovesPanel() {
         //Removes the list of moves from the previous game when creating a new one.
         remove(scrollpane);
@@ -82,7 +86,10 @@ public class MovesPanel extends JPanel {
         add(scrollpane);
     }
 
-    public void loadMovesPanel() {
+    /**
+     *
+     */
+     public void loadMovesPanel() {
         //Removes the list of moves from the previous game loading a saved game.
         remove(scrollpane);
 
@@ -101,13 +108,17 @@ public class MovesPanel extends JPanel {
             moves++;
             if (moves % 2 == 1) {
                 turn++;
-                listModel.addElement(String.valueOf(turn) + "   " + moveList.get(moves - 1));
+                StringBuilder spacing = new StringBuilder("");
+                for(int i=0; i<4-String.valueOf(turn).length(); i++) {
+                    spacing.append(" ");
+                }
+                listModel.addElement(String.valueOf(turn) + "." + spacing + moveList.get(moves-1));
             } else {
                 String oldLine = listModel.lastElement();
                 listModel.removeElementAt(turn - 1);
                 String toBeAdded = moveList.get(moves - 1).toString();
                 StringBuilder spacing = new StringBuilder("");
-                for (int i = 0; i < 16 - oldLine.length(); i++) {
+                for (int i = 0; i < 14 - oldLine.length(); i++) {
                     spacing.append(" ");
                 }
                 listModel.addElement(oldLine + spacing + toBeAdded);

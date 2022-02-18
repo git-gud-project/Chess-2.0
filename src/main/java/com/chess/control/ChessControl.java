@@ -386,14 +386,6 @@ public class ChessControl {
 
         // Setup listener when clicking on a cell.
         view.getBoardGridPanel().setClickDelegate((BoardCell boardCell) -> handleClick(boardCell));
-
-        view.getMenu().getNewGame().addActionListener((e) -> {
-            JFrame f = new JFrame();
-            int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
-            if(answer == JOptionPane.YES_OPTION) {
-                model.resetState();
-            }
-        });
         
         view.getMenu().getOnLoadGameEvent().addDelegate((serialModel) -> {
             model.loadModel(serialModel);

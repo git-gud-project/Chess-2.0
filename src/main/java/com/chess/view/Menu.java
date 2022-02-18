@@ -6,6 +6,10 @@ import com.chess.utils.Event;
 
 import java.awt.event.KeyEvent;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import com.chess.model.*;
 
@@ -19,15 +23,15 @@ public class Menu extends JMenuBar {
     // Buttons
     //
 
-    private JMenuItem newGame;
-    private JMenuItem save;
-    private JMenuItem load;
-    private JMenuItem startServer;
-    private JMenuItem connectToServer;
-    private JMenuItem customizePieces;
-    private JMenuItem disconnect;
-    private JMenuItem classic;
-    private JMenuItem notClassic;
+    private final JMenuItem newGame;
+    private final JMenuItem save;
+    private final JMenuItem load;
+    private final JMenuItem startServer;
+    private final JMenuItem connectToServer;
+    private final JMenuItem customizePieces;
+    private final JMenuItem disconnect;
+    private final JMenuItem classic;
+    private final JMenuItem notClassic;
 
     //
     // Events
@@ -55,6 +59,14 @@ public class Menu extends JMenuBar {
         file.add(new JSeparator());
         file.add(load);
         file.add(save);
+
+        newGame.addActionListener((e) -> {
+            JFrame f = new JFrame();
+            int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
+            if(answer == JOptionPane.YES_OPTION) {
+                view.getModel().resetState();
+            }
+        });
 
         save.addActionListener((e) -> {
             boolean paused = view.getModel().getPaused();
@@ -96,6 +108,7 @@ public class Menu extends JMenuBar {
                     ObjectInputStream stream = new ObjectInputStream(fIn);
                     SerialModel newModel = (SerialModel) stream.readObject();
                     onLoadGameEvent.trigger(newModel);
+                    view.getInfoPanel().getMovesPanel().loadMovesPanel();
                     stream.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -104,11 +117,6 @@ public class Menu extends JMenuBar {
                 if(!paused) view.getModel().setPaused(false);
             }
         });
-
-        //Creating edit menu
-        JMenu edit = new JMenu("Edit");
-        //TODO: This menu could support functionality for pausing the game. If no other functionality for it is used it could also be removed.
-        this.add(edit);
 
         //Creating view menu
         //TODO: Visual customization could be added to this part of the menu as part of the technical requirements for the project.
@@ -141,7 +149,18 @@ public class Menu extends JMenuBar {
 
         //Creating help menu
         JMenu help = new JMenu("Help");
-        //TODO: This menu could mostly serve to display miscellaneous information to the user upon request.
+        JMenuItem wikiLink = new JMenuItem("How to play chess");
+        wikiLink.addActionListener((a) -> {
+            try {
+                URI site = new URI("https://www.dummies.com/article/home-auto-hobbies/games/board-games/chess/chess-for-dummies-cheat-sheet-208533");
+                java.awt.Desktop.getDesktop().browse(site);
+            }
+            catch(URISyntaxException | IOException e ) {
+                e.printStackTrace();
+            }
+        });
+
+        help.add(wikiLink);
         this.add(help);
 
         //
