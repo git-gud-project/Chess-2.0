@@ -1,5 +1,7 @@
 package com.chess.model;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.Iterator;
 
 /**
@@ -86,7 +88,25 @@ public class Piece {
      * @return the path to the image file for the piece
      */
     public String getIconPath() {
-        return "/images/" + getPieceType().getFilePrefix() + team.getFileSuffix() + ".png";
+        int n;
+        switch(behavior.getPieceType().getFilePrefix()){
+            case "r": n = 1; break;
+            case "n": n = 2; break;
+            case "b": n = 3; break;
+            case "q": n = 4; break;
+            case "k": n = 5; break;
+            default: n = 0;
+        }
+        if (!team.getOwnSkin(n)) {
+            if (team.getSkinIndex(n) == 0) {
+                return "/images/" + team.getSkin(behavior.getPieceType());
+            } else {
+                return "/skins/" + team.getSkin(getPieceType());
+            }
+        } else {
+            //TODO: Behaves a bit mysteriously if a file is deleted or moved in between pop-ups. Could try to fix this some way.
+            return team.getSkin(getPieceType());
+        }
     }
 
     /**
@@ -125,8 +145,8 @@ public class Piece {
      */
     public void fakeMove(Cell newCell) {
         // Move the piece
-        cell.setPiece(null);
+        cell.setPiece(null, false);
         cell = newCell;
-        cell.setPiece(this);
+        cell.setPiece(this, false);
     }
 }
