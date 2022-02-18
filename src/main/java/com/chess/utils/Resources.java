@@ -20,4 +20,11 @@ public final class Resources {
     public static ImageIcon getImageIcon(String path) {
         return new ImageIcon(Resources.class.getResource(path));
     }
+
+    public static ImageIcon getOwnImageIcon(String absolutePath) {
+        //TODO: Behaves a bit mysteriously if a file is deleted or moved in between pop-ups. Could try to fix this some way.
+        Image image = Toolkit.getDefaultToolkit().getImage(absolutePath);
+        image = image.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+        return new ImageIcon(image);
+    }
 }

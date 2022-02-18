@@ -63,7 +63,21 @@ public class BoardGridPanel extends JPanel {
                     if (piece == null) {
                         button.setIcon(null);
                     } else {
-                        ImageIcon icon = Resources.getImageIcon(piece.getIconPath());
+                        int n;
+                        switch(piece.getPieceType().getFilePrefix()){
+                            case "r": n = 1; break;
+                            case "n": n = 2; break;
+                            case "b": n = 3; break;
+                            case "q": n = 4; break;
+                            case "k": n = 5; break;
+                            default: n = 0;
+                        }
+                        ImageIcon icon;
+                        if(!cell.getPiece().getTeam().getOwnSkin(n)){
+                            icon = Resources.getImageIcon(piece.getIconPath());
+                        } else {
+                            icon = Resources.getOwnImageIcon(piece.getIconPath());
+                        }
                         
                         button.setIcon(icon);
                     }

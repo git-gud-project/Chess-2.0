@@ -78,6 +78,11 @@ public class PieceConfigurator extends JPanel {
         //Adding action listeners to the buttons.
         accept.addActionListener((e) -> {
             //TODO: Placeholder behavior, should accept and perform the changes later on.
+            for(int i = 0; i < model.getBoard().getGameSize(); i++){
+                for(int j = 0; j < model.getBoard().getGameSize(); j++){
+                    model.getBoard().getCell(i, j).getOnPieceChangedEvent().invoke(model.getBoard().getCell(i,j).getPiece());
+                }
+            }
             frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
         });
         cancel.addActionListener((e) -> {
@@ -112,6 +117,7 @@ public class PieceConfigurator extends JPanel {
                 imageLabel.setIcon(getImageIcon("/skins/" + getFileName(i * 3 + j)));
             }
         } else {
+            //TODO: Behaves a bit mysteriously if a file is deleted or moved in between pop-ups. Could try to fix this some way.
             Image image = Toolkit.getDefaultToolkit().getImage(getFileName(i*3 + j));
             image = image.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
             imageLabel.setIcon(new ImageIcon(image));
