@@ -1,6 +1,7 @@
 package com.chess.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class Board {
         cellArray = new Cell[gameSize][gameSize];
         for(int row = 0; row < gameSize; row++) {
             for(int col = 0; col < gameSize; col++) {
-                cellArray[row][col] = new Cell(this, row, col);
+                cellArray[row][col] = new Cell(row, col);
             }
         }
     }
@@ -162,7 +163,7 @@ public class Board {
         for(int row=0;row<gameSize;row++){
             for(int col=0;col<gameSize;col++){
                 if(cellArray[row][col].getPiece()!=null && cellArray[row][col].getPiece().getTeam()!=playerTeam){
-                    Iterator<Move> it =cellArray[row][col].getPiece().getPossibleMoves();
+                    Iterator<Move> it =cellArray[row][col].getPiece().getPossibleMoves(this);
                     while(it.hasNext()) {
                         enemyMovesList.add(it.next());
                     }
@@ -183,7 +184,7 @@ public class Board {
         for(int row=0;row<gameSize;row++){
             for(int col=0;col<gameSize;col++){
                 if(cellArray[row][col].getPiece()!=null && cellArray[row][col].getPiece().getTeam()==playerTeam){
-                    Iterator<Move> it =cellArray[row][col].getPiece().getPossibleMoves();
+                    Iterator<Move> it =cellArray[row][col].getPiece().getPossibleMoves(this);
                     while(it.hasNext()) {
                         teamMovesList.add(it.next());
                     }

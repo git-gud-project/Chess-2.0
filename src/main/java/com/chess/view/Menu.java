@@ -40,7 +40,6 @@ public class Menu extends JMenuBar {
     private Event<String> onConnectToServerEvent = new Event<>();
     private Event<JMenuItem> onDisconnectEvent = new Event<>();
     private Event<SerialModel> onLoadGameEvent = new Event<>();
-    private Event<Time> onTimeChangeEvent = new Event<>();
 
     public Menu(ChessView view) {
         super();
@@ -64,14 +63,7 @@ public class Menu extends JMenuBar {
             JFrame f = new JFrame();
             int answer = JOptionPane.showConfirmDialog(f, "Are you sure you want to start a new game?\nAny unsaved changes to the current state will be lost.", "", JOptionPane.YES_NO_OPTION);
             if(answer == JOptionPane.YES_OPTION) {
-                try {
-                    int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:", "5"));
-                    Time newTime = new Time(input);
-                    view.getModel().resetState(newTime);
-                }
-                catch(NullPointerException exc) {
-                    exc.printStackTrace();
-                }
+                view.getModel().resetState();
             }
         });
 
@@ -125,7 +117,6 @@ public class Menu extends JMenuBar {
             }
         });
 
-
         //Creating view menu
         //TODO: Visual customization could be added to this part of the menu as part of the technical requirements for the project.
         JMenu viewMenu = new JMenu("View");
@@ -161,7 +152,7 @@ public class Menu extends JMenuBar {
         wikiLink.addActionListener((a) -> {
             try {
                 URI site = new URI("https://www.dummies.com/article/home-auto-hobbies/games/board-games/chess/chess-for-dummies-cheat-sheet-208533");
-                Desktop.getDesktop().browse(site);
+                java.awt.Desktop.getDesktop().browse(site);
             }
             catch(URISyntaxException | IOException e ) {
                 e.printStackTrace();
@@ -226,8 +217,6 @@ public class Menu extends JMenuBar {
     public Event<JMenuItem> getOnDisconnectEvent() { return onDisconnectEvent; }
     
     public Event<SerialModel> getOnLoadGameEvent() { return onLoadGameEvent; }
-
-    public Event<Time> getOnTimeChangeEvent() { return onTimeChangeEvent; }
 
     public String getSoundMap() {
         return this.choosenSoundMap;

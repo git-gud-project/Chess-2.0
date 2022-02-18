@@ -45,7 +45,7 @@ public class BoardGridPanel extends JPanel {
 
                 Color color = row % 2 == col % 2 ? ChessView.PRIMARY_COLOR : ChessView.SECONDARY_COLOR;
 
-                // Set the background color of the button, balck or white
+                // Set the background color of the button, black or white
                 button.setBackground(color);
 
                 button.setHoverBackgroundColor(color);
@@ -114,6 +114,18 @@ public class BoardGridPanel extends JPanel {
     private void handleClick(BoardCell boardCell) {
         if (clickDelegate != null) {
             clickDelegate.trigger(boardCell);
+        }
+    }
+
+    //todo fix with dynamic size
+    public void unHighlightAll (){
+        for(int row=0;row<8;row++){
+            for(int col=0;col<8;col++){
+                cells[row][col].unhighlight();
+                Color color = row % 2 == col % 2 ? ChessView.PRIMARY_COLOR : ChessView.SECONDARY_COLOR;
+                // Set the background color of the button, black or white
+                cells[row][col].setBackground(color);
+            }
         }
     }
 }

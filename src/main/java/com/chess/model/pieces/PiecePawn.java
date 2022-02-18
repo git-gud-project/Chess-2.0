@@ -24,10 +24,8 @@ public class PiecePawn implements PieceBehavior {
     private ArrayList<Move> possibleMoves = new ArrayList<>();
 
     @Override
-    public Iterator<Move> getPossibleMoves(Cell cell) {
+    public Iterator<Move> getPossibleMoves(Board board, Cell cell) {
         possibleMoves.clear();
-
-        Board board = cell.getBoard();
 
         Piece piece = cell.getPiece();
 
@@ -70,9 +68,7 @@ public class PiecePawn implements PieceBehavior {
      * @param newCell the cell that the piece is now in
      */
     @Override
-    public void onMove(Cell oldCell, Cell newCell) {
-        Board board = newCell.getBoard();
-
+    public void onMove(Board board, Cell oldCell, Cell newCell) {
         Piece piece = newCell.getPiece();
 
         Team team = piece.getTeam();

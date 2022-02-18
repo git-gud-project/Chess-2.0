@@ -4,15 +4,11 @@ import javax.swing.*;
 
 import com.chess.model.ChessModel;
 import com.chess.model.PieceType;
-import com.chess.model.SerialModel;
 import com.chess.model.Team;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class PieceConfigurator extends JPanel {
@@ -77,7 +73,6 @@ public class PieceConfigurator extends JPanel {
 
         //Adding action listeners to the buttons.
         accept.addActionListener((e) -> {
-            //TODO: Placeholder behavior, should accept and perform the changes later on.
             for(int i = 0; i < model.getBoard().getGameSize(); i++){
                 for(int j = 0; j < model.getBoard().getGameSize(); j++){
                     model.getBoard().getCell(i, j).getOnPieceChangedEvent().trigger(model.getBoard().getCell(i,j).getPiece());

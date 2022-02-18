@@ -90,7 +90,7 @@ public class ChessControl {
 
         Move move = new Move(cell, type);
 
-        model.registerMove(false, move);
+        //model.registerMove(false, move);
 
         otherTeam.clearEnPassant();
 
@@ -174,9 +174,7 @@ public class ChessControl {
             switch (n) {
                 case 0:
                     checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
-                    int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:", "5"));
-                    Time newTime = new Time(input);
-                    model.resetState(newTime);
+                    model.resetState();
                     view.getInfoPanel().getMovesPanel().resetMovesPanel();
                     break;
                 case 1:
@@ -191,9 +189,7 @@ public class ChessControl {
                 switch (n) {
                     case 0:
                         checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
-                        int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:", "5"));
-                        Time newTime = new Time(input);
-                        model.resetState(newTime);
+                        model.resetState();
                         view.getInfoPanel().getMovesPanel().resetMovesPanel();
                         break;
                     case 1:
