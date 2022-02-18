@@ -80,7 +80,7 @@ public class PieceConfigurator extends JPanel {
             //TODO: Placeholder behavior, should accept and perform the changes later on.
             for(int i = 0; i < model.getBoard().getGameSize(); i++){
                 for(int j = 0; j < model.getBoard().getGameSize(); j++){
-                    model.getBoard().getCell(i, j).getOnPieceChangedEvent().invoke(model.getBoard().getCell(i,j).getPiece());
+                    model.getBoard().getCell(i, j).getOnPieceChangedEvent().trigger(model.getBoard().getCell(i,j).getPiece());
                 }
             }
             frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
