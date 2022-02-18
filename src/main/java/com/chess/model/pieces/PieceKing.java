@@ -33,11 +33,9 @@ public class PieceKing implements PieceBehavior {
      * @return An iterator of the array containing all possible moves.
      */
     @Override
-    public Iterator<Move> getPossibleMoves(Cell cell) {
+    public Iterator<Move> getPossibleMoves(Board board, Cell cell) {
         possibleMoves.clear();
 
-        Board board = cell.getBoard();
-        
         board.calculateMoves(cell, possibleMoves, 1, 1, 1);
         board.calculateMoves(cell, possibleMoves, -1, 1, 1);
         board.calculateMoves(cell, possibleMoves, 1, -1, 1);
@@ -73,22 +71,22 @@ public class PieceKing implements PieceBehavior {
      * @param newCell the cell that the piece is now in
      */
     @Override
-    public void beforeMove(Cell oldCell, Cell newCell) {
+    public void beforeMove(Board board, Cell oldCell, Cell newCell) {
         Team team = oldCell.getPiece().getTeam();
-        Board board = oldCell.getBoard();
+        
         boolean canCastleKingSide = team.canCastleKingSide();
         boolean canCastleQueenSide = team.canCastleQueenSide();
 
         if (canCastleKingSide && newCell == team.getCastlingKingSideCell()) {
             Cell rookCell = board.getCell(newCell.getRow(), newCell.getCol() + 1);
             Piece rook = rookCell.getPiece();
-            rook.move(board.getCell(newCell.getRow(), newCell.getCol() - 1));
+            rook.move(board, board.getCell(newCell.getRow(), newCell.getCol() - 1));
         }
 
         if (canCastleQueenSide && newCell == team.getCastlingQueenSideCell()) {
             Cell rookCell = board.getCell(newCell.getRow(), newCell.getCol() - 2);
             Piece rook = rookCell.getPiece();
-            rook.move(board.getCell(newCell.getRow(), newCell.getCol() + 1));
+            rook.move(board, board.getCell(newCell.getRow(), newCell.getCol() + 1));
         }
     }
 

@@ -162,23 +162,22 @@ public class Move {
      * The toString of this class. Makes a string in the form of chess notation based on this move
      * @return A chess notation in String form
      */
-    @Override
-    public String toString() {
+    public String format(Board board) {
         if(isCastleKingSide) return "0-0";
         else if(isCastleQueenSide) return "0-0-0";
         else if(isPromotion) {
-            String colAndRow = moveCell.toString();
+            String colAndRow = moveCell.format(board);
             String piecePrefix = promotedTo.getFilePrefix();
             return colAndRow + piecePrefix;
         }
         else {
             StringBuilder result = new StringBuilder("");
-            String colAndRow = moveCell.toString();
+            String colAndRow = moveCell.format(board);
             String piecePrefix = piece.getPieceType().getFilePrefix();
             if(piecePrefix.equals("p")) {
                 if(elimination) {
-                    if(isEnPassant) result.append(moveCell.getBoard().positionToString(0, fromCell.getCol()).charAt(0)+"x"+colAndRow + " e.p");
-                    else result.append(moveCell.getBoard().positionToString(0, fromCell.getCol()).charAt(0)+"x"+colAndRow);
+                    if(isEnPassant) result.append(board.positionToString(0, fromCell.getCol()).charAt(0)+"x"+colAndRow + " e.p");
+                    else result.append(board.positionToString(0, fromCell.getCol()).charAt(0)+"x"+colAndRow);
                 }
                 else result.append(colAndRow);
             }
@@ -192,5 +191,9 @@ public class Move {
 
             return result.toString();
         }
+    }
+
+    public String toString() {
+        throw new UnsupportedOperationException("Not implemented");
     }
 }

@@ -7,7 +7,6 @@ public class Cell {
     private final int row;
     private final int col;
 
-    private Board board;
     private Piece piece;
 
     //
@@ -23,17 +22,10 @@ public class Cell {
      * @param row The row that this cell will lay in
      * @param col The column that this cell will lay in
      */
-    public Cell(Board board, int row, int col){
-        this.board = board;
+    public Cell(int row, int col) {
         this.row = row;
         this.col = col;
     }
-
-    /**
-     * Get the board which this cell belongs to
-     * @return The board that this cell belongs to
-     */
-    public Board getBoard () { return this.board; }
 
     /**
      * Get which row number this cell lays in
@@ -91,9 +83,12 @@ public class Cell {
     /**
      * @return The row and column for this cell in a String, formatted to match chess notation
      */
-    @Override
-    public String toString() {
+    public String format(Board board) {
         return board.positionToString(row, col);
+    }
+
+    public String toString() {
+        throw new UnsupportedOperationException("Not implemented");
     }
 }
 

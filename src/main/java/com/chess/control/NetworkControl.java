@@ -362,8 +362,8 @@ public class NetworkControl {
             MovePieceMessage movePieceMessage = (MovePieceMessage) message;
 
             // Collect variables.
-            Cell from = new Cell(getModel().getBoard(), movePieceMessage.getToRow(), movePieceMessage.getToCol());
-            Cell to = new Cell(getModel().getBoard(), movePieceMessage.getFromRow(), movePieceMessage.getFromCol());
+            Cell from = new Cell(movePieceMessage.getToRow(), movePieceMessage.getToCol());
+            Cell to = new Cell(movePieceMessage.getFromRow(), movePieceMessage.getFromCol());
             Boolean isElimination = movePieceMessage.isElimination();
 
             // Create the move.

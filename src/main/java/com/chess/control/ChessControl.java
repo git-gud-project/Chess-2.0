@@ -113,7 +113,7 @@ public class ChessControl {
 
         Piece piece = move.getPiece();
 
-        piece.move(move.getToCell());
+        piece.move(model.getBoard(), move.getToCell());
 
         Team otherTeam = model.getOtherTeam(model.getCurrentTeam());
 
@@ -212,7 +212,7 @@ public class ChessControl {
             check.unhighlight();
         }
 
-        if(piece.getCell().getBoard().isCheck(model.getOtherTeam(piece.getTeam()))){
+        if(model.getBoard().isCheck(model.getOtherTeam(piece.getTeam()))){
             c = model.getBoard().getKingCell(model.getOtherTeam(piece.getTeam()));
             check =  view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
             check.highlight(Color.RED);
@@ -332,7 +332,7 @@ public class ChessControl {
         selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
 
 
-        Iterator<Move> moves = piece.getPossibleMoves();
+        Iterator<Move> moves = piece.getPossibleMoves(model.getBoard());
         currentMoveMap = new HashMap<>();
         while (moves.hasNext()) {
             Move move = moves.next();
