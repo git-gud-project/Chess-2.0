@@ -88,6 +88,12 @@ public class ChessModel {
         teamBlack.setName(smodel.getBlackName());
         teamWhite.setTime(smodel.getWhiteTime());
         teamBlack.setTime(smodel.getBlackTime());
+        teamWhite.setSkinMap(smodel.getWhiteSkinMap());
+        teamBlack.setSkinMap(smodel.getBlackSkinMap());
+        teamWhite.setOwnSkin(smodel.getOwnSkinWhite());
+        teamBlack.setOwnSkin(smodel.getOwnSkinBlack());
+        teamWhite.setSkinIndex(smodel.getSkinIndexWhite());
+        teamBlack.setSkinIndex(smodel.getSkinIndexBlack());
         moveList = smodel.getMoveList();
         loadFEN(smodel.getFen());
         setPaused(true);
