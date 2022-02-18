@@ -7,25 +7,26 @@ import javax.swing.*;
 import java.awt.*;
 
 public class InformationPanel extends JPanel {
-    private PlayerPanel playerPanel1;
-    private PlayerPanel playerPanel2;
+    private final PlayerPanel playerPanel1;
+    private final PlayerPanel playerPanel2;
 
-    private JButton pauseButton;
+    private final JButton pauseButton;
 
-    private BottomPanel bottomPanel;
-    private MovesPanel movesPanel;
+    private final BottomPanel bottomPanel;
+    private final MovesPanel movesPanel;
 
-    private Event<JButton> onPauseButtonClickedEvent = new Event<>();
+    private final Event<JButton> onPauseButtonClickedEvent = new Event<>();
 
+    /**
+     * This is a side panel that displays the information of the game.
+     *
+     * On top are two panels, one for each player. These panels contain their
+     * name and time.
+     *
+     * The rest of the panel is a list of moves.
+     */
     public InformationPanel(ChessModel model) {
-        /**
-         * This is a side panel that displays the information of the game.
-         * 
-         * On top are two panels, one for each player. These panels contain their
-         * name and time.
-         * 
-         * The rest of the panel is a list of moves.
-         */
+
         this.setLayout(new BorderLayout());
         this.setBackground(ChessView.SECONDARY_COLOR);
 
@@ -69,7 +70,7 @@ public class InformationPanel extends JPanel {
         moves.add(movesPanel);
 
         // Add a border to the moves panel
-        moves.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        moves.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
         // Add some margin to this panel
         this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
