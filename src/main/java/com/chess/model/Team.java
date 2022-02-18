@@ -54,7 +54,7 @@ public class Team {
         this.teamColor = color;
         this.fileSuffix = fileSuffix;
         this.name = name;
-        this.time = new Time();
+        this.time = new Time(5);
         this.pawnDirectionRow = pawnDirectionRow;
         this.hasAuthority = true;
         initHashMap();

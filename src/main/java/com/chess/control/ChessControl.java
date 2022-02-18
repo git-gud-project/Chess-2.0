@@ -174,7 +174,9 @@ public class ChessControl {
             switch (n) {
                 case 0:
                     checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
-                    model.resetState();
+                    int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:", "5"));
+                    Time newTime = new Time(input);
+                    model.resetState(newTime);
                     view.getInfoPanel().getMovesPanel().resetMovesPanel();
                     break;
                 case 1:
@@ -189,7 +191,9 @@ public class ChessControl {
                 switch (n) {
                     case 0:
                         checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
-                        model.resetState();
+                        int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:", "5"));
+                        Time newTime = new Time(input);
+                        model.resetState(newTime);
                         view.getInfoPanel().getMovesPanel().resetMovesPanel();
                         break;
                     case 1:

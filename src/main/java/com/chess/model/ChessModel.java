@@ -65,11 +65,11 @@ public class ChessModel {
     /**
      * Reset the state of this ChessModel to its starting state
      */
-    public void resetState() {
+    public void resetState(Time time) {
         loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        teamBlack.getTime().reset();
+        teamBlack.setTime(time);
         teamBlack.getOnTimeChangedEvent().trigger(teamBlack.getTime());
-        teamWhite.getTime().reset();
+        teamWhite.setTime(time);
         setPaused(true);
         setStarted(false);
         teamWhite.getOnTimeChangedEvent().trigger(teamWhite.getTime());
