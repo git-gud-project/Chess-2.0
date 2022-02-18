@@ -96,6 +96,7 @@ public class Menu extends JMenuBar {
                     ObjectInputStream stream = new ObjectInputStream(fIn);
                     SerialModel newModel = (SerialModel) stream.readObject();
                     onLoadGameEvent.trigger(newModel);
+                    view.getInfoPanel().getMovesPanel().loadMovesPanel();
                     stream.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
