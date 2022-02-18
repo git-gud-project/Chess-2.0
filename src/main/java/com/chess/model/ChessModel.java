@@ -88,6 +88,12 @@ public class ChessModel {
         teamBlack.setName(smodel.getBlackName());
         teamWhite.setTime(smodel.getWhiteTime());
         teamBlack.setTime(smodel.getBlackTime());
+        teamWhite.setSkinMap(smodel.getWhiteSkinMap());
+        teamBlack.setSkinMap(smodel.getBlackSkinMap());
+        teamWhite.setOwnSkin(smodel.getOwnSkinWhite());
+        teamBlack.setOwnSkin(smodel.getOwnSkinBlack());
+        teamWhite.setSkinIndex(smodel.getSkinIndexWhite());
+        teamBlack.setSkinIndex(smodel.getSkinIndexBlack());
         moveList = smodel.getMoveList();
         loadFEN(smodel.getFen());
         setPaused(true);
@@ -237,7 +243,7 @@ public class ChessModel {
         // Add '+' to notation if move resulted in check to other team
         else if(board.isCheck(currentTeam)) move.addCheck();
 
-        moveList.add(move.toString());
+        moveList.add(move.format(board));
 
         onMoveEvent.trigger(move);
 

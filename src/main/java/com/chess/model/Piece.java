@@ -114,8 +114,8 @@ public class Piece {
      * 
      * @return all possible moves for this piece
      */
-    public Iterator<Move> getPossibleMoves() {
-        return behavior.getPossibleMoves(cell);
+    public Iterator<Move> getPossibleMoves(Board board) {
+        return behavior.getPossibleMoves(board, cell);
     }
 
     /**
@@ -123,11 +123,11 @@ public class Piece {
      * 
      * @param newCell the cell that the piece is moving to
      */
-    public void move(Cell newCell) {
+    public void move(Board board, Cell newCell) {
         Cell oldCell = this.getCell();
 
         // Call the beforeMove method
-        behavior.beforeMove(oldCell, newCell);
+        behavior.beforeMove(board, oldCell, newCell);
 
         // Move the piece
         cell.setPiece(null);
@@ -135,7 +135,7 @@ public class Piece {
         cell.setPiece(this);
 
         // Call the onMove method
-        behavior.onMove(oldCell, newCell);
+        behavior.onMove(board, oldCell, newCell);
     }
 
     /**

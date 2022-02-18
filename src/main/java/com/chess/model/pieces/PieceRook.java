@@ -31,10 +31,8 @@ public class PieceRook implements PieceBehavior{
      * @param cell The cell of the current piece.
      * @return An iterator of possibleMoves array.
      */
-    public Iterator<Move> getPossibleMoves(Cell cell) {
+    public Iterator<Move> getPossibleMoves(Board board, Cell cell) {
         possibleMoves.clear();
-
-        Board board = cell.getBoard();
 
         board.calculateMoves(cell, possibleMoves, 1, 0);
         board.calculateMoves(cell, possibleMoves, -1, 0);

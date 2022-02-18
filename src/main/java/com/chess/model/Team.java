@@ -365,4 +365,12 @@ public class Team {
     public Team cloneTeam(){
         return new Team(this.model, this.teamColor, this.fileSuffix, this.name, this.time, this.pawnDirectionRow, this.enPassantPiece, this.hasAuthority, this.skinMap, this.ownSkin, this.skinIndex);
     }
+
+    public void setSkinMap(HashMap<PieceType, String> skinMap) { this.skinMap = skinMap; }
+    public void setOwnSkin(boolean[] ownSkin) { this.ownSkin = ownSkin; }
+    public void setSkinIndex(int[] skinIndex) { this.skinIndex = skinIndex; }
+
+    public HashMap<PieceType, String> getSkinMap() { return this.skinMap; }
+    public boolean[] getOwnSkin() { return this.ownSkin; }
+    public int[] getSkinIndex() { return this.skinIndex; }
 }

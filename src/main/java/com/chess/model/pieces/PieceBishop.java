@@ -26,10 +26,8 @@ public class PieceBishop implements PieceBehavior {
      * @return An iterator of possibleMoves array.
      */
     @Override
-    public Iterator<Move> getPossibleMoves(Cell cell) {
+    public Iterator<Move> getPossibleMoves(Board board, Cell cell) {
         possibleMoves.clear();
-
-        Board board = cell.getBoard();
 
         board.calculateMoves(cell, possibleMoves, 1, 1);
         board.calculateMoves(cell, possibleMoves, -1, 1);

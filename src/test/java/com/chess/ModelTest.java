@@ -1,19 +1,15 @@
 package com.chess;
 
-import org.junit.Assert;
-
 import com.chess.model.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.*;
 
-import junit.framework.TestCase;
-
-public class ModelTest extends TestCase {
+public class ModelTest {
     private ChessModel model;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() {
         model = new ChessModel();
     }
     
@@ -31,6 +27,6 @@ public class ModelTest extends TestCase {
     public void testStartFEN() {
         loadInitialPosition();
 
-        Assert.assertEquals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", model.toFEN());
+        Assertions.assertEquals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", model.toFEN());
     }
 }

@@ -4,20 +4,28 @@ import java.io.Serializable;
 import java.util.*;
 
 public class SerialModel implements Serializable {
-    private List<String> moveList;
     private String fen;
+    private List<String> moveList;
+    private HashMap<PieceType, String> skinMapWhite, skinMapBlack;
+    private int[] skinIndexWhite, skinIndexBlack;
+    private boolean[] ownSkinWhite, ownSkinBlack;
     private String whiteName, blackName;
     private Time whiteTime, blackTime;
-    private boolean paused, started;
+    private boolean started;
 
     public SerialModel(ChessModel model) {
-        moveList = model.getMoveList();
         fen = model.toFEN();
+        moveList = model.getMoveList();
+        skinMapWhite = model.getTeamWhite().getSkinMap();
+        skinMapBlack = model.getTeamBlack().getSkinMap();
+        skinIndexWhite = model.getTeamWhite().getSkinIndex();
+        skinIndexBlack = model.getTeamBlack().getSkinIndex();
+        ownSkinWhite = model.getTeamWhite().getOwnSkin();
+        ownSkinBlack = model.getTeamBlack().getOwnSkin();
         whiteName = model.getTeamWhite().getName();
         blackName = model.getTeamBlack().getName();
         whiteTime = model.getTeamWhite().getTime();
         blackTime = model.getTeamBlack().getTime();
-        paused = model.getPaused();
         started = model.getStarted();
     }
 
@@ -45,11 +53,19 @@ public class SerialModel implements Serializable {
         return blackTime;
     }
 
-    public boolean getPaused() {
-        return paused;
-    }
-
     public boolean getStarted() {
         return started;
     }
+
+    public HashMap<PieceType, String> getWhiteSkinMap() { return this.skinMapWhite; }
+
+    public HashMap<PieceType, String> getBlackSkinMap() { return this.skinMapBlack; }
+
+    public boolean[] getOwnSkinWhite() { return this.ownSkinWhite; }
+
+    public boolean[] getOwnSkinBlack() { return this.ownSkinBlack; }
+
+    public int[] getSkinIndexWhite() { return this.skinIndexWhite; }
+
+    public int[] getSkinIndexBlack() { return this.skinIndexBlack; }
 }
