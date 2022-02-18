@@ -2,12 +2,21 @@ package com.chess.utils;
 
 import java.awt.*;
 import java.net.*;
+import java.util.*;
+
 import javax.swing.*;
 
 /**
  * Utility class for loading resources.
  */
 public final class Resources {
+    /**
+     * HashMap of cached images.
+     * 
+     * @see #getImage(String)
+     */
+    private static HashMap<String, Image> cache = new HashMap<String, Image>();
+
     /**
      * Private constructor.
      */
@@ -28,7 +37,17 @@ public final class Resources {
      * @param path The path of the resource.
      */
     public static Image getImage(String path) {
-        return Toolkit.getDefaultToolkit().getImage(Resources.class.getResource(path));
+        // Check if the image is already in the cache.
+        if (cache.containsKey(path)) {
+            return cache.get(path);
+        }
+
+        Image image = Toolkit.getDefaultToolkit().getImage(Resources.class.getResource(path));
+
+        // Add the image to the cache.
+        cache.put(path, image);
+
+        return image;
     }
     
     /**
@@ -37,7 +56,7 @@ public final class Resources {
      * @param path The path of the resource.
      */
     public static ImageIcon getImageIcon(String path) {
-        return new ImageIcon(Resources.class.getResource(path));
+        return new ImageIcon(getImage(path));
     }
 
     public static ImageIcon getOwnImageIcon(String absolutePath) {

@@ -74,6 +74,19 @@ public class Cell {
         this.piece = piece;
         onPieceChangedEvent.trigger(piece);
     }
+    
+    /**
+     * Set which piece that stands on this cell
+     * @param piece The piece to be placed on this cell
+     * @param triggerOnPieceChangedEvent Whether to trigger the event
+     */
+    public void setPiece(Piece piece, boolean triggerOnPieceChangedEvent) {
+        this.piece = piece;
+
+        if (triggerOnPieceChangedEvent) {
+            onPieceChangedEvent.trigger(piece);
+        }
+    }
 
     /**
      * @return The row and column for this cell in a String, formatted to match chess notation
