@@ -15,7 +15,7 @@ public interface PieceBehavior {
      * @param cell The cell to check moves from
      * @return An iterator of all possible moves
      */
-    public Iterator<Move> getPossibleMoves(Cell cell);
+    public Iterator<Move> getPossibleMoves(Board board, Cell cell);
 
     /**
      * Get bool for if this the piece connected to this behavior has moved
@@ -39,7 +39,7 @@ public interface PieceBehavior {
      * @param oldCell the cell that the piece was in before it was moved
      * @param newCell the cell that the piece is now in
      */
-    public default void onMove(Cell oldCell, Cell newCell) {
+    public default void onMove(Board board, Cell oldCell, Cell newCell) {
         setHasMoved(true);
     }
 
@@ -49,7 +49,7 @@ public interface PieceBehavior {
      * @param oldCell the cell that the piece was in before it was moved
      * @param newCell the cell that the piece is now in
      */
-    public default void beforeMove(Cell oldCell, Cell newCell) {
+    public default void beforeMove(Board board, Cell oldCell, Cell newCell) {
         //
     }
 }

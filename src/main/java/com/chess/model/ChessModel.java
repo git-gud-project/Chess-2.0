@@ -237,7 +237,7 @@ public class ChessModel {
         // Add '+' to notation if move resulted in check to other team
         else if(board.isCheck(currentTeam)) move.addCheck();
 
-        moveList.add(move.toString());
+        moveList.add(move.format(board));
 
         onMoveEvent.trigger(move);
 
