@@ -54,9 +54,9 @@ public class ChessModel {
      * Construct a new ChessModel
      */
     public ChessModel() {
-        teamWhite = new Team(this, Color.WHITE, "w", "Player 1",  -1);
-        teamBlack = new Team(this, Color.BLACK, "b", "Player 2",  1);
-        board = new Board(this, GAMESIZE);
+        teamWhite = new Team(new Identifier("w"), Color.WHITE, "w", "Player 1",  -1);
+        teamBlack = new Team(new Identifier("b"), Color.BLACK, "b", "Player 2",  1);
+        board = new ChessBoard( GAMESIZE);
         boardInfo = new ChessBoardInformation(board);
         currentTeam = teamWhite;
         paused = true;
@@ -272,23 +272,22 @@ public class ChessModel {
     /** Create a new piece of type given by PieceType on given team at the given cell.
      * @param type The type of piece to be created (one of: pawn, rook, knight, bishop, queen or king)
      * @param team The team the piece should belong to, black or white.
-     * @param cell The cell where the piece should be placed.
      * @return A full piece with team, position and full piece behaviour.
      */
-    public Piece createPiece(PieceType type, Team team, Cell cell) {
-        switch (type) {
-            case PAWN:
-                return new Piece(new PiecePawn(), cell, team);
-            case ROOK:
-                return new Piece(new PieceRook(), cell, team);
-            case KNIGHT:
-                return new Piece(new PieceKnight(), cell, team);
-            case BISHOP:
-                return new Piece(new PieceBishop(), cell, team);
-            case QUEEN:
-                return new Piece(new PieceQueen(), cell, team);
-            case KING:
-                return new Piece(new PieceKing(), cell, team);
+    public Piece createPiece(PieceType type, Team team) {
+        switch (type.toString()) {
+            case "p":
+                return new ChessPiece(new PiecePawn(), team);
+            case "r":
+                return new ChessPiece(new PieceRook(), team);
+            case "n":
+                return new ChessPiece(new PieceKnight(), team);
+            case "b":
+                return new ChessPiece(new PieceBishop(), team);
+            case "q":
+                return new ChessPiece(new PieceQueen(), team);
+            case "k":
+                return new ChessPiece(new PieceKing(), team);
             default:
                 throw new IllegalArgumentException("Invalid piece type");
         }
