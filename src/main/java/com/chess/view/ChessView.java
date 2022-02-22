@@ -1,6 +1,7 @@
 package com.chess.view;
 
 import com.chess.model.*;
+import com.chess.model.chess.PieceType;
 
 import javax.swing.*;
 import java.awt.*;

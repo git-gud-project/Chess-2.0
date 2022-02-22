@@ -1,4 +1,6 @@
-package com.chess.model;
+package com.chess.model.chess;
+
+import com.chess.model.Identifier;
 
 public enum PieceType {
     BISHOP("b"),
@@ -16,5 +18,9 @@ public enum PieceType {
     
     public String getFilePrefix() {
         return filePrefix;
+    }
+
+    public Identifier getTypeIdentifier() {
+        return new Identifier(filePrefix);
     }
 }

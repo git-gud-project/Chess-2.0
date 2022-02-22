@@ -1,4 +1,4 @@
-package com.chess.model.pieces;
+package com.chess.model.chess;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,7 +8,6 @@ import com.chess.model.Cell;
 import com.chess.model.Move;
 import com.chess.model.Piece;
 import com.chess.model.PieceBehavior;
-import com.chess.model.PieceType;
 import com.chess.model.Team;
 
 /**
@@ -94,7 +93,7 @@ public class PiecePawn implements PieceBehavior {
      * @return PieceType.PAWN
      */
     @Override
-    public PieceType getPieceType() {
+    public PieceType getTypeIdentifier() {
         return PieceType.PAWN;
     }
 }

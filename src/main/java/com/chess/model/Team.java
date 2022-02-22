@@ -2,6 +2,7 @@ package com.chess.model;
 import java.awt.*;
 import java.util.HashMap;
 
+import com.chess.model.chess.PieceType;
 import com.chess.utils.Event;
 
 public class Team {
@@ -9,9 +10,7 @@ public class Team {
     //
     // Fields
     //
-
-    private ChessModel model;
-
+    
     private Color teamColor;
 
     private String fileSuffix;
@@ -150,7 +149,7 @@ public class Team {
     //
 
     public int getKingRow() {
-        return pawnDirectionRow == -1 ? 7 : 0;
+        return pawnDirectionRow == 1 ? 7 : 0;
     }
 
     public int getKingCol() {
@@ -158,7 +157,7 @@ public class Team {
     }
 
     public int getPromotionRow() {
-        return pawnDirectionRow == -1 ? 0 : 7;
+        return pawnDirectionRow == 1 ? 0 : 7;
     }
 
     public int getEnPassantRow() {

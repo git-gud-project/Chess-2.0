@@ -64,7 +64,7 @@ public class BoardGridPanel extends JPanel {
                         button.setIcon(null);
                     } else {
                         int n;
-                        switch(piece.getPieceType().getFilePrefix()){
+                        switch(piece.getTypeIdentifier().getFilePrefix()){
                             case "r": n = 1; break;
                             case "n": n = 2; break;
                             case "b": n = 3; break;

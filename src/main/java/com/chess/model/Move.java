@@ -1,8 +1,10 @@
 package com.chess.model;
 
+import com.chess.model.chess.PieceType;
+
 public class Move {
-    private Cell moveCell, fromCell;
-    private Piece piece;
+    private Position moveCell, fromCell;
+    private Identifier pieceType;
     private boolean elimination;
     private boolean isEnPassant;
     private boolean isCastleKingSide;
@@ -10,7 +12,6 @@ public class Move {
     private boolean isPromotion;
     private boolean isCheck;
     private boolean isCheckMate;
-    private PieceType promotedTo;
 
     /**
      * Constructor for Move with normal from cell to cell movement
@@ -18,10 +19,10 @@ public class Move {
      * @param toCell The cell which the piece performing the move will be moved to
      * @param fromCell The cell which the piece performing the move moves away from
      */
-    public Move(Cell toCell, Cell fromCell) {
+    public Move(Position toCell, Position fromCell, Identifier pieceType) {
         this.moveCell = toCell;
         this.fromCell = fromCell;
-        this.piece = fromCell.getPiece();
+        this.pieceType = pieceType;
         this.isCheck = false;
         this.isCheckMate = false;
     }
@@ -33,10 +34,10 @@ public class Move {
      * @param fromCell The cell which the piece performing the move moves away from
      * @param eliminatable Is true if move results in capture of another piece
      */
-    public Move(Cell toCell, Cell fromCell, boolean eliminatable) {
+    public Move(Position toCell, Position fromCell, Identifier pieceType, boolean eliminatable) {
         this.moveCell = toCell;
         this.fromCell = fromCell;
-        this.piece = fromCell.getPiece();
+        this.pieceType = pieceType;
         this.elimination = eliminatable;
         this.isCheck = false;
         this.isCheckMate = false;
@@ -48,10 +49,10 @@ public class Move {
      * @param toCell The cell which the piece performing the move will be moved to
      * @param type The piece type which the pawn is promoted to
      */
-    public Move(Cell toCell, PieceType type) {
+    public Move(Position toCell, Identifier promotionType) {
         this.moveCell = toCell;
         this.isPromotion = true;
-        this.promotedTo = type;
+        this.pieceType = promotionType;
         this.isCheck = false;
         this.isCheckMate = false;
     }
@@ -60,7 +61,7 @@ public class Move {
      * Get the cell that the piece is moving to
      * @return The cell which the piece is moving to
      */
-    public Cell getToCell() {
+    public Position getToCell() {
         return moveCell;
     }
 
@@ -68,7 +69,7 @@ public class Move {
      * Get the cell that the piece is moving from
      * @return The cell which the piece is moving away from
      */
-    public Cell getFromCell() {
+    public Position getFromCell() {
         return fromCell;
     }
 
@@ -129,19 +130,11 @@ public class Move {
     }
 
     /**
-     * Get the piece that this move is being performed on
-     * @return The piece that this move is performed on
-     */
-    public Piece getPiece() {
-        return this.piece;
-    }
-
-    /**
      * Get the piece type that this move is being performed on
      * @return The piece type of the piece that this move is performed on
      */
-    public PieceType getPieceType() {
-        return this.piece.getPieceType();
+    public Identifier getPieceType() {
+        return this.pieceType;
     }
 
     /**
@@ -162,22 +155,23 @@ public class Move {
      * The toString of this class. Makes a string in the form of chess notation based on this move
      * @return A chess notation in String form
      */
-    public String format(Board board) {
+    @Override
+    public String toString() {
         if(isCastleKingSide) return "0-0";
         else if(isCastleQueenSide) return "0-0-0";
         else if(isPromotion) {
-            String colAndRow = moveCell.format(board);
-            String piecePrefix = promotedTo.getFilePrefix();
+            String colAndRow = moveCell.toString();
+            String piecePrefix = pieceType.toString();
             return colAndRow + piecePrefix;
         }
         else {
             StringBuilder result = new StringBuilder("");
-            String colAndRow = moveCell.format(board);
-            String piecePrefix = piece.getPieceType().getFilePrefix();
+            String colAndRow = moveCell.toString();
+            String piecePrefix = pieceType.toString();
             if(piecePrefix.equals("p")) {
                 if(elimination) {
-                    if(isEnPassant) result.append(board.positionToString(0, fromCell.getCol()).charAt(0)+"x"+colAndRow + " e.p");
-                    else result.append(board.positionToString(0, fromCell.getCol()).charAt(0)+"x"+colAndRow);
+                    if(isEnPassant) result.append(new Position(0, fromCell.getCol()).toString().charAt(0)+"x"+colAndRow + " e.p");
+                    else result.append(new Position(0, fromCell.getCol()).toString().charAt(0)+"x"+colAndRow);
                 }
                 else result.append(colAndRow);
             }
@@ -191,9 +185,5 @@ public class Move {
 
             return result.toString();
         }
-    }
-
-    public String toString() {
-        throw new UnsupportedOperationException("Not implemented");
     }
 }

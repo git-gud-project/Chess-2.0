@@ -1,4 +1,4 @@
-package com.chess.model.pieces;
+package com.chess.model.chess;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,7 +7,6 @@ import com.chess.model.Board;
 import com.chess.model.Cell;
 import com.chess.model.Move;
 import com.chess.model.PieceBehavior;
-import com.chess.model.PieceType;
 
 /**
  * The class for the Bishop.
@@ -46,7 +45,7 @@ public class PieceKnight implements PieceBehavior {
      * @return PieceType.KNIGHT
      */
     @Override
-    public PieceType getPieceType() {
+    public PieceType getTypeIdentifier() {
         return PieceType.KNIGHT;
     }
 }

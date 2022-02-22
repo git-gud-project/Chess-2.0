@@ -1,15 +1,9 @@
-package com.chess.model.pieces;
+package com.chess.model.chess;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.chess.model.Board;
-import com.chess.model.Cell;
-import com.chess.model.Move;
-import com.chess.model.Piece;
-import com.chess.model.PieceBehavior;
-import com.chess.model.PieceType;
-import com.chess.model.Team;
+import com.chess.model.*;
 
 /**
  * The class for the King.
@@ -33,17 +27,17 @@ public class PieceKing implements PieceBehavior {
      * @return An iterator of the array containing all possible moves.
      */
     @Override
-    public Iterator<Move> getPossibleMoves(Board board, Cell cell) {
+    public Iterator<Move> getPossibleMoves(Board board, Position position, Identifier teamIdentifier) {
         possibleMoves.clear();
 
-        board.calculateMoves(cell, possibleMoves, 1, 1, 1);
-        board.calculateMoves(cell, possibleMoves, -1, 1, 1);
-        board.calculateMoves(cell, possibleMoves, 1, -1, 1);
-        board.calculateMoves(cell, possibleMoves, -1, -1, 1);
-        board.calculateMoves(cell, possibleMoves, 1, 0, 1);
-        board.calculateMoves(cell, possibleMoves, -1, 0, 1);
-        board.calculateMoves(cell, possibleMoves, 0, 1, 1);
-        board.calculateMoves(cell, possibleMoves, 0, -1, 1);
+        board.calculateMoves(position, teamIdentifier, possibleMoves, 1, 1, 1);
+        board.calculateMoves(position, teamIdentifier, possibleMoves, -1, 1, 1);
+        board.calculateMoves(position, teamIdentifier, possibleMoves, 1, -1, 1);
+        board.calculateMoves(position, teamIdentifier, possibleMoves, -1, -1, 1);
+        board.calculateMoves(position, teamIdentifier, possibleMoves, 1, 0, 1);
+        board.calculateMoves(position, teamIdentifier, possibleMoves, -1, 0, 1);
+        board.calculateMoves(position, teamIdentifier, possibleMoves, 0, 1, 1);
+        board.calculateMoves(position, teamIdentifier, possibleMoves, 0, -1, 1);
 
         Piece piece = cell.getPiece();
         Team team = piece.getTeam();
@@ -95,7 +89,7 @@ public class PieceKing implements PieceBehavior {
      * @return PieceType.KING
      */
     @Override
-    public PieceType getPieceType() {
+    public PieceType getTypeIdentifier() {
         return PieceType.KING;
     }
 

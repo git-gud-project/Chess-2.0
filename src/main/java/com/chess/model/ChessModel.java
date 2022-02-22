@@ -3,7 +3,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.chess.model.pieces.*;
+import com.chess.model.chess.*;
 import com.chess.utils.Event;
 
 public class ChessModel {

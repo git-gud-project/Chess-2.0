@@ -3,8 +3,8 @@ package com.chess.view;
 import javax.swing.*;
 
 import com.chess.model.ChessModel;
-import com.chess.model.PieceType;
 import com.chess.model.Team;
+import com.chess.model.chess.PieceType;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;

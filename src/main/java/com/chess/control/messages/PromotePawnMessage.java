@@ -1,6 +1,6 @@
 package com.chess.control.messages;
 
-import com.chess.model.PieceType;
+import com.chess.model.chess.PieceType;
 import com.chess.network.Message;
 
 public class PromotePawnMessage extends Message {

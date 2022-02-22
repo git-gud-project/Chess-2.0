@@ -2,6 +2,7 @@ package com.chess.control;
 
 import com.chess.view.*;
 import com.chess.model.*;
+import com.chess.model.chess.PieceType;
 import com.chess.control.messages.*;
 import com.chess.utils.Event;
 
@@ -306,7 +307,7 @@ public class ChessControl {
         if (selectedCell != null) {
             if(model.getBoard().getCell(selectedCell.getRow(),selectedCell.getCol()).getPiece()==null){
                 selectedCell.unhighlight();
-            } else if(!model.getBoard().getCell(selectedCell.getRow(),selectedCell.getCol()).getPiece().getPieceType().equals(PieceType.KING)){
+            } else if(!model.getBoard().getCell(selectedCell.getRow(),selectedCell.getCol()).getPiece().getTypeIdentifier().equals(PieceType.KING)){
                 selectedCell.unhighlight();
             } else {
                 selectedCell.unhighlight();
