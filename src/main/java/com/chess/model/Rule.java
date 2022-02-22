@@ -4,6 +4,78 @@ import java.util.List;
 
 public interface Rule {
     /**
+     * Check if a move is an elimination move.
+     * 
+     * @param position       The position to check.
+     * @param typeIdentifier The type identifier of the piece.
+     * @param teamIdentifier The team identifier of the piece.
+     * @return               True if the move is an elimination move, false otherwise.
+     * @throws IllegalArgumentException if the position is invalid.
+     */
+    public boolean isEliminationMove(
+        Position position,
+        Identifier typeIdentifier,
+        Identifier teamIdentifier
+    ) throws IllegalArgumentException;
+
+    /**
+     * Request that a piece be moved from one position to another.
+     * 
+     * @param from           The position to move from.
+     * @param to             The position to move to.
+     * @return               True if the move was successful, false otherwise.
+     * @throws IllegalArgumentException if the position is invalid.
+     */
+    public boolean requestMove(
+        Position from,
+        Position to
+    ) throws IllegalArgumentException;
+
+    /**
+     * Request that a position be cleared.
+     * 
+     * @param position       The position to clear.
+     * @return               True if the move was successful, false otherwise.
+     * @throws IllegalArgumentException if the position is invalid.
+     */
+    public boolean requestClear(
+        Position position
+    ) throws IllegalArgumentException;
+
+    /**
+     * Get the type identifier of the piece at the specified position.
+     * 
+     * @param position       The position to get the type identifier of the piece at.
+     * @return               The type identifier of the piece at the specified position.
+     * @throws IllegalArgumentException if the position is invalid.
+     */
+    public Identifier getTypeIdentifier(
+        Position position
+    ) throws IllegalArgumentException;
+
+    /**
+     * Get the team identifier of the piece at the specified position.
+     * 
+     * @param position       The position to get the team identifier of the piece at.
+     * @return               The team identifier of the piece at the specified position.
+     * @throws IllegalArgumentException if the position is invalid.
+     */
+    public Identifier getTeamIdentifier(
+        Position position
+    ) throws IllegalArgumentException;
+
+    /**
+     * Check if a position is empty.
+     * 
+     * @param position       The position to check.
+     * @return               True if the position is empty, false otherwise.
+     * @throws IllegalArgumentException if the position is invalid.
+     */
+    public boolean isEmpty(
+        Position position
+    ) throws IllegalArgumentException;
+
+    /**
      * Calculate a moveset.
      * 
      * @param position       the position of origin

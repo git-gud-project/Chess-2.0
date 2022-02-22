@@ -2,8 +2,8 @@ package com.chess.view;
 
 import javax.swing.*;
 
-import com.chess.model.ChessModel;
-import com.chess.model.ChessTeam;
+import com.chess.model.chess.ChessModel;
+import com.chess.model.chess.ChessTeam;
 import com.chess.model.chess.PieceType;
 
 import java.awt.*;
@@ -12,7 +12,7 @@ import java.io.File;
 import java.net.URL;
 
 public class PieceConfigurator extends JPanel {
-
+    /*
     private final ChessModel model;
     private final ChessView view;
 
@@ -535,5 +535,6 @@ public class PieceConfigurator extends JPanel {
             default: break;
         }
     }
+    */
 }
 

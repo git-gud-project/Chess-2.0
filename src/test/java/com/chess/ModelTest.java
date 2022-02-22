@@ -1,6 +1,7 @@
 package com.chess;
 
 import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.*;
@@ -21,7 +22,7 @@ public class ModelTest {
     }
 
     /**
-     * Test method for {@link com.chess.model.ChessModel#loadFEN(java.lang.String)}. and {@link com.chess.model.ChessModel#toFEN()}.
+     * Test method for {@link com.chess.model.chess.ChessModel#loadFEN(java.lang.String)}. and {@link com.chess.model.chess.ChessModel#toFEN()}.
      */
     @Test
     public void testStartFEN() {

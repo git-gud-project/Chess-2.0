@@ -2,6 +2,10 @@ package com.chess.control;
 
 import com.chess.view.*;
 import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
+import com.chess.model.chess.ChessPieceFactory;
+import com.chess.model.chess.ChessTeam;
+import com.chess.model.chess.ChessTeamParameters;
 import com.chess.model.chess.PieceType;
 import com.chess.control.messages.*;
 
@@ -14,8 +18,8 @@ import java.awt.event.*;
 import java.util.*;
 
 public class ChessControl {
-    private ChessModel model;
-    private ChessView view;
+    private final ChessModel model;
+    private final ChessView view;
 
     /**
      * The network control.
@@ -77,22 +81,26 @@ public class ChessControl {
         return view;
     }
 
-    public void promotePawn(int row, int col, PieceType type, boolean isElimination) {
-        Board board = model.getBoard();
-        Piece piece = board.getCell(row, col).getPiece();
-        Cell cell = piece.getCell();
-        ChessTeam team = piece.getTeam();
-        cell.setPiece(null);
-        Piece promoted = model.createPiece(type, team);
-        cell.setPiece(promoted);
+    public void promotePawn(int row, int col, Identifier typeIdentifier, boolean isElimination) {
+        final Board board = model.getBoard();
 
-        ChessTeam otherTeam = model.getOtherTeam(model.getCurrentTeam());
+        final Cell cell = board.getCell(row, col);
 
-        Move move = new Move(cell, type);
+        final Piece piece = cell.getPiece();
+
+        final Identifier teamIdentifier = piece.getTeamIdentifier();
+
+        final ChessTeam team = model.getTeam(teamIdentifier);
+
+        final Piece promoted = ChessPieceFactory.createPiece(typeIdentifier, team);
+
+        cell.updatePiece(promoted, true);
+
+        final Move move = new Move(cell.getPosition(), typeIdentifier);
 
         model.registerMove(false, move);
 
-        otherTeam.clearEnPassant();
+        model.clearEnPassantSquare();
 
         playSound("pawnPromotion");
     }
@@ -101,7 +109,6 @@ public class ChessControl {
      * Moves the piece on the board.
      * 
      * @param move The move that is being performed.
-     *
      */
     public void executeMove(Move move) {
         if (!model.getStarted()) {
@@ -111,24 +118,33 @@ public class ChessControl {
 
         boolean isElimination = move.isEliminatable();
 
-        Piece piece = move.getPiece();
+        Cell cell = model.getBoard().getCell(move.getFromCell());
 
-        piece.move(model.getBoard(), move.getToCell());
+        Piece piece = cell.getPiece();
+
+        Identifier typeIdentifier = piece.getTypeIdentifier();
+        Identifier teamIdentifier = piece.getTeamIdentifier();
+
+        model.movePiece(move.getFromCell(), move.getToCell());
+
+        // Halfmove clock: The number of halfmoves since the last capture or pawn
+        // advance, used for the fifty-move rule.
+        boolean halfMove = !typeIdentifier.equals(PieceType.PAWN) && !isElimination;
 
         ChessTeam otherTeam = model.getOtherTeam(model.getCurrentTeam());
 
-        // Halfmove clock: The number of halfmoves since the last capture or pawn advance, used for the fifty-move rule.
-        boolean halfMove = piece.getPieceType() != PieceType.PAWN && !isElimination;
+        final ChessTeamParameters otherTeamParameters = otherTeam.getTeamParameters();
 
-        if (piece.getPieceType() == PieceType.PAWN && piece.getCell().getRow() == piece.getTeam().getPromotionRow()) {
+        if (typeIdentifier.equals(PieceType.PAWN) && move.getToCell().getRow() == otherTeamParameters.getKingRow()) {
             if (isMyTurn()) {
-                PieceType type = view.promotePawn();
-                Cell cell = piece.getCell();
+                Identifier promotedTypeIdentifier = view.promotePawn();
 
                 if (!networkControl.isSinglePlayer()) {
-                    networkControl.sendMessage(new PromotePawnMessage(cell.getRow(), cell.getCol(), type, isElimination));
+                    networkControl.sendMessage(new PromotePawnMessage(move.getToCell().getRow(),
+                            move.getToCell().getCol(), promotedTypeIdentifier, isElimination));
                 } else {
-                    promotePawn(cell.getRow(), cell.getCol(), type, isElimination);
+                    promotePawn(move.getToCell().getRow(), move.getToCell().getCol(), promotedTypeIdentifier,
+                            isElimination);
                 }
             }
 
@@ -139,59 +155,63 @@ public class ChessControl {
 
         model.registerMove(halfMove, move);
 
-        if(model.getBoard().isGameOver(model.getCurrentTeam()) != 0){
+        if (model.isGameOver(model.getCurrentTeam().getTeamIdentifier()) != 0) {
             playSound("checkmate");
-            gameOver(model.getBoard().isGameOver(model.getCurrentTeam()));
-        }
-        else if(model.getBoard().isCheck(model.getCurrentTeam())) {
+            gameOver(model.isGameOver(model.getCurrentTeam().getTeamIdentifier()));
+        } else if (model.isCheck(model.getCurrentTeam().getTeamIdentifier())) {
             playSound("check");
-        }
-        else if(move.getIsCastleKingSide() || move.getIsCastleQueenSide()) {
+        } else if (move.getIsCastleKingSide() || move.getIsCastleQueenSide()) {
             playSound("castling");
-        }
-        else if(move.isEliminatable()) {
+        } else if (move.isEliminatable()) {
             playSound("pieceCapture");
-        }
-        else playSound("pieceMove");
+        } else
+            playSound("pieceMove");
 
-        otherTeam.clearEnPassant();
+        model.clearEnPassantSquare();
     }
 
     /**
-     * The game over process that announces the winner or stalemate. Also handles if the user wants to start a new game
+     * The game over process that announces the winner or stalemate. Also handles if
+     * the user wants to start a new game
      * or exit.
-     * @param endingState - contains the information if the game ends in with a win (= 1) or a stalemate (= 2).
+     * 
+     * @param endingState - contains the information if the game ends in with a win
+     *                    (= 1) or a stalemate (= 2).
      */
-    private void gameOver(int endingState){
+    private void gameOver(int endingState) {
 
-        Object[] options = {"New game.", "Exit"};
-        switch (endingState){
+        Object[] options = { "New game.", "Exit" };
+        switch (endingState) {
             case 1:
-            int n = JOptionPane.showOptionDialog(view.getOwner(), "Game over!\nThe game ended in a stalemate.", "Game over!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                if (n == JOptionPane.CLOSED_OPTION) {
-                System.exit(0);
-            }
-            switch (n) {
-                case 0:
-                    checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
-                    int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
-                    Time newTime = new Time(input);
-                    view.getModel().resetState(newTime);
-                    model.resetState(newTime);
-                    view.getInfoPanel().getMovesPanel().resetMovesPanel();
-                    break;
-                case 1:
-                    System.exit(0);
-            }
-                break;
-            case 2:
-                n = JOptionPane.showOptionDialog(view.getOwner(), "Game over!\n" + model.getOtherTeam(model.getCurrentTeam()) + " has won!", "Game over!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                int n = JOptionPane.showOptionDialog(view.getOwner(), "Game over!\nThe game ended in a stalemate.",
+                        "Game over!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+                        options[0]);
                 if (n == JOptionPane.CLOSED_OPTION) {
                     System.exit(0);
                 }
                 switch (n) {
                     case 0:
-                        checkHighlight(model.getBoard().getKingCell(model.getCurrentTeam()).getPiece());
+                        checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
+                        int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
+                        Time newTime = new Time(input);
+                        view.getModel().resetState(newTime);
+                        model.resetState(newTime);
+                        view.getInfoPanel().getMovesPanel().resetMovesPanel();
+                        break;
+                    case 1:
+                        System.exit(0);
+                }
+                break;
+            case 2:
+                n = JOptionPane.showOptionDialog(view.getOwner(),
+                        "Game over!\n" + model.getOtherTeam(model.getCurrentTeam()) + " has won!", "Game over!",
+                        JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                if (n == JOptionPane.CLOSED_OPTION) {
+                    System.exit(0);
+                }
+                switch (n) {
+                    case 0:
+                        checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
                         int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
                         Time newTime = new Time(input);
                         view.getModel().resetState(newTime);
@@ -206,24 +226,26 @@ public class ChessControl {
 
     }
 
-
     /**
      * Highlights and unhighlights the cell containing the teams king piece.
+     * 
      * @param piece - the moved piece.
      */
-    private void checkHighlight(Piece piece){
-        Cell c = model.getBoard().getKingCell(piece.getTeam());
-        BoardCell check = view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
-        if(check.getBackground().equals(new Color(191, 64,64)) || check.getBackground().equals(new Color(223, 96, 96))){
+    private void checkHighlight(Piece piece) {
+        Cell c = model.getKingCell(piece.getTeamIdentifier());
+        Position position = c.getPosition();
+        BoardCell check = view.getBoardGridPanel().getCell(position.getRow(), position.getCol());
+        if (check.getBackground().equals(new Color(191, 64, 64))
+                || check.getBackground().equals(new Color(223, 96, 96))) {
             check.unhighlight();
         }
 
-        if(model.getBoard().isCheck(model.getOtherTeam(piece.getTeam()))){
-            c = model.getBoard().getKingCell(model.getOtherTeam(piece.getTeam()));
-            check =  view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
+        if (model.isCheck(model.getOtherTeamIdentifier(piece.getTeamIdentifier()))) {
+            c = model.getKingCell(model.getOtherTeamIdentifier(piece.getTeamIdentifier()));
+            position = c.getPosition();
+            check = view.getBoardGridPanel().getCell(position.getRow(), position.getCol());
             check.highlight(Color.RED);
         }
-
     }
 
     /**
@@ -237,24 +259,25 @@ public class ChessControl {
         int toRow = move.getToCell().getRow();
         int toCol = move.getToCell().getCol();
         boolean isElimination = move.isEliminatable();
+        Identifier typeIdentifier = move.getPieceType();
 
         // Forward to executeMove if no network.
         if (networkControl.isSinglePlayer()) {
             executeMove(move);
             return;
         }
-        
+
         // If we are not the host, send a request to the host.
         if (!networkControl.isHost()) {
-            networkControl.sendMessage(new MovePieceMessage(fromRow, fromCol, toRow, toCol, isElimination));
+            networkControl.sendMessage(new MovePieceMessage(fromRow, fromCol, toRow, toCol, isElimination, typeIdentifier));
 
             return;
         }
 
         // TODO: Validate move.
-        
+
         // If we are the host, broadcast the move to all clients.
-        networkControl.broadcastMessage(new AffirmMoveMessage(fromRow, fromCol, toRow, toCol, isElimination));
+        networkControl.broadcastMessage(new AffirmMoveMessage(fromRow, fromCol, toRow, toCol, isElimination, typeIdentifier));
     }
 
     private void handleTimeTick() {
@@ -262,7 +285,7 @@ public class ChessControl {
             return;
         }
 
-        model.getCurrentTeam().tickTime();
+        model.getCurrentTeam().getTime().tick();
     }
 
     private void handlePause() {
@@ -289,7 +312,7 @@ public class ChessControl {
         button.setText(!model.getStarted() ? "Make a move to start" : paused ? "Resume" : "Pause");
         button.setEnabled(true);
     }
-    
+
     private void handleClick(BoardCell boardCell) {
         if (!isMyTurn() || model.getPaused() && model.getStarted()) {
             return;
@@ -304,13 +327,14 @@ public class ChessControl {
         }
 
         if (selectedCell != null) {
-            if(model.getBoard().getCell(selectedCell.getRow(),selectedCell.getCol()).getPiece()==null){
+            if (model.getBoard().getCell(selectedCell.getRow(), selectedCell.getCol()).getPiece() == null) {
                 selectedCell.unhighlight();
-            } else if(!model.getBoard().getCell(selectedCell.getRow(),selectedCell.getCol()).getPiece().getTypeIdentifier().equals(PieceType.KING)){
+            } else if (!model.getBoard().getCell(selectedCell.getRow(), selectedCell.getCol()).getPiece()
+                    .getTypeIdentifier().equals(PieceType.KING)) {
                 selectedCell.unhighlight();
             } else {
                 selectedCell.unhighlight();
-                if(model.getBoard().isCheck(model.getCurrentTeam())) {
+                if (model.isCheck(model.getCurrentTeam().getTeamIdentifier())) {
                     selectedCell.highlight(Color.RED);
                 }
             }
@@ -329,7 +353,7 @@ public class ChessControl {
             return;
         }
 
-        if (piece.getTeam() != model.getCurrentTeam()) {
+        if (!piece.getTeamIdentifier().equals(model.getCurrentTeam().getTeamIdentifier())) {
             return;
         }
 
@@ -337,19 +361,19 @@ public class ChessControl {
 
         selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
 
-
-        Iterator<Move> moves = piece.getPossibleMoves(model.getBoard());
+        Iterator<Move> moves = piece.getPossibleMoves(model.getRule(), new Position(selectedCell.getRow(), selectedCell.getCol()));
         currentMoveMap = new HashMap<>();
         while (moves.hasNext()) {
             Move move = moves.next();
 
-            Cell cell = move.getToCell();
+            Position position = move.getToCell();
 
-            BoardCell possibleMove = grid.getCell(cell.getRow(), cell.getCol());
+            BoardCell possibleMove = grid.getCell(position.getRow(), position.getCol());
 
             currentMoveMap.put(possibleMove, move);
 
-            possibleMove.highlight(move.isEliminatable() ? ChessView.HIGHLIGHT_COLOR_ATTACK : ChessView.HIGHLIGHT_COLOR_MOVE);
+            possibleMove.highlight(
+                    move.isEliminatable() ? ChessView.HIGHLIGHT_COLOR_ATTACK : ChessView.HIGHLIGHT_COLOR_MOVE);
             possibleMove.setElimination(move.isEliminatable());
 
             highlightedCells.add(possibleMove);
@@ -362,7 +386,8 @@ public class ChessControl {
         }
 
         // Open a dialog to get the new name.
-        String name = JOptionPane.showInputDialog(null, "Enter a new name for " + team.getName() + ":", "Change Name", JOptionPane.PLAIN_MESSAGE);
+        String name = JOptionPane.showInputDialog(null, "Enter a new name for " + team.getName() + ":", "Change Name",
+                JOptionPane.PLAIN_MESSAGE);
 
         if (name == null || name.isEmpty()) {
             return;
@@ -392,7 +417,7 @@ public class ChessControl {
 
         // Setup listener when clicking on a cell.
         view.getBoardGridPanel().setClickDelegate((BoardCell boardCell) -> handleClick(boardCell));
-        
+
         view.getMenu().getOnLoadGameEvent().addDelegate((serialModel) -> {
             model.loadModel(serialModel);
         });
@@ -412,7 +437,7 @@ public class ChessControl {
         Timer t = new Timer(100, (e) -> {
             handleTimeTick();
         });
-        
+
         t.start();
 
         KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
@@ -431,13 +456,13 @@ public class ChessControl {
 
         view.getInfoPanel().getPauseButton().setEnabled(false);
         view.getInfoPanel().getPauseButton().setText("Make a move to start");
-        
+
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
 
     private void playSound(String sound) {
         String soundMap = view.getSoundMap();
-        SoundPlayer.playSound(soundMap,sound);
+        SoundPlayer.playSound(soundMap, sound);
     }
 
 }

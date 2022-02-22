@@ -11,7 +11,6 @@ import com.chess.model.Piece;
 import com.chess.model.PieceBehavior;
 import com.chess.model.Position;
 import com.chess.model.Rule;
-import com.chess.model.ChessTeam;
 
 /**
  * The class for the Pawn.
@@ -34,28 +33,29 @@ public class PiecePawn implements PieceBehavior {
 
     /**
      * Used to set if En Passant is achievable or not for this piece's team.
-     * @param oldCell the cell that the piece was in before it was moved
+     * @param oldCell the cell that the piece was in before it was moved 
      * @param newCell the cell that the piece is now in
      */
     @Override
-    public void onMove(Board board, Cell oldCell, Cell newCell) {
-        Piece piece = newCell.getPiece();
-
-        ChessTeam team = piece.getTeam();
-
-        ChessTeam otherTeam = board.getChessModel().getOtherTeam(team);
-
-        int dirRow = team.getPawnDirectionRow();
+    public void afterMove(Rule rule, Position from, Position to) {
+        SharedChessTeamParameters sharedTeamParameters = teamParameters.getSharedTeamParameters();
 
         // Check if we moved 2 cells.
-        if (oldCell.getRow() == team.getKingRow() + dirRow && Math.abs(oldCell.getRow() - newCell.getRow()) == 2) {
-            team.setEnPassant(piece);
+        if (from.distance(to) == 2) {
+            sharedTeamParameters.setEnPassantPosition(new Position(to.getRow() - teamParameters.getPawnDirection(), to.getCol()));
+
+            return;
         }
+        
+        Position enPassentPosition = sharedTeamParameters.getEnPassantPosition();
 
         // Check if we did en passant.
-        if (otherTeam.isEnPassant(newCell.getRow(), newCell.getCol())) {
-            Piece other = otherTeam.getEnPassantPiece();
-            other.getCell().setPiece(null);
+        if (enPassentPosition == to) {
+            boolean success = rule.requestClear(new Position(to.getRow() - teamParameters.getPawnDirection(), to.getCol()));
+
+            if (!success) {
+                throw new IllegalStateException("En Passant failed.");
+            }
         }
     }
 
@@ -79,19 +79,18 @@ public class PiecePawn implements PieceBehavior {
         } else {
             rule.calculateMoves(position, teamIdentifier, possibleMoves, dirRow, 0, 1, false, true, false);
         }
-        
+
         rule.calculateMoves(position, teamIdentifier, possibleMoves, dirRow, 1, 1, false, false, true);
         rule.calculateMoves(position, teamIdentifier, possibleMoves, dirRow, -1, 1, false, false, true);
 
-        // Check if we can capture en passant
-        // TODO
-        ChessTeam otherTeam = board.getChessModel().getOtherTeam(team);
+        Position enPassentRow = teamParameters.getSharedTeamParameters().getEnPassantPosition();
 
-        if (otherTeam.isEnPassant(row + dirRow, col + 1)) {
+        // Check if we can take en passant.
+        if (enPassentRow.equals(new Position(row + dirRow, col + 1))) {
             Move move = new Move(new Position(row + dirRow, col + 1), position, getTypeIdentifier(), true);
             move.setIsEnPassant(true);
             possibleMoves.add(move);
-        } else if (otherTeam.isEnPassant(row + dirRow, col - 1)) {
+        } else if (enPassentRow.equals(new Position(row + dirRow, col - 1))) {
             Move move = new Move(new Position(row + dirRow, col - 1), position, getTypeIdentifier(), true);
             move.setIsEnPassant(true);
             possibleMoves.add(move);

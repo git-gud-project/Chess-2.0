@@ -1,23 +1,120 @@
 package com.chess.model.chess;
 
 import com.chess.model.*;
-import jdk.tools.jlink.internal.PostProcessor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ChessRule implements Rule{
-    private BoardInformation BoardInfo;
-
-    private Identifier currentTeam;
+public class ChessRule implements Rule {
+    private final BoardInformation boardInfo;
 
     private final int gameSize;
 
-    public ChessRule(BoardInformation BoardInfo){
-        this.BoardInfo = BoardInfo;
-        gameSize = this.BoardInfo.getBoardSize();
+    private Identifier currentTeam;
+
+    public ChessRule(BoardInformation BoardInfo) {
+        this.boardInfo = BoardInfo;
+        gameSize = this.boardInfo.getBoardSize();
         currentTeam = new Identifier("w"); //todo Might be better to take as input to get identifier
+    }
+
+    /**
+     * Check if a move is an elimination move.
+     * 
+     * @param position       The position to check.
+     * @param typeIdentifier The type identifier of the piece.
+     * @param teamIdentifier The team identifier of the piece.
+     * @return               True if the move is an elimination move, false otherwise.
+     * @throws IllegalArgumentException if the position is invalid.
+     */
+    @Override
+    public boolean isEliminationMove(
+        Position position,
+        Identifier typeIdentifier,
+        Identifier teamIdentifier
+    ) throws IllegalArgumentException {
+        return boardInfo.isElimination(position, typeIdentifier, teamIdentifier);
+    }
+
+    /**
+     * Request that a position be cleared.
+     * 
+     * @param position       The position to clear.
+     * @return               True if the move was successful, false otherwise.
+     * @throws IllegalArgumentException if the position is invalid.
+     */
+    @Override
+    public boolean requestClear(
+        Position position
+    ) throws IllegalArgumentException {
+        boardInfo.clearPiece(position, true);
+
+        return true;
+    }
+
+    /**
+     * Request that a piece be moved from one position to another.
+     * 
+     * @param from          The position to move from.
+     * @param to            The position to move to.
+     * @return              True if the move was successful, false otherwise.
+     */
+    @Override
+    public boolean requestMove(
+        Position from,
+        Position to
+    ) throws IllegalArgumentException {
+        if (isEmpty(from)) {
+            return false;
+        }
+
+        Identifier typeIdentifier = this.getTypeIdentifier(from);
+        Identifier teamIdentifier = this.getTeamIdentifier(from);
+
+        boardInfo.clearPiece(from, true);
+        boardInfo.setPiece(to, typeIdentifier, teamIdentifier, true);
+
+        return true;
+    }
+
+    /**
+     * Get the type identifier of the piece at the specified position.
+     * 
+     * @param position      The position to get the type identifier of the piece at.
+     * @return              The type identifier of the piece at the specified position.
+     */
+    @Override
+    public Identifier getTypeIdentifier(
+        Position position
+    ) throws IllegalArgumentException {
+        return boardInfo.getTypeIdentifier(position);
+    }
+
+    /**
+     * Get the team identifier of the piece at the specified position.
+     * 
+     * @param position      The position to get the team identifier of the piece at.
+     * @return              The team identifier of the piece at the specified position.
+     */
+    @Override
+    public Identifier getTeamIdentifier(
+        Position position
+    ) throws IllegalArgumentException {
+        return boardInfo.getTeamIdentifier(position);
+    }
+
+    /**
+     * Check if a position is empty.
+     * 
+     * @param position      The position to check.
+     * @return              True if the position is empty, false otherwise.
+     */
+    @Override
+    public boolean isEmpty(
+        Position position
+    ) throws IllegalArgumentException {
+        return boardInfo.isEmpty(position);
     }
 
     @Override
@@ -35,7 +132,7 @@ public class ChessRule implements Rule{
         // Collect details
         int row = position.getRow();
         int col = position.getCol();
-        Identifier pieceIdentifier = BoardInfo.getTypeIdentifier(position);
+        Identifier pieceIdentifier = boardInfo.getTypeIdentifier(position);
 
         // If maxSteps is 0, then the piece can move infinitely in that direction
         if (maxSteps == 0) {
@@ -52,12 +149,12 @@ public class ChessRule implements Rule{
 
             step++;
 
-            if (!BoardInfo.isValid(nextPosition)) {
+            if (!boardInfo.isValid(nextPosition)) {
                 break;
             }
 
 
-            if (BoardInfo.isEmpty(nextPosition)) {
+            if (boardInfo.isEmpty(nextPosition)) {
                 // If the cell is both empty and we require a capture, then we can't move here
                 if (requireCapture) {
                     break;
@@ -67,7 +164,7 @@ public class ChessRule implements Rule{
                 continue;
             }
 
-            if (BoardInfo.getTeamIdentifier(nextPosition) != teamIdentifier) {
+            if (boardInfo.getTeamIdentifier(nextPosition) != teamIdentifier) {
                 // If we can't capture, then we can't move here
                 if (cantCapture) {
                     break;
@@ -101,20 +198,20 @@ public class ChessRule implements Rule{
     }
 
     public boolean isLegalMove(Identifier piece,Identifier team, Move move) {
-        Identifier originPiece = BoardInfo.getTypeIdentifier(move.getToCell());
-        Identifier originTeam = BoardInfo.getTeamIdentifier(move.getToCell());
+        Identifier originPiece = boardInfo.getTypeIdentifier(move.getToCell());
+        Identifier originTeam = boardInfo.getTeamIdentifier(move.getToCell());
 
-        BoardInfo.setPiece(move.getToCell(),piece,team,false); // 1. Flyttar cellen
-        BoardInfo.clearPiece(move.getFromCell(),false);
+        boardInfo.setPiece(move.getToCell(),piece,team,false); // 1. Flyttar cellen
+        boardInfo.clearPiece(move.getFromCell(),false);
 
         if(isCheck(team)){ // 2. Kollar om det är schack efter flytten.
-            BoardInfo.setPiece(move.getFromCell(),piece,team,false); // Om det är schack så flyttar vi tillbaks pjäserna.
-            BoardInfo.setPiece(move.getToCell(),originPiece,originTeam,false);
+            boardInfo.setPiece(move.getFromCell(),piece,team,false); // Om det är schack så flyttar vi tillbaks pjäserna.
+            boardInfo.setPiece(move.getToCell(),originPiece,originTeam,false);
 
             return false; // returnerar att det är falsk (en illegal move).
         } else {
-            BoardInfo.setPiece(move.getFromCell(),piece,team,false); // Om det är inte schack så flyttar vi tillbaks pjäserna.
-            BoardInfo.setPiece(move.getToCell(),originPiece,originTeam,false);
+            boardInfo.setPiece(move.getFromCell(),piece,team,false); // Om det är inte schack så flyttar vi tillbaks pjäserna.
+            boardInfo.setPiece(move.getToCell(),originPiece,originTeam,false);
 
             return true;
         }
@@ -130,16 +227,21 @@ public class ChessRule implements Rule{
     /**
      * Get a list of all enemy moves.
      *
-     * @param playerTeam the team of the player
+     * @param playerTeamIdentifier the team of the player
      * @return the list of all enemy moves
      */
-    private List<Move> allEnemyMoves(Team playerTeam) {
+    public List<Move> allEnemyMoves(Identifier playerTeamIdentifier) {
         List<Move> enemyMovesList = new ArrayList<>();
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
-                if (cellMatrix[row][col].getPiece() != null
-                        && cellMatrix[row][col].getPiece().getTeam() != playerTeam) {
-                    Iterator<Move> it = cellMatrix[row][col].getPiece().getPossibleMoves(this);
+                if (!boardInfo.isEmpty(row, col) && !boardInfo.getTeamIdentifier(row, col).equals(playerTeamIdentifier)) {
+                    
+                    // Get the moves calculator
+                    MovesCalculator calculator = boardInfo.getPossibleMovesIterator(new Position(row, col));
+                    
+                    // Calculate the moves
+                    Iterator<Move> it = calculator.getPossibleMoves(this, new Position(row, col));
+
                     while (it.hasNext()) {
                         enemyMovesList.add(it.next());
                     }
@@ -152,16 +254,21 @@ public class ChessRule implements Rule{
     /**
      * Get a list of all moves.
      *
-     * @param playerTeam the team of the player
+     * @param playerTeamIdentifier the team of the player
      * @return the list of all moves
      */
-    private List<Move> allTeamMoves(Team playerTeam) {
+    public List<Move> allTeamMoves(Identifier playerTeamIdentifier) {
         List<Move> teamMovesList = new ArrayList<>();
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
-                if (cellMatrix[row][col].getPiece() != null
-                        && cellMatrix[row][col].getPiece().getTeam() == playerTeam) {
-                    Iterator<Move> it = cellMatrix[row][col].getPiece().getPossibleMoves(this);
+                if (!boardInfo.isEmpty(row, col) && boardInfo.getTeamIdentifier(row, col).equals(playerTeamIdentifier)) {
+
+                    // Get the moves calculator
+                    MovesCalculator calculator = boardInfo.getPossibleMovesIterator(new Position(row, col));
+                    
+                    // Calculate the moves
+                    Iterator<Move> it = calculator.getPossibleMoves(this, new Position(row, col));
+                    
                     while (it.hasNext()) {
                         teamMovesList.add(it.next());
                     }
@@ -171,17 +278,20 @@ public class ChessRule implements Rule{
         return teamMovesList;
     }
 
-    public boolean isCheck(Identifier team) {
-        if (isGameOver(model.getOtherTeam(team)) != 0) {
-            return false;
-        }
-        List<Move> allEnemyMoves = allEnemyMoves(team);
+    public boolean isCheck(Identifier teamIdentifier) {
+        List<Move> allEnemyMoves = allEnemyMoves(teamIdentifier);
         for (Move m : allEnemyMoves) {
-            if (m.getToCell().getPiece() != null && m.getToCell().getPiece().getTeam().equals(team)
-                    && m.getToCell().getPiece().getTypeIdentifier().equals(PieceType.KING)) {
+            Position toCell = m.getToCell();
+            if (boardInfo.isEmpty(toCell)) {
+                continue;
+            }
+
+            if (boardInfo.getTeamIdentifier(toCell).equals(teamIdentifier) &&
+                boardInfo.getTypeIdentifier(toCell).equals(PieceType.KING)) {
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -195,9 +305,9 @@ public class ChessRule implements Rule{
         Position kingCell = null;
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
-                if (!BoardInfo.isEmpty(row,col) &&
-                    BoardInfo.getTypeIdentifier(row,col).equals(PieceType.KING) &&
-                    BoardInfo.getTeamIdentifier(row,col).equals(teamIdentifier)) {
+                if (!boardInfo.isEmpty(row,col) &&
+                    boardInfo.getTypeIdentifier(row,col).equals(PieceType.KING) &&
+                    boardInfo.getTeamIdentifier(row,col).equals(teamIdentifier)) {
                         kingCell = new Position(row,col);
                 }
             }
@@ -206,8 +316,8 @@ public class ChessRule implements Rule{
     }
 
     private void fakeMove(Move move, Identifier pieceIdentifier, Identifier teamIdentifier){
-        BoardInfo.clearPiece(move.getFromCell(),false);
-        BoardInfo.setPiece(move.getToCell(),pieceIdentifier,teamIdentifier,false);
+        boardInfo.clearPiece(move.getFromCell(),false);
+        boardInfo.setPiece(move.getToCell(),pieceIdentifier,teamIdentifier,false);
     }
 }
 

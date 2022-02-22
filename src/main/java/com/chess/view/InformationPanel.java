@@ -1,6 +1,7 @@
 package com.chess.view;
 
 import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
 import com.chess.utils.Event;
 
 import javax.swing.*;
@@ -31,8 +32,8 @@ public class InformationPanel extends JPanel {
         this.setBackground(ChessView.SECONDARY_COLOR);
 
         JPanel playerPanel = new JPanel();
-        playerPanel1 = new PlayerPanel(model.getTeamWhite());
-        playerPanel2 = new PlayerPanel(model.getTeamBlack());
+        playerPanel1 = new PlayerPanel(model, model.getTeamWhite());
+        playerPanel2 = new PlayerPanel(model, model.getTeamBlack());
         JPanel moves = new JPanel();
 
         // Player 1 in north west, player 2 in north east, with a separator in the middle

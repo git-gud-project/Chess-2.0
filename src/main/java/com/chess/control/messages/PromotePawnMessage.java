@@ -1,15 +1,16 @@
 package com.chess.control.messages;
 
+import com.chess.model.Identifier;
 import com.chess.model.chess.PieceType;
 import com.chess.network.Message;
 
 public class PromotePawnMessage extends Message {
     private int row;
     private int col;
-    private PieceType pieceType;
+    private Identifier pieceType;
     private boolean isElimination;
 
-    public PromotePawnMessage(int row, int col, PieceType pieceType, boolean isElimination) {
+    public PromotePawnMessage(int row, int col, Identifier pieceType, boolean isElimination) {
         this.row = row;
         this.col = col;
         this.pieceType = pieceType;
@@ -24,7 +25,7 @@ public class PromotePawnMessage extends Message {
         return col;
     }
 
-    public PieceType getPieceType() {
+    public Identifier getPieceType() {
         return pieceType;
     }
 

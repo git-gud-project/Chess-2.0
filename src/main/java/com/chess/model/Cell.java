@@ -67,17 +67,26 @@ public class Cell {
     /**
      * Set which piece that stands on this cell
      * @param piece The piece to be placed on this cell
+     * @param triggerEvent If true, the event that triggers when the piece that stands on this cell changes will be triggered
      */
-    public void updatePiece(Piece piece) {
+    public void updatePiece(Piece piece, boolean triggerEvent) {
         this.piece = piece;
         
-        if (triggerOnPieceChangedEvent) {
+        if (triggerEvent) {
             onPieceChangedEvent.trigger(piece);
         }
     }
 
-    public void emptyCell() {
+    /**
+     * Empty this cell
+     * @param triggerEvent If true, the event that triggers when the piece that stands on this cell changes will be triggered
+     */
+    public void emptyCell(boolean triggerEvent) {
         this.piece = null;
+
+        if (triggerEvent) {
+            onPieceChangedEvent.trigger(null);
+        }
     }
 
     /**
