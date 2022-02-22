@@ -29,7 +29,7 @@ public class ChessTeam implements Team {
 
     private boolean hasAuthority;
 
-    private HashMap<PieceType, String> skinMap;
+    private HashMap<Identifier, String> skinMap;
 
     private boolean[] ownSkin = {false, false, false, false, false, false};
     private int[] skinIndex = {0, 0, 0, 0, 0, 0};
@@ -323,19 +323,14 @@ public class ChessTeam implements Team {
 
     private void initHashMap(){
         this.skinMap = new HashMap<>();
-        if(this.teamColor.equals(Color.WHITE)){
-            for(int i = 0; i < orderedNames.length; i++){
-                this.skinMap.put(orderedNames[i], whiteNames[i]);
-            }
-        } else {
-            for(int i = 0; i < orderedNames.length; i++){
-                this.skinMap.put(orderedNames[i], blackNames[i]);
-            }
+        for(int i = 0; i < orderedNames.length; i++){
+            if(this.teamColor.equals(Color.WHITE)) this.skinMap.put(orderedNames[i], whiteNames[i]);
+            else this.skinMap.put(orderedNames[i], blackNames[i]);
         }
     }
 
-    public String getSkin(PieceType p){
-        return this.skinMap.get(p);
+    public String getSkin(Identifier id){
+        return this.skinMap.get(id);
     }
 
     public void setSkin(PieceType p, String s){
