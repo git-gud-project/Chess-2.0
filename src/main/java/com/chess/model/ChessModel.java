@@ -54,8 +54,8 @@ public class ChessModel {
      * Construct a new ChessModel
      */
     public ChessModel() {
-        teamWhite = new Team(new Identifier("w"), Color.WHITE, "w", "Player 1",  -1);
-        teamBlack = new Team(new Identifier("b"), Color.BLACK, "b", "Player 2",  1);
+        teamWhite = new ChessTeam(new Identifier("w"), Color.WHITE, "w", "Player 1",  -1);
+        teamBlack = new ChessTeam(new Identifier("b"), Color.BLACK, "b", "Player 2",  1);
         board = new ChessBoard( GAMESIZE);
         boardInfo = new ChessBoardInformation(board);
         currentTeam = teamWhite;
@@ -272,6 +272,7 @@ public class ChessModel {
     /** Create a new piece of type given by PieceType on given team at the given cell.
      * @param type The type of piece to be created (one of: pawn, rook, knight, bishop, queen or king)
      * @param team The team the piece should belong to, black or white.
+     * @param cell The cell where the piece should be placed.
      * @return A full piece with team, position and full piece behaviour.
      */
     public Piece createPiece(PieceType type, Team team) {

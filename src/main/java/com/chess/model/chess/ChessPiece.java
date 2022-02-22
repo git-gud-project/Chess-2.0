@@ -41,7 +41,7 @@ public class ChessPiece implements Piece {
     public Identifier getTeamIdentifier() {
         return team.getTeamIdentifier();
     }
-    
+
     /**
      * Returns the type of the piece.
      *

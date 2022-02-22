@@ -3,7 +3,7 @@ package com.chess.view;
 import javax.swing.*;
 
 import com.chess.model.ChessModel;
-import com.chess.model.Team;
+import com.chess.model.ChessTeam;
 import com.chess.model.chess.PieceType;
 
 import java.awt.*;
@@ -42,8 +42,8 @@ public class PieceConfigurator extends JPanel {
     private void setupUI() {
 
         //Creating a local copy of each team's instance to roll back any performed changes that were not committed.
-        Team teamWhite = model.getTeamWhite().cloneTeam();
-        Team teamBlack = model.getTeamBlack().cloneTeam();
+        ChessTeam teamWhite = model.getTeamWhite().cloneTeam();
+        ChessTeam teamBlack = model.getTeamBlack().cloneTeam();
 
         //Creating panel where custom skins for pieces are selected.
         JPanel buttonsPanel = new JPanel();
