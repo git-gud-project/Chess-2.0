@@ -14,13 +14,13 @@ public class ChessModel {
     // Fields
     //
 
-    private Team teamWhite, teamBlack;
+    private ChessTeam teamWhite, teamBlack;
 
     private Board board;
 
     private BoardInformation boardInfo;
 
-    private Team currentTeam;
+    private ChessTeam currentTeam;
 
     private boolean paused;
 
@@ -54,8 +54,8 @@ public class ChessModel {
      * Construct a new ChessModel
      */
     public ChessModel() {
-        teamWhite = new Team(this, Color.WHITE, "w", "Player 1",  -1);
-        teamBlack = new Team(this, Color.BLACK, "b", "Player 2",  1);
+        teamWhite = new ChessTeam(Color.WHITE, "w", "Player 1",  -1, teamBlack);
+        teamBlack = new ChessTeam(Color.BLACK, "b", "Player 2",  1, teamWhite);
         board = new Board(this, GAMESIZE);
         boardInfo = new ChessBoardInformation(board);
         currentTeam = teamWhite;
@@ -109,13 +109,13 @@ public class ChessModel {
      * Get the team class instance which represents the white team
      * @return The white team instance
      */
-    public Team getTeamWhite() { return this.teamWhite; }
+    public ChessTeam getTeamWhite() { return this.teamWhite; }
 
     /**
      * Get the team class instance which represents the black team
      * @return The black team instance
      */
-    public Team getTeamBlack() { return this.teamBlack; }
+    public ChessTeam getTeamBlack() { return this.teamBlack; }
 
     /**
      * Get the board for this model
@@ -127,7 +127,7 @@ public class ChessModel {
      * Get which team whose turn it currently is
      * @return The current team
      */
-    public Team getCurrentTeam() { return this.currentTeam; }
+    public ChessTeam getCurrentTeam() { return this.currentTeam; }
 
     /**
      * Get info of whether the game is paused or not
@@ -183,7 +183,7 @@ public class ChessModel {
     // Setters
     //
 
-    public void setCurrentTeam(Team team) { 
+    public void setCurrentTeam(Team team) {
         this.currentTeam = team;
         this.onTeamChangeEvent.trigger(team);
     }
@@ -256,7 +256,7 @@ public class ChessModel {
      * @param team The team you want to find opposite team for
      * @return The opposite team
      */
-    public Team getOtherTeam(Team team) {
+    public ChessTeam getOtherTeam(Team team) {
         if (team == teamWhite) return teamBlack;
         return teamWhite;
     }
@@ -275,7 +275,7 @@ public class ChessModel {
      * @param cell The cell where the piece should be placed.
      * @return A full piece with team, position and full piece behaviour.
      */
-    public Piece createPiece(PieceType type, Team team, Cell cell) {
+    public Piece createPiece(PieceType type, ChessTeam team, Cell cell) {
         switch (type) {
             case PAWN:
                 return new Piece(new PiecePawn(), cell, team);
@@ -333,8 +333,8 @@ public class ChessModel {
         fen += " " + getCurrentTeam().getFileSuffix();
 
         // Castling rights
-        Team white = getTeamWhite();
-        Team black = getTeamBlack();
+        ChessTeam white = getTeamWhite();
+        ChessTeam black = getTeamBlack();
         boolean whiteKingSide = white.hasCastlingRightKingSide();
         boolean whiteQueenSide = white.hasCastlingRightQueenSide();
         boolean blackKingSide = black.hasCastlingRightKingSide();
@@ -358,7 +358,7 @@ public class ChessModel {
         }
 
         // En passant target square
-        Team currentTeam = getOtherTeam(getCurrentTeam());
+        ChessTeam currentTeam = getOtherTeam(getCurrentTeam());
 
         if (currentTeam.getEnPassantPiece() != null) {
             fen += " " + board.positionToString(currentTeam.getEnPassantRow(), currentTeam.getEnPassantCol());
@@ -399,7 +399,7 @@ public class ChessModel {
                 }
                 else{
                     Piece piece = null;
-                    Team team = c == Character.toUpperCase(c) ? getTeamWhite() : getTeamBlack();
+                    ChessTeam team = c == Character.toUpperCase(c) ? getTeamWhite() : getTeamBlack();
                     Cell cell = board.getCell(row, col);
                     switch(Character.toUpperCase(c)) {
                         case 'K':
@@ -430,13 +430,13 @@ public class ChessModel {
             col = 0;
         }
 
-        Team team = parts[1].equals("w") ? getTeamWhite() : getTeamBlack();
+        ChessTeam team = parts[1].equals("w") ? getTeamWhite() : getTeamBlack();
         setCurrentTeam(team);
 
         // Castling rights
         String castlingRights = parts[2];
-        Team white = getTeamWhite();
-        Team black = getTeamBlack();
+        ChessTeam white = getTeamWhite();
+        ChessTeam black = getTeamBlack();
         
         white.setHasCastlingRightKingSide(castlingRights.contains("K"));
         white.setHasCastlingRightQueenSide(castlingRights.contains("Q"));
@@ -448,7 +448,7 @@ public class ChessModel {
             getOtherTeam(getCurrentTeam()).clearEnPassant();
         }
         else {
-            Team other = getOtherTeam(getCurrentTeam());
+            ChessTeam other = getOtherTeam(getCurrentTeam());
             Cell cell = board.getCell(parts[3]);
             cell = board.getCell(cell.getRow() + other.getPawnDirectionRow(), cell.getCol());
             other.setEnPassant(cell.getPiece());

@@ -8,7 +8,6 @@ import com.chess.model.Cell;
 import com.chess.model.Move;
 import com.chess.model.Piece;
 import com.chess.model.PieceBehavior;
-import com.chess.model.Team;
 
 /**
  * The class for the Pawn.
@@ -28,7 +27,7 @@ public class PiecePawn implements PieceBehavior {
 
         Piece piece = cell.getPiece();
 
-        Team team = piece.getTeam();
+        ChessTeam team = piece.getTeam();
 
         int dirRow = team.getPawnDirectionRow();
 
@@ -46,7 +45,7 @@ public class PiecePawn implements PieceBehavior {
         board.calculateMoves(cell, possibleMoves, dirRow, -1, 1, false, false, true);
 
         // Check if we can capture en passant
-        Team otherTeam = board.getChessModel().getOtherTeam(team);
+        ChessTeam otherTeam = board.getChessModel().getOtherTeam(team);
 
         if (otherTeam.isEnPassant(row + dirRow, col + 1)) {
             Move move = new Move(board.getCell(row + dirRow, col + 1), cell, true);
@@ -70,9 +69,9 @@ public class PiecePawn implements PieceBehavior {
     public void onMove(Board board, Cell oldCell, Cell newCell) {
         Piece piece = newCell.getPiece();
 
-        Team team = piece.getTeam();
+        ChessTeam team = piece.getTeam();
 
-        Team otherTeam = board.getChessModel().getOtherTeam(team);
+        ChessTeam otherTeam = board.getChessModel().getOtherTeam(team);
 
         int dirRow = team.getPawnDirectionRow();
 

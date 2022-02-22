@@ -4,7 +4,6 @@ import com.chess.view.*;
 import com.chess.model.*;
 import com.chess.model.chess.PieceType;
 import com.chess.control.messages.*;
-import com.chess.utils.Event;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -41,7 +40,7 @@ public class ChessControl {
     /**
      * The team we are playing as.
      */
-    private Team ourTeam;
+    private ChessTeam ourTeam;
 
     /**
      * Returns true if it is our turn. Always true if we are not playing online.
@@ -58,15 +57,15 @@ public class ChessControl {
      * @param team the team to check
      * @return true if we have authority over the team
      */
-    public boolean hasAuthorityOver(Team team) {
+    public boolean hasAuthorityOver(ChessTeam team) {
         return networkControl.isSinglePlayer() || this.ourTeam == team;
     }
 
-    public void setOurTeam(Team team) {
+    public void setOurTeam(ChessTeam team) {
         this.ourTeam = team;
     }
 
-    public Team getOurTeam() {
+    public ChessTeam getOurTeam() {
         return this.ourTeam;
     }
 
@@ -82,12 +81,12 @@ public class ChessControl {
         Board board = model.getBoard();
         Piece piece = board.getCell(row, col).getPiece();
         Cell cell = piece.getCell();
-        Team team = piece.getTeam();
+        ChessTeam team = piece.getTeam();
         cell.setPiece(null);
         Piece promoted = model.createPiece(type, team, cell);
         cell.setPiece(promoted);
 
-        Team otherTeam = model.getOtherTeam(model.getCurrentTeam());
+        ChessTeam otherTeam = model.getOtherTeam(model.getCurrentTeam());
 
         Move move = new Move(cell, type);
 
@@ -116,7 +115,7 @@ public class ChessControl {
 
         piece.move(model.getBoard(), move.getToCell());
 
-        Team otherTeam = model.getOtherTeam(model.getCurrentTeam());
+        ChessTeam otherTeam = model.getOtherTeam(model.getCurrentTeam());
 
         // Halfmove clock: The number of halfmoves since the last capture or pawn advance, used for the fifty-move rule.
         boolean halfMove = piece.getPieceType() != PieceType.PAWN && !isElimination;

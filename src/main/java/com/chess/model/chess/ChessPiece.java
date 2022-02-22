@@ -20,7 +20,7 @@ public class ChessPiece implements Piece {
     /**
      * The team that the piece belongs to.
      */
-    private final Team team;
+    private final ChessTeam team;
 
     /**
      * Constructs a new piece.
@@ -28,7 +28,7 @@ public class ChessPiece implements Piece {
      * @param behavior the PieceBehavior for this new piece
      * @param team the team that the piece belongs to
      */
-    public ChessPiece(PieceBehavior behavior, Team team) {
+    public ChessPiece(PieceBehavior behavior, ChessTeam team) {
         this.behavior = behavior;
         this.team = team;
     }
@@ -38,7 +38,7 @@ public class ChessPiece implements Piece {
      *
      * @return the type of the piece
      */
-    public Identifier getTeamIdentifier() { return team.getIdentifier(); }
+    public Identifier getTeamIdentifier() { return team.getTeamIdentifier(); }
 
     /**
      * Returns the type of the piece.

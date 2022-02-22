@@ -40,7 +40,7 @@ public class PieceKing implements PieceBehavior {
         board.calculateMoves(position, teamIdentifier, possibleMoves, 0, -1, 1);
 
         Piece piece = cell.getPiece();
-        Team team = piece.getTeam();
+        ChessTeam team = piece.getTeam();
         boolean canCastleKingSide = team.canCastleKingSide();
         boolean canCastleQueenSide = team.canCastleQueenSide();
 
@@ -66,7 +66,7 @@ public class PieceKing implements PieceBehavior {
      */
     @Override
     public void beforeMove(Board board, Cell oldCell, Cell newCell) {
-        Team team = oldCell.getPiece().getTeam();
+        ChessTeam team = oldCell.getPiece().getTeam();
         
         boolean canCastleKingSide = team.canCastleKingSide();
         boolean canCastleQueenSide = team.canCastleQueenSide();
