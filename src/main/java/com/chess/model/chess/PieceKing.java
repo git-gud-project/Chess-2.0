@@ -26,7 +26,7 @@ public class PieceKing implements PieceBehavior {
 
     @Override
     public Identifier getTypeIdentifier() {
-        return PieceType.KING.getTypeIdentifier();
+        return PieceType.KING;
     }
 
     @Override

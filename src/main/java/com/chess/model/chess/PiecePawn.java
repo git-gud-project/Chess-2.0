@@ -61,7 +61,7 @@ public class PiecePawn implements PieceBehavior {
 
     @Override
     public Identifier getTypeIdentifier() {
-        return PieceType.PAWN.getTypeIdentifier();
+        return PieceType.PAWN;
     }
 
     @Override

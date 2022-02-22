@@ -18,7 +18,7 @@ public final class ChessPieceFactory {
      * @return The newly created chess piece.
      * @throws IllegalArgumentException If the type is invalid or the team is null.
      */
-    public static ChessPiece createPiece(Identifier type, Team team) throws IllegalArgumentException
+    public static ChessPiece createPiece(Identifier type, ChessTeam team) throws IllegalArgumentException
     {
         if (team == null)
         {
@@ -27,23 +27,23 @@ public final class ChessPieceFactory {
 
         PieceBehavior behavior;
 
-        switch (type) {
-            case BISHOP:
+        switch (type.toString()) {
+            case PieceType.BISHOP.toString():
                 behavior = new PieceBishop();
                 break;
-            case KING:
+            case PieceType.KING.toString():
                 behavior = new PieceKing(team.getParameters());
                 break;
-            case KNIGHT:
+            case PieceType.KNIGHT.toString():
                 behavior = new PieceKnight();
                 break;
-            case PAWN:
+            case PieceType.PAWN.toString():
                 behavior = new PiecePawn(team.getParameters());
                 break;
-            case QUEEN:
+            case PieceType.QUEEN.toString():
                 behavior = new PieceQueen();
                 break;
-            case ROOK:
+            case PieceType.ROOK.toString():
                 behavior = new PieceRook(team.getParameters());
                 break;
             default:

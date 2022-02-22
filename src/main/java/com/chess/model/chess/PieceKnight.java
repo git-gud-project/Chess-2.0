@@ -22,7 +22,7 @@ public class PieceKnight implements PieceBehavior {
 
     @Override
     public Identifier getTypeIdentifier() {
-        return PieceType.KNIGHT.getTypeIdentifier();
+        return PieceType.KNIGHT;
     }
 
     @Override

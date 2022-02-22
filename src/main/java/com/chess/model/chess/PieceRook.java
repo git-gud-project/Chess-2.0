@@ -32,7 +32,7 @@ public class PieceRook implements PieceBehavior{
 
     @Override
     public Identifier getTypeIdentifier() {
-        return PieceType.ROOK.getTypeIdentifier();
+        return PieceType.ROOK;
     }
 
     @Override
