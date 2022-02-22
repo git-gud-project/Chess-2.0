@@ -18,6 +18,8 @@ public class ChessModel {
 
     private Board board;
 
+    private BoardInformation boardInfo;
+
     private Team currentTeam;
 
     private boolean paused;
@@ -55,6 +57,7 @@ public class ChessModel {
         teamWhite = new Team(this, Color.WHITE, "w", "Player 1",  -1);
         teamBlack = new Team(this, Color.BLACK, "b", "Player 2",  1);
         board = new Board(this, GAMESIZE);
+        boardInfo = new ChessBoardInformation(board);
         currentTeam = teamWhite;
         paused = true;
         fullMoves = 1;
@@ -302,7 +305,7 @@ public class ChessModel {
         for(int row = 0; row < GAMESIZE; row++){
             int emptyCells = 0;
             for(int col = 0; col < GAMESIZE; col++){
-                if(board.isEmpty(row, col)){
+                if(boardInfo.isEmpty(row, col)){
                     emptyCells++;
                 }
                 else{
