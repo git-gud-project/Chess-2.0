@@ -356,7 +356,7 @@ public class ChessControl {
         }
     }
 
-    private void handleChangeName(Team team) {
+    private void handleChangeName(ChessTeam team) {
         if (!hasAuthorityOver(team)) {
             return;
         }
