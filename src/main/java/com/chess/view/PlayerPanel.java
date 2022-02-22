@@ -10,11 +10,11 @@ public class PlayerPanel extends JPanel {
     private JLabel playerName;
     private JLabel playerTime;
     private JLabel playerAuthority;
-    private Team team;
+    private ChessTeam team;
 
-    private Event<Team> playerNameChangedEvent = new Event<Team>();
+    private Event<ChessTeam> playerNameChangedEvent = new Event<ChessTeam>();
 
-    public PlayerPanel(Team team) {
+    public PlayerPanel(ChessTeam team) {
         this.team = team;
 
         /**
@@ -92,11 +92,11 @@ public class PlayerPanel extends JPanel {
         });
     }
 
-    public Team getTeam() {
+    public ChessTeam getTeam() {
         return team;
     }
 
-    public Event<Team> getOnPlayerNameChangedEvent() {
+    public Event<ChessTeam> getOnPlayerNameChangedEvent() {
         return playerNameChangedEvent;
     }
 }

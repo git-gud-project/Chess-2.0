@@ -8,7 +8,7 @@ import com.chess.model.chess.PieceType;
 public class SerialModel implements Serializable {
     private String fen;
     private List<String> moveList;
-    private HashMap<PieceType, String> skinMapWhite, skinMapBlack;
+    private HashMap<Identifier, String> skinMapWhite, skinMapBlack;
     private int[] skinIndexWhite, skinIndexBlack;
     private boolean[] ownSkinWhite, ownSkinBlack;
     private String whiteName, blackName;
@@ -59,9 +59,9 @@ public class SerialModel implements Serializable {
         return started;
     }
 
-    public HashMap<PieceType, String> getWhiteSkinMap() { return this.skinMapWhite; }
+    public HashMap<Identifier, String> getWhiteSkinMap() { return this.skinMapWhite; }
 
-    public HashMap<PieceType, String> getBlackSkinMap() { return this.skinMapBlack; }
+    public HashMap<Identifier, String> getBlackSkinMap() { return this.skinMapBlack; }
 
     public boolean[] getOwnSkinWhite() { return this.ownSkinWhite; }
 

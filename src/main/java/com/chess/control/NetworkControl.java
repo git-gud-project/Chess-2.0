@@ -227,7 +227,7 @@ public class NetworkControl {
             SetTeamMessage setTeamMessage = (SetTeamMessage) message;
 
             // Decide which team to use.
-            Team ourTeam;
+            ChessTeam ourTeam;
 
             if (setTeamMessage.isWhite()) {
                 ourTeam = getModel().getTeamWhite();
@@ -270,7 +270,7 @@ public class NetworkControl {
             ChangeNameMessage changeNameMessage = (ChangeNameMessage) message;
 
             // Decide which team to use.
-            Team team;
+            ChessTeam team;
 
             if (changeNameMessage.isWhite()) {
                 team = getModel().getTeamWhite();

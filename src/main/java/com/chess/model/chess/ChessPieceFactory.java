@@ -2,9 +2,7 @@ package com.chess.model.chess;
 
 import com.chess.model.Identifier;
 import com.chess.model.PieceBehavior;
-import com.chess.model.Team;
-
-import com.chess.model.chess.ChessPiece;
+import com.chess.model.ChessTeam;
 
 /**
  * A factory for creating chess pieces.
