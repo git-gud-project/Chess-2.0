@@ -6,7 +6,7 @@ import com.chess.model.chess.ChessTeamParameters;
 import com.chess.model.chess.PieceType;
 import com.chess.utils.Event;
 
-public class ChessTeam implements TeamInterface{
+public class ChessTeam implements Team{
 
     //
     // Fields

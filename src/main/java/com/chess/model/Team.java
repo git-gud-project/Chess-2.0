@@ -7,7 +7,7 @@ import java.awt.*;
 /**
  * Represents a team
  */
-public interface TeamInterface {
+public interface Team {
 
     //GETTERS
     /**
