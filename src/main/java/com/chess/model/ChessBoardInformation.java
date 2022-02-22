@@ -10,7 +10,7 @@ public class ChessBoardInformation implements BoardInformation {
 
     @Override
     public boolean isEmpty(int row, int col) {
-        return this.board.getCell(row, col).getPiece() == null
+        return this.board.getCell(row, col).getPiece() == null;
     }
 
     @Override

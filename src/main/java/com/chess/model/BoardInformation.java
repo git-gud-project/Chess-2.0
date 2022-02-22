@@ -9,5 +9,4 @@ public interface BoardInformation {
     public Identifier getTypeIdentifier(Position position);
 
     public int getBoardSize();
-    }
 }
