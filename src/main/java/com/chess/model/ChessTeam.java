@@ -30,12 +30,12 @@ public class ChessTeam implements TeamInterface{
 
     private boolean hasAuthority;
 
-    private HashMap<PieceType, String> skinMap;
+    private HashMap<Identifier, String> skinMap;
 
     private boolean[] ownSkin = {false, false, false, false, false, false};
     private int[] skinIndex = {0, 0, 0, 0, 0, 0};
 
-    private static final PieceType[] orderedNames = {PieceType.PAWN, PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN, PieceType.KING};
+    private static final Identifier[] orderedNames = {PieceType.PAWN, PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN, PieceType.KING};
     private static final String[] whiteNames = {"pw.png", "rw.png", "nw.png", "bw.png", "qw.png", "kw.png"};
     private static final String[] blackNames = {"pb.png", "rb.png", "nb.png", "bb.png", "qb.png", "kb.png"};
 
@@ -53,9 +53,9 @@ public class ChessTeam implements TeamInterface{
     // Constructors
     //
 
-    public ChessTeam(Color color, String teamIdentifier, String name, int pawnDirectionRow, ChessTeam enemyTeam) {
+    public ChessTeam(Identifier teamIdentifier, Color color, String name, int pawnDirectionRow, ChessTeam enemyTeam) {
         this.teamColor = color;
-        this.teamIdentifier = new Identifier(teamIdentifier);
+        this.teamIdentifier = teamIdentifier;
         this.name = name;
         this.time = new Time(5);
         this.pawnDirectionRow = pawnDirectionRow;
@@ -64,7 +64,7 @@ public class ChessTeam implements TeamInterface{
         initHashMap();
     }
 
-    public ChessTeam(Color color, String teamIdentifier, String name, Time time, int pawnDirectionRow, Piece enPassantPiece, boolean hasAuthority, HashMap<PieceType, String> skinMap, boolean[] ownSkin, int[] skinIndex){
+    public ChessTeam(Color color, String teamIdentifier, String name, Time time, int pawnDirectionRow, Piece enPassantPiece, boolean hasAuthority, HashMap<Identifier, String> skinMap, boolean[] ownSkin, int[] skinIndex){
         this.teamColor = color;
         this.teamIdentifier = new Identifier(teamIdentifier);
         this.name = name;
@@ -76,6 +76,7 @@ public class ChessTeam implements TeamInterface{
         this.ownSkin = ownSkin.clone();
         this.skinIndex = skinIndex.clone();
     }
+
 
     //
     // Getters
@@ -330,11 +331,11 @@ public class ChessTeam implements TeamInterface{
         }
     }
 
-    public String getSkin(PieceType p){
+    public String getSkin(Identifier p){
         return this.skinMap.get(p);
     }
 
-    public void setSkin(PieceType p, String s){
+    public void setSkin(Identifier p, String s){
         this.skinMap.put(p, s);
     }
 
@@ -354,9 +355,9 @@ public class ChessTeam implements TeamInterface{
         this.ownSkin[i] = b;
     }
 
-    private HashMap<PieceType, String> cloneHashMap(HashMap<PieceType, String> skinMap){
-        HashMap<PieceType, String> clone = new HashMap<>();
-        for(PieceType p : orderedNames){
+    private HashMap<Identifier, String> cloneHashMap(HashMap<Identifier, String> skinMap){
+        HashMap<Identifier, String> clone = new HashMap<>();
+        for(Identifier p : orderedNames){
             clone.put(p, skinMap.get(p));
         }
         return clone;
@@ -366,11 +367,11 @@ public class ChessTeam implements TeamInterface{
         return new ChessTeam(this.teamColor, this.teamIdentifier.toString(), this.name, this.time, this.pawnDirectionRow, this.enPassantPiece, this.hasAuthority, this.skinMap, this.ownSkin, this.skinIndex);
     }
 
-    public void setSkinMap(HashMap<PieceType, String> skinMap) { this.skinMap = skinMap; }
+    public void setSkinMap(HashMap<Identifier, String> skinMap) { this.skinMap = skinMap; }
     public void setOwnSkin(boolean[] ownSkin) { this.ownSkin = ownSkin; }
     public void setSkinIndex(int[] skinIndex) { this.skinIndex = skinIndex; }
 
-    public HashMap<PieceType, String> getSkinMap() { return this.skinMap; }
+    public HashMap<Identifier, String> getSkinMap() { return this.skinMap; }
     public boolean[] getOwnSkin() { return this.ownSkin; }
     public int[] getSkinIndex() { return this.skinIndex; }
 
