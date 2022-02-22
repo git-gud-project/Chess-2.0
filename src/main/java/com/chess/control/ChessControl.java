@@ -84,7 +84,7 @@ public class ChessControl {
         Cell cell = piece.getCell();
         Team team = piece.getTeam();
         cell.setPiece(null);
-        Piece promoted = model.createPiece(type, team, cell);
+        Piece promoted = model.createPiece(type, team);
         cell.setPiece(promoted);
 
         Team otherTeam = model.getOtherTeam(model.getCurrentTeam());
