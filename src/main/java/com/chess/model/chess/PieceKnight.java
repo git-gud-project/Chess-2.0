@@ -3,10 +3,11 @@ package com.chess.model.chess;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.chess.model.Board;
-import com.chess.model.Cell;
+import com.chess.model.Identifier;
 import com.chess.model.Move;
 import com.chess.model.PieceBehavior;
+import com.chess.model.Position;
+import com.chess.model.Rule;
 
 /**
  * The class for the Bishop.
@@ -17,35 +18,26 @@ public class PieceKnight implements PieceBehavior {
     /**
      * The ArrayList containing all possible moves.
      */
-    private ArrayList<Move> possibleMoves = new ArrayList<>();
+    private final ArrayList<Move> possibleMoves = new ArrayList<>();
 
-    /**
-     * Puts all possible moves for this piece to an iterator.
-     * @param cell The cell of the current piece.
-     * @return An iterator of possibleMoves array.
-     */
     @Override
-    public Iterator<Move> getPossibleMoves(Board board, Cell cell) {
-        possibleMoves.clear();
-
-        board.calculateMoves(cell, possibleMoves, 1, 2, 1);
-        board.calculateMoves(cell, possibleMoves, 1, -2, 1);
-        board.calculateMoves(cell, possibleMoves, -1, 2, 1);
-        board.calculateMoves(cell, possibleMoves, -1, -2, 1);
-        board.calculateMoves(cell, possibleMoves, 2, 1, 1);
-        board.calculateMoves(cell, possibleMoves, 2, -1, 1);
-        board.calculateMoves(cell, possibleMoves, -2, 1, 1);
-        board.calculateMoves(cell, possibleMoves, -2, -1, 1);
-
-        return possibleMoves.iterator();
+    public Identifier getTypeIdentifier() {
+        return PieceType.KNIGHT;
     }
 
-    /**
-     * Returns the piece type of the current piece.
-     * @return PieceType.KNIGHT
-     */
     @Override
-    public PieceType getTypeIdentifier() {
-        return PieceType.KNIGHT;
+    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) {
+        possibleMoves.clear();
+
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 2, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, -2, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, -1, 2, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, -1, -2, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 2, 1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 2, -1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, -2, 1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, -2, -1, 1);
+
+        return possibleMoves.iterator();
     }
 }

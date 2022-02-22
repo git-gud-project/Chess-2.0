@@ -1,6 +1,7 @@
 package com.chess.model.chess;
 
 import com.chess.model.Identifier;
+import com.chess.model.Position;
 
 /**
  * Details for a chess team.
@@ -25,6 +26,21 @@ public class ChessTeamParameters {
      * Can castle queenside.
      */
     private boolean canCastleQueenside;
+
+    /**
+     * The position for castling kingside.
+     */
+    private Position castlingKingSidePosition;
+
+    /**
+     * The position for castling queenside.
+     */
+    private Position castlingQueenSidePosition;
+
+    /**
+     * The row for the king.
+     */
+    private int kingRow;
 
     /**
      * Constructs a new chess team parameters.
@@ -86,5 +102,59 @@ public class ChessTeamParameters {
      */
     public void setCanCastleQueenside(boolean canCastleQueenside) {
         this.canCastleQueenside = canCastleQueenside;
+    }
+
+    /**
+     * Gets the position for castling kingside.
+     *
+     * @return the position for castling kingside
+     */
+    public Position getCastlingKingSidePosition() {
+        return castlingKingSidePosition;
+    }
+
+    /**
+     * Sets the position for castling kingside.
+     *
+     * @param castlingKingSidePosition the position for castling kingside
+     */
+    public void setCastlingKingSidePosition(Position castlingKingSidePosition) {
+        this.castlingKingSidePosition = castlingKingSidePosition;
+    }
+
+    /**
+     * Gets the position for castling queenside.
+     *
+     * @return the position for castling queenside
+     */
+    public Position getCastlingQueenSidePosition() {
+        return castlingQueenSidePosition;
+    }
+
+    /**
+     * Sets the position for castling queenside.
+     *
+     * @param castlingQueenSidePosition the position for castling queenside
+     */
+    public void setCastlingQueenSidePosition(Position castlingQueenSidePosition) {
+        this.castlingQueenSidePosition = castlingQueenSidePosition;
+    }
+
+    /**
+     * Gets the row for the king.
+     *
+     * @return the row for the king
+     */
+    public int getKingRow() {
+        return kingRow;
+    }
+
+    /**
+     * Sets the row for the king.
+     *
+     * @param kingRow the row for the king
+     */
+    public void setKingRow(int kingRow) {
+        this.kingRow = kingRow;
     }
 }

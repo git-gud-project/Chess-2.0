@@ -27,7 +27,7 @@ public interface PieceBehavior {
      * @param from the cell that the piece was in before it was moved
      * @param to the cell that the piece is now in
      */
-    public default void onMove(Board board, Position from, Position to) {
+    public default void onMove(Rule rule, Position from, Position to) {
         //
     }
 
@@ -37,7 +37,7 @@ public interface PieceBehavior {
      * @param from the cell that the piece was in before it was moved
      * @param to the cell that the piece is now in
      */
-    public default void beforeMove(Board board, Position from, Position to) {
+    public default void beforeMove(Rule rule, Position from, Position to) {
         //
     }
 }

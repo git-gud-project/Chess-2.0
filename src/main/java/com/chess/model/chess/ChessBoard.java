@@ -59,14 +59,22 @@ public class ChessBoard implements Board {
     /**
      * Get a cell from the cell matrix.
      * 
-     * @param row the row of the cell
-     * @param col the column of the cell
-     * @return the cell at the specified position
+     * @param row The row of the cell.
+     * @param col The column of the cell.
+     * @return The cell at the specified row and column.
      */
     @Override
     public Cell getCell(int row, int col) {
         return cellMatrix[row][col];
     }
+
+    /**
+     *
+     * @param pos Contains the row and column for the cell.
+     * @return The cell at the specified position.
+     */
+    @Override
+    public Cell getCell(Position pos) { return cellMatrix[pos.getRow()][pos.getCol()]; }
 
     /**
      * Initializes the cell matrix.
@@ -192,7 +200,7 @@ public class ChessBoard implements Board {
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
                 if (cellMatrix[row][col].getPiece() != null
-                        && cellMatrix[row][col].getPiece().getTeam() == playerTeam) {
+                        && cellMatrix[row][col].getPiece().getTeamIdentifier() == playerTeam.getIdentifier()) {
                     Iterator<Move> it = cellMatrix[row][col].getPiece().getPossibleMoves(this);
                     while (it.hasNext()) {
                         teamMovesList.add(it.next());
@@ -242,8 +250,8 @@ public class ChessBoard implements Board {
     /**
      * Get the cell where the king is.
      * 
-     * @param team the team of the player
-     * @return the cell where the king is
+     * @param team The team of the player.
+     * @return The cell where the king is.
      */
     public Cell getKingCell(Team team) {
         Cell kingCell = null;
@@ -251,7 +259,7 @@ public class ChessBoard implements Board {
             for (int col = 0; col < gameSize; col++) {
                 if (cellMatrix[row][col].getPiece() != null
                         && cellMatrix[row][col].getPiece().getTypeIdentifier().equals(PieceType.KING)
-                        && cellMatrix[row][col].getPiece().getTeam().equals(team)) {
+                        && cellMatrix[row][col].getPiece().getTeamIdentifier().toString().equals(team.getIdentifier().toString())) {
                     kingCell = cellMatrix[row][col];
                 }
             }

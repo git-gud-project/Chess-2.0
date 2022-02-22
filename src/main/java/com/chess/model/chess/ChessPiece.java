@@ -38,7 +38,9 @@ public class ChessPiece implements Piece {
      *
      * @return the type of the piece
      */
-    public Identifier getTeamIdentifier() { return team.getTeamIdentifier(); }
+    public Identifier getTeamIdentifier() {
+        return team.getTeamIdentifier();
+    }
 
     /**
      * Returns the type of the piece.
@@ -82,6 +84,6 @@ public class ChessPiece implements Piece {
      * @return all possible moves for this piece
      */
     public Iterator<Move> getPossibleMoves(Rule rule, Position position) {
-        return behavior.getPossibleMoves(rule, position);
+        return behavior.getPossibleMoves(rule, team.getTeamIdentifier(), position);
     }
 }
