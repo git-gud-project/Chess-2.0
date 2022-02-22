@@ -10,7 +10,7 @@ import com.chess.model.Identifier;
 import com.chess.model.Move;
 import com.chess.model.Piece;
 import com.chess.model.Position;
-import com.chess.model.Team;
+import com.chess.model.ChessTeam;
 
 /**
  * The board that the game is played on.
@@ -173,7 +173,7 @@ public class ChessBoard implements Board {
      * @param playerTeam the team of the player
      * @return the list of all enemy moves
      */
-    private List<Move> allEnemyMoves(Team playerTeam) {
+    private List<Move> allEnemyMoves(ChessTeam playerTeam) {
         List<Move> enemyMovesList = new ArrayList<>();
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
@@ -195,7 +195,7 @@ public class ChessBoard implements Board {
      * @param playerTeam the team of the player
      * @return the list of all moves
      */
-    private List<Move> allTeamMoves(Team playerTeam) {
+    private List<Move> allTeamMoves(ChessTeam playerTeam) {
         List<Move> teamMovesList = new ArrayList<>();
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
@@ -217,7 +217,7 @@ public class ChessBoard implements Board {
      * 
      * @param enemyPlayerTeam the team of the enemy player
      */
-    public int isGameOver(Team enemyPlayerTeam) {
+    public int isGameOver(ChessTeam enemyPlayerTeam) {
         if (allTeamMoves(enemyPlayerTeam).isEmpty() && isCheck(enemyPlayerTeam)) {
             return 2;
         } else if (allTeamMoves(enemyPlayerTeam).isEmpty() && !isCheck(enemyPlayerTeam)) {
@@ -233,7 +233,7 @@ public class ChessBoard implements Board {
      * @param team the team of the player
      * @return if it is check
      */
-    public boolean isCheck(Team team) {
+    public boolean isCheck(ChessTeam team) {
         if (isGameOver(model.getOtherTeam(team)) != 0) {
             return false;
         }
@@ -253,7 +253,7 @@ public class ChessBoard implements Board {
      * @param team The team of the player.
      * @return The cell where the king is.
      */
-    public Cell getKingCell(Team team) {
+    public Cell getKingCell(ChessTeam team) {
         Cell kingCell = null;
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
