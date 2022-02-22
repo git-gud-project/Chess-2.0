@@ -1,10 +1,7 @@
 package com.chess.model.chess;
 
-import javax.swing.*;
-
 import com.chess.model.*;
 
-import java.awt.*;
 import java.util.Iterator;
 
 /**
