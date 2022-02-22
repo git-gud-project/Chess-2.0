@@ -25,4 +25,11 @@ public interface Board {
      * @return The cell at the specified row and column.
      */
     public Cell getCell(int row, int col);
+
+    /**
+     * Gets the cell at the specified position.
+     * @param pos Contains the row and column for the cell.
+     * @return The cell at the specified position.
+     */
+    public Cell getCell(Position pos);
 }
