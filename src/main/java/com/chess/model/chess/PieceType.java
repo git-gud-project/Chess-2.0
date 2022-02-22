@@ -2,25 +2,11 @@ package com.chess.model.chess;
 
 import com.chess.model.Identifier;
 
-public enum PieceType {
-    BISHOP("b"),
-    KING("k"),
-    KNIGHT("n"),
-    PAWN("p"),
-    QUEEN("q"),
-    ROOK("r");
-
-    private String filePrefix;
-
-    private PieceType(String prefix) {
-        filePrefix = prefix;
-    }
-    
-    public String getFilePrefix() {
-        return filePrefix;
-    }
-
-    public Identifier getTypeIdentifier() {
-        return new Identifier(filePrefix);
-    }
+public final class PieceType {
+    public static Identifier PAWN = new Identifier("p");
+    public static Identifier ROOK = new Identifier("r");
+    public static Identifier KNIGHT = new Identifier("n");
+    public static Identifier BISHOP = new Identifier("b");
+    public static Identifier QUEEN = new Identifier("q");
+    public static Identifier KING = new Identifier("k");
 }
