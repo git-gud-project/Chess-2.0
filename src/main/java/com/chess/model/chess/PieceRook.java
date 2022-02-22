@@ -5,8 +5,11 @@ import java.util.Iterator;
 
 import com.chess.model.Board;
 import com.chess.model.Cell;
+import com.chess.model.Identifier;
 import com.chess.model.Move;
 import com.chess.model.PieceBehavior;
+import com.chess.model.Position;
+import com.chess.model.Rule;
 
 /**
  * The class for the Rook.
@@ -18,53 +21,29 @@ public class PieceRook implements PieceBehavior{
     /**
      * The ArrayList containing all possible moves.
      */
-    private ArrayList<Move> possibleMoves = new ArrayList<>();
+    private final ArrayList<Move> possibleMoves;
+    
+    private final ChessTeamParameters teamParameters;
 
-    /**
-     * The variable determining if the rook has moved or not.
-     */
-    private boolean hasMoved = false;
+    public PieceRook(ChessTeamParameters teamParameters) {
+        this.teamParameters = teamParameters;
+        this.possibleMoves = new ArrayList<>();
+    }
 
-    /**
-     * Puts all possible moves for this piece to an iterator.
-     * @param cell The cell of the current piece.
-     * @return An iterator of possibleMoves array.
-     */
-    public Iterator<Move> getPossibleMoves(Board board, Cell cell) {
+    @Override
+    public Identifier getTypeIdentifier() {
+        return PieceType.ROOK.getTypeIdentifier();
+    }
+
+    @Override
+    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) {
         possibleMoves.clear();
 
-        board.calculateMoves(cell, possibleMoves, 1, 0);
-        board.calculateMoves(cell, possibleMoves, -1, 0);
-        board.calculateMoves(cell, possibleMoves, 0, 1);
-        board.calculateMoves(cell, possibleMoves, 0, -1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 0);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, -1, 0);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 0, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 0, -1);
 
         return possibleMoves.iterator();
-    }
-
-    /**
-     * Returns the piece type of the current piece.
-     * @return PieceType.ROOK
-     */
-    @Override
-    public PieceType getTypeIdentifier() {
-        return PieceType.ROOK;
-    }
-
-    /**
-     * Returns the variable hasMoved containing the information if the Rook has moved or not.
-     * @return hasMoved
-     */
-    @Override
-    public boolean hasMoved() {
-        return hasMoved;
-    }
-
-    /**
-     * Sets the variable hasMoved containing the information if the piece has moved or not.
-     * @param hasMoved
-     */
-    @Override
-    public void setHasMoved(boolean hasMoved) {
-        this.hasMoved = hasMoved;
     }
 }

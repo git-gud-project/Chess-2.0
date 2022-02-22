@@ -20,7 +20,7 @@ public class ChessPiece implements Piece {
     /**
      * The team that the piece belongs to.
      */
-    private final Team team;
+    private final ChessTeam team;
 
     /**
      * Constructs a new piece.
@@ -29,7 +29,7 @@ public class ChessPiece implements Piece {
      * @param cell the cell that the piece is currently in
      * @param team the team that the piece belongs to
      */
-    public ChessPiece(PieceBehavior behavior, Team team) {
+    public ChessPiece(PieceBehavior behavior, ChessTeam team) {
         this.behavior = behavior;
         this.team = team;
     }
@@ -40,7 +40,7 @@ public class ChessPiece implements Piece {
      * @return the type of the piece
      */
     public Identifier getTeamIdentifier() {
-        return teamIdentifier;
+        return team.getTeamIdentifier();
     }
 
     /**
@@ -85,6 +85,6 @@ public class ChessPiece implements Piece {
      * @return all possible moves for this piece
      */
     public Iterator<Move> getPossibleMoves(Rule rule, Position position) {
-        return behavior.getPossibleMoves(rule, position);
+        return behavior.getPossibleMoves(rule, team.getTeamIdentifier(), position);
     }
 }

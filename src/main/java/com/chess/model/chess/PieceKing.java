@@ -15,43 +15,44 @@ public class PieceKing implements PieceBehavior {
     /**
      * The ArrayList containing all possible moves.
      */
-    private ArrayList<Move> possibleMoves = new ArrayList<>();
-    /**
-     * The variable determining if the king has moved or not.
-     */
-    private boolean hasMoved = false;
+    private final ArrayList<Move> possibleMoves;
+    
+    private final ChessTeamParameters teamParameters;
 
-    /**
-     * Puts all possible moves for this piece to an iterator.
-     * @param cell The cell of the current piece.
-     * @return An iterator of the array containing all possible moves.
-     */
+    public PieceKing(ChessTeamParameters teamParameters) {
+        this.teamParameters = teamParameters;
+        this.possibleMoves = new ArrayList<>();
+    }
+
     @Override
-    public Iterator<Move> getPossibleMoves(Board board, Position position, Identifier teamIdentifier) {
+    public Identifier getTypeIdentifier() {
+        return PieceType.KING.getTypeIdentifier();
+    }
+
+    @Override
+    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) {
         possibleMoves.clear();
 
-        board.calculateMoves(position, teamIdentifier, possibleMoves, 1, 1, 1);
-        board.calculateMoves(position, teamIdentifier, possibleMoves, -1, 1, 1);
-        board.calculateMoves(position, teamIdentifier, possibleMoves, 1, -1, 1);
-        board.calculateMoves(position, teamIdentifier, possibleMoves, -1, -1, 1);
-        board.calculateMoves(position, teamIdentifier, possibleMoves, 1, 0, 1);
-        board.calculateMoves(position, teamIdentifier, possibleMoves, -1, 0, 1);
-        board.calculateMoves(position, teamIdentifier, possibleMoves, 0, 1, 1);
-        board.calculateMoves(position, teamIdentifier, possibleMoves, 0, -1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, -1, 1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, -1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, -1, -1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 0, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, -1, 0, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 0, 1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 0, -1, 1);
 
-        Piece piece = cell.getPiece();
-        Team team = piece.getTeam();
-        boolean canCastleKingSide = team.canCastleKingSide();
-        boolean canCastleQueenSide = team.canCastleQueenSide();
+        final boolean canCastleKingside = teamParameters.canCastleKingside();
+        final boolean canCastleQueenside = teamParameters.canCastleQueenside();
 
-        if (canCastleKingSide) {
-            Move move = new Move(team.getCastlingKingSideCell(), cell);
+        if (canCastleKingside) {
+            Move move = new Move(teamParameters.getCastlingKingSidePosition(), position, getTypeIdentifier(), false);
             move.setIsCastleKingSide(true);
             possibleMoves.add(move);
         }
 
-        if (canCastleQueenSide) {
-            Move move = new Move(team.getCastlingQueenSideCell(), cell);
+        if (canCastleQueenside) {
+            Move move = new Move(teamParameters.getCastlingQueenSidePosition(), position, getTypeIdentifier(), false);
             move.setIsCastleQueenSide(true);
             possibleMoves.add(move);
         }
@@ -60,54 +61,40 @@ public class PieceKing implements PieceBehavior {
     }
 
     /**
-     * Handles the castling of the King to both king's and queen's side.
-     * @param oldCell the cell that the piece was in before it was moved
-     * @param newCell the cell that the piece is now in
+     * Called when the piece is moved.
+     * 
+     * @param from the cell that the piece was in before it was moved
+     * @param to the cell that the piece is now in
      */
     @Override
-    public void beforeMove(Board board, Cell oldCell, Cell newCell) {
-        Team team = oldCell.getPiece().getTeam();
-        
-        boolean canCastleKingSide = team.canCastleKingSide();
-        boolean canCastleQueenSide = team.canCastleQueenSide();
+    public void onMove(Rule rule, Position from, Position to) {
+        // Set the castling rights to false if the king is moved.
+        teamParameters.setCanCastleKingside(false);
+        teamParameters.setCanCastleQueenside(false);
+    }
 
-        if (canCastleKingSide && newCell == team.getCastlingKingSideCell()) {
-            Cell rookCell = board.getCell(newCell.getRow(), newCell.getCol() + 1);
+    /**
+     * Called before the piece is moved.
+     * 
+     * @param from the cell that the piece was in before it was moved
+     * @param to the cell that the piece is now in
+     */
+    @Override
+    public void beforeMove(Rule rule, Position from, Position to) {
+        final boolean canCastleKingSide = teamParameters.canCastleKingside();
+        final boolean canCastleQueenSide = teamParameters.canCastleQueenside();
+
+        // TODO
+        if (canCastleKingSide && to == teamParameters.getCastlingKingSidePosition()) {
+            /*Cell rookCell = board.getCell(newCell.getRow(), newCell.getCol() + 1);
             Piece rook = rookCell.getPiece();
-            rook.move(board, board.getCell(newCell.getRow(), newCell.getCol() - 1));
+            rook.move(board, board.getCell(newCell.getRow(), newCell.getCol() - 1));*/
         }
 
-        if (canCastleQueenSide && newCell == team.getCastlingQueenSideCell()) {
-            Cell rookCell = board.getCell(newCell.getRow(), newCell.getCol() - 2);
+        if (canCastleQueenSide && to == teamParameters.getCastlingQueenSidePosition()) {
+            /*Cell rookCell = board.getCell(newCell.getRow(), newCell.getCol() - 2);
             Piece rook = rookCell.getPiece();
-            rook.move(board, board.getCell(newCell.getRow(), newCell.getCol() + 1));
+            rook.move(board, board.getCell(newCell.getRow(), newCell.getCol() + 1));*/
         }
-    }
-
-    /**
-     * Returns the piece type of the current piece.
-     * @return PieceType.KING
-     */
-    @Override
-    public PieceType getTypeIdentifier() {
-        return PieceType.KING;
-    }
-
-    /**
-     * Returns the variable hasMoved containing the information if the piece has moved or not.
-     * @return hasMoved
-     */
-    @Override
-    public boolean hasMoved() {
-        return hasMoved;
-    }
-
-    /**
-     * Sets the variable hasMoved containing the information if the piece has moved or not.
-     * @param hasMoved
-     */
-    @Override
-    public void setHasMoved(boolean hasMoved) {
-        this.hasMoved = hasMoved;
     }
 }

@@ -1,7 +1,10 @@
 package com.chess.model.chess;
 
+import com.chess.model.Identifier;
 import com.chess.model.PieceBehavior;
 import com.chess.model.Team;
+
+import com.chess.model.chess.ChessPiece;
 
 /**
  * A factory for creating chess pieces.
@@ -15,7 +18,7 @@ public final class ChessPieceFactory {
      * @return The newly created chess piece.
      * @throws IllegalArgumentException If the type is invalid or the team is null.
      */
-    public static ChessPiece createPiece(PieceType type, Team team) throws IllegalArgumentException
+    public static ChessPiece createPiece(Identifier type, Team team) throws IllegalArgumentException
     {
         if (team == null)
         {
@@ -29,19 +32,19 @@ public final class ChessPieceFactory {
                 behavior = new PieceBishop();
                 break;
             case KING:
-                behavior = new PieceKing();
+                behavior = new PieceKing(team.getParameters());
                 break;
             case KNIGHT:
                 behavior = new PieceKnight();
                 break;
             case PAWN:
-                behavior = new PiecePawn();
+                behavior = new PiecePawn(team.getParameters());
                 break;
             case QUEEN:
                 behavior = new PieceQueen();
                 break;
             case ROOK:
-                behavior = new PieceRook();
+                behavior = new PieceRook(team.getParameters());
                 break;
             default:
                 throw new IllegalArgumentException("Unknown piece type: " + type);
