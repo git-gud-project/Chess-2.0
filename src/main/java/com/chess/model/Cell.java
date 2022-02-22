@@ -68,7 +68,7 @@ public class Cell {
      * Set which piece that stands on this cell
      * @param piece The piece to be placed on this cell
      */
-    public void updatePiece(Identifier piece) {
+    public void updatePiece(Piece piece) {
         this.piece = piece;
         
         if (triggerOnPieceChangedEvent) {
