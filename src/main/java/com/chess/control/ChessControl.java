@@ -2,6 +2,8 @@ package com.chess.control;
 
 import com.chess.view.*;
 import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
+import com.chess.model.chess.ChessTeam;
 import com.chess.model.chess.PieceType;
 import com.chess.control.messages.*;
 
@@ -218,8 +220,8 @@ public class ChessControl {
             check.unhighlight();
         }
 
-        if(model.getBoard().isCheck(model.getOtherTeam(piece.getTeam()))){
-            c = model.getBoard().getKingCell(model.getOtherTeam(piece.getTeam()));
+        if(model.getBoard().isCheck(model.getOtherTeamIdentifier(piece.getTeam()))){
+            c = model.getBoard().getKingCell(model.getOtherTeamIdentifier(piece.getTeam()));
             check =  view.getBoardGridPanel().getCell(c.getRow(),c.getCol());
             check.highlight(Color.RED);
         }

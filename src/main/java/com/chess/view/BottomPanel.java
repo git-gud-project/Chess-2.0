@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 
 import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
 
 /**
  * Creates a view for showing Forsyth–Edwards Notation (FEN) representation of the current game. This class extends class JPanel.

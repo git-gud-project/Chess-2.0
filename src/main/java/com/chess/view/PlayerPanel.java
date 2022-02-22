@@ -1,6 +1,7 @@
 package com.chess.view;
 
 import com.chess.model.*;
+import com.chess.model.chess.ChessTeam;
 import com.chess.utils.Event;
 
 import javax.swing.*;

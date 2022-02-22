@@ -1,12 +1,12 @@
-package com.chess.model;
+package com.chess.model.chess;
 import java.awt.*;
 import java.util.HashMap;
 
-import com.chess.model.chess.ChessTeamParameters;
-import com.chess.model.chess.PieceType;
+import com.chess.model.*;
+
 import com.chess.utils.Event;
 
-public class ChessTeam implements Team{
+public class ChessTeam implements Team {
 
     //
     // Fields
@@ -20,13 +20,7 @@ public class ChessTeam implements Team{
 
     private Identifier teamIdentifier;
 
-    private ChessTeam enemyTeam = null;
-
-    private ChessTeamParameters teamParameters;
-
-    private int pawnDirectionRow;
-
-    private Piece enPassantPiece;
+    private final ChessTeamParameters teamParameters;
 
     private boolean hasAuthority;
 
@@ -53,30 +47,30 @@ public class ChessTeam implements Team{
     // Constructors
     //
 
-    public ChessTeam(Identifier teamIdentifier, Color color, String name, int pawnDirectionRow, ChessTeam enemyTeam) {
+    public ChessTeam(Identifier teamIdentifier, Color color, String name, Time time, ChessTeamParameters teamParameters) {
         this.teamColor = color;
         this.teamIdentifier = teamIdentifier;
         this.name = name;
-        this.time = new Time(5);
-        this.pawnDirectionRow = pawnDirectionRow;
+        this.time = time.clone();
         this.hasAuthority = true;
-        this.enemyTeam = enemyTeam;
+        this.teamParameters = teamParameters;
         initHashMap();
     }
 
-    public ChessTeam(Color color, String teamIdentifier, String name, Time time, int pawnDirectionRow, Piece enPassantPiece, boolean hasAuthority, HashMap<Identifier, String> skinMap, boolean[] ownSkin, int[] skinIndex){
+    public ChessTeam(Identifier teamIdentifier, Color color, String name, Time time, ChessTeamParameters teamParameters, HashMap<Identifier, String> skinMap, boolean[] ownSkin, int[] skinIndex) {
         this.teamColor = color;
-        this.teamIdentifier = new Identifier(teamIdentifier);
+        this.teamIdentifier = teamIdentifier;
         this.name = name;
-        this.time = time.cloneTime();
-        this.pawnDirectionRow = pawnDirectionRow;
-        this.enPassantPiece = enPassantPiece;
-        this.hasAuthority = hasAuthority;
+        this.teamParameters = teamParameters;
+        this.time = time.clone();
         this.skinMap = cloneHashMap(skinMap);
         this.ownSkin = ownSkin.clone();
         this.skinIndex = skinIndex.clone();
     }
 
+    public ChessTeam clone() {
+        return new ChessTeam(teamIdentifier, teamColor, name, time, teamParameters, skinMap, ownSkin, skinIndex);
+    }
 
     //
     // Getters
@@ -98,16 +92,12 @@ public class ChessTeam implements Team{
         return time;
     }
 
-    public int getPawnDirectionRow() {
-        return pawnDirectionRow;
-    } //Moved to ChessTeamParameters
-
-    public Piece getEnPassantPiece() {
-        return enPassantPiece;
-    } //Moved to ChessTeamParameters
-
     public boolean getHasAuthority() {
         return hasAuthority;
+    }
+
+    public ChessTeamParameters getTeamParameters() {
+        return teamParameters;
     }
 
     //
@@ -127,10 +117,6 @@ public class ChessTeam implements Team{
     public void setTime(Time time) {
         this.time = time;
         onTimeChangedEvent.trigger(time);
-    }
-
-    public void setEnemyTeam(ChessTeam enemyTeam){
-        this.enemyTeam = enemyTeam;
     }
 
     //
@@ -361,10 +347,6 @@ public class ChessTeam implements Team{
             clone.put(p, skinMap.get(p));
         }
         return clone;
-    }
-
-    public ChessTeam cloneTeam(){
-        return new ChessTeam(this.teamColor, this.teamIdentifier.toString(), this.name, this.time, this.pawnDirectionRow, this.enPassantPiece, this.hasAuthority, this.skinMap, this.ownSkin, this.skinIndex);
     }
 
     public void setSkinMap(HashMap<Identifier, String> skinMap) { this.skinMap = skinMap; }

@@ -8,6 +8,11 @@ import com.chess.model.Position;
  */
 public class ChessTeamParameters {
     /**
+     * Shared parameters for chess teams.
+     */
+    private final SharedChessTeamParameters sharedTeamParameters;
+
+    /**
      * Team identifier.
      */
     private final Identifier teamIdentifier;
@@ -16,6 +21,11 @@ public class ChessTeamParameters {
      * The direction for pawns.
      */
     private final int pawnDirection;
+
+    /**
+     * The row for the king.
+     */
+    private final int kingRow;
 
     /**
      * Can castle kingside.
@@ -30,24 +40,30 @@ public class ChessTeamParameters {
     /**
      * The position for castling kingside.
      */
-    private Position castlingKingSidePosition;
+    private Position castlingKingSidePosition = Position.INVALID;
 
     /**
      * The position for castling queenside.
      */
-    private Position castlingQueenSidePosition;
-
-    /**
-     * The row for the king.
-     */
-    private int kingRow;
+    private Position castlingQueenSidePosition = Position.INVALID;
 
     /**
      * Constructs a new chess team parameters.
      */
-    public ChessTeamParameters(Identifier identifier, int pawnDirection) {
+    public ChessTeamParameters(SharedChessTeamParameters shared, Identifier identifier, int pawnDirection, int kingRow) {
+        this.sharedTeamParameters = shared;
         this.teamIdentifier = identifier;
         this.pawnDirection = pawnDirection;
+        this.kingRow = kingRow;
+    }
+
+    /**
+     * Gets the shared parameters for chess teams.
+     *
+     * @return the shared parameters for chess teams
+     */
+    public SharedChessTeamParameters getSharedTeamParameters() {
+        return sharedTeamParameters;
     }
 
     /**
@@ -147,14 +163,5 @@ public class ChessTeamParameters {
      */
     public int getKingRow() {
         return kingRow;
-    }
-
-    /**
-     * Sets the row for the king.
-     *
-     * @param kingRow the row for the king
-     */
-    public void setKingRow(int kingRow) {
-        this.kingRow = kingRow;
     }
 }

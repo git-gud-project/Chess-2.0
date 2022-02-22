@@ -65,13 +65,13 @@ public class ChessPiece implements Piece {
         }
         if (!team.getOwnSkin(n)) {
             if (team.getSkinIndex(n) == 0) {
-                return "/images/" + team.getSkin(behavior.getTypeIdentifier());
+                return "/images/" + team.getSkin(getTypeIdentifier());
             } else {
-                return "/skins/" + team.getSkin(getPieceType());
+                return "/skins/" + team.getSkin(getTypeIdentifier());
             }
         } else {
             //TODO: Behaves a bit mysteriously if a file is deleted or moved in between pop-ups. Could try to fix this some way.
-            return team.getSkin(getPieceType());
+            return team.getSkin(getTypeIdentifier());
         }
     }
 
@@ -81,6 +81,6 @@ public class ChessPiece implements Piece {
      * @return all possible moves for this piece
      */
     public Iterator<Move> getPossibleMoves(Rule rule, Position position) {
-        return behavior.getPossibleMoves(rule, team.getTeamIdentifier(), position);
+        return behavior.getPossibleMoves(rule, position, getTeamIdentifier());
     }
 }

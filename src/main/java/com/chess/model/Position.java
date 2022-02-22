@@ -6,6 +6,9 @@ package com.chess.model;
  * Has a row and a column component.
  */
 public class Position {
+    public static final Position INVALID = new Position(-1, -1);
+
+
     /**
      * The row of the position.
      */
@@ -39,10 +42,43 @@ public class Position {
     /**
      * Get the column of the position.
      * 
-     * @return The column of the position.
+     * @return The column of the position. 
      */
     public int getCol() {
         return col;
+    }
+
+    /**
+     * Compute the distance between two positions.
+     * 
+     * @param position The position to compute the distance to.
+     * @return The distance between the two positions.
+     */
+    public int distance(Position position) {
+        return Math.abs(this.row - position.getRow()) + Math.abs(this.col - position.getCol());
+    }
+
+    /**
+     * Equals method for Position
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Position that = (Position) o;
+
+        return that.row == this.row && that.col == this.col;
+    }
+
+    /**
+     * Hashcode method for Position
+     */
+    @Override
+    public int hashCode() {
+        int result = row;
+        result = 31 * result + col;
+        return result;
     }
 
     /**
