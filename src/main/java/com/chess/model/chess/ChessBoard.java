@@ -29,18 +29,17 @@ public class ChessBoard implements Board {
 
     /**
      * Constructs a new board.
-     * 
-     * @param model    the chess model
+     *
      * @param gameSize the size of the board
      */
     public ChessBoard(int gameSize) {
         this.gameSize = gameSize;
-
         initCellMatrix(gameSize);
     }
 
     /**
      * Gets the number of rows in the board.
+     *
      * @return The number of rows in the board.
      */
     @Override
@@ -125,14 +124,12 @@ public class ChessBoard implements Board {
      * @param row   the row of the position
      * @param col   the column of the position
      */
-    public boolean canCapture(Piece piece, int row, int col) {
+    public boolean canCapture(ChessPiece piece, int row, int col) {
         if (!isValid(row, col))
             return false;
         if (isEmpty(row, col))
             return false;
-        if (piece.getTeam() == cellMatrix[row][col].getPiece().getTeam())
-            return false;
-        return true;
+        return piece.getTeamIdentifier() != cellMatrix[row][col].getPiece().getTeamIdentifier();
     }
 
     /**
@@ -142,7 +139,7 @@ public class ChessBoard implements Board {
      * @param move  the move
      * @return if the move is legal
      */
-    public boolean isLegalMove(Piece piece, Move move) {
+    public boolean isLegalMove(ChessPiece piece, Move move) {
 
         Cell tempCell = piece.getCell();
         Piece originPiece = move.getToCell().getPiece();
@@ -173,7 +170,7 @@ public class ChessBoard implements Board {
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
                 if (cellMatrix[row][col].getPiece() != null
-                        && cellMatrix[row][col].getPiece().getTeam() != playerTeam) {
+                        && cellMatrix[row][col].getPiece().getTeamIdentifier() != playerTeam.getIdentifier()) {
                     Iterator<Move> it = cellMatrix[row][col].getPiece().getPossibleMoves(this);
                     while (it.hasNext()) {
                         enemyMovesList.add(it.next());

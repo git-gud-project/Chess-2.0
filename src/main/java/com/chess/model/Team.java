@@ -10,6 +10,8 @@ public class Team {
     //
     // Fields
     //
+
+    private Identifier id;
     
     private Color teamColor;
 
@@ -48,8 +50,8 @@ public class Team {
     // Constructors
     //
 
-    public Team(ChessModel model, Color color, String fileSuffix, String name, int pawnDirectionRow) {
-        this.model = model;
+    public Team(Identifier id, Color color, String fileSuffix, String name, int pawnDirectionRow) {
+        this.id = id;
         this.teamColor = color;
         this.fileSuffix = fileSuffix;
         this.name = name;
@@ -59,8 +61,8 @@ public class Team {
         initHashMap();
     }
 
-    public Team(ChessModel model, Color color, String fileSuffix, String name, Time time, int pawnDirectionRow, Piece enPassantPiece, boolean hasAuthority, HashMap<PieceType, String> skinMap, boolean[] ownSkin, int[] skinIndex){
-        this.model = model;
+    public Team(Identifier id, Color color, String fileSuffix, String name, Time time, int pawnDirectionRow, Piece enPassantPiece, boolean hasAuthority, HashMap<PieceType, String> skinMap, boolean[] ownSkin, int[] skinIndex){
+        this.id = id;
         this.teamColor = color;
         this.fileSuffix = fileSuffix;
         this.name = name;
@@ -76,10 +78,8 @@ public class Team {
     //
     // Getters
     //
-    
-    public ChessModel getModel() {
-        return model;
-    }
+
+    public Identifier getIdentifier() { return id; }
 
     public Color getColor() { 
         return teamColor;

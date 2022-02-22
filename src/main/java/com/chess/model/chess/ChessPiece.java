@@ -26,7 +26,6 @@ public class ChessPiece implements Piece {
      * Constructs a new piece.
      *
      * @param behavior the PieceBehavior for this new piece
-     * @param cell the cell that the piece is currently in
      * @param team the team that the piece belongs to
      */
     public ChessPiece(PieceBehavior behavior, Team team) {
@@ -39,9 +38,7 @@ public class ChessPiece implements Piece {
      *
      * @return the type of the piece
      */
-    public Identifier getTeamIdentifier() {
-        return teamIdentifier;
-    }
+    public Identifier getTeamIdentifier() { return team.getIdentifier(); }
 
     /**
      * Returns the type of the piece.
