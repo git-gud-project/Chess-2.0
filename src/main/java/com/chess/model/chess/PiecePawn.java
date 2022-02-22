@@ -38,7 +38,7 @@ public class PiecePawn implements PieceBehavior {
      * @param newCell the cell that the piece is now in
      */
     @Override
-    public void onMove(Board board, Cell oldCell, Cell newCell) {
+    public void onMove(Rule rule, Position from, Position to) {
         Piece piece = newCell.getPiece();
 
         Team team = piece.getTeam();

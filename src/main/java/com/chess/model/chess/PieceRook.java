@@ -3,8 +3,6 @@ package com.chess.model.chess;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.chess.model.Board;
-import com.chess.model.Cell;
 import com.chess.model.Identifier;
 import com.chess.model.Move;
 import com.chess.model.PieceBehavior;
@@ -33,6 +31,22 @@ public class PieceRook implements PieceBehavior{
     @Override
     public Identifier getTypeIdentifier() {
         return PieceType.ROOK;
+    }
+
+    /**
+     * Called when the piece is moved.
+     * 
+     * @param from the cell that the piece was in before it was moved
+     * @param to the cell that the piece is now in
+     */
+    @Override
+    public void onMove(Rule rule, Position from, Position to) {
+        // Disable castling
+        if (from.getCol() == 0) {
+            teamParameters.setCanCastleQueenside(false);
+        } else if (from.getCol() == 7) {
+            teamParameters.setCanCastleKingside(false);
+        }
     }
 
     @Override
