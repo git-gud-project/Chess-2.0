@@ -1,10 +1,12 @@
 package com.chess.model;
 
+import com.chess.model.chess.ChessPieceFactory;
+
 public class ChessBoardInformation implements BoardInformation {
 
     private final Board board;
 
-    public ChessBoardInformation(Board board) {
+    public ChessBoardInformation(Board board, ChessPieceFactory pieceFactory) {
         this.board = board;
     }
 
@@ -57,7 +59,8 @@ public class ChessBoardInformation implements BoardInformation {
     @Override
     public void setPiece(Position position, Identifier piece, Identifier team) {
         Cell cell = board.getCell(position);
-        cell.updatePiece(piece);
+
+        cell.updatePiece(ChessPieceFactory.createPiece(piece, team));
     }
 
     @Override
