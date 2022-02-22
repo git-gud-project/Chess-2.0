@@ -134,7 +134,7 @@ public class Menu extends JMenuBar {
         viewMenu.add(customizePieces);
 
         customizePieces.addActionListener((e) -> {
-            new PieceConfigurator(view);
+            //new PieceConfigurator(view);
         });
 
         //Creating sound menu

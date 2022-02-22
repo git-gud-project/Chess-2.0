@@ -64,7 +64,7 @@ public class ChessBoardInformation implements BoardInformation {
     public boolean isValid(Position position) {
         int row = position.getRow();
         int col = position.getCol();
-        return row >= 0 && row <= getBoardSize() && col >= 0 && col <= getBoardSize();
+        return row >= 0 && row < getBoardSize() && col >= 0 && col < getBoardSize();
     }
 
     @Override

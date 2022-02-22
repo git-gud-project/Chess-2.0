@@ -84,7 +84,7 @@ public class ChessBoard implements Board {
         cellMatrix = new Cell[gameSize][gameSize];
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
-                cellMatrix[gameSize - row][col] = new Cell(new Position(row, col));
+                cellMatrix[gameSize - row - 1][col] = new Cell(new Position(row, col));
             }
         }
     }

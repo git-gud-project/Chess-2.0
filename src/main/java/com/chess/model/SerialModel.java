@@ -3,6 +3,7 @@ package com.chess.model;
 import java.io.Serializable;
 import java.util.*;
 
+import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.PieceType;
 
 public class SerialModel implements Serializable {

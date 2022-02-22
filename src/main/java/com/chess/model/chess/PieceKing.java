@@ -89,7 +89,7 @@ public class PieceKing implements PieceBehavior {
      * @param to the cell that the piece is now in
      */
     @Override
-    public void onMove(Rule rule, Position from, Position to) {
+    public void afterMove(Rule rule, Position from, Position to) {
         // Set the castling rights to false if the king is moved.
         teamParameters.setCanCastleKingside(false);
         teamParameters.setCanCastleQueenside(false);

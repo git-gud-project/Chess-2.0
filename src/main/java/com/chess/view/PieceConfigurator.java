@@ -12,7 +12,7 @@ import java.io.File;
 import java.net.URL;
 
 public class PieceConfigurator extends JPanel {
-
+    /*
     private final ChessModel model;
     private final ChessView view;
 
@@ -535,5 +535,6 @@ public class PieceConfigurator extends JPanel {
             default: break;
         }
     }
+    */
 }
 

@@ -83,4 +83,14 @@ public class ChessPiece implements Piece {
     public Iterator<Move> getPossibleMoves(Rule rule, Position position) {
         return behavior.getPossibleMoves(rule, position, getTeamIdentifier());
     }
+
+    @Override
+    public void afterMove(Rule rule, Position from, Position to) {
+        behavior.afterMove(rule, from, to);
+    }
+
+    @Override
+    public void beforeMove(Rule rule, Position from, Position to) {
+        behavior.beforeMove(rule, from, to);
+    }
 }

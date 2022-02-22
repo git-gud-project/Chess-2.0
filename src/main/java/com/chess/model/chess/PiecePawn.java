@@ -37,7 +37,7 @@ public class PiecePawn implements PieceBehavior {
      * @param newCell the cell that the piece is now in
      */
     @Override
-    public void onMove(Rule rule, Position from, Position to) {
+    public void afterMove(Rule rule, Position from, Position to) {
         SharedChessTeamParameters sharedTeamParameters = teamParameters.getSharedTeamParameters();
 
         // Check if we moved 2 cells.

@@ -281,8 +281,13 @@ public class ChessRule implements Rule {
     public boolean isCheck(Identifier teamIdentifier) {
         List<Move> allEnemyMoves = allEnemyMoves(teamIdentifier);
         for (Move m : allEnemyMoves) {
-            if (boardInfo.getTeamIdentifier(m.getToCell()) == teamIdentifier &&
-                boardInfo.getTypeIdentifier(m.getToCell()).equals(PieceType.KING)) {
+            Position toCell = m.getToCell();
+            if (boardInfo.isEmpty(toCell)) {
+                continue;
+            }
+
+            if (boardInfo.getTeamIdentifier(toCell).equals(teamIdentifier) &&
+                boardInfo.getTypeIdentifier(toCell).equals(PieceType.KING)) {
                 return true;
             }
         }

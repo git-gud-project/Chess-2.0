@@ -64,7 +64,7 @@ public class BoardGridPanel extends JPanel {
                         button.setIcon(null);
                     } else {
                         int n;
-                        switch(piece.getTypeIdentifier().getFilePrefix()){
+                        switch(piece.getTypeIdentifier().toString()){
                             case "r": n = 1; break;
                             case "n": n = 2; break;
                             case "b": n = 3; break;
@@ -73,12 +73,16 @@ public class BoardGridPanel extends JPanel {
                             default: n = 0;
                         }
                         ImageIcon icon;
+                        /*
+                        TODO: Fix this
                         if(!cell.getPiece().getTeam().getOwnSkin(n)){
                             icon = Resources.getImageIcon(piece.getIconPath());
                         } else {
                             icon = Resources.getOwnImageIcon(piece.getIconPath());
                         }
-                        
+                        */
+                        icon = Resources.getOwnImageIcon(piece.getIconPath());
+
                         button.setIcon(icon);
                     }
                 });

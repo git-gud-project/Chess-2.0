@@ -175,6 +175,7 @@ public class ChessModel {
      * it is stalemate it return 1. Else 0.
      * 
      * @param enemyTeamIdentifier the team of the enemy player
+     * @return 0 if it is not checkmate or stalemate, 1 if it is stalemate, 2 if
      */
     public int isGameOver(Identifier enemyTeamIdentifier) {
         if (rule.allTeamMoves(enemyTeamIdentifier).isEmpty() && rule.isCheck(enemyTeamIdentifier)) {
@@ -184,6 +185,41 @@ public class ChessModel {
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Check if the king for a team is in check
+     * @param teamIdentifier the team identifier
+     * @return true if the king is in check
+     */
+    public boolean isCheck(Identifier teamIdentifier) {
+        return rule.isCheck(teamIdentifier);
+    }
+
+    /**
+     * Get the king cell for a team
+     * @param teamIdentifier the team identifier
+     * @return the king cell
+     */
+    public Cell getKingCell(Identifier teamIdentifier) {
+        // Loop through all cells
+        for (int row = 0; row < GAMESIZE; row++) {
+            for (int col = 0; col < GAMESIZE; col++) {
+                final Cell cell = board.getCell(row, col);
+
+                if (cell.isEmpty()) {
+                    continue;
+                }
+
+                final Piece piece = cell.getPiece();
+
+                if (piece.getTeamIdentifier().equals(teamIdentifier) && piece.getTypeIdentifier().equals(PieceType.KING)) {
+                    return cell;
+                }
+            }
+        }
+        
+        throw new IllegalStateException("King not found");
     }
 
     /**
@@ -214,12 +250,48 @@ public class ChessModel {
     }
 
     /**
+     * Get the board information for this model
+     * 
+     * @return The board information for this model
+     */
+    public ChessBoardInformation getBoardInformation() {
+        return this.boardInformation;
+    }
+
+    /**
+     * Get the team manager for this model
+     * 
+     * @return The team manager for this model
+     */
+    public TeamManager getTeamManager() {
+        return this.teamManager;
+    }
+
+    /**
+     * Get the rule for this model
+     * 
+     * @return The rule for this model
+     */
+    public ChessRule getRule() {
+        return this.rule;
+    }
+
+    /**
      * Get which team whose turn it currently is
      * 
      * @return The current team
      */
     public ChessTeam getCurrentTeam() {
         return teamManager.getTeam(teamManager.getCurrentTeamIdentifier());
+    }
+
+    /**
+     * Get a team by its identifier
+     * @param teamIdentifier The identifier of the team
+     * @return The team with the given identifier
+     */
+    public ChessTeam getTeam(Identifier teamIdentifier) {
+        return teamManager.getTeam(teamIdentifier);
     }
 
     /**
@@ -359,6 +431,33 @@ public class ChessModel {
     }
 
     /**
+     * Move a piece from one position to another
+     * 
+     * @param from The position the piece is moving from
+     * @param to The position the piece is moving to
+     */
+    public void movePiece(Position from, Position to) {
+        // Get the piece to move
+        final Cell fromCell = board.getCell(from);
+        final Cell toCell = board.getCell(to);
+        
+        // Get the piece to move
+        final Piece piece = fromCell.getPiece();
+
+        // Call the before move event
+        piece.beforeMove(rule, from, to);
+
+        // Move the piece
+        toCell.updatePiece(piece, true);
+
+        // Remove the piece from the from cell
+        fromCell.emptyCell(true);
+
+        // Call the after move event
+        piece.afterMove(rule, from, to);
+    }
+
+    /**
      * Given a team, this method returns the opposite team
      * 
      * @param team The team you want to find opposite team for
@@ -367,6 +466,23 @@ public class ChessModel {
     public ChessTeam getOtherTeam(ChessTeam team) {
         return teamManager.getTeam(
                 teamManager.getOtherTeamIdentifier(team.getTeamIdentifier()));
+    }
+
+    /**
+     * Given a team identifier, this method returns the opposite team identifier
+     * 
+     * @param teamIdentifier The team identifier you want to find opposite team for
+     * @return The opposite team identifier
+     */
+    public Identifier getOtherTeamIdentifier(Identifier teamIdentifier) {
+        return teamManager.getOtherTeamIdentifier(teamIdentifier);
+    }
+
+    /**
+     * Clear en passant square
+     */
+    public void clearEnPassantSquare() {
+        sharedChessTeamParameters.setEnPassantPosition(Position.INVALID);
     }
 
     /**
