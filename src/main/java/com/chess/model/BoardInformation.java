@@ -10,3 +10,4 @@ public interface BoardInformation {
 
     public int getBoardSize();
 }
+// test
