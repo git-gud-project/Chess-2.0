@@ -42,17 +42,17 @@ public class ChessTeam implements Team {
     // Events
     //
 
-    private com.chess.utils.Event<String> onNameChangedEvent = new com.chess.utils.Event<>();
+    private Event<String> onNameChangedEvent = new Event<>();
 
-    private com.chess.utils.Event<Time> onTimeChangedEvent = new com.chess.utils.Event<>();
+    private Event<Time> onTimeChangedEvent = new Event<>();
 
-    private com.chess.utils.Event<Boolean> onAuthorityChangedEvent = new com.chess.utils.Event<>();
+    private Event<Boolean> onAuthorityChangedEvent = new Event<>();
 
     //
     // Constructors
     //
 
-    public ChessTeam(Identifier id, Color color, String fileSuffix, String name, int pawnDirectionRow) {
+    public Team(Identifier id, Color color, String fileSuffix, String name, int pawnDirectionRow) {
         this.id = id;
         this.teamColor = color;
         this.fileSuffix = fileSuffix;
@@ -63,7 +63,7 @@ public class ChessTeam implements Team {
         initHashMap();
     }
 
-    public ChessTeam(Identifier id, Color color, String fileSuffix, String name, Time time, int pawnDirectionRow, Piece enPassantPiece, boolean hasAuthority, HashMap<PieceType, String> skinMap, boolean[] ownSkin, int[] skinIndex){
+    public Team(Identifier id, Color color, String fileSuffix, String name, Time time, int pawnDirectionRow, Piece enPassantPiece, boolean hasAuthority, HashMap<PieceType, String> skinMap, boolean[] ownSkin, int[] skinIndex){
         this.id = id;
         this.teamColor = color;
         this.fileSuffix = fileSuffix;
@@ -75,6 +75,9 @@ public class ChessTeam implements Team {
         this.skinMap = cloneHashMap(skinMap);
         this.ownSkin = ownSkin.clone();
         this.skinIndex = skinIndex.clone();
+    }
+
+    public Team(Color teamColor, Identifier teamIdentifier, String name, Time time, int pawnDirectionRow, Piece enPassantPiece, boolean hasAuthority, HashMap<PieceType, String> skinMap, boolean[] ownSkin, int[] skinIndex) {
     }
 
     //
@@ -105,7 +108,7 @@ public class ChessTeam implements Team {
 
     public Piece getEnPassantPiece() {
         return enPassantPiece;
-    }
+    }//Behöver team ha enPassantPiece?
 
     public boolean getHasAuthority() {
         return hasAuthority;
@@ -134,11 +137,11 @@ public class ChessTeam implements Team {
     // Getters - Events
     //
 
-    public com.chess.utils.Event<String> getOnNameChangedEvent() {
+    public Event<String> getOnNameChangedEvent() {
         return onNameChangedEvent;
     }
 
-    public com.chess.utils.Event<Time> getOnTimeChangedEvent() {
+    public Event<Time> getOnTimeChangedEvent() {
         return onTimeChangedEvent;
     }
 
@@ -363,7 +366,7 @@ public class ChessTeam implements Team {
         return clone;
     }
 
-    public Team cloneTeam(){
+    public com.chess.model.ChessTeam cloneTeam(){
         return new Team(this.model, this.teamColor, this.fileSuffix, this.name, this.time, this.pawnDirectionRow, this.enPassantPiece, this.hasAuthority, this.skinMap, this.ownSkin, this.skinIndex);
     }
 
