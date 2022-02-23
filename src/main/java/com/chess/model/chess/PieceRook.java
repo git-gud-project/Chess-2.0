@@ -40,7 +40,7 @@ public class PieceRook implements PieceBehavior{
      * @param to the cell that the piece is now in
      */
     @Override
-    public void onMove(Rule rule, Position from, Position to) {
+    public void afterMove(Rule rule, Position from, Position to) {
         // Disable castling
         if (from.getCol() == 0) {
             teamParameters.setCanCastleQueenside(false);
