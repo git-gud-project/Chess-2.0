@@ -57,7 +57,7 @@ public class Time implements Serializable {
         return String.format("%02d:%02d:%d0", minutes, seconds, mseconds);
     }
 
-    public Time cloneTime() {
+    public Time clone() {
         return new Time(this.minutes, this.seconds, this.mseconds);
     }
 }

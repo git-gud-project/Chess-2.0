@@ -1,21 +1,25 @@
 package com.chess.view;
 
 import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
+import com.chess.model.chess.ChessTeam;
 import com.chess.utils.Event;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class PlayerPanel extends JPanel {
-    private JLabel playerName;
-    private JLabel playerTime;
-    private JLabel playerAuthority;
-    private ChessTeam team;
+    private final JLabel playerName;
+    private final JLabel playerTime;
+    private final JLabel playerAuthority;
+    private final ChessTeam team;
+    private final ChessModel model;
 
     private Event<ChessTeam> playerNameChangedEvent = new Event<ChessTeam>();
 
-    public PlayerPanel(ChessTeam team) {
+    public PlayerPanel(ChessModel model, ChessTeam team) {
         this.team = team;
+        this.model = model;
 
         /**
          * This panel displays the information of the player.
@@ -62,7 +66,7 @@ public class PlayerPanel extends JPanel {
             playerAuthority.setText(authority ? "" : "(Remote)");
         });
 
-        team.getModel().getOnTeamChangeEvent().addDelegate(newTeam -> {
+        model.getOnTeamChangeEvent().addDelegate(newTeam -> {
             if (newTeam == team) {
                 // Set a yellow border
                 this.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
@@ -72,9 +76,11 @@ public class PlayerPanel extends JPanel {
             }
         });
 
-        /*if (team == team.getModel().getCurrentTeam())*/ {
-            playerName.setForeground(team.getOpponentColor());
-            playerTime.setForeground(team.getOpponentColor());
+        ChessTeam opponent = model.getOtherTeam(team);
+
+        {
+            playerName.setForeground(opponent.getColor());
+            playerTime.setForeground(opponent.getColor());
         }
 
         playerName.setText(team.getName());

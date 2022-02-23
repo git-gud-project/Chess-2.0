@@ -1,6 +1,7 @@
 package com.chess.view;
 
 import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.PieceType;
 
 import javax.swing.*;
@@ -152,7 +153,7 @@ public class ChessView extends JFrame {
 
     public void setModel(ChessModel model) { this.model = model; }
 
-    public PieceType promotePawn() {
+    public Identifier promotePawn() {
         // Create a dialog to ask the user what piece to promote to
         Object[] options = {"Queen", "Rook", "Bishop", "Knight"};
         int n = JOptionPane.showOptionDialog(this, "What piece do you want to promote to?", "Promote Pawn", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);

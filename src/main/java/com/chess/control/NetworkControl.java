@@ -6,6 +6,8 @@ import java.net.*;
 import com.chess.network.*;
 import com.chess.control.messages.*;
 import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
+import com.chess.model.chess.ChessTeam;
 import com.chess.view.*;
 
 public class NetworkControl {
@@ -248,12 +250,13 @@ public class NetworkControl {
             AffirmMoveMessage affirmMoveMessage = (AffirmMoveMessage) message;
             
             // Collect variables.
-            Cell fromCell = getModel().getBoard().getCell(affirmMoveMessage.getFromRow(), affirmMoveMessage.getFromCol());
-            Cell toCell = getModel().getBoard().getCell(affirmMoveMessage.getToRow(), affirmMoveMessage.getToCol());
+            Position fromCell = new Position(affirmMoveMessage.getFromRow(), affirmMoveMessage.getFromCol());
+            Position toCell = new Position(affirmMoveMessage.getToRow(), affirmMoveMessage.getToCol());
             Boolean isElimination = affirmMoveMessage.isElimination();
+            Identifier identifier = affirmMoveMessage.getPieceType();
 
             // Create the move.
-            Move move = new Move(toCell, fromCell, isElimination);
+            Move move = new Move(toCell, fromCell, identifier, isElimination);
             
             // Apply the move.
             control.executeMove(move);
@@ -362,12 +365,13 @@ public class NetworkControl {
             MovePieceMessage movePieceMessage = (MovePieceMessage) message;
 
             // Collect variables.
-            Cell from = new Cell(movePieceMessage.getToRow(), movePieceMessage.getToCol());
-            Cell to = new Cell(movePieceMessage.getFromRow(), movePieceMessage.getFromCol());
+            Position from = new Position(movePieceMessage.getToRow(), movePieceMessage.getToCol());
+            Position to = new Position(movePieceMessage.getFromRow(), movePieceMessage.getFromCol());
             Boolean isElimination = movePieceMessage.isElimination();
+            Identifier identifier = movePieceMessage.getPieceType();
 
             // Create the move.
-            Move move = new Move(from, to, isElimination);
+            Move move = new Move(from, to, identifier, isElimination);
 
             // Apply the move.
             control.movePiece(move);

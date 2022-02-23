@@ -46,15 +46,37 @@ public class PieceKing implements PieceBehavior {
         final boolean canCastleQueenside = teamParameters.canCastleQueenside();
 
         if (canCastleKingside) {
-            Move move = new Move(teamParameters.getCastlingKingSidePosition(), position, getTypeIdentifier(), false);
-            move.setIsCastleKingSide(true);
-            possibleMoves.add(move);
+            boolean canCastle = true;
+            
+            for (int i = 0; i < 3; i++) {
+                if (!rule.isEmpty(new Position(position.getRow(), position.getCol() + i))) {
+                    canCastle = false;
+                    break;
+                }
+            }
+
+            if (canCastle) {
+                Move move = new Move(teamParameters.getCastlingKingSidePosition(), position, getTypeIdentifier(), false);
+                move.setIsCastleKingSide(true);
+                possibleMoves.add(move);
+            }
         }
 
         if (canCastleQueenside) {
-            Move move = new Move(teamParameters.getCastlingQueenSidePosition(), position, getTypeIdentifier(), false);
-            move.setIsCastleQueenSide(true);
-            possibleMoves.add(move);
+            boolean canCastle = true;
+
+            for (int i = 0; i < 3; i++) {
+                if (!rule.isEmpty(new Position(position.getRow(), position.getCol() - i))) {
+                    canCastle = false;
+                    break;
+                }
+            }
+
+            if (canCastle) {
+                Move move = new Move(teamParameters.getCastlingQueenSidePosition(), position, getTypeIdentifier(), false);
+                move.setIsCastleQueenSide(true);
+                possibleMoves.add(move);
+            }
         }
 
         return possibleMoves.iterator();
@@ -67,7 +89,7 @@ public class PieceKing implements PieceBehavior {
      * @param to the cell that the piece is now in
      */
     @Override
-    public void onMove(Rule rule, Position from, Position to) {
+    public void afterMove(Rule rule, Position from, Position to) {
         // Set the castling rights to false if the king is moved.
         teamParameters.setCanCastleKingside(false);
         teamParameters.setCanCastleQueenside(false);
@@ -84,17 +106,14 @@ public class PieceKing implements PieceBehavior {
         final boolean canCastleKingSide = teamParameters.canCastleKingside();
         final boolean canCastleQueenSide = teamParameters.canCastleQueenside();
 
-        // TODO
         if (canCastleKingSide && to == teamParameters.getCastlingKingSidePosition()) {
-            /*Cell rookCell = board.getCell(newCell.getRow(), newCell.getCol() + 1);
-            Piece rook = rookCell.getPiece();
-            rook.move(board, board.getCell(newCell.getRow(), newCell.getCol() - 1));*/
+            // Move the rook
+            rule.requestMove(new Position(from.getRow(), from.getCol() + 2), new Position(from.getRow(), from.getCol() + 3));
         }
 
         if (canCastleQueenSide && to == teamParameters.getCastlingQueenSidePosition()) {
-            /*Cell rookCell = board.getCell(newCell.getRow(), newCell.getCol() - 2);
-            Piece rook = rookCell.getPiece();
-            rook.move(board, board.getCell(newCell.getRow(), newCell.getCol() + 1));*/
+            // Move the rook
+            rule.requestMove(new Position(from.getRow(), from.getCol() - 4), new Position(from.getRow(), from.getCol() - 1));
         }
     }
 }
