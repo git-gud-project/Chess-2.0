@@ -1,6 +1,7 @@
 package com.chess.view;
 
 import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
 import com.chess.utils.Delegate;
 import com.chess.utils.Resources;
 
@@ -13,26 +14,24 @@ import java.awt.*;
 public class BoardGridPanel extends JPanel {
     private BoardCell[][] cells;
     private int size;
-    private ChessView view;
 
     private Delegate<BoardCell> clickDelegate;
 
     /** Set up a new panel with a chess board made up of buttons.
-     * @param view The JFrame that the board grid will be added to.
+     * @param model The model to use to create the board.
      * @param size The size of the chess board to be created. For a normal game of chess the size is 8.
      */
-    public BoardGridPanel(ChessView view, int size) {
+    public BoardGridPanel(ChessModel model, int size) {
         super(new GridLayout(size, size));
         this.cells = new BoardCell[size][size];
         this.size = size;
-        this.view = view;
 
-        Board board = view.getModel().getBoard();
+        Board board = model.getBoard();
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 
-                BoardCell button = new BoardCell(row, col);
+                BoardCell button = new BoardCell(size - 1 - row, col);
 
                 button.setMinimumSize(ChessView.CELL_MIN_SIZE);
                 button.setPreferredSize(ChessView.CELL_IDEAL_SIZE);
@@ -51,18 +50,19 @@ public class BoardGridPanel extends JPanel {
                 button.setHoverBackgroundColor(color);
                 button.setPressedBackgroundColor(color);
 
-                cells[row][col] = button;
+                cells[size - 1 - row][col] = button;
 
                 /**
                  * Setup events
                  */
 
-                Cell cell = board.getCell(row, col);
+                Cell cell = board.getCell(size - 1 - row, col);
 
                 cell.getOnPieceChangedEvent().addDelegate(piece -> {
                     if (piece == null) {
                         button.setIcon(null);
                     } else {
+                        /*
                         int n;
                         switch(piece.getTypeIdentifier().toString()){
                             case "r": n = 1; break;
@@ -72,6 +72,7 @@ public class BoardGridPanel extends JPanel {
                             case "k": n = 5; break;
                             default: n = 0;
                         }
+                        */
                         ImageIcon icon;
                         /*
                         TODO: Fix this
@@ -81,7 +82,7 @@ public class BoardGridPanel extends JPanel {
                             icon = Resources.getOwnImageIcon(piece.getIconPath());
                         }
                         */
-                        icon = Resources.getOwnImageIcon(piece.getIconPath());
+                        icon = Resources.getImageIcon(piece.getIconPath());
 
                         button.setIcon(icon);
                     }

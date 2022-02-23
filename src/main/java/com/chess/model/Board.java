@@ -1,7 +1,5 @@
 package com.chess.model;
 
-import java.util.List;
-
 /**
  * Represents a board.
  */

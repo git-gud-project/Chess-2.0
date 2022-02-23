@@ -3,10 +3,10 @@ package com.chess.model.chess;
 import com.chess.model.Identifier;
 
 public final class PieceType {
-    public static Identifier PAWN = new Identifier("p");
-    public static Identifier ROOK = new Identifier("r");
-    public static Identifier KNIGHT = new Identifier("n");
-    public static Identifier BISHOP = new Identifier("b");
-    public static Identifier QUEEN = new Identifier("q");
-    public static Identifier KING = new Identifier("k");
+    public static final Identifier PAWN = new Identifier("p");
+    public static final Identifier ROOK = new Identifier("r");
+    public static final Identifier KNIGHT = new Identifier("n");
+    public static final Identifier BISHOP = new Identifier("b");
+    public static final Identifier QUEEN = new Identifier("q");
+    public static final Identifier KING = new Identifier("k");
 }

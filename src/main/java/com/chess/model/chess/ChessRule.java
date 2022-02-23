@@ -198,6 +198,10 @@ public class ChessRule implements Rule {
     }
 
     public boolean isLegalMove(Identifier piece,Identifier team, Move move) {
+        if (boardInfo.isEmpty(move.getToCell())) {
+            return true;
+        }
+
         Identifier originPiece = boardInfo.getTypeIdentifier(move.getToCell());
         Identifier originTeam = boardInfo.getTeamIdentifier(move.getToCell());
 
@@ -315,10 +319,12 @@ public class ChessRule implements Rule {
         return kingCell;
     }
 
+    /*
     private void fakeMove(Move move, Identifier pieceIdentifier, Identifier teamIdentifier){
         boardInfo.clearPiece(move.getFromCell(),false);
         boardInfo.setPiece(move.getToCell(),pieceIdentifier,teamIdentifier,false);
     }
+    */
 }
 
 

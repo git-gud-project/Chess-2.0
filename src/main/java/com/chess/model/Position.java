@@ -31,6 +31,16 @@ public class Position {
     }
 
     /**
+     * Construct a position from a string.
+     * 
+     * @param position The string representation of the position.
+     */
+    public Position(String position) {
+        this.row = Integer.parseInt(position.substring(1, 2)) - 1;
+        this.col = position.charAt(0) - 'a';
+    }
+
+    /**
      * Get the row of the position.
      * 
      * @return The row of the position.
@@ -87,6 +97,6 @@ public class Position {
      */
     @Override
     public String toString() {
-        return String.valueOf('a' + getCol()) + String.valueOf('1' + getRow());
+        return Character.toString('a' + getCol()) + Character.toString('1' + getRow());
     }
 }

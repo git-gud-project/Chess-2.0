@@ -3,9 +3,9 @@ package com.chess.model.chess;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.chess.model.*;
-import com.chess.model.chess.*;
 import com.chess.utils.Event;
 
 public class ChessModel {
@@ -62,7 +62,7 @@ public class ChessModel {
 
         final ChessTeamParameters whiteParameters = new ChessTeamParameters(
                 sharedChessTeamParameters, // shared
-                new Identifier("w"), // identifier
+                TeamManager.WHITE, // identifier
                 1, // pawnDirection
                 0 // kingRow
         );
@@ -76,7 +76,7 @@ public class ChessModel {
 
         final ChessTeamParameters blackParameters = new ChessTeamParameters(
                 sharedChessTeamParameters, // shared
-                new Identifier("b"), // identifier
+                TeamManager.BLACK, // identifier
                 -1, // pawnDirection
                 7 // kingRow
         );
@@ -458,6 +458,56 @@ public class ChessModel {
     }
 
     /**
+     * Take a turn, moving a piece from one position to another
+     * 
+     * @param from The position the piece is moving from
+     * @param to The position the piece is moving to
+     * @throws IllegalArgumentException If the move is invalid
+     */
+    public void takeTurn(Position from, Position to) throws IllegalArgumentException {
+        // Get the piece to move
+        final Cell fromCell = board.getCell(from);
+        final Cell toCell = board.getCell(to);
+        
+        // Get the piece to move
+        final Piece piece = fromCell.getPiece();
+
+        if (!piece.getTeamIdentifier().equals(teamManager.getCurrentTeamIdentifier())) {
+            throw new IllegalArgumentException("Cannot move a piece that is not yours");
+        }
+
+        Iterator<Move> moves = piece.getPossibleMoves(rule, from);
+
+        // Check that 'to' is a valid move
+        boolean validMove = false;
+
+        while (moves.hasNext()) {
+            Move move = moves.next();
+
+            if (move.getToCell().equals(to)) {
+                validMove = true;
+                break;
+            }
+        }
+
+        if (!validMove) {
+            throw new IllegalArgumentException("Cannot move to that position");
+        }
+
+        // Call the before move event
+        piece.beforeMove(rule, from, to);
+
+        // Move the piece
+        toCell.updatePiece(piece, true);
+
+        // Remove the piece from the from cell
+        fromCell.emptyCell(true);
+
+        // Call the after move event
+        piece.afterMove(rule, from, to);
+    }
+
+    /**
      * Given a team, this method returns the opposite team
      * 
      * @param team The team you want to find opposite team for
@@ -504,8 +554,9 @@ public class ChessModel {
      */
     public String toFEN() {
         String fen = "";
-        for (int row = 0; row < GAMESIZE; row++) {
+        for (int rowi = 0; rowi < GAMESIZE; rowi++) {
             int emptyCells = 0;
+            int row = GAMESIZE - rowi - 1;
             for (int col = 0; col < GAMESIZE; col++) {
                 if (boardInformation.isEmpty(row, col)) {
                     emptyCells++;
@@ -564,7 +615,7 @@ public class ChessModel {
         // En passant target square
         Position enPassantPosition = sharedChessTeamParameters.getEnPassantPosition();
 
-        if (enPassantPosition.equals(Position.INVALID)) {
+        if (!enPassantPosition.equals(Position.INVALID)) {
             fen += " " + enPassantPosition;
         } else {
             fen += " -";
@@ -590,14 +641,16 @@ public class ChessModel {
     public void loadFEN(String fen) {
         String[] parts = fen.split(" ");
         String[] rows = parts[0].split("/");
-        int row = 0;
+        int row = GAMESIZE - 1;
         int col = 0;
         for (String rowString : rows) {
             for (int i = 0; i < rowString.length(); i++) {
+                Cell cell = board.getCell(row, col);
+
                 char c = rowString.charAt(i);
                 if (Character.isDigit(c)) {
                     for (int j = 0; j < Character.getNumericValue(c); j++) {
-                        Cell cell = board.getCell(row, col);
+                        
                         cell.emptyCell(true);
                         col++;
                     }
@@ -606,8 +659,6 @@ public class ChessModel {
 
                     Identifier typeIdentifier = new Identifier(String.valueOf(Character.toLowerCase(c)));
 
-                    Cell cell = board.getCell(row, col);
-
                     Piece piece = ChessPieceFactory.createPiece(typeIdentifier, team);
 
                     cell.updatePiece(piece, true);
@@ -615,7 +666,7 @@ public class ChessModel {
                     col++;
                 }
             }
-            row++;
+            row--;
             col = 0;
         }
 

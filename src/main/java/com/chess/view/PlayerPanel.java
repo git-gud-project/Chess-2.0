@@ -1,6 +1,5 @@
 package com.chess.view;
 
-import com.chess.model.*;
 import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.ChessTeam;
 import com.chess.utils.Event;
@@ -13,13 +12,11 @@ public class PlayerPanel extends JPanel {
     private final JLabel playerTime;
     private final JLabel playerAuthority;
     private final ChessTeam team;
-    private final ChessModel model;
 
     private Event<ChessTeam> playerNameChangedEvent = new Event<ChessTeam>();
 
     public PlayerPanel(ChessModel model, ChessTeam team) {
         this.team = team;
-        this.model = model;
 
         /**
          * This panel displays the information of the player.

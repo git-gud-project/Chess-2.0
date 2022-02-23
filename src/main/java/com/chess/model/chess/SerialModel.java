@@ -1,10 +1,10 @@
-package com.chess.model;
+package com.chess.model.chess;
 
 import java.io.Serializable;
 import java.util.*;
 
-import com.chess.model.chess.ChessModel;
-import com.chess.model.chess.PieceType;
+import com.chess.model.Identifier;
+import com.chess.model.Time;
 
 public class SerialModel implements Serializable {
     private String fen;

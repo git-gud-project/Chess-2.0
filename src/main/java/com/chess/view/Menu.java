@@ -11,10 +11,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
+import com.chess.model.chess.SerialModel;
 
 public class Menu extends JMenuBar {
-
-    private ChessView view;
 
     private String choosenSoundMap;
 
@@ -42,9 +42,8 @@ public class Menu extends JMenuBar {
     private Event<SerialModel> onLoadGameEvent = new Event<>();
     private Event<Time> onTimeChangeEvent = new Event<>();
 
-    public Menu(ChessView view) {
+    public Menu(ChessModel model) {
         super();
-        this.view = view;
 
         //Creating file menu
         JMenu file = new JMenu("File");
@@ -67,7 +66,7 @@ public class Menu extends JMenuBar {
                 try {
                     int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:", "5"));
                     Time newTime = new Time(input);
-                    view.getModel().resetState(newTime);
+                    model.resetState(newTime);
                 }
                 catch(NullPointerException exc) {
                     exc.printStackTrace();
@@ -76,8 +75,8 @@ public class Menu extends JMenuBar {
         });
 
         save.addActionListener((e) -> {
-            boolean paused = view.getModel().getPaused();
-            if(!paused) view.getModel().setPaused(true);
+            boolean paused = model.getPaused();
+            if(!paused) model.setPaused(true);
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -89,19 +88,19 @@ public class Menu extends JMenuBar {
                 try {
                     FileOutputStream fOut = new FileOutputStream(chosenFile);
                     ObjectOutputStream stream = new ObjectOutputStream(fOut);
-                    stream.writeObject(new SerialModel(view.getModel()));
+                    stream.writeObject(new SerialModel(model));
                     stream.flush();
                     stream.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
-            if(!paused) view.getModel().setPaused(false);
+            if(!paused) model.setPaused(false);
         });
 
         load.addActionListener((e) -> {
-            boolean paused = view.getModel().getPaused();
-            if(!paused) view.getModel().setPaused(true);
+            boolean paused = model.getPaused();
+            if(!paused) model.setPaused(true);
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Load");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -115,13 +114,13 @@ public class Menu extends JMenuBar {
                     ObjectInputStream stream = new ObjectInputStream(fIn);
                     SerialModel newModel = (SerialModel) stream.readObject();
                     onLoadGameEvent.trigger(newModel);
-                    view.getInfoPanel().getMovesPanel().loadMovesPanel();
+                    //view.getInfoPanel().getMovesPanel().loadMovesPanel();
                     stream.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             } else {
-                if(!paused) view.getModel().setPaused(false);
+                if(!paused) model.setPaused(false);
             }
         });
         

@@ -2,6 +2,7 @@ package com.chess.view;
 
 import javax.swing.*;
 
+/*
 import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.ChessTeam;
 import com.chess.model.chess.PieceType;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URL;
+*/
 
 public class PieceConfigurator extends JPanel {
     /*
