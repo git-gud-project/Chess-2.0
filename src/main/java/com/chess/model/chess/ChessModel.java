@@ -371,6 +371,7 @@ public class ChessModel {
         teamManager.setCurrentTeamIdentifier(team.getTeamIdentifier());
 
         rule.setCurrentTeam(team.getTeamIdentifier());
+        rule.setOpponentTeam(teamManager.getOtherTeamIdentifier(team.getTeamIdentifier()));
 
         this.onTeamChangeEvent.trigger(team);
     }
