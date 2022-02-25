@@ -18,9 +18,8 @@ public class ChessSkinInfo implements SkinInfo, Serializable {
         this.pieceType = pieceType;
         this.teamColor = teamColor;
         this.skinPath = choosePath();
-        this.skinIndex = chooseIndex();
+        this.skinIndex = 0;
         this.ownSkin = false;
-
     }
 
     // Util for constructor
