@@ -128,7 +128,6 @@ public class Position {
         if (row == -1 && col == -1) {
             return "INVALID";
         }
-
         return Character.toString('a' + getCol()) + Character.toString('1' + getRow());
     }
 }
