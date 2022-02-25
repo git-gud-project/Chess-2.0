@@ -4,11 +4,10 @@ import java.util.HashMap;
 
 import com.chess.model.Identifier;
 
+/**
+ * The team manager for chess.
+ */
 public class TeamManager {
-
-    public static final Identifier WHITE = ChessIdentifier.WHITE;
-    public static final Identifier BLACK = ChessIdentifier.BLACK;
-
     private final HashMap<Identifier, ChessTeam> teamMap;
 
     private Identifier currentTeamIdentifier;
@@ -16,10 +15,10 @@ public class TeamManager {
     public TeamManager(ChessTeam white, ChessTeam black) {
 
         teamMap = new HashMap<>();
-        teamMap.put(WHITE, white);
-        teamMap.put(BLACK, black);
+        teamMap.put(white.getTeamIdentifier(), white);
+        teamMap.put(black.getTeamIdentifier(), black);
 
-        currentTeamIdentifier = WHITE;
+        currentTeamIdentifier = white.getTeamIdentifier();
     }
 
     /**
@@ -76,10 +75,10 @@ public class TeamManager {
      * @throws IllegalArgumentException If the team identifier is invalid.
      */
     public Identifier getOtherTeamIdentifier(Identifier teamIdentifier) throws IllegalArgumentException {
-        if (teamIdentifier.equals(WHITE)) {
-            return BLACK;
-        } else if (teamIdentifier.equals(BLACK)) {
-            return WHITE;
+        if (teamIdentifier.equals(ChessTeamIdentifier.WHITE)) {
+            return ChessTeamIdentifier.BLACK;
+        } else if (teamIdentifier.equals(ChessTeamIdentifier.BLACK)) {
+            return ChessTeamIdentifier.WHITE;
         } else {
             throw new IllegalArgumentException("Invalid team identifier: " + teamIdentifier);
         }

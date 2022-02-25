@@ -3,7 +3,7 @@ package com.chess.control.messages;
 import com.chess.model.Identifier;
 import com.chess.network.Message;
 
-public class MovePieceMessage extends Message {
+public class MovePieceMessage implements Message {
     private final int fromRow, fromCol, toRow, toCol;
     private final boolean isElimination;
     private final Identifier pieceType;

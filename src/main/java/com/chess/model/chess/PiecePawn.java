@@ -10,12 +10,7 @@ import com.chess.model.Position;
 import com.chess.model.Rule;
 
 /**
- * The class for the Pawn.
- * Is in charge of:
- *  - Adding all possible moves for the Pawn piece and returning it to the game.
- *  - Checking if the pawn can take two moves or only one.
- *  - Checking if the pawn can capture in a diagonal cell.
- *  - Checking if En Passant is achievable.
+ * The class for the Pawn behavior.
  */
 public class PiecePawn implements PieceBehavior {
 
@@ -28,11 +23,6 @@ public class PiecePawn implements PieceBehavior {
         this.possibleMoves = new ArrayList<>();
     }
 
-    /**
-     * Used to set if En Passant is achievable or not for this piece's team.
-     * @param oldCell the cell that the piece was in before it was moved 
-     * @param newCell the cell that the piece is now in
-     */
     @Override
     public void afterMove(Rule rule, Position from, Position to) {
         final SharedChessTeamParameters sharedTeamParameters = teamParameters.getSharedTeamParameters();
@@ -59,11 +49,11 @@ public class PiecePawn implements PieceBehavior {
 
     @Override
     public Identifier getTypeIdentifier() {
-        return ChessIdentifier.PAWN;
+        return ChessTypeIdentifier.PAWN;
     }
 
     @Override
-    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) {
+    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {
         possibleMoves.clear();
 
         final int dirRow = teamParameters.getPawnDirection();

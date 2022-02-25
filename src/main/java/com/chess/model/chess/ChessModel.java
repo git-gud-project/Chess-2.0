@@ -8,61 +8,106 @@ import java.util.Iterator;
 import com.chess.model.*;
 import com.chess.utils.Event;
 
+/**
+ * Model for a chess game.
+ */
 public class ChessModel {
 
+    /**
+     * A chess board always has a size of 8x8.
+     */
     private static final int GAMESIZE = 8;
 
-    //
-    // Fields
-    //
-
+    /**
+     * The chess board.
+     */
     private final ChessBoard board;
 
+    /**
+     * The chess board information.
+     */
     private final ChessBoardInformation boardInformation;
 
+    /**
+     * The team manager.
+     */
     private final TeamManager teamManager;
 
+    /**
+     * The rules of the game.
+     */
     private final ChessRule rule;
 
+    /**
+     * The shared team parameters.
+     */
     private final SharedChessTeamParameters sharedChessTeamParameters;
 
+    /**
+     * If the game is paused.
+     */
     private boolean paused;
 
+    /**
+     * If the game has started.
+     */
     private boolean started;
 
+    /**
+     * How many full moves have been made.
+     */
     private int fullMoves;
 
+    /**
+     * Half move timer.
+     */
     private int halfMoves;
 
+    /**
+     * If the game is over.
+     */
     private boolean isGameOver;
 
+    /**
+     * List of moves.
+     */
     private List<String> moveList;
 
-    //
-    // Events
-    //
-
+    /**
+     * The event which is triggered when the team changes.
+     */
     private Event<ChessTeam> onTeamChangeEvent = new Event<>();
 
+    /**
+     * The event which is triggered when a move is made.
+     */
     private Event<Move> onMoveEvent = new Event<>();
 
+    /**
+     * The event which is triggered when a game is loaded.
+     */
     private Event<String> onGameLoadedEvent = new Event<>();
 
+    /**
+     * The event which is triggered when a game is loaded from a serial model.
+     */
     private Event<SerialModel> onModelLoadedEvent = new Event<>();
 
-    //
-    // Constructors
-    //
-
     /**
-     * Construct a new ChessModel
+     * Construct a new ChessModel.
+     * 
+     * This does load the default chess board.
+     * 
+     * @see ChessModel#resetState(GameTime)
      */
     public ChessModel() {
+        // Create the shared team parameters
         sharedChessTeamParameters = new SharedChessTeamParameters();
 
+        // White team parameters
         final ChessTeamParameters whiteParameters = new ChessTeamParameters(
                 sharedChessTeamParameters, // shared
-                TeamManager.WHITE, // identifier
+                ChessTeamIdentifier.WHITE, // identifier
                 1, // pawnDirection
                 0 // kingRow
         );
@@ -70,15 +115,24 @@ public class ChessModel {
         // Set castling rights
         whiteParameters.setCanCastleKingside(true);
         whiteParameters.setCanCastleQueenside(true);
+
+        // Set castling positions
         whiteParameters.setCastlingKingSidePosition(new Position("g1"));
         whiteParameters.setCastlingQueenSidePosition(new Position("c1"));
 
-        final ChessTeam whiteTeam = new ChessTeam(ChessIdentifier.WHITE, Color.WHITE, "Player 1", new Time(5),
-                whiteParameters);
+        // Create white team
+        final ChessTeam whiteTeam = new ChessTeam(
+            ChessTeamIdentifier.WHITE,
+            Color.WHITE,
+            "Player 1",
+            new GameTime(5, 0, 0),
+            whiteParameters
+        );
 
+        // Black team parameters
         final ChessTeamParameters blackParameters = new ChessTeamParameters(
                 sharedChessTeamParameters, // shared
-                TeamManager.BLACK, // identifier
+                ChessTeamIdentifier.BLACK, // identifier
                 -1, // pawnDirection
                 7 // kingRow
         );
@@ -86,11 +140,19 @@ public class ChessModel {
         // Set castling rights
         blackParameters.setCanCastleKingside(true);
         blackParameters.setCanCastleQueenside(true);
+
+        // Set castling positions
         blackParameters.setCastlingKingSidePosition(new Position("g8"));
         blackParameters.setCastlingQueenSidePosition(new Position("c8"));
 
-        final ChessTeam blackTeam = new ChessTeam(ChessIdentifier.BLACK, Color.BLACK, "Player 2", new Time(5),
-                blackParameters);
+        // Create black team
+        final ChessTeam blackTeam = new ChessTeam(
+            ChessTeamIdentifier.BLACK,
+            Color.BLACK,
+            "Player 2",
+            new GameTime(5, 0, 0),
+            blackParameters
+        );
 
         // Setup team manager
 
@@ -118,19 +180,22 @@ public class ChessModel {
 
     /**
      * Reset the state of this ChessModel to its starting state
+     * 
+     * @param time The time of the players when the game starts
      */
-    public void resetState(Time time) {
+    public void resetState(GameTime time) {
+        // Load initial chess positions
         loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-        final ChessTeam whiteTeam = teamManager.getTeam(TeamManager.WHITE);
+        final ChessTeam whiteTeam = teamManager.getTeam(ChessTeamIdentifier.WHITE);
 
         whiteTeam.setTime(time);
 
-        final ChessTeam blackTeam = teamManager.getTeam(TeamManager.BLACK);
+        final ChessTeam blackTeam = teamManager.getTeam(ChessTeamIdentifier.BLACK);
 
         blackTeam.setTime(time);
 
-        teamManager.setCurrentTeamIdentifier(TeamManager.WHITE);
+        teamManager.setCurrentTeamIdentifier(ChessTeamIdentifier.WHITE);
 
         setPaused(true);
         setStarted(false);
@@ -140,6 +205,12 @@ public class ChessModel {
         onModelLoadedEvent.trigger(getSerialModel());
     }
 
+    /**
+     * Get a serial model representation of this ChessModel.
+     * This may be serialized and then loaded again.
+     * 
+     * @return A serial model representation of this ChessModel
+     */
     public SerialModel getSerialModel() {
         SerialModel serialModel = new SerialModel();
         
@@ -161,13 +232,13 @@ public class ChessModel {
     }
 
     /**
-     * Load another model over this model
+     * Load a serial model representation of this ChessModel.
      * 
      * @param smodel The model to load over the existing model
      */
     public void loadModel(SerialModel smodel) {
-        final ChessTeam whiteTeam = teamManager.getTeam(TeamManager.WHITE);
-        final ChessTeam blackTeam = teamManager.getTeam(TeamManager.BLACK);
+        final ChessTeam whiteTeam = teamManager.getTeam(ChessTeamIdentifier.WHITE);
+        final ChessTeam blackTeam = teamManager.getTeam(ChessTeamIdentifier.BLACK);
 
         whiteTeam.setName(smodel.getWhiteName());
         blackTeam.setName(smodel.getBlackName());
@@ -232,7 +303,7 @@ public class ChessModel {
 
                 final Piece piece = cell.getPiece();
 
-                if (piece.getTeamIdentifier().equals(teamIdentifier) && piece.getTypeIdentifier().equals(ChessIdentifier.KING)) {
+                if (piece.getTeamIdentifier().equals(teamIdentifier) && piece.getTypeIdentifier().equals(ChessTypeIdentifier.KING)) {
                     return cell;
                 }
             }
@@ -247,7 +318,7 @@ public class ChessModel {
      * @return The white team instance
      */
     public ChessTeam getTeamWhite() {
-        return teamManager.getTeam(TeamManager.WHITE);
+        return teamManager.getTeam(ChessTeamIdentifier.WHITE);
     }
 
     /**
@@ -256,7 +327,7 @@ public class ChessModel {
      * @return The black team instance
      */
     public ChessTeam getTeamBlack() {
-        return teamManager.getTeam(TeamManager.BLACK);
+        return teamManager.getTeam(ChessTeamIdentifier.BLACK);
     }
 
     /**
@@ -418,7 +489,7 @@ public class ChessModel {
      */
     public void registerMove(boolean halfMove, Move move) {
         // Increment full moves if it's black's turn
-        if (teamManager.getCurrentTeamIdentifier().equals(TeamManager.BLACK)) {
+        if (teamManager.getCurrentTeamIdentifier().equals(ChessTeamIdentifier.BLACK)) {
             fullMoves++;
         }
 
@@ -426,7 +497,7 @@ public class ChessModel {
 
         // Clear en passant if it's not the current team
         if (!enPassantTeam.equals(teamManager.getCurrentTeamIdentifier())) {
-            sharedChessTeamParameters.setEnPassantTeam(ChessIdentifier.NULL);
+            sharedChessTeamParameters.setEnPassantTeam(ChessTypeIdentifier.NULL);
             sharedChessTeamParameters.setEnPassantPosition(Position.INVALID);
         }
 
@@ -445,11 +516,12 @@ public class ChessModel {
 
         // Add '#' if move resulted in checkmate on other team
         if (isGameOver(teamManager.getCurrentTeamIdentifier()) == 2) {
-            move.addCheckMate();
+            move.setCheckMate(true);
         }
+
         // Add '+' to notation if move resulted in check to other team
         else if (rule.isCheck(teamManager.getCurrentTeamIdentifier())) {
-            move.addCheck();
+            move.setCheck(true);
         }
 
         moveList.add(move.toString());
@@ -592,7 +664,7 @@ public class ChessModel {
                     }
                     Piece piece = board.getCell(row, col).getPiece();
                     String character = piece.getTypeIdentifier().toString();
-                    if (piece.getTeamIdentifier().equals(TeamManager.WHITE)) {
+                    if (piece.getTeamIdentifier().equals(ChessTeamIdentifier.WHITE)) {
                         character = character.toUpperCase();
                     }
                     fen += character;
@@ -701,7 +773,7 @@ public class ChessModel {
                 } else {
                     ChessTeam team = c == Character.toUpperCase(c) ? getTeamWhite() : getTeamBlack();
 
-                    Identifier typeIdentifier = ChessIdentifier.getIdentifier(String.valueOf(Character.toLowerCase(c)));
+                    Identifier typeIdentifier = ChessTypeIdentifier.getIdentifier(String.valueOf(Character.toLowerCase(c)));
 
                     Piece piece = ChessPieceFactory.createPiece(typeIdentifier, team);
 

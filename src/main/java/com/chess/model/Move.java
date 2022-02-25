@@ -1,14 +1,57 @@
 package com.chess.model;
 
+/**
+ * Detials of a move on the board.
+ */
 public class Move {
-    private Position moveCell, fromCell;
+    /**
+     * The position of the piece that is being moved.
+     */
+    private Position moveCell;
+
+    /**
+     * The position where the piece is being moved to.
+     */
+    private Position fromCell;
+
+    /**
+     * The piece type identifier of the piece that is being moved.
+     */
     private Identifier pieceType;
+
+    /**
+     * If the move is an elimination move.
+     */
     private boolean elimination;
+
+    /**
+     * If the move is en passant.
+     */
     private boolean isEnPassant;
+
+    /**
+     * If the move is castling king side.
+     */
     private boolean isCastleKingSide;
+
+    /**
+     * If the move is castling queen side.
+     */
     private boolean isCastleQueenSide;
+
+    /**
+     * If the move is a promotion.
+     */
     private boolean isPromotion;
+
+    /**
+     * If the move creates a check.
+     */
     private boolean isCheck;
+
+    /**
+     * If the move creates a checkmate.
+     */
     private boolean isCheckMate;
 
     /**
@@ -16,13 +59,12 @@ public class Move {
      *
      * @param toCell The cell which the piece performing the move will be moved to
      * @param fromCell The cell which the piece performing the move moves away from
+     * @param pieceType The piece type identifier of the piece that is being moved
      */
     public Move(Position toCell, Position fromCell, Identifier pieceType) {
         this.moveCell = toCell;
         this.fromCell = fromCell;
         this.pieceType = pieceType;
-        this.isCheck = false;
-        this.isCheckMate = false;
     }
 
     /**
@@ -30,13 +72,14 @@ public class Move {
      *
      * @param toCell The cell which the piece performing the move will be moved to
      * @param fromCell The cell which the piece performing the move moves away from
-     * @param eliminatable Is true if move results in capture of another piece
+     * @param pieceType The piece type identifier of the piece that is being moved
+     * @param elimination If the move is an elimination move
      */
-    public Move(Position toCell, Position fromCell, Identifier pieceType, boolean eliminatable) {
+    public Move(Position toCell, Position fromCell, Identifier pieceType, boolean elimination) {
         this.moveCell = toCell;
         this.fromCell = fromCell;
         this.pieceType = pieceType;
-        this.elimination = eliminatable;
+        this.elimination = elimination;
         this.isCheck = false;
         this.isCheckMate = false;
     }
@@ -45,18 +88,17 @@ public class Move {
      * Constructor for a move that results in promotion
      *
      * @param toCell The cell which the piece performing the move will be moved to
-     * @param type The piece type which the pawn is promoted to
+     * @param promotionType The piece type identifier of the piece that is being promoted to
      */
     public Move(Position toCell, Identifier promotionType) {
         this.moveCell = toCell;
-        this.isPromotion = true;
         this.pieceType = promotionType;
-        this.isCheck = false;
-        this.isCheckMate = false;
+        this.isPromotion = true;
     }
 
     /**
      * Get the cell that the piece is moving to
+     * 
      * @return The cell which the piece is moving to
      */
     public Position getToCell() {
@@ -65,6 +107,7 @@ public class Move {
 
     /**
      * Get the cell that the piece is moving from
+     * 
      * @return The cell which the piece is moving away from
      */
     public Position getFromCell() {
@@ -73,6 +116,7 @@ public class Move {
 
     /**
      * Get bool for if this move will result in a capture
+     * 
      * @return True if move results in capture
      */
     public boolean isEliminatable() {
@@ -81,6 +125,7 @@ public class Move {
 
     /**
      * Get bool for if this move is En Passant
+     * 
      * @return True if move is En Passant
      */
     public boolean getIsEnPassant() {
@@ -89,6 +134,7 @@ public class Move {
 
     /**
      * Set this move to be En Passant
+     * 
      * @param isEnPassant The value for En Passant
      */
     public void setIsEnPassant(boolean isEnPassant) {
@@ -97,6 +143,7 @@ public class Move {
 
     /**
      * Get bool for if this move is castling on the kings side
+     * 
      * @return True if this move is a castling move on the kings side
      */
     public boolean getIsCastleKingSide() {
@@ -105,6 +152,7 @@ public class Move {
 
     /**
      * Indicate that this move is castling on the kings side
+     * 
      * @param isCastleKingSide True if this move results in castling on the kings side
      */
     public void setIsCastleKingSide(boolean isCastleKingSide) {
@@ -113,6 +161,7 @@ public class Move {
 
     /**
      * Get bool for if this move is castling on the queens side
+     * 
      * @return True if this move is a castling move on the queens side
      */
     public boolean getIsCastleQueenSide() {
@@ -121,6 +170,7 @@ public class Move {
 
     /**
      * Indicate that this move is castling on the queens side
+     * 
      * @param isCastleQueenSide True if this move results in castling on the queens side
      */
     public void setIsCastleQueenSide(boolean isCastleQueenSide) {
@@ -129,6 +179,7 @@ public class Move {
 
     /**
      * Get the piece type that this move is being performed on
+     * 
      * @return The piece type of the piece that this move is performed on
      */
     public Identifier getPieceType() {
@@ -138,19 +189,20 @@ public class Move {
     /**
      * Indicate that this move results in check on other team
      */
-    public void addCheck() {
-        this.isCheck = true;
+    public void setCheck(boolean isCheck) {
+        this.isCheck = isCheck;
     }
 
     /**
      * Indicate that this move results in check mate on other team
      */
-    public void addCheckMate() {
-        this.isCheckMate = true;
+    public void setCheckMate(boolean isCheckMate) {
+        this.isCheckMate = isCheckMate;
     }
 
     /**
      * The toString of this class. Makes a string in the form of chess notation based on this move
+     * 
      * @return A chess notation in String form
      */
     @Override

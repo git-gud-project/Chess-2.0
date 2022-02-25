@@ -10,9 +10,7 @@ import com.chess.model.Position;
 import com.chess.model.Rule;
 
 /**
- * The class for the Bishop.
- * Is in charge of:
- *  - Adding all possible moves for the bishop piece and returning it to the game.
+ * The class for the Knight behavior.
  */
 public class PieceKnight implements PieceBehavior {
     /**
@@ -22,11 +20,11 @@ public class PieceKnight implements PieceBehavior {
 
     @Override
     public Identifier getTypeIdentifier() {
-        return ChessIdentifier.KNIGHT;
+        return ChessTypeIdentifier.KNIGHT;
     }
 
     @Override
-    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) {
+    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {
         possibleMoves.clear();
 
         rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 2, 1);

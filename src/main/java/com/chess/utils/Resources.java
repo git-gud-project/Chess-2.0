@@ -11,11 +11,11 @@ import javax.swing.*;
  */
 public final class Resources {
     /**
-     * HashMap of cached images.
+     * HashMap of cached icons.
      * 
-     * @see #getImage(String)
+     * @see #getImageIcon(String)
      */
-    private static HashMap<String, Image> cache = new HashMap<String, Image>();
+    private static HashMap<String, ImageIcon> cache = new HashMap<>();
 
     /**
      * Private constructor.
@@ -37,15 +37,7 @@ public final class Resources {
      * @param path The path of the resource.
      */
     public static Image getImage(String path) {
-        // Check if the image is already in the cache.
-        if (cache.containsKey(path)) {
-            return cache.get(path);
-        }
-
         Image image = Toolkit.getDefaultToolkit().getImage(Resources.class.getResource(path));
-
-        // Add the image to the cache.
-        cache.put(path, image);
 
         return image;
     }
@@ -56,7 +48,17 @@ public final class Resources {
      * @param path The path of the resource.
      */
     public static ImageIcon getImageIcon(String path) {
-        return new ImageIcon(getImage(path));
+        // Check if the image is already in the cache.
+        if (cache.containsKey(path)) {
+            return cache.get(path);
+        }
+
+        ImageIcon icon = new ImageIcon(getImage(path));
+
+        // Add the image to the cache.
+        cache.put(path, icon);
+
+        return icon;
     }
 
     public static ImageIcon getOwnImageIcon(String absolutePath) {

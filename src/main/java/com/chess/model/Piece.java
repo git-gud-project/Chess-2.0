@@ -30,25 +30,28 @@ public interface Piece {
     /**
      * Gets all possible moves for this piece.
      * 
+     * @param rule the rule that is being used
+     * @param position the position of the piece
      * @return all possible moves for this piece
+     * @throws IllegalArgumentException if the position is invalid
      */
-    public Iterator<Move> getPossibleMoves(Rule rule, Position position);
+    public Iterator<Move> getPossibleMoves(Rule rule, Position position) throws IllegalArgumentException;
 
     /**
-     * Event to be called when the piece is moved.
+     * Method that is called after a piece has been moved.
      * 
      * @param rule the rule that is being used
-     * @param from the cell that the piece was in before it was moved
-     * @param to the cell that the piece is now in
+     * @param from the position the piece has moved from
+     * @param to the position the piece has moved to
      */
     public void afterMove(Rule rule, Position from, Position to);
 
     /**
-     * Event to be called before the piece is moved.
+     * Method that is called before a piece is moved.
      * 
      * @param rule the rule that is being used
-     * @param from the cell that the piece was in before it was moved
-     * @param to the cell that the piece is now in
+     * @param from the position the piece is moving from
+     * @param to the position the piece is moving to
      */
     public void beforeMove(Rule rule, Position from, Position to);
 }

@@ -2,6 +2,9 @@ package com.chess.model;
 
 import java.util.List;
 
+/**
+ * Rules for how pieces can move and what they may do.
+ */
 public interface Rule {
     /**
      * Check if a move is an elimination move.

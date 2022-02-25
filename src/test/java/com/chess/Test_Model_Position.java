@@ -36,8 +36,8 @@ public class Test_Model_Position {
 
         Assertions.assertNotNull(piece);
 
-        Assertions.assertEquals(piece.getTeamIdentifier(), TeamManager.WHITE);
+        Assertions.assertEquals(piece.getTeamIdentifier(), ChessTeamIdentifier.WHITE);
 
-        Assertions.assertEquals(piece.getTypeIdentifier(), ChessIdentifier.PAWN);
+        Assertions.assertEquals(piece.getTypeIdentifier(), ChessTypeIdentifier.PAWN);
     }
 }

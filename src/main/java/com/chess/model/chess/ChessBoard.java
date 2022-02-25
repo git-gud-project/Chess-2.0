@@ -29,32 +29,16 @@ public class ChessBoard implements Board {
         initCellMatrix(gameSize);
     }
 
-    /**
-     * Gets the number of rows in the board.
-     *
-     * @return The number of rows in the board.
-     */
     @Override
     public int getRows() {
         return gameSize;
     }
 
-    /**
-     * Gets the number of columns in the board.
-     * @return The number of columns in the board.
-     */
     @Override
     public int getColumns() {
         return gameSize;
     }
 
-    /**
-     * Get a cell from the cell matrix.
-     * 
-     * @param row The row of the cell.
-     * @param col The column of the cell.
-     * @return The cell at the specified row and column.
-     */
     @Override
     public Cell getCell(int row, int col) throws IllegalArgumentException {
         if (row < 0 || row >= gameSize || col < 0 || col >= gameSize) {
@@ -71,7 +55,7 @@ public class ChessBoard implements Board {
      * @return The cell at the specified position.
      */
     @Override
-    public Cell getCell(Position pos) {
+    public Cell getCell(Position pos) throws IllegalArgumentException {
         return getCell(pos.getRow(), pos.getCol());
     }
 
@@ -94,8 +78,9 @@ public class ChessBoard implements Board {
      * 
      * @param position the position of the cell
      * @return the cell at the specified position
+     * @throws IllegalArgumentException if the position is invalid
      */
-    public Cell getCell(String position) {
+    public Cell getCell(String position) throws IllegalArgumentException {
         int row = position.charAt(1) - '1';
         int col = position.charAt(0) - 'a';
 
@@ -108,8 +93,9 @@ public class ChessBoard implements Board {
      * @param row the row of the cell
      * @param col the column of the cell
      * @return if the cell is empty
+     * @throws IllegalArgumentException if the position is invalid
      */
-    public boolean isEmpty(int row, int col) {
+    public boolean isEmpty(int row, int col) throws IllegalArgumentException {
         return (cellMatrix[row][col].getPiece() == null);
     }
 
@@ -122,20 +108,5 @@ public class ChessBoard implements Board {
      */
     public boolean isValid(int row, int col) {
         return ((row < gameSize && row >= 0) && (col < gameSize && col >= 0));
-    }
-
-    /**
-     * If a piece can capture in this position.
-     * 
-     * @param piece the piece
-     * @param row   the row of the position
-     * @param col   the column of the position
-     */
-    public boolean canCapture(ChessPiece piece, int row, int col) {
-        if (!isValid(row, col))
-            return false;
-        if (isEmpty(row, col))
-            return false;
-        return piece.getTeamIdentifier() != getCell(row, col).getPiece().getTeamIdentifier();
     }
 }

@@ -24,17 +24,17 @@ public final class ChessPieceFactory {
 
         String typeString = type.toString();
 
-        if (typeString.equals(ChessIdentifier.BISHOP.toString())) {
+        if (typeString.equals(ChessTypeIdentifier.BISHOP.toString())) {
             behavior = new PieceBishop();
-        } else if (typeString.equals(ChessIdentifier.KING.toString())) {
+        } else if (typeString.equals(ChessTypeIdentifier.KING.toString())) {
             behavior = new PieceKing(team.getTeamParameters());
-        } else if (typeString.equals(ChessIdentifier.KNIGHT.toString())) {
+        } else if (typeString.equals(ChessTypeIdentifier.KNIGHT.toString())) {
             behavior = new PieceKnight();
-        } else if (typeString.equals(ChessIdentifier.PAWN.toString())) {
+        } else if (typeString.equals(ChessTypeIdentifier.PAWN.toString())) {
             behavior = new PiecePawn(team.getTeamParameters());
-        } else if (typeString.equals(ChessIdentifier.QUEEN.toString())) {
+        } else if (typeString.equals(ChessTypeIdentifier.QUEEN.toString())) {
             behavior = new PieceQueen();
-        } else if (typeString.equals(ChessIdentifier.ROOK.toString())) {
+        } else if (typeString.equals(ChessTypeIdentifier.ROOK.toString())) {
             behavior = new PieceRook(team.getTeamParameters());
         } else {
             throw new IllegalArgumentException("Unknown piece type: " + type);

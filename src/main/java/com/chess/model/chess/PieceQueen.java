@@ -10,9 +10,7 @@ import com.chess.model.Position;
 import com.chess.model.Rule;
 
 /**
- * The class for the Queen.
- * Is in charge of:
- *  - Adding all possible moves for the Queen piece and returning it to the game.
+ * The class for the Queen behavior.
  */
 public class PieceQueen implements PieceBehavior {
     /**
@@ -22,11 +20,11 @@ public class PieceQueen implements PieceBehavior {
 
     @Override
     public Identifier getTypeIdentifier() {
-        return ChessIdentifier.QUEEN;
+        return ChessTypeIdentifier.QUEEN;
     }
 
     @Override
-    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) {
+    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {
         possibleMoves.clear();
 
         rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 1);

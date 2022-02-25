@@ -6,7 +6,7 @@ import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.ChessPieceFactory;
 import com.chess.model.chess.ChessTeam;
 import com.chess.model.chess.ChessTeamParameters;
-import com.chess.model.chess.ChessIdentifier;
+import com.chess.model.chess.ChessTypeIdentifier;
 import com.chess.control.messages.*;
 
 import javax.swing.*;
@@ -126,13 +126,13 @@ public class ChessControl {
 
         // Halfmove clock: The number of halfmoves since the last capture or pawn
         // advance, used for the fifty-move rule.
-        boolean halfMove = !typeIdentifier.equals(ChessIdentifier.PAWN) && !isElimination;
+        boolean halfMove = !typeIdentifier.equals(ChessTypeIdentifier.PAWN) && !isElimination;
 
         ChessTeam otherTeam = model.getOtherTeam(model.getCurrentTeam());
 
         final ChessTeamParameters otherTeamParameters = otherTeam.getTeamParameters();
 
-        if (typeIdentifier.equals(ChessIdentifier.PAWN) && move.getToCell().getRow() == otherTeamParameters.getKingRow()) {
+        if (typeIdentifier.equals(ChessTypeIdentifier.PAWN) && move.getToCell().getRow() == otherTeamParameters.getKingRow()) {
             if (isMyTurn()) {
                 Identifier promotedTypeIdentifier = view.promotePawn();
 
@@ -189,7 +189,7 @@ public class ChessControl {
                     case 0:
                         checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
                         int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
-                        Time newTime = new Time(input);
+                        GameTime newTime = new GameTime(input, 0, 0);
                         view.getModel().resetState(newTime);
                         model.resetState(newTime);
                         view.getInfoPanel().getMovesPanel().resetMovesPanel();
@@ -209,7 +209,7 @@ public class ChessControl {
                     case 0:
                         checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
                         int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
-                        Time newTime = new Time(input);
+                        GameTime newTime = new GameTime(input, 0, 0);
                         view.getModel().resetState(newTime);
                         model.resetState(newTime);
                         view.getInfoPanel().getMovesPanel().resetMovesPanel();
@@ -326,7 +326,7 @@ public class ChessControl {
             if (model.getBoard().getCell(selectedCell.getRow(), selectedCell.getCol()).getPiece() == null) {
                 selectedCell.unhighlight();
             } else if (!model.getBoard().getCell(selectedCell.getRow(), selectedCell.getCol()).getPiece()
-                    .getTypeIdentifier().equals(ChessIdentifier.KING)) {
+                    .getTypeIdentifier().equals(ChessTypeIdentifier.KING)) {
                 selectedCell.unhighlight();
             } else {
                 selectedCell.unhighlight();

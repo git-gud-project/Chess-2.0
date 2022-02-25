@@ -3,6 +3,9 @@ package com.chess.model.chess;
 import com.chess.model.Identifier;
 import com.chess.model.Position;
 
+/**
+ * Parameters shared by all chess teams.
+ */
 public final class SharedChessTeamParameters {
     /**
      * The position marked for en passant.
@@ -12,7 +15,7 @@ public final class SharedChessTeamParameters {
     /**
      * The team that enabled en passant.
      */
-    private Identifier enPassantTeam = ChessIdentifier.NULL;
+    private Identifier enPassantTeam = ChessTypeIdentifier.NULL;
 
     /**
      * Gets the position marked for en passant.

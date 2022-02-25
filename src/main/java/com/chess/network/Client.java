@@ -88,7 +88,7 @@ public class Client {
      * 
      * @param messageDelegate The delegate to call when a message is received.
      */
-    public void setMessageDelegate(Delegate<Message> messageDelegate) {
+    protected synchronized void setMessageDelegate(Delegate<Message> messageDelegate) {
         this.messageDelegate = messageDelegate;
     }
 
@@ -97,7 +97,7 @@ public class Client {
      * 
      * @param onDisconnectDelegate The delegate to call when the client disconnects.
      */
-    public void setOnDisconnectDelegate(Delegate<Client> onDisconnectDelegate) {
+    protected synchronized void setOnDisconnectDelegate(Delegate<Client> onDisconnectDelegate) {
         this.onDisconnectDelegate = onDisconnectDelegate;
     }
 
@@ -106,7 +106,7 @@ public class Client {
      * 
      * This will start a thread that will listen for messages from the client.
      */
-    public void start() {
+    protected void start() {
         running = true;
 
         // Start the thread that will receive messages
@@ -117,7 +117,7 @@ public class Client {
     /**
      * Stops the client.
      */
-    public void stop() {
+    protected void stop() {
         // If we are not running, return
         if (!running) {
             return;
@@ -169,7 +169,7 @@ public class Client {
                 // Can occur when the client disconnects, close it
                 break;
             } catch (ClassNotFoundException e) {
-                // Something went wrong, close the socket
+                // Something went wrong, client out of date, close it
                 e.printStackTrace();
                 break;
             }

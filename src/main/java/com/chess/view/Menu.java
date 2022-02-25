@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.chess.model.*;
+import com.chess.model.GameTime;
 import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.SerialModel;
 
@@ -40,7 +41,7 @@ public class Menu extends JMenuBar {
     private Event<String> onConnectToServerEvent = new Event<>();
     private Event<JMenuItem> onDisconnectEvent = new Event<>();
     private Event<SerialModel> onLoadGameEvent = new Event<>();
-    private Event<Time> onTimeChangeEvent = new Event<>();
+    private Event<GameTime> onTimeChangeEvent = new Event<>();
 
     public Menu(ChessModel model) {
         super();
@@ -65,7 +66,7 @@ public class Menu extends JMenuBar {
             if(answer == JOptionPane.YES_OPTION) {
                 try {
                     int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:", "5"));
-                    Time newTime = new Time(input);
+                    GameTime newTime = new GameTime(input, 0, 0);
                     model.resetState(newTime);
                 }
                 catch(NullPointerException exc) {
@@ -226,7 +227,7 @@ public class Menu extends JMenuBar {
     
     public Event<SerialModel> getOnLoadGameEvent() { return onLoadGameEvent; }
 
-    public Event<Time> getOnTimeChangeEvent() { return onTimeChangeEvent; }
+    public Event<GameTime> getOnTimeChangeEvent() { return onTimeChangeEvent; }
 
     public String getSoundMap() {
         return this.choosenSoundMap;

@@ -6,8 +6,10 @@ package com.chess.model;
  * Has a row and a column component.
  */
 public class Position {
+    /**
+     * Indicates that the position is invalid.
+     */
     public static final Position INVALID = new Position(-1, -1);
-
 
     /**
      * The row of the position.
@@ -125,6 +127,7 @@ public class Position {
      */
     @Override
     public String toString() {
+        // Special case for invalid position
         if (row == -1 && col == -1) {
             return "INVALID";
         }

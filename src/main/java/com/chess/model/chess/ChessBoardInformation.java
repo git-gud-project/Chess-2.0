@@ -6,48 +6,64 @@ import com.chess.model.Identifier;
 import com.chess.model.MovesCalculator;
 import com.chess.model.Position;
 
+/**
+ * This class contains information about the chess board. Facilitates the
+ * connection between the chess model and sub components.
+ */
 public class ChessBoardInformation implements BoardInformation {
 
+    /**
+     * The board.
+     */
     private final Board board;
 
+    /**
+     * The team manager.
+     */
     private final TeamManager teamManager;
 
+    /**
+     * Creates a new chess board information.
+     * 
+     * @param board the board
+     * @param teamManager the team manager
+     */
     public ChessBoardInformation(Board board, TeamManager teamManager) {
         this.board = board;
         this.teamManager = teamManager;
     }
 
     @Override
-    public boolean isEmpty(int row, int col) {
+    public boolean isEmpty(int row, int col) throws IllegalArgumentException {
         return this.board.getCell(row, col).getPiece() == null;
     }
 
     @Override
-    public boolean isEmpty(Position position) {
+    public boolean isEmpty(Position position) throws IllegalArgumentException {
         return this.isEmpty(position.getRow(), position.getCol());
     }
 
     @Override
-    public Identifier getTeamIdentifier(Position position) {
+    public Identifier getTeamIdentifier(Position position) throws IllegalArgumentException {
         int row = position.getRow();
         int col = position.getCol();
         return this.board.getCell(row, col).getPiece().getTeamIdentifier();
     }
 
     @Override
-    public Identifier getTeamIdentifier(int row, int col) {
+    public Identifier getTeamIdentifier(int row, int col) throws IllegalArgumentException {
         return this.board.getCell(row, col).getPiece().getTeamIdentifier();
     }
 
     @Override
-    public Identifier getTypeIdentifier(Position position) {
+    public Identifier getTypeIdentifier(Position position) throws IllegalArgumentException {
         int row = position.getRow();
         int col = position.getCol();
         return this.board.getCell(row, col).getPiece().getTypeIdentifier();
     }
 
     @Override
-    public Identifier getTypeIdentifier(int row, int col) {
+    public Identifier getTypeIdentifier(int row, int col) throws IllegalArgumentException {
         return this.board.getCell(row, col).getPiece().getTypeIdentifier();
     }
 
@@ -65,7 +81,7 @@ public class ChessBoardInformation implements BoardInformation {
 
     @Override
     // todo add boolean parameter to signal that it is a fake move
-    public void setPiece(Position position, Identifier piece, Identifier team, boolean isFinalMove) {
+    public void setPiece(Position position, Identifier piece, Identifier team, boolean isFinalMove) throws IllegalArgumentException {
         Cell cell = board.getCell(position);
 
         cell.updatePiece(ChessPieceFactory.createPiece(piece, teamManager.getTeam(team)), isFinalMove);
@@ -73,13 +89,13 @@ public class ChessBoardInformation implements BoardInformation {
 
     @Override
     // todo add boolean parameter to signal that it is a fake move
-    public void clearPiece(Position position, boolean isFinalMove) {
+    public void clearPiece(Position position, boolean isFinalMove) throws IllegalArgumentException {
         Cell cell = board.getCell(position);
         cell.emptyCell(isFinalMove);
     }
 
     @Override
-    public boolean isElimination(Position position, Identifier piece, Identifier team) {
+    public boolean isElimination(Position position, Identifier piece, Identifier team) throws IllegalArgumentException {
         Identifier otherTeamIdentifier = teamManager.getOtherTeamIdentifier(team);
         ChessTeamParameters otherTeam = teamManager.getTeamParameters(otherTeamIdentifier);
 
@@ -87,7 +103,7 @@ public class ChessBoardInformation implements BoardInformation {
             return false;
         }
 
-        if (piece.equals(ChessIdentifier.PAWN)) {
+        if (piece.equals(ChessTypeIdentifier.PAWN)) {
             return otherTeam.getSharedTeamParameters().getEnPassantPosition().equals(position);
         }
 
@@ -95,7 +111,7 @@ public class ChessBoardInformation implements BoardInformation {
     }
 
     @Override
-    public MovesCalculator getPossibleMovesIterator(Position position) {
+    public MovesCalculator getPossibleMovesIterator(Position position) throws IllegalArgumentException {
         Cell cell = board.getCell(position);
 
         return (rule, pos) -> {

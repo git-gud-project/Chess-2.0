@@ -7,6 +7,6 @@ import java.io.Serializable;
  * 
  * Implements Serializable so that it can be sent over the network.
  */
-public class Message implements Serializable {
+public interface Message extends Serializable {
     
 }

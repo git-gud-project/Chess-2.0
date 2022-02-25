@@ -3,7 +3,7 @@ package com.chess.control.messages;
 import com.chess.model.Identifier;
 import com.chess.network.Message;
 
-public class PromotePawnMessage extends Message {
+public class PromotePawnMessage implements Message {
     private int row;
     private int col;
     private Identifier pieceType;

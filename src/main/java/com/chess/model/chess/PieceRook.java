@@ -10,10 +10,7 @@ import com.chess.model.Position;
 import com.chess.model.Rule;
 
 /**
- * The class for the Rook.
- * Is in charge of:
- *  - Adding all possible moves for the rook piece and returning it to the game.
- *  - Checking if the rook has moved or not.
+ * The class for the Rook behavior.
  */
 public class PieceRook implements PieceBehavior{
     /**
@@ -21,8 +18,16 @@ public class PieceRook implements PieceBehavior{
      */
     private final ArrayList<Move> possibleMoves;
     
+    /**
+     * The team parameters of the team that this piece belongs to.
+     */
     private final ChessTeamParameters teamParameters;
 
+    /**
+     * Create a new piece king behavior.
+     * 
+     * @param teamParameters The team parameters of the team that this piece belongs to.
+     */
     public PieceRook(ChessTeamParameters teamParameters) {
         this.teamParameters = teamParameters;
         this.possibleMoves = new ArrayList<>();
@@ -30,15 +35,9 @@ public class PieceRook implements PieceBehavior{
 
     @Override
     public Identifier getTypeIdentifier() {
-        return ChessIdentifier.ROOK;
+        return ChessTypeIdentifier.ROOK;
     }
 
-    /**
-     * Called when the piece is moved.
-     * 
-     * @param from the cell that the piece was in before it was moved
-     * @param to the cell that the piece is now in
-     */
     @Override
     public void afterMove(Rule rule, Position from, Position to) {
         // Disable castling
@@ -50,7 +49,7 @@ public class PieceRook implements PieceBehavior{
     }
 
     @Override
-    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) {
+    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {
         possibleMoves.clear();
 
         rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 0);

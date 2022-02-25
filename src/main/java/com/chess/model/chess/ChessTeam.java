@@ -16,7 +16,7 @@ public class ChessTeam implements Team {
 
     private String name;
 
-    private Time time;
+    private GameTime time;
 
     private Identifier teamIdentifier;
 
@@ -29,7 +29,7 @@ public class ChessTeam implements Team {
     private boolean[] ownSkin = {false, false, false, false, false, false};
     private int[] skinIndex = {0, 0, 0, 0, 0, 0};
 
-    private static final Identifier[] orderedNames = {ChessIdentifier.PAWN, ChessIdentifier.ROOK, ChessIdentifier.KNIGHT, ChessIdentifier.BISHOP, ChessIdentifier.QUEEN, ChessIdentifier.KING};
+    private static final Identifier[] orderedNames = {ChessTypeIdentifier.PAWN, ChessTypeIdentifier.ROOK, ChessTypeIdentifier.KNIGHT, ChessTypeIdentifier.BISHOP, ChessTypeIdentifier.QUEEN, ChessTypeIdentifier.KING};
     private static final String[] whiteNames = {"pw.png", "rw.png", "nw.png", "bw.png", "qw.png", "kw.png"};
     private static final String[] blackNames = {"pb.png", "rb.png", "nb.png", "bb.png", "qb.png", "kb.png"};
 
@@ -39,7 +39,7 @@ public class ChessTeam implements Team {
 
     private Event<String> onNameChangedEvent = new Event<>();
 
-    private Event<Time> onTimeChangedEvent = new Event<>();
+    private Event<GameTime> onTimeChangedEvent = new Event<>();
 
     private Event<Boolean> onAuthorityChangedEvent = new Event<>();
 
@@ -47,7 +47,7 @@ public class ChessTeam implements Team {
     // Constructors
     //
 
-    public ChessTeam(Identifier teamIdentifier, Color color, String name, Time time, ChessTeamParameters teamParameters) {
+    public ChessTeam(Identifier teamIdentifier, Color color, String name, GameTime time, ChessTeamParameters teamParameters) {
         this.teamColor = color;
         this.teamIdentifier = teamIdentifier;
         this.name = name;
@@ -57,7 +57,7 @@ public class ChessTeam implements Team {
         initHashMap();
     }
 
-    public ChessTeam(Identifier teamIdentifier, Color color, String name, Time time, ChessTeamParameters teamParameters, HashMap<Identifier, String> skinMap, boolean[] ownSkin, int[] skinIndex) {
+    public ChessTeam(Identifier teamIdentifier, Color color, String name, GameTime time, ChessTeamParameters teamParameters, HashMap<Identifier, String> skinMap, boolean[] ownSkin, int[] skinIndex) {
         this.teamColor = color;
         this.teamIdentifier = teamIdentifier;
         this.name = name;
@@ -88,7 +88,7 @@ public class ChessTeam implements Team {
         return name;
     }
 
-    public Time getTime() {
+    public GameTime getTime() {
         return time;
     }
 
@@ -114,7 +114,7 @@ public class ChessTeam implements Team {
         onAuthorityChangedEvent.trigger(hasAuthority);
     }
 
-    public void setTime(Time time) {
+    public void setTime(GameTime time) {
         this.time = time;
         onTimeChangedEvent.trigger(time);
     }
@@ -127,7 +127,7 @@ public class ChessTeam implements Team {
         return onNameChangedEvent;
     }
 
-    public Event<Time> getOnTimeChangedEvent() {
+    public Event<GameTime> getOnTimeChangedEvent() {
         return onTimeChangedEvent;
     }
 

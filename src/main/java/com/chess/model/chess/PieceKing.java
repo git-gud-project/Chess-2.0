@@ -6,10 +6,7 @@ import java.util.Iterator;
 import com.chess.model.*;
 
 /**
- * The class for the King.
- * Is in charge of:
- *  - Adding all possible moves for the king piece and returning it to the game.
- *  - Checking if the king can castle to both king's- and queen's side.
+ * The class for the King behavior.
  */
 public class PieceKing implements PieceBehavior {
     /**
@@ -17,8 +14,16 @@ public class PieceKing implements PieceBehavior {
      */
     private final ArrayList<Move> possibleMoves;
     
+    /**
+     * The team parameters of the team that this piece belongs to.
+     */
     private final ChessTeamParameters teamParameters;
 
+    /**
+     * Create a new piece king behavior.
+     * 
+     * @param teamParameters The team parameters of the team that this piece belongs to.
+     */
     public PieceKing(ChessTeamParameters teamParameters) {
         this.teamParameters = teamParameters;
         this.possibleMoves = new ArrayList<>();
@@ -26,11 +31,11 @@ public class PieceKing implements PieceBehavior {
 
     @Override
     public Identifier getTypeIdentifier() {
-        return ChessIdentifier.KING;
+        return ChessTypeIdentifier.KING;
     }
 
     @Override
-    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) {
+    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {
         possibleMoves.clear();
 
         rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 1, 1);
@@ -48,7 +53,7 @@ public class PieceKing implements PieceBehavior {
         if (canCastleKingside) {
             boolean canCastle = true;
             
-            // Check that the positions between the king and the rook are empty. Using rule.isEmpty()
+            // Check that the positions between the king and the rook are empty.
             for (int i = position.getCol() + 1; i < position.getCol() + 3; i++) {
                 if (!rule.isEmpty(new Position(position.getRow(), i))) {
                     canCastle = false;
@@ -66,7 +71,7 @@ public class PieceKing implements PieceBehavior {
         if (canCastleQueenside) {
             boolean canCastle = true;
 
-            // Check that the positions between the king and the rook are empty. Using rule.isEmpty()
+            // Check that the positions between the king and the rook are empty.
             for (int i = position.getCol() - 1; i > position.getCol() - 4; i--) {
                 if (!rule.isEmpty(new Position(position.getRow(), i))) {
                     canCastle = false;
@@ -84,12 +89,6 @@ public class PieceKing implements PieceBehavior {
         return possibleMoves.iterator();
     }
 
-    /**
-     * Called when the piece is moved.
-     * 
-     * @param from the cell that the piece was in before it was moved
-     * @param to the cell that the piece is now in
-     */
     @Override
     public void afterMove(Rule rule, Position from, Position to) {
         // Set the castling rights to false if the king is moved.
@@ -97,12 +96,6 @@ public class PieceKing implements PieceBehavior {
         teamParameters.setCanCastleQueenside(false);
     }
 
-    /**
-     * Called before the piece is moved.
-     * 
-     * @param from the cell that the piece was in before it was moved
-     * @param to the cell that the piece is now in
-     */
     @Override
     public void beforeMove(Rule rule, Position from, Position to) {
         final boolean canCastleKingSide = teamParameters.canCastleKingside();

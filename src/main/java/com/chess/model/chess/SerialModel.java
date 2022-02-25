@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import com.chess.model.Identifier;
-import com.chess.model.Time;
+import com.chess.model.GameTime;
 
 public class SerialModel implements Serializable {
     private String fen;
@@ -13,7 +13,7 @@ public class SerialModel implements Serializable {
     private int[] skinIndexWhite, skinIndexBlack;
     private boolean[] ownSkinWhite, ownSkinBlack;
     private String whiteName, blackName;
-    private Time whiteTime, blackTime;
+    private GameTime whiteTime, blackTime;
     private boolean started;
 
     //
@@ -36,11 +36,11 @@ public class SerialModel implements Serializable {
         return blackName;
     }
     
-    public Time getWhiteTime() {
+    public GameTime getWhiteTime() {
         return whiteTime;
     }
     
-    public Time getBlackTime() {
+    public GameTime getBlackTime() {
         return blackTime;
     }
 
@@ -80,11 +80,11 @@ public class SerialModel implements Serializable {
         this.blackName = blackName;
     }
 
-    public void setWhiteTime(Time whiteTime) {
+    public void setWhiteTime(GameTime whiteTime) {
         this.whiteTime = whiteTime;
     }
 
-    public void setBlackTime(Time blackTime) {
+    public void setBlackTime(GameTime blackTime) {
         this.blackTime = blackTime;
     }
 

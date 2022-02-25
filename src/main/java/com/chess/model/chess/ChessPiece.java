@@ -75,22 +75,21 @@ public class ChessPiece implements Piece {
         }
     }
 
-    /**
-     * Gets all possible moves for this piece.
-     * 
-     * @return all possible moves for this piece
-     */
+    @Override
     public Iterator<Move> getPossibleMoves(Rule rule, Position position) {
+        // Forwards the call to the PieceBehavior.
         return behavior.getPossibleMoves(rule, position, getTeamIdentifier());
     }
 
     @Override
     public void afterMove(Rule rule, Position from, Position to) {
+        // Forwards the call to the PieceBehavior.
         behavior.afterMove(rule, from, to);
     }
 
     @Override
     public void beforeMove(Rule rule, Position from, Position to) {
+        // Forwards the call to the PieceBehavior.
         behavior.beforeMove(rule, from, to);
     }
 }

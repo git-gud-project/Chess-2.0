@@ -2,6 +2,7 @@ package com.chess;
 
 import com.chess.model.Position;
 import com.chess.model.chess.ChessModel;
+import com.chess.model.chess.ChessTeamIdentifier;
 import com.chess.model.chess.TeamManager;
 
 import org.junit.jupiter.api.*;
@@ -32,8 +33,8 @@ public class Test_Model_Check {
         // Move h5 to f7
         model.takeTurn(new Position("h5"), new Position("f7"));
 
-        Assertions.assertTrue(model.isCheck(TeamManager.BLACK));
+        Assertions.assertTrue(model.isCheck(ChessTeamIdentifier.BLACK));
 
-        Assertions.assertEquals(model.isGameOver(TeamManager.BLACK), 2);
+        Assertions.assertEquals(model.isGameOver(ChessTeamIdentifier.BLACK), 2);
     }
 }
