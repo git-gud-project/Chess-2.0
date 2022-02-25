@@ -398,7 +398,7 @@ public class NetworkControl {
             control.setPaused(true);
             
             // Send a load message to the client.
-            client.sendMessage(new LoadGameMessage(new SerialModel(getModel())));
+            client.sendMessage(new LoadGameMessage(getModel().getSerialModel()));
         });
 
         networkServer.setMessageDelegate(PromotePawnMessage.class, (client, message) -> {
