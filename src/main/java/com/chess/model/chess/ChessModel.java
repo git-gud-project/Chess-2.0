@@ -106,7 +106,7 @@ public class ChessModel {
 
         // Setup rule
 
-        rule = new ChessRule(boardInformation);
+        rule = new ChessRule(boardInformation, teamManager);
 
         // Setup other variables
 
@@ -180,15 +180,10 @@ public class ChessModel {
      * 
      * @param enemyTeamIdentifier the team of the enemy player
      * @return 0 if it is not checkmate or stalemate, 1 if it is stalemate, 2 if
+     *        it is checkmate
      */
     public int isGameOver(Identifier enemyTeamIdentifier) {
-        if (rule.allTeamMoves(enemyTeamIdentifier).isEmpty() && rule.isCheck(enemyTeamIdentifier)) {
-            return 2;
-        } else if (rule.allTeamMoves(enemyTeamIdentifier).isEmpty() && !rule.isCheck(enemyTeamIdentifier)) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return rule.isGameOver(enemyTeamIdentifier);
     }
 
     /**
@@ -369,9 +364,6 @@ public class ChessModel {
 
     public void setCurrentTeam(ChessTeam team) {
         teamManager.setCurrentTeamIdentifier(team.getTeamIdentifier());
-
-        rule.setCurrentTeam(team.getTeamIdentifier());
-        rule.setOpponentTeam(teamManager.getOtherTeamIdentifier(team.getTeamIdentifier()));
 
         this.onTeamChangeEvent.trigger(team);
     }

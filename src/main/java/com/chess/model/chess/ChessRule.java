@@ -11,14 +11,13 @@ public class ChessRule implements Rule {
 
     private final int gameSize;
 
-    private Identifier currentTeam;
+    private final TeamManager teamManager;
 
-    private Identifier opponentTeam;
-
-    public ChessRule(BoardInformation BoardInfo) {
+    public ChessRule(BoardInformation BoardInfo, TeamManager teamManager) {
         this.boardInfo = BoardInfo;
+        this.teamManager = teamManager;
+
         gameSize = this.boardInfo.getBoardSize();
-        currentTeam = new Identifier("w"); //todo Might be better to take as input to get identifier
     }
 
     /**
@@ -182,7 +181,7 @@ public class ChessRule implements Rule {
             }
         }
 
-        if (currentTeam.equals(teamIdentifier)) {
+        if (teamManager.getCurrentTeamIdentifier().equals(teamIdentifier)) {
             validateMoves(pieceIdentifier, teamIdentifier, registry);
         }
 
@@ -221,22 +220,6 @@ public class ChessRule implements Rule {
 
             return true;
         }
-    }
-
-    /**
-     * Set the current team identifier.
-     * @param currentTeam The current team identifier.
-     */
-    public void setCurrentTeam(Identifier currentTeam) {
-        this.currentTeam = currentTeam;
-    }
-
-    /**
-     * Set the opponent team identifier.
-     * @param opponentTeam The opponent team identifier.
-     */
-    public void setOpponentTeam(Identifier opponentTeam) {
-        this.opponentTeam = opponentTeam;
     }
 
     /**
@@ -293,20 +276,40 @@ public class ChessRule implements Rule {
         return teamMovesList;
     }
 
-    public int isGameOver(Identifier enemyPlayerTeam){
-        if (allTeamMoves(enemyPlayerTeam).isEmpty() && isCheck(enemyPlayerTeam)) {
-            return 2;
+    public boolean canMove(Identifier playerTeamIdentifier) {
+        for (int row = 0; row < gameSize; row++) {
+            for (int col = 0; col < gameSize; col++) {
+                if (!boardInfo.isEmpty(row, col) && boardInfo.getTeamIdentifier(row, col).equals(playerTeamIdentifier)) {
+
+                    // Get the moves calculator
+                    MovesCalculator calculator = boardInfo.getPossibleMovesIterator(new Position(row, col));
+                    
+                    // Calculate the moves
+                    Iterator<Move> it = calculator.getPossibleMoves(this, new Position(row, col));
+                    
+                    if (it.hasNext()) {
+                        return true;
+                    }
+                }
+            }
         }
-        else if (allTeamMoves(enemyPlayerTeam).isEmpty() && !isCheck(enemyPlayerTeam)) {
-            return 1;
-        }
-        else {
+        return false;
+    }
+
+    public int isGameOver(Identifier enemyTeamIdentifier) {
+        final boolean canMove = canMove(enemyTeamIdentifier);
+
+        if (canMove) {
             return 0;
         }
+
+        final boolean isCheck = isCheck(enemyTeamIdentifier);
+
+        return isCheck ? 2 : 1;
     }
 
     public boolean isCheck(Identifier teamIdentifier) {
-        if (isGameOver(opponentTeam) != 0){
+        if (isGameOver(teamManager.getOtherTeamIdentifier(teamIdentifier)) != 0){
             return false;
         }
 
