@@ -112,7 +112,7 @@ public class ChessView extends JFrame {
         });
 
         // Create board panel
-        boardPanel = new BoardPanel(this, 8);
+        boardPanel = new BoardPanel(model, 8);
 
         this.add(boardPanel, BorderLayout.CENTER);
 
@@ -122,7 +122,7 @@ public class ChessView extends JFrame {
         this.add(infoPanel, BorderLayout.EAST);
 
         // Add menu bar
-        menuPanel = new Menu(this);
+        menuPanel = new Menu(model);
 
         this.setJMenuBar(menuPanel);
 

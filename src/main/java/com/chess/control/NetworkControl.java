@@ -8,6 +8,7 @@ import com.chess.control.messages.*;
 import com.chess.model.*;
 import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.ChessTeam;
+import com.chess.model.chess.SerialModel;
 import com.chess.view.*;
 
 public class NetworkControl {

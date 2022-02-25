@@ -1,6 +1,5 @@
 package com.chess.view;
 
-import com.chess.model.*;
 import com.chess.model.chess.ChessModel;
 import com.chess.utils.Event;
 

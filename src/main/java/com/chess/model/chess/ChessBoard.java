@@ -1,14 +1,7 @@
 package com.chess.model.chess;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.chess.model.Board;
 import com.chess.model.Cell;
-import com.chess.model.Identifier;
-import com.chess.model.Move;
-import com.chess.model.Piece;
 import com.chess.model.Position;
 
 /**
@@ -24,7 +17,7 @@ public class ChessBoard implements Board {
     /**
      * The size of the board.
      */
-    private int gameSize;
+    private final int gameSize;
 
     /**
      * Constructs a new board.
@@ -63,8 +56,13 @@ public class ChessBoard implements Board {
      * @return The cell at the specified row and column.
      */
     @Override
-    public Cell getCell(int row, int col) {
-        return cellMatrix[row][col];
+    public Cell getCell(int row, int col) throws IllegalArgumentException {
+        if (row < 0 || row >= gameSize || col < 0 || col >= gameSize) {
+            throw new IllegalArgumentException("Invalid board position (" + row + ", " + col + "), board size is " + gameSize);
+        }
+        
+        // Row is reversed
+        return cellMatrix[gameSize - 1 - row][col];
     }
 
     /**
@@ -73,7 +71,9 @@ public class ChessBoard implements Board {
      * @return The cell at the specified position.
      */
     @Override
-    public Cell getCell(Position pos) { return cellMatrix[pos.getRow()][pos.getCol()]; }
+    public Cell getCell(Position pos) {
+        return getCell(pos.getRow(), pos.getCol());
+    }
 
     /**
      * Initializes the cell matrix.
@@ -84,7 +84,7 @@ public class ChessBoard implements Board {
         cellMatrix = new Cell[gameSize][gameSize];
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
-                cellMatrix[gameSize - row - 1][col] = new Cell(new Position(row, col));
+                cellMatrix[row][col] = new Cell(new Position(gameSize - 1 - row, col));
             }
         }
     }
@@ -136,6 +136,6 @@ public class ChessBoard implements Board {
             return false;
         if (isEmpty(row, col))
             return false;
-        return piece.getTeamIdentifier() != cellMatrix[row][col].getPiece().getTeamIdentifier();
+        return piece.getTeamIdentifier() != getCell(row, col).getPiece().getTeamIdentifier();
     }
 }

@@ -1,12 +1,11 @@
 package com.chess;
 
 import com.chess.model.*;
-import com.chess.model.chess.ChessModel;
+import com.chess.model.chess.*;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.*;
 
-public class ModelTest {
+public class Test_Model_Position {
     private ChessModel model;
 
     @BeforeEach
@@ -25,9 +24,23 @@ public class ModelTest {
      * Test method for {@link com.chess.model.chess.ChessModel#loadFEN(java.lang.String)}. and {@link com.chess.model.chess.ChessModel#toFEN()}.
      */
     @Test
-    public void testStartFEN() {
+    public void testCell() {
         loadInitialPosition();
 
-        Assertions.assertEquals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", model.toFEN());
+        final Board board = model.getBoard();
+
+        final Position e2 = new Position("e2");
+
+        final Cell cell = board.getCell(e2);
+
+        Assertions.assertEquals(cell.getPosition(), e2);
+
+        final Piece piece = cell.getPiece();
+
+        Assertions.assertNotNull(piece);
+
+        Assertions.assertEquals(piece.getTeamIdentifier(), TeamManager.WHITE);
+
+        Assertions.assertEquals(piece.getTypeIdentifier(), PieceType.PAWN);
     }
 }

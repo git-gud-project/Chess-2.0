@@ -6,7 +6,6 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 
-import com.chess.model.*;
 import com.chess.model.chess.ChessModel;
 
 /**

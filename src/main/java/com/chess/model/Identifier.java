@@ -3,6 +3,8 @@ package com.chess.model;
 import java.io.Serializable;
 
 public class Identifier implements Serializable {
+    public static final Identifier NULL = new Identifier("");
+    
     private final String id;
 
     public Identifier(String id) {

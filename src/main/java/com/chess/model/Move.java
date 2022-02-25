@@ -1,7 +1,5 @@
 package com.chess.model;
 
-import com.chess.model.chess.PieceType;
-
 public class Move {
     private Position moveCell, fromCell;
     private Identifier pieceType;

@@ -31,6 +31,16 @@ public class Position {
     }
 
     /**
+     * Construct a position from a string.
+     * 
+     * @param position The string representation of the position.
+     */
+    public Position(String position) {
+        this.row = Integer.parseInt(position.substring(1, 2)) - 1;
+        this.col = position.charAt(0) - 'a';
+    }
+
+    /**
      * Get the row of the position.
      * 
      * @return The row of the position.
@@ -49,6 +59,20 @@ public class Position {
     }
 
     /**
+     * Add units to row
+     */
+    public Position addRow(int units) {
+        return new Position(row + units, col);
+    }
+
+    /**
+     * Add units to column
+     */
+    public Position addCol(int units) {
+        return new Position(row, col + units);
+    }
+
+    /**
      * Compute the distance between two positions.
      * 
      * @param position The position to compute the distance to.
@@ -56,6 +80,20 @@ public class Position {
      */
     public int distance(Position position) {
         return Math.abs(this.row - position.getRow()) + Math.abs(this.col - position.getCol());
+    }
+
+    /**
+     * Computer the distance in rows
+     */
+    public int distanceRow(Position position) {
+        return Math.abs(this.row - position.getRow());
+    }
+
+    /**
+     * Computer the distance in columns
+     */
+    public int distanceCol(Position position) {
+        return Math.abs(this.col - position.getCol());
     }
 
     /**
@@ -87,6 +125,10 @@ public class Position {
      */
     @Override
     public String toString() {
-        return String.valueOf('a' + getCol()) + String.valueOf('1' + getRow());
+        if (row == -1 && col == -1) {
+            return "INVALID";
+        }
+
+        return Character.toString('a' + getCol()) + Character.toString('1' + getRow());
     }
 }

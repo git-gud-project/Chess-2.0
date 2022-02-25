@@ -1,14 +1,10 @@
 package com.chess.model.chess;
 
-import java.util.Iterator;
-
 import com.chess.model.Board;
 import com.chess.model.Cell;
 import com.chess.model.Identifier;
-import com.chess.model.Move;
 import com.chess.model.MovesCalculator;
 import com.chess.model.Position;
-import com.chess.model.Rule;
 
 public class ChessBoardInformation implements BoardInformation {
 

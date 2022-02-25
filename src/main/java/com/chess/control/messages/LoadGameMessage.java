@@ -1,6 +1,6 @@
 package com.chess.control.messages;
 
-import com.chess.model.SerialModel;
+import com.chess.model.chess.SerialModel;
 import com.chess.network.Message;
 
 public class LoadGameMessage extends Message {

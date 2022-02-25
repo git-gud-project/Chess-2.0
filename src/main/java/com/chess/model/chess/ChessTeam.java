@@ -135,6 +135,15 @@ public class ChessTeam implements Team {
         return onAuthorityChangedEvent;
     }
 
+    //
+    // Utility
+    //
+
+    public void tickTime() {
+        time.tick();
+        onTimeChangedEvent.trigger(time);
+    }
+
     /*
     //
     // Getters - Utility

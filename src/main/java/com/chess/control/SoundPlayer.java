@@ -1,7 +1,6 @@
 package com.chess.control;
 
 import java.io.*;
-import java.nio.file.Path;
 import javax.sound.sampled.*;
 
 public class SoundPlayer {

@@ -1,20 +1,23 @@
 package com.chess.view;
 
 import javax.swing.*;
+
+import com.chess.model.chess.ChessModel;
+
 import java.awt.*;
 import java.awt.event.*;
 
 /**
- * todo
+ * Represents a board panel. Contains a grid of cells.
  */
 public class BoardPanel extends JPanel {
     private BoardGridPanel boardPanel;
 
-    /** todo
-     * @param view
-     * @param size
+    /**
+     * @param model The model to use to create the board.
+     * @param size The size of the chess board to be created.
      */
-    public BoardPanel(ChessView view, int size) {
+    public BoardPanel(ChessModel model, int size) {
         CellButton button;
 
         this.setLayout(new GridBagLayout());
@@ -130,7 +133,7 @@ public class BoardPanel extends JPanel {
             button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_C);
         }
 
-        boardPanel = new BoardGridPanel(view, size);
+        boardPanel = new BoardGridPanel(model, size);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 8;
         c.weighty = 8;

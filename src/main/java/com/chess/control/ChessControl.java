@@ -4,6 +4,7 @@ import com.chess.view.*;
 import com.chess.model.*;
 import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.ChessPieceFactory;
+import com.chess.model.chess.ChessRule;
 import com.chess.model.chess.ChessTeam;
 import com.chess.model.chess.ChessTeamParameters;
 import com.chess.model.chess.PieceType;
@@ -100,8 +101,6 @@ public class ChessControl {
 
         model.registerMove(false, move);
 
-        model.clearEnPassantSquare();
-
         playSound("pawnPromotion");
     }
 
@@ -123,7 +122,6 @@ public class ChessControl {
         Piece piece = cell.getPiece();
 
         Identifier typeIdentifier = piece.getTypeIdentifier();
-        Identifier teamIdentifier = piece.getTeamIdentifier();
 
         model.movePiece(move.getFromCell(), move.getToCell());
 
@@ -164,10 +162,9 @@ public class ChessControl {
             playSound("castling");
         } else if (move.isEliminatable()) {
             playSound("pieceCapture");
-        } else
+        } else {
             playSound("pieceMove");
-
-        model.clearEnPassantSquare();
+        }
     }
 
     /**
@@ -285,7 +282,7 @@ public class ChessControl {
             return;
         }
 
-        model.getCurrentTeam().getTime().tick();
+        model.getCurrentTeam().tickTime();
     }
 
     private void handlePause() {
@@ -361,8 +358,15 @@ public class ChessControl {
 
         selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
 
-        Iterator<Move> moves = piece.getPossibleMoves(model.getRule(), new Position(selectedCell.getRow(), selectedCell.getCol()));
+        Iterator<Move> itMoves = piece.getPossibleMoves(model.getRule(), new Position(selectedCell.getRow(), selectedCell.getCol()));
+        ArrayList<Move> dmoves = new ArrayList<>();
+        while (itMoves.hasNext()) {
+            dmoves.add(itMoves.next());
+        }
+
+        ((ChessRule) model.getRule()).validateMoves(piece.getTypeIdentifier(), piece.getTeamIdentifier(), dmoves);
         currentMoveMap = new HashMap<>();
+        Iterator<Move> moves = dmoves.iterator();
         while (moves.hasNext()) {
             Move move = moves.next();
 

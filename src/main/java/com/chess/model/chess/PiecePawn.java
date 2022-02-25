@@ -3,11 +3,8 @@ package com.chess.model.chess;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.chess.model.Board;
-import com.chess.model.Cell;
 import com.chess.model.Identifier;
 import com.chess.model.Move;
-import com.chess.model.Piece;
 import com.chess.model.PieceBehavior;
 import com.chess.model.Position;
 import com.chess.model.Rule;
@@ -38,11 +35,12 @@ public class PiecePawn implements PieceBehavior {
      */
     @Override
     public void afterMove(Rule rule, Position from, Position to) {
-        SharedChessTeamParameters sharedTeamParameters = teamParameters.getSharedTeamParameters();
+        final SharedChessTeamParameters sharedTeamParameters = teamParameters.getSharedTeamParameters();
 
         // Check if we moved 2 cells.
-        if (from.distance(to) == 2) {
+        if (from.distanceRow(to) == 2) {
             sharedTeamParameters.setEnPassantPosition(new Position(to.getRow() - teamParameters.getPawnDirection(), to.getCol()));
+            sharedTeamParameters.setEnPassantTeam(teamParameters.getTeamIdentifier());
 
             return;
         }
@@ -50,7 +48,7 @@ public class PiecePawn implements PieceBehavior {
         Position enPassentPosition = sharedTeamParameters.getEnPassantPosition();
 
         // Check if we did en passant.
-        if (enPassentPosition == to) {
+        if (enPassentPosition.equals(to)) {
             boolean success = rule.requestClear(new Position(to.getRow() - teamParameters.getPawnDirection(), to.getCol()));
 
             if (!success) {
