@@ -4,7 +4,6 @@ import com.chess.view.*;
 import com.chess.model.*;
 import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.ChessPieceFactory;
-import com.chess.model.chess.ChessRule;
 import com.chess.model.chess.ChessTeam;
 import com.chess.model.chess.ChessTeamParameters;
 import com.chess.model.chess.ChessIdentifier;

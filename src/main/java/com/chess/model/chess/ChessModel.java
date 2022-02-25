@@ -1,7 +1,6 @@
 package com.chess.model.chess;
 
 import java.awt.*;
-import java.io.Serial;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
