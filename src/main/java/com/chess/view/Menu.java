@@ -10,7 +10,6 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import com.chess.model.*;
 import com.chess.model.GameTime;
 import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.SerialModel;

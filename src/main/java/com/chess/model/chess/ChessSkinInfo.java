@@ -1,6 +1,5 @@
 package com.chess.model.chess;
 
-import com.chess.model.Identifier;
 import com.chess.model.SkinInfo;
 
 import java.io.Serializable;
