@@ -13,6 +13,8 @@ public class ChessRule implements Rule {
 
     private Identifier currentTeam;
 
+    private Identifier opponentTeam;
+
     public ChessRule(BoardInformation BoardInfo) {
         this.boardInfo = BoardInfo;
         gameSize = this.boardInfo.getBoardSize();
@@ -180,7 +182,7 @@ public class ChessRule implements Rule {
             }
         }
 
-        if (currentTeam == teamIdentifier) {
+        if (currentTeam.equals(teamIdentifier)) {
             validateMoves(pieceIdentifier, teamIdentifier, registry);
         }
 
@@ -197,7 +199,7 @@ public class ChessRule implements Rule {
         }
     }
 
-    public boolean isLegalMove(Identifier piece,Identifier team, Move move) {
+    public boolean isLegalMove(Identifier piece, Identifier team, Move move) {
         if (boardInfo.isEmpty(move.getToCell())) {
             return true;
         }
@@ -221,11 +223,20 @@ public class ChessRule implements Rule {
         }
     }
 
-    /** To update this
-     * @param currentTeam
+    /**
+     * Set the current team identifier.
+     * @param currentTeam The current team identifier.
      */
-    public void setCurrentTeam(Identifier currentTeam){
+    public void setCurrentTeam(Identifier currentTeam) {
         this.currentTeam = currentTeam;
+    }
+
+    /**
+     * Set the opponent team identifier.
+     * @param opponentTeam The opponent team identifier.
+     */
+    public void setOpponentTeam(Identifier opponentTeam) {
+        this.opponentTeam = opponentTeam;
     }
 
     /**
@@ -282,7 +293,23 @@ public class ChessRule implements Rule {
         return teamMovesList;
     }
 
+    public int isGameOver(Identifier enemyPlayerTeam){
+        if (allTeamMoves(enemyPlayerTeam).isEmpty() && isCheck(enemyPlayerTeam)) {
+            return 2;
+        }
+        else if (allTeamMoves(enemyPlayerTeam).isEmpty() && !isCheck(enemyPlayerTeam)) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+
     public boolean isCheck(Identifier teamIdentifier) {
+        if (isGameOver(opponentTeam) != 0){
+            return false;
+        }
+
         List<Move> allEnemyMoves = allEnemyMoves(teamIdentifier);
         for (Move m : allEnemyMoves) {
             Position toCell = m.getToCell();

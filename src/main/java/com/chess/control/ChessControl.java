@@ -40,7 +40,7 @@ public class ChessControl {
     /**
      * The current list of available moves for selected piece
      */
-    private HashMap<BoardCell, Move> currentMoveMap;
+    private HashMap<BoardCell, Move> currentMoveMap = new HashMap<>();
 
     /**
      * The team we are playing as.
@@ -358,15 +358,17 @@ public class ChessControl {
 
         selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
 
-        Iterator<Move> itMoves = piece.getPossibleMoves(model.getRule(), new Position(selectedCell.getRow(), selectedCell.getCol()));
-        ArrayList<Move> dmoves = new ArrayList<>();
-        while (itMoves.hasNext()) {
-            dmoves.add(itMoves.next());
-        }
+        // Start a timer
+        long startTime = System.currentTimeMillis();
 
-        ((ChessRule) model.getRule()).validateMoves(piece.getTypeIdentifier(), piece.getTeamIdentifier(), dmoves);
-        currentMoveMap = new HashMap<>();
-        Iterator<Move> moves = dmoves.iterator();
+        Iterator<Move> moves = piece.getPossibleMoves(model.getRule(), new Position(selectedCell.getRow(), selectedCell.getCol()));
+
+        // end timer
+        long endTime = System.currentTimeMillis();
+
+        // print the time it took to get the moves
+        System.out.println("Time to get moves: " + (endTime - startTime) + "ms");
+        
         while (moves.hasNext()) {
             Move move = moves.next();
 
