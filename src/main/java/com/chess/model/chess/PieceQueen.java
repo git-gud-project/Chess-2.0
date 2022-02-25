@@ -22,7 +22,7 @@ public class PieceQueen implements PieceBehavior {
 
     @Override
     public Identifier getTypeIdentifier() {
-        return PieceType.QUEEN;
+        return ChessIdentifier.QUEEN;
     }
 
     @Override

@@ -87,7 +87,7 @@ public class ChessBoardInformation implements BoardInformation {
             return false;
         }
 
-        if (piece.equals(PieceType.PAWN)) {
+        if (piece.equals(ChessIdentifier.PAWN)) {
             return otherTeam.getSharedTeamParameters().getEnPassantPosition().equals(position);
         }
 

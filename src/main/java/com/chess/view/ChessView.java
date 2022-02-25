@@ -2,7 +2,7 @@ package com.chess.view;
 
 import com.chess.model.*;
 import com.chess.model.chess.ChessModel;
-import com.chess.model.chess.PieceType;
+import com.chess.model.chess.ChessIdentifier;
 
 import javax.swing.*;
 import java.awt.*;
@@ -162,13 +162,13 @@ public class ChessView extends JFrame {
         }
         switch (n) {
             case 0:
-                return PieceType.QUEEN;
+                return ChessIdentifier.QUEEN;
             case 1:
-                return PieceType.ROOK;
+                return ChessIdentifier.ROOK;
             case 2:
-                return PieceType.BISHOP;
+                return ChessIdentifier.BISHOP;
             case 3:
-                return PieceType.KNIGHT;
+                return ChessIdentifier.KNIGHT;
             default:
                 return null;
         }

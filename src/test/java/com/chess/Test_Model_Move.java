@@ -20,9 +20,6 @@ public class Test_Model_Move {
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
 
-    /**
-     * Test method for {@link com.chess.model.chess.ChessModel#loadFEN(java.lang.String)}. and {@link com.chess.model.chess.ChessModel#toFEN()}.
-     */
     @Test
     public void testMovePawn() {
         loadInitialPosition();
