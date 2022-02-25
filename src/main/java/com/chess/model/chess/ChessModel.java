@@ -73,7 +73,7 @@ public class ChessModel {
         whiteParameters.setCastlingKingSidePosition(new Position("g1"));
         whiteParameters.setCastlingQueenSidePosition(new Position("c1"));
 
-        final ChessTeam whiteTeam = new ChessTeam(new Identifier("w"), Color.WHITE, "Player 1", new Time(5),
+        final ChessTeam whiteTeam = new ChessTeam(ChessIdentifier.WHITE, Color.WHITE, "Player 1", new Time(5),
                 whiteParameters);
 
         final ChessTeamParameters blackParameters = new ChessTeamParameters(
@@ -89,7 +89,7 @@ public class ChessModel {
         blackParameters.setCastlingKingSidePosition(new Position("g8"));
         blackParameters.setCastlingQueenSidePosition(new Position("c8"));
 
-        final ChessTeam blackTeam = new ChessTeam(new Identifier("b"), Color.BLACK, "Player 2", new Time(5),
+        final ChessTeam blackTeam = new ChessTeam(ChessIdentifier.BLACK, Color.BLACK, "Player 2", new Time(5),
                 blackParameters);
 
         // Setup team manager
@@ -212,7 +212,7 @@ public class ChessModel {
 
                 final Piece piece = cell.getPiece();
 
-                if (piece.getTeamIdentifier().equals(teamIdentifier) && piece.getTypeIdentifier().equals(PieceType.KING)) {
+                if (piece.getTeamIdentifier().equals(teamIdentifier) && piece.getTypeIdentifier().equals(ChessIdentifier.KING)) {
                     return cell;
                 }
             }
@@ -406,7 +406,7 @@ public class ChessModel {
 
         // Clear en passant if it's not the current team
         if (!enPassantTeam.equals(teamManager.getCurrentTeamIdentifier())) {
-            sharedChessTeamParameters.setEnPassantTeam(Identifier.NULL);
+            sharedChessTeamParameters.setEnPassantTeam(ChessIdentifier.NULL);
             sharedChessTeamParameters.setEnPassantPosition(Position.INVALID);
         }
 
@@ -653,6 +653,13 @@ public class ChessModel {
             throw new IllegalArgumentException("Invalid number of rows, got " + rows.length + ", expected " + GAMESIZE);
         }
 
+        // Empty all cells
+        for (int row = 0; row < GAMESIZE; row++) {
+            for (int col = 0; col < GAMESIZE; col++) {
+                board.getCell(row, col).emptyCell(true);
+            }
+        }
+
         int row = GAMESIZE - 1;
         int col = 0;
         for (String rowString : rows) {
@@ -674,7 +681,7 @@ public class ChessModel {
                 } else {
                     ChessTeam team = c == Character.toUpperCase(c) ? getTeamWhite() : getTeamBlack();
 
-                    Identifier typeIdentifier = new Identifier(String.valueOf(Character.toLowerCase(c)));
+                    Identifier typeIdentifier = ChessIdentifier.getIdentifier(String.valueOf(Character.toLowerCase(c)));
 
                     Piece piece = ChessPieceFactory.createPiece(typeIdentifier, team);
 

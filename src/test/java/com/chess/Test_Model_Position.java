@@ -20,9 +20,6 @@ public class Test_Model_Position {
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
 
-    /**
-     * Test method for {@link com.chess.model.chess.ChessModel#loadFEN(java.lang.String)}. and {@link com.chess.model.chess.ChessModel#toFEN()}.
-     */
     @Test
     public void testCell() {
         loadInitialPosition();
@@ -41,6 +38,6 @@ public class Test_Model_Position {
 
         Assertions.assertEquals(piece.getTeamIdentifier(), TeamManager.WHITE);
 
-        Assertions.assertEquals(piece.getTypeIdentifier(), PieceType.PAWN);
+        Assertions.assertEquals(piece.getTypeIdentifier(), ChessIdentifier.PAWN);
     }
 }

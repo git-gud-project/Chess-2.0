@@ -34,6 +34,6 @@ public class Test_Model_Check {
 
         Assertions.assertTrue(model.isCheck(TeamManager.BLACK));
 
-        Assertions.assertEquals(model.isGameOver(TeamManager.WHITE), 2);
+        Assertions.assertEquals(model.isGameOver(TeamManager.BLACK), 2);
     }
 }

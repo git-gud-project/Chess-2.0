@@ -12,7 +12,7 @@ public final class SharedChessTeamParameters {
     /**
      * The team that enabled en passant.
      */
-    private Identifier enPassantTeam = Identifier.NULL;
+    private Identifier enPassantTeam = ChessIdentifier.NULL;
 
     /**
      * Gets the position marked for en passant.

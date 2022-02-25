@@ -7,7 +7,7 @@ import com.chess.model.chess.ChessPieceFactory;
 import com.chess.model.chess.ChessRule;
 import com.chess.model.chess.ChessTeam;
 import com.chess.model.chess.ChessTeamParameters;
-import com.chess.model.chess.PieceType;
+import com.chess.model.chess.ChessIdentifier;
 import com.chess.control.messages.*;
 
 import javax.swing.*;
@@ -127,13 +127,13 @@ public class ChessControl {
 
         // Halfmove clock: The number of halfmoves since the last capture or pawn
         // advance, used for the fifty-move rule.
-        boolean halfMove = !typeIdentifier.equals(PieceType.PAWN) && !isElimination;
+        boolean halfMove = !typeIdentifier.equals(ChessIdentifier.PAWN) && !isElimination;
 
         ChessTeam otherTeam = model.getOtherTeam(model.getCurrentTeam());
 
         final ChessTeamParameters otherTeamParameters = otherTeam.getTeamParameters();
 
-        if (typeIdentifier.equals(PieceType.PAWN) && move.getToCell().getRow() == otherTeamParameters.getKingRow()) {
+        if (typeIdentifier.equals(ChessIdentifier.PAWN) && move.getToCell().getRow() == otherTeamParameters.getKingRow()) {
             if (isMyTurn()) {
                 Identifier promotedTypeIdentifier = view.promotePawn();
 
@@ -327,7 +327,7 @@ public class ChessControl {
             if (model.getBoard().getCell(selectedCell.getRow(), selectedCell.getCol()).getPiece() == null) {
                 selectedCell.unhighlight();
             } else if (!model.getBoard().getCell(selectedCell.getRow(), selectedCell.getCol()).getPiece()
-                    .getTypeIdentifier().equals(PieceType.KING)) {
+                    .getTypeIdentifier().equals(ChessIdentifier.KING)) {
                 selectedCell.unhighlight();
             } else {
                 selectedCell.unhighlight();

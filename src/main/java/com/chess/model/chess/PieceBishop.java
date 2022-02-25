@@ -35,6 +35,6 @@ public class PieceBishop implements PieceBehavior {
 
     @Override
     public Identifier getTypeIdentifier() {
-        return PieceType.BISHOP;
+        return ChessIdentifier.BISHOP;
     }
 }

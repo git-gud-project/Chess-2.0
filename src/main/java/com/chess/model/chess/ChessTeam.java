@@ -29,7 +29,7 @@ public class ChessTeam implements Team {
     private boolean[] ownSkin = {false, false, false, false, false, false};
     private int[] skinIndex = {0, 0, 0, 0, 0, 0};
 
-    private static final Identifier[] orderedNames = {PieceType.PAWN, PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN, PieceType.KING};
+    private static final Identifier[] orderedNames = {ChessIdentifier.PAWN, ChessIdentifier.ROOK, ChessIdentifier.KNIGHT, ChessIdentifier.BISHOP, ChessIdentifier.QUEEN, ChessIdentifier.KING};
     private static final String[] whiteNames = {"pw.png", "rw.png", "nw.png", "bw.png", "qw.png", "kw.png"};
     private static final String[] blackNames = {"pb.png", "rb.png", "nb.png", "bb.png", "qb.png", "kb.png"};
 

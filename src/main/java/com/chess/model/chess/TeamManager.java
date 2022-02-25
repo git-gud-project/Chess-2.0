@@ -6,8 +6,8 @@ import com.chess.model.Identifier;
 
 public class TeamManager {
 
-    public static final Identifier WHITE = new Identifier("w");
-    public static final Identifier BLACK = new Identifier("b");
+    public static final Identifier WHITE = ChessIdentifier.WHITE;
+    public static final Identifier BLACK = ChessIdentifier.BLACK;
 
     private final HashMap<Identifier, ChessTeam> teamMap;
 

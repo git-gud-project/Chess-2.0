@@ -321,7 +321,7 @@ public class ChessRule implements Rule {
             }
 
             if (boardInfo.getTeamIdentifier(toCell).equals(teamIdentifier) &&
-                boardInfo.getTypeIdentifier(toCell).equals(PieceType.KING)) {
+                boardInfo.getTypeIdentifier(toCell).equals(ChessIdentifier.KING)) {
                 return true;
             }
         }
@@ -340,7 +340,7 @@ public class ChessRule implements Rule {
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
                 if (!boardInfo.isEmpty(row,col) &&
-                    boardInfo.getTypeIdentifier(row,col).equals(PieceType.KING) &&
+                    boardInfo.getTypeIdentifier(row,col).equals(ChessIdentifier.KING) &&
                     boardInfo.getTeamIdentifier(row,col).equals(teamIdentifier)) {
                         kingCell = new Position(row,col);
                 }
