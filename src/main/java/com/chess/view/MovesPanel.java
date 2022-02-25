@@ -96,11 +96,11 @@ public class MovesPanel extends JPanel {
         //Creates the loaded list of moves which displays the moves until the last saved state.
         listModel = new DefaultListModel<>();
         List<String> moveList = model.getMoveList();
-        JList<String> _moveList = new JList<>(listModel);
-        _moveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
-        _moveList.setForeground(Color.WHITE);
-        _moveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
-        scrollpane = new JScrollPane(_moveList);
+        JList<String> jMoveList = new JList<>(listModel);
+        jMoveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        jMoveList.setForeground(Color.WHITE);
+        jMoveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
+        scrollpane = new JScrollPane(jMoveList);
         turn = 0;
         moves = 0;
 

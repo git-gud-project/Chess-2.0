@@ -88,7 +88,7 @@ public class Menu extends JMenuBar {
                 try {
                     FileOutputStream fOut = new FileOutputStream(chosenFile);
                     ObjectOutputStream stream = new ObjectOutputStream(fOut);
-                    stream.writeObject(new SerialModel(model));
+                    stream.writeObject(model.getSerialModel());
                     stream.flush();
                     stream.close();
                 } catch (Exception ex) {

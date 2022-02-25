@@ -8,7 +8,6 @@ import com.chess.control.messages.*;
 import com.chess.model.*;
 import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.ChessTeam;
-import com.chess.model.chess.SerialModel;
 import com.chess.view.*;
 
 public class NetworkControl {
@@ -398,7 +397,7 @@ public class NetworkControl {
             control.setPaused(true);
             
             // Send a load message to the client.
-            client.sendMessage(new LoadGameMessage(new SerialModel(getModel())));
+            client.sendMessage(new LoadGameMessage(getModel().getSerialModel()));
         });
 
         networkServer.setMessageDelegate(PromotePawnMessage.class, (client, message) -> {

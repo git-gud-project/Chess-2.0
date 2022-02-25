@@ -137,7 +137,27 @@ public class ChessModel {
 
         moveList = new ArrayList<>();
 
-        onModelLoadedEvent.trigger(new SerialModel(this));
+        onModelLoadedEvent.trigger(getSerialModel());
+    }
+
+    public SerialModel getSerialModel() {
+        SerialModel serialModel = new SerialModel();
+        
+        serialModel.setFen(toFEN());
+        serialModel.setMoveList(moveList);
+        serialModel.setSkinMapWhite(getTeamWhite().getSkinMap());
+        serialModel.setSkinMapBlack(getTeamBlack().getSkinMap());
+        serialModel.setSkinIndexWhite(getTeamWhite().getSkinIndex());
+        serialModel.setSkinIndexBlack(getTeamBlack().getSkinIndex());
+        serialModel.setOwnSkinWhite(getTeamWhite().getOwnSkin());
+        serialModel.setOwnSkinBlack(getTeamBlack().getOwnSkin());
+        serialModel.setWhiteName(getTeamWhite().getName());
+        serialModel.setBlackName(getTeamBlack().getName());
+        serialModel.setWhiteTime(getTeamWhite().getTime());
+        serialModel.setBlackTime(getTeamBlack().getTime());
+        serialModel.setStarted(getStarted());
+
+        return serialModel;
     }
 
     /**

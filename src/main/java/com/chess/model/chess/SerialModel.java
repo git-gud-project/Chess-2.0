@@ -16,21 +16,9 @@ public class SerialModel implements Serializable {
     private Time whiteTime, blackTime;
     private boolean started;
 
-    public SerialModel(ChessModel model) {
-        fen = model.toFEN();
-        moveList = model.getMoveList();
-        skinMapWhite = model.getTeamWhite().getSkinMap();
-        skinMapBlack = model.getTeamBlack().getSkinMap();
-        skinIndexWhite = model.getTeamWhite().getSkinIndex();
-        skinIndexBlack = model.getTeamBlack().getSkinIndex();
-        ownSkinWhite = model.getTeamWhite().getOwnSkin();
-        ownSkinBlack = model.getTeamBlack().getOwnSkin();
-        whiteName = model.getTeamWhite().getName();
-        blackName = model.getTeamBlack().getName();
-        whiteTime = model.getTeamWhite().getTime();
-        blackTime = model.getTeamBlack().getTime();
-        started = model.getStarted();
-    }
+    //
+    // Getters
+    //
 
     public List<String> getMoveList() {
         return moveList;
@@ -71,4 +59,48 @@ public class SerialModel implements Serializable {
     public int[] getSkinIndexWhite() { return this.skinIndexWhite; }
 
     public int[] getSkinIndexBlack() { return this.skinIndexBlack; }
+
+    //
+    // Setters
+    //
+
+    public void setFen(String fen) {
+        this.fen = fen;
+    }
+
+    public void setMoveList(List<String> moveList) {
+        this.moveList = moveList;
+    }
+
+    public void setWhiteName(String whiteName) {
+        this.whiteName = whiteName;
+    }
+
+    public void setBlackName(String blackName) {
+        this.blackName = blackName;
+    }
+
+    public void setWhiteTime(Time whiteTime) {
+        this.whiteTime = whiteTime;
+    }
+
+    public void setBlackTime(Time blackTime) {
+        this.blackTime = blackTime;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    public void setSkinMapWhite(HashMap<Identifier, String> skinMapWhite) { this.skinMapWhite = skinMapWhite; }
+
+    public void setSkinMapBlack(HashMap<Identifier, String> skinMapBlack) { this.skinMapBlack = skinMapBlack; }
+
+    public void setOwnSkinWhite(boolean[] ownSkinWhite) { this.ownSkinWhite = ownSkinWhite; }
+
+    public void setOwnSkinBlack(boolean[] ownSkinBlack) { this.ownSkinBlack = ownSkinBlack; }
+
+    public void setSkinIndexWhite(int[] skinIndexWhite) { this.skinIndexWhite = skinIndexWhite; }
+
+    public void setSkinIndexBlack(int[] skinIndexBlack) { this.skinIndexBlack = skinIndexBlack; }
 }
