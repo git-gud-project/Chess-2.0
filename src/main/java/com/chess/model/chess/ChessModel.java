@@ -218,10 +218,6 @@ public class ChessModel {
         serialModel.setMoveList(moveList);
         serialModel.setSkinMapWhite(getTeamWhite().getSkinMap());
         serialModel.setSkinMapBlack(getTeamBlack().getSkinMap());
-        serialModel.setSkinIndexWhite(getTeamWhite().getSkinIndex());
-        serialModel.setSkinIndexBlack(getTeamBlack().getSkinIndex());
-        serialModel.setOwnSkinWhite(getTeamWhite().getOwnSkin());
-        serialModel.setOwnSkinBlack(getTeamBlack().getOwnSkin());
         serialModel.setWhiteName(getTeamWhite().getName());
         serialModel.setBlackName(getTeamBlack().getName());
         serialModel.setWhiteTime(getTeamWhite().getTime());
@@ -248,12 +244,6 @@ public class ChessModel {
 
         whiteTeam.setSkinMap(smodel.getWhiteSkinMap());
         blackTeam.setSkinMap(smodel.getBlackSkinMap());
-
-        whiteTeam.setOwnSkin(smodel.getOwnSkinWhite());
-        blackTeam.setOwnSkin(smodel.getOwnSkinBlack());
-
-        whiteTeam.setSkinIndex(smodel.getSkinIndexWhite());
-        blackTeam.setSkinIndex(smodel.getSkinIndexBlack());
 
         moveList = smodel.getMoveList();
 

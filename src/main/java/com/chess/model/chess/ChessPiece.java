@@ -54,17 +54,8 @@ public class ChessPiece implements Piece {
      * @return the path to the image file for the piece
      */
     public String getIconPath() {
-        int n;
-        switch(behavior.getTypeIdentifier().toString()){
-            case "r": n = 1; break;
-            case "n": n = 2; break;
-            case "b": n = 3; break;
-            case "q": n = 4; break;
-            case "k": n = 5; break;
-            default: n = 0;
-        }
-        if (!team.getOwnSkin(n)) {
-            if (team.getSkinIndex(n) == 0) {
+        if (!team.getOwnSkin(getTypeIdentifier())) {
+            if (team.getSkinIndex(getTypeIdentifier()) == 0) {
                 return "/images/" + team.getSkin(getTypeIdentifier());
             } else {
                 return "/skins/" + team.getSkin(getTypeIdentifier());

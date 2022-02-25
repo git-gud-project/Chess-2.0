@@ -12,26 +12,28 @@ public class ChessTeam implements Team {
     // Fields
     //
 
-    private Color teamColor;
+    private final Color teamColor;
 
     private String name;
 
     private GameTime time;
 
-    private Identifier teamIdentifier;
+    private final Identifier teamIdentifier;
 
     private final ChessTeamParameters teamParameters;
 
     private boolean hasAuthority;
 
-    private HashMap<Identifier, String> skinMap;
+    private HashMap<Identifier, ChessSkinInfo> skinMap;
 
-    private boolean[] ownSkin = {false, false, false, false, false, false};
-    private int[] skinIndex = {0, 0, 0, 0, 0, 0};
-
-    private static final Identifier[] orderedNames = {ChessTypeIdentifier.PAWN, ChessTypeIdentifier.ROOK, ChessTypeIdentifier.KNIGHT, ChessTypeIdentifier.BISHOP, ChessTypeIdentifier.QUEEN, ChessTypeIdentifier.KING};
-    private static final String[] whiteNames = {"pw.png", "rw.png", "nw.png", "bw.png", "qw.png", "kw.png"};
-    private static final String[] blackNames = {"pb.png", "rb.png", "nb.png", "bb.png", "qb.png", "kb.png"};
+    private static final ChessTypeIdentifier[] orderedNames = {
+        ChessTypeIdentifier.PAWN,
+        ChessTypeIdentifier.ROOK,
+        ChessTypeIdentifier.KNIGHT,
+        ChessTypeIdentifier.BISHOP,
+        ChessTypeIdentifier.QUEEN,
+        ChessTypeIdentifier.KING
+    };
 
     //
     // Events
@@ -57,19 +59,17 @@ public class ChessTeam implements Team {
         initHashMap();
     }
 
-    public ChessTeam(Identifier teamIdentifier, Color color, String name, GameTime time, ChessTeamParameters teamParameters, HashMap<Identifier, String> skinMap, boolean[] ownSkin, int[] skinIndex) {
+    public ChessTeam(Identifier teamIdentifier, Color color, String name, GameTime time, ChessTeamParameters teamParameters, HashMap<Identifier, ChessSkinInfo> skinMap) {
         this.teamColor = color;
         this.teamIdentifier = teamIdentifier;
         this.name = name;
         this.teamParameters = teamParameters;
         this.time = time.clone();
         this.skinMap = cloneHashMap(skinMap);
-        this.ownSkin = ownSkin.clone();
-        this.skinIndex = skinIndex.clone();
     }
 
     public ChessTeam clone() {
-        return new ChessTeam(teamIdentifier, teamColor, name, time, teamParameters, skinMap, ownSkin, skinIndex);
+        return new ChessTeam(teamIdentifier, teamColor, name, time, teamParameters, skinMap);
     }
 
     //
@@ -316,54 +316,50 @@ public class ChessTeam implements Team {
     private void initHashMap(){
         this.skinMap = new HashMap<>();
         if(this.teamColor.equals(Color.WHITE)){
-            for(int i = 0; i < orderedNames.length; i++){
-                this.skinMap.put(orderedNames[i], whiteNames[i]);
+            for (ChessTypeIdentifier orderedName : orderedNames) {
+                this.skinMap.put(orderedName, new ChessSkinInfo(orderedName, ChessTeamIdentifier.WHITE));
             }
         } else {
-            for(int i = 0; i < orderedNames.length; i++){
-                this.skinMap.put(orderedNames[i], blackNames[i]);
+            for(ChessTypeIdentifier orderedName : orderedNames ){
+                this.skinMap.put(orderedName, new ChessSkinInfo(orderedName, ChessTeamIdentifier.BLACK));
             }
         }
     }
 
     public String getSkin(Identifier p){
-        return this.skinMap.get(p);
+        return this.skinMap.get(p).getSkinPath();
     }
 
     public void setSkin(Identifier p, String s){
-        this.skinMap.put(p, s);
+        this.skinMap.get(p).setSkinPath(s);
     }
 
-    public int getSkinIndex(int i){
-        return this.skinIndex[i];
+    public int getSkinIndex(Identifier p){
+        return this.skinMap.get(p).getSkinIndex();
     }
 
-    public void setSkinIndex(int index, int newValue){
-        this.skinIndex[index] = newValue;
+    public void setSkinIndex(Identifier p, int newValue){
+        this.skinMap.get(p).setSkinIndex(newValue);
     }
 
-    public boolean getOwnSkin(int i){
-        return this.ownSkin[i];
+    public boolean getOwnSkin(Identifier p){
+        return this.skinMap.get(p).getOwnSkin();
     }
 
-    public void setOwnSkin(int i, boolean b){
-        this.ownSkin[i] = b;
+    public void setOwnSkin(Identifier p, boolean newOwn){
+        this.skinMap.get(p).setOwnSkin(newOwn);
     }
 
-    private HashMap<Identifier, String> cloneHashMap(HashMap<Identifier, String> skinMap){
-        HashMap<Identifier, String> clone = new HashMap<>();
+    private HashMap<Identifier, ChessSkinInfo> cloneHashMap(HashMap<Identifier, ChessSkinInfo> skinMap){
+        HashMap<Identifier, ChessSkinInfo> clone = new HashMap<>();
         for(Identifier p : orderedNames){
             clone.put(p, skinMap.get(p));
         }
         return clone;
     }
 
-    public void setSkinMap(HashMap<Identifier, String> skinMap) { this.skinMap = skinMap; }
-    public void setOwnSkin(boolean[] ownSkin) { this.ownSkin = ownSkin; }
-    public void setSkinIndex(int[] skinIndex) { this.skinIndex = skinIndex; }
+    public void setSkinMap(HashMap<Identifier, ChessSkinInfo> skinMap) { this.skinMap = skinMap; }
 
-    public HashMap<Identifier, String> getSkinMap() { return this.skinMap; }
-    public boolean[] getOwnSkin() { return this.ownSkin; }
-    public int[] getSkinIndex() { return this.skinIndex; }
+    public HashMap<Identifier, ChessSkinInfo> getSkinMap() { return this.skinMap; }
 
 }
