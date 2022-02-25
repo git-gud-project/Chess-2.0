@@ -56,7 +56,11 @@ public class ChessBoard implements Board {
      * @return The cell at the specified row and column.
      */
     @Override
-    public Cell getCell(int row, int col) {
+    public Cell getCell(int row, int col) throws IllegalArgumentException {
+        if (row < 0 || row >= gameSize || col < 0 || col >= gameSize) {
+            throw new IllegalArgumentException("Invalid board position (" + row + ", " + col + "), board size is " + gameSize);
+        }
+        
         // Row is reversed
         return cellMatrix[gameSize - 1 - row][col];
     }

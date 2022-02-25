@@ -101,8 +101,6 @@ public class ChessControl {
 
         model.registerMove(false, move);
 
-        model.clearEnPassantSquare();
-
         playSound("pawnPromotion");
     }
 
@@ -164,10 +162,9 @@ public class ChessControl {
             playSound("castling");
         } else if (move.isEliminatable()) {
             playSound("pieceCapture");
-        } else
+        } else {
             playSound("pieceMove");
-
-        model.clearEnPassantSquare();
+        }
     }
 
     /**

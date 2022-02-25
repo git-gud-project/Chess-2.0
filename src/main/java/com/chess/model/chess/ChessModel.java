@@ -70,6 +70,8 @@ public class ChessModel {
         // Set castling rights
         whiteParameters.setCanCastleKingside(true);
         whiteParameters.setCanCastleQueenside(true);
+        whiteParameters.setCastlingKingSidePosition(new Position("g1"));
+        whiteParameters.setCastlingQueenSidePosition(new Position("c1"));
 
         final ChessTeam whiteTeam = new ChessTeam(new Identifier("w"), Color.WHITE, "Player 1", new Time(5),
                 whiteParameters);
@@ -84,6 +86,8 @@ public class ChessModel {
         // Set castling rights
         blackParameters.setCanCastleKingside(true);
         blackParameters.setCanCastleQueenside(true);
+        blackParameters.setCastlingKingSidePosition(new Position("g8"));
+        blackParameters.setCastlingQueenSidePosition(new Position("c8"));
 
         final ChessTeam blackTeam = new ChessTeam(new Identifier("b"), Color.BLACK, "Player 2", new Time(5),
                 blackParameters);
@@ -366,6 +370,8 @@ public class ChessModel {
     public void setCurrentTeam(ChessTeam team) {
         teamManager.setCurrentTeamIdentifier(team.getTeamIdentifier());
 
+        rule.setCurrentTeam(team.getTeamIdentifier());
+
         this.onTeamChangeEvent.trigger(team);
     }
 
@@ -403,12 +409,20 @@ public class ChessModel {
             fullMoves++;
         }
 
+        Identifier enPassantTeam = sharedChessTeamParameters.getEnPassantTeam();
+
+        // Clear en passant if it's not the current team
+        if (!enPassantTeam.equals(teamManager.getCurrentTeamIdentifier())) {
+            sharedChessTeamParameters.setEnPassantTeam(Identifier.NULL);
+            sharedChessTeamParameters.setEnPassantPosition(Position.INVALID);
+        }
+
         // Half moves are either incremented or reset
         if (halfMove) {
             halfMoves++;
         } else {
             halfMoves = 0;
-        }
+        } 
 
         // Switch teams
         teamManager.switchCurrentTeam();
@@ -548,9 +562,7 @@ public class ChessModel {
      * Convert the state of the game to Forsyth-Edwards Notation.
      * 
      * @return the Forsyth-Edwards Notation
-     * @see <a href=
-     *      "http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation">Forsyth-Edwards
-     *      Notation</a>
+     * @see <a href="http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation">Forsyth-Edwards Notation</a>
      */
     public String toFEN() {
         String fen = "";
@@ -576,7 +588,7 @@ public class ChessModel {
             if (emptyCells > 0) {
                 fen += emptyCells;
             }
-            if (row != GAMESIZE - 1) {
+            if (row != 0) {
                 fen += "/";
             }
         }
@@ -634,17 +646,29 @@ public class ChessModel {
      * Load the state of the game from Forsyth-Edwards Notation.
      * 
      * @param fen the Forsyth-Edwards Notation
-     * @see <a href=
-     *      "http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation">Forsyth-Edwards
-     *      Notation</a>
+     * @see <a href="http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation">Forsyth-Edwards Notation</a>
+     * @throws IllegalArgumentException if the FEN is invalid
      */
-    public void loadFEN(String fen) {
+    public void loadFEN(String fen) throws IllegalArgumentException {
+        System.out.println("Loading FEN: " + fen);
+
         String[] parts = fen.split(" ");
         String[] rows = parts[0].split("/");
+
+        // Check that we have the correct number of rows
+        if (rows.length != GAMESIZE) {
+            throw new IllegalArgumentException("Invalid number of rows, got " + rows.length + ", expected " + GAMESIZE);
+        }
+
         int row = GAMESIZE - 1;
         int col = 0;
         for (String rowString : rows) {
             for (int i = 0; i < rowString.length(); i++) {
+                // Check that we have the correct number of columns
+                if (col > GAMESIZE) {
+                    throw new IllegalArgumentException("Invalid number of columns, got " + col + ", expected a max of " + GAMESIZE);
+                }
+
                 Cell cell = board.getCell(row, col);
 
                 char c = rowString.charAt(i);

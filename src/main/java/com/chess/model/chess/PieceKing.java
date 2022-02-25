@@ -48,8 +48,9 @@ public class PieceKing implements PieceBehavior {
         if (canCastleKingside) {
             boolean canCastle = true;
             
-            for (int i = 0; i < 3; i++) {
-                if (!rule.isEmpty(new Position(position.getRow(), position.getCol() + i))) {
+            // Check that the positions between the king and the rook are empty. Using rule.isEmpty()
+            for (int i = position.getCol() + 1; i < position.getCol() + 3; i++) {
+                if (!rule.isEmpty(new Position(position.getRow(), i))) {
                     canCastle = false;
                     break;
                 }
@@ -65,8 +66,9 @@ public class PieceKing implements PieceBehavior {
         if (canCastleQueenside) {
             boolean canCastle = true;
 
-            for (int i = 0; i < 3; i++) {
-                if (!rule.isEmpty(new Position(position.getRow(), position.getCol() - i))) {
+            // Check that the positions between the king and the rook are empty. Using rule.isEmpty()
+            for (int i = position.getCol() - 1; i > position.getCol() - 4; i--) {
+                if (!rule.isEmpty(new Position(position.getRow(), i))) {
                     canCastle = false;
                     break;
                 }
@@ -108,12 +110,20 @@ public class PieceKing implements PieceBehavior {
 
         if (canCastleKingSide && to == teamParameters.getCastlingKingSidePosition()) {
             // Move the rook
-            rule.requestMove(new Position(from.getRow(), from.getCol() + 2), new Position(from.getRow(), from.getCol() + 3));
+            boolean success = rule.requestMove(new Position(from.getRow(), from.getCol() + 3), new Position(from.getRow(), from.getCol() + 1));
+            
+            if (!success) {
+                throw new IllegalStateException("Failed to move the rook for castling.");
+            }
         }
 
         if (canCastleQueenSide && to == teamParameters.getCastlingQueenSidePosition()) {
             // Move the rook
-            rule.requestMove(new Position(from.getRow(), from.getCol() - 4), new Position(from.getRow(), from.getCol() - 1));
+            boolean success = rule.requestMove(new Position(from.getRow(), from.getCol() - 4), new Position(from.getRow(), from.getCol() - 1));
+        
+            if (!success) {
+                throw new IllegalStateException("Failed to move the rook for castling.");
+            }
         }
     }
 }
