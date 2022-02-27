@@ -126,14 +126,13 @@ public class Menu extends JMenuBar {
         
 
         //Creating view menu
-        //TODO: Visual customization could be added to this part of the menu as part of the technical requirements for the project.
         JMenu viewMenu = new JMenu("View");
         this.add(viewMenu);
         this.customizePieces = new JMenuItem("Customize Pieces");
         viewMenu.add(customizePieces);
 
         customizePieces.addActionListener((e) -> {
-            //new PieceConfigurator(view);
+            new PieceConfigurator(this, model);
         });
 
         //Creating sound menu

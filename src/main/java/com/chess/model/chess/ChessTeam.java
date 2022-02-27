@@ -68,7 +68,7 @@ public class ChessTeam implements Team {
         this.skinMap = cloneHashMap(skinMap);
     }
 
-    public ChessTeam clone() {
+    public ChessTeam cloneTeam() {
         return new ChessTeam(teamIdentifier, teamColor, name, time, teamParameters, skinMap);
     }
 
@@ -349,6 +349,10 @@ public class ChessTeam implements Team {
     public void setOwnSkin(Identifier p, boolean newOwn){
         this.skinMap.get(p).setOwnSkin(newOwn);
     }
+
+    public void incSkinIndex(Identifier p) { this.skinMap.get(p).incSkinIndex(); }
+
+    public void decSkinIndex(Identifier p) { this.skinMap.get(p).decSkinIndex(); }
 
     private HashMap<Identifier, ChessSkinInfo> cloneHashMap(HashMap<Identifier, ChessSkinInfo> skinMap){
         HashMap<Identifier, ChessSkinInfo> clone = new HashMap<>();

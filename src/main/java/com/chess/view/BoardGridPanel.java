@@ -2,6 +2,7 @@ package com.chess.view;
 
 import com.chess.model.*;
 import com.chess.model.chess.ChessModel;
+import com.chess.model.chess.ChessTeam;
 import com.chess.utils.Delegate;
 import com.chess.utils.Resources;
 
@@ -62,28 +63,21 @@ public class BoardGridPanel extends JPanel {
                     if (piece == null) {
                         button.setIcon(null);
                     } else {
-                        /*
-                        int n;
-                        switch(piece.getTypeIdentifier().toString()){
-                            case "r": n = 1; break;
-                            case "n": n = 2; break;
-                            case "b": n = 3; break;
-                            case "q": n = 4; break;
-                            case "k": n = 5; break;
-                            default: n = 0;
-                        }
-                        */
+                        ChessTeam team = model.getTeamManager().getTeam(piece.getTeamIdentifier());
+                        String s = model.getTeamManager().getTeam(piece.getTeamIdentifier()).getSkin(piece.getTypeIdentifier());
                         ImageIcon icon;
-                        /*
-                        TODO: Fix this
-                        if(!cell.getPiece().getTeam().getOwnSkin(n)){
-                            icon = Resources.getImageIcon(piece.getIconPath());
+                        if (!team.getOwnSkin(piece.getTypeIdentifier())) {
+                            if (team.getSkinIndex(piece.getTypeIdentifier()) == 0) {
+                                icon = Resources.getImageIcon("/images/" + team.getSkin(piece.getTypeIdentifier()));
+                            } else {
+                                icon = Resources.getImageIcon("/skins/" + team.getSkin(piece.getTypeIdentifier()));
+                            }
                         } else {
-                            icon = Resources.getOwnImageIcon(piece.getIconPath());
+                            //TODO: Behaves a bit mysteriously if a file is deleted or moved in between pop-ups. Could try to fix this some way.
+                            Image image = Toolkit.getDefaultToolkit().getImage(team.getSkin(piece.getTypeIdentifier()));
+                            image = image.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+                            icon = new ImageIcon(image);
                         }
-                        */
-                        icon = Resources.getImageIcon(piece.getIconPath());
-
                         button.setIcon(icon);
                     }
                 });

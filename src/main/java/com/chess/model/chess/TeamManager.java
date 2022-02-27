@@ -90,4 +90,14 @@ public class TeamManager {
     public void switchCurrentTeam() {
         currentTeamIdentifier = getOtherTeamIdentifier(currentTeamIdentifier);
     }
+
+
+    /**
+     * Changes the values of the instance of ChessTeam stored in the TeamManager for the given identifier.
+     * @param teamIdentifier The identifier of the team whose parameters will be changed.
+     * @param team The new instance of team containing the updated values for said team.
+     */
+    public void setTeam(Identifier teamIdentifier, ChessTeam team){
+        teamMap.put(teamIdentifier, team);
+    }
 }

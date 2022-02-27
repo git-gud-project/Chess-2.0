@@ -6,29 +6,22 @@ import java.io.Serializable;
 
 public class ChessSkinInfo implements SkinInfo, Serializable {
 
-    private ChessTypeIdentifier pieceType;
-    private ChessTeamIdentifier teamColor;
+    private final ChessTypeIdentifier pieceType;
+    private final ChessTeamIdentifier teamColor;
     private String skinPath;
     private int skinIndex;
     private boolean ownSkin;
 
-    private static final String[] whiteNames = {"pw.png", "rw.png", "nw.png", "bw.png", "qw.png", "kw.png"};
-    private static final String[] blackNames = {"pb.png", "rb.png", "nb.png", "bb.png", "qb.png", "kb.png"};
 
     public ChessSkinInfo(ChessTypeIdentifier pieceType, ChessTeamIdentifier teamColor){
         this.pieceType = pieceType;
         this.teamColor = teamColor;
-        this.skinPath = choosePath();
+        this.skinPath = pieceType.toString() + teamColor.toString() + ".png";
         this.skinIndex = 0;
         this.ownSkin = false;
     }
 
     // Util for constructor
-
-    private String choosePath(){
-        if(teamColor.equals(ChessTeamIdentifier.WHITE)) return whiteNames[chooseIndex()];
-        return blackNames[chooseIndex()];
-    }
 
     private int chooseIndex(){
         switch(pieceType){
@@ -52,5 +45,10 @@ public class ChessSkinInfo implements SkinInfo, Serializable {
     public void setSkinPath(String newPath) { this.skinPath = newPath; }
     public void setSkinIndex(int newIndex) { this.skinIndex = newIndex; }
     public void setOwnSkin(boolean newOwn) { this.ownSkin = newOwn; }
+
+    // Modifiers
+
+    public void incSkinIndex() { this.skinIndex++; }
+    public void decSkinIndex() { this.skinIndex--; }
 
 }
