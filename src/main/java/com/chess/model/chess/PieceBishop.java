@@ -1,6 +1,8 @@
 package com.chess.model.chess;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import com.chess.model.*;
@@ -9,10 +11,8 @@ import com.chess.model.*;
  * The class for the Bishop behavior.
  */
 public class PieceBishop implements PieceBehavior {
-    /**
-     * The ArrayList containing all possible moves.
-     */
-    private ArrayList<Move> possibleMoves = new ArrayList<>();
+    
+    private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<Move>());
 
     @Override
     public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {

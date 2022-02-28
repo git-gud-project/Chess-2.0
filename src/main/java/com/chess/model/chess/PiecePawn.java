@@ -1,6 +1,8 @@
 package com.chess.model.chess;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import com.chess.model.Identifier;
@@ -13,14 +15,12 @@ import com.chess.model.Rule;
  * The class for the Pawn behavior.
  */
 public class PiecePawn implements PieceBehavior {
-
-    private final ArrayList<Move> possibleMoves;
+    private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<Move>());
 
     private final ChessTeamParameters teamParameters;
 
     public PiecePawn(ChessTeamParameters teamParameters) {
         this.teamParameters = teamParameters;
-        this.possibleMoves = new ArrayList<>();
     }
 
     @Override

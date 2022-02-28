@@ -1,5 +1,6 @@
 package com.chess.model;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -94,7 +95,7 @@ public interface Rule {
     public void calculateMoves(
         Position position,
         Identifier teamIdentifier,
-        List<Move> registry,
+        Collection<Move> registry,
         int directionRow,
         int directionCol,
         int maxSteps,
@@ -116,7 +117,7 @@ public interface Rule {
     public default void calculateMoves(
         Position position,
         Identifier teamIdentifier,
-        List<Move> registry,
+        Collection<Move> registry,
         int directionRow,
         int directionCol,
         int maxSteps
@@ -145,7 +146,7 @@ public interface Rule {
      */
     public default void calculateMoves(Position position,
         Identifier teamIdentifier,
-        List<Move> registry,
+        Collection<Move> registry,
         int directionRow,
         int directionCol
     ) {

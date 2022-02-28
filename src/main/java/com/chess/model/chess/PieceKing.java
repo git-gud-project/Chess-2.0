@@ -1,6 +1,8 @@
 package com.chess.model.chess;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import com.chess.model.*;
@@ -9,11 +11,8 @@ import com.chess.model.*;
  * The class for the King behavior.
  */
 public class PieceKing implements PieceBehavior {
-    /**
-     * The ArrayList containing all possible moves.
-     */
-    private final ArrayList<Move> possibleMoves;
-    
+    private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<Move>());
+
     /**
      * The team parameters of the team that this piece belongs to.
      */
@@ -26,7 +25,6 @@ public class PieceKing implements PieceBehavior {
      */
     public PieceKing(ChessTeamParameters teamParameters) {
         this.teamParameters = teamParameters;
-        this.possibleMoves = new ArrayList<>();
     }
 
     @Override

@@ -10,8 +10,24 @@ import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.ChessTeam;
 import com.chess.view.*;
 
+/**
+ * Network controller
+ */
 public class NetworkControl {
-    private ChessControl control;
+    /**
+     * The controller interface
+     */
+    private final ChessControlInterface controlInterface;
+
+    /**
+     * The chess model
+     */
+    private final ChessModel model;
+
+    /**
+     * The view
+     */
+    private final ChessView view;
 
     /**
      * Has delegated white team.
@@ -66,7 +82,7 @@ public class NetworkControl {
      * @return the model of the control.
      */
     private ChessModel getModel() {
-        return control.getModel();
+        return model;
     }
 
     /**
@@ -75,7 +91,7 @@ public class NetworkControl {
      * @return the view of the control.
      */
     private ChessView getView() {
-        return control.getView();
+        return view;
     }
 
     /**
@@ -83,8 +99,10 @@ public class NetworkControl {
      * 
      * @param control The model.
      */
-    public NetworkControl(ChessControl chessControl) {
-        this.control = chessControl;
+    public NetworkControl(ChessControlInterface chessControl, ChessModel model, ChessView view) {
+        this.controlInterface = chessControl;
+        this.model = model;
+        this.view = view;
     }
 
     public void SetupViewHooks() {
@@ -178,7 +196,7 @@ public class NetworkControl {
             return;
         }
 
-        control.setPaused(true);
+        controlInterface.setPaused(true);
 
         networkClient = new NetworkClient(hostDetails);
         
@@ -215,12 +233,14 @@ public class NetworkControl {
             networkClient = null;
 
             // Pause the game
-            control.setPaused(true);
+            controlInterface.setPaused(true);
 
             // Reset team authority
             getModel().getTeamWhite().setHasAuthority(true);
             getModel().getTeamBlack().setHasAuthority(true);
-            control.setOurTeam(null);
+
+            // Set local team to null
+            controlInterface.setLocalTeam(null);
         });
 
         // Setup message delegates.
@@ -229,21 +249,21 @@ public class NetworkControl {
             SetTeamMessage setTeamMessage = (SetTeamMessage) message;
 
             // Decide which team to use.
-            ChessTeam ourTeam;
+            ChessTeam localTeam;
 
             if (setTeamMessage.isWhite()) {
-                ourTeam = getModel().getTeamWhite();
+                localTeam = getModel().getTeamWhite();
             } else {
-                ourTeam = getModel().getTeamBlack();
+                localTeam = getModel().getTeamBlack();
             }
 
             // Set out current team and its authority.
-            control.setOurTeam(ourTeam);
+            controlInterface.setLocalTeam(localTeam);
 
-            ourTeam.setHasAuthority(true);
+            localTeam.setHasAuthority(true);
 
             // Set the opponent's authority.
-            getModel().getOtherTeam(ourTeam).setHasAuthority(false);
+            getModel().getOtherTeam(localTeam).setHasAuthority(false);
         });
 
         networkClient.setMessageDelegate(AffirmMoveMessage.class, message -> {
@@ -259,14 +279,14 @@ public class NetworkControl {
             Move move = new Move(toCell, fromCell, identifier, isElimination);
             
             // Apply the move.
-            control.executeMove(move);
+            controlInterface.executeMove(move);
         });
 
         networkClient.setMessageDelegate(PromotePawnMessage.class, message -> {
             PromotePawnMessage promotePawnMessage = (PromotePawnMessage) message;
             
             // Forward to control.
-            control.promotePawn(promotePawnMessage.getRow(), promotePawnMessage.getCol(), promotePawnMessage.getPieceType(), promotePawnMessage.isElimination());
+            controlInterface.promotePawn(promotePawnMessage.getRow(), promotePawnMessage.getCol(), promotePawnMessage.getPieceType(), promotePawnMessage.isElimination());
         });
 
         networkClient.setMessageDelegate(ChangeNameMessage.class, message -> {
@@ -289,7 +309,7 @@ public class NetworkControl {
             PauseGameMessage pauseGameMessage = (PauseGameMessage) message;
 
             // Set the game's paused state.
-            control.setPaused(pauseGameMessage.isPaused());
+            controlInterface.setPaused(pauseGameMessage.isPaused());
         });
 
         networkClient.setMessageDelegate(LoadGameMessage.class, message -> {
@@ -303,7 +323,7 @@ public class NetworkControl {
             getModel().loadModel(loadGameMessage.getModel());
 
             // Pause the game.
-            control.setPaused(true);
+            controlInterface.setPaused(true);
         });
     }
 
@@ -319,7 +339,7 @@ public class NetworkControl {
             return;
         }
 
-        control.setPaused(true);
+        controlInterface.setPaused(true);
 
         networkServer = new NetworkServer(hostDetails);
 
@@ -352,7 +372,7 @@ public class NetworkControl {
             networkServer = null;
 
             // Pause the game.
-            control.setPaused(true);
+            controlInterface.setPaused(true);
 
             // Reset delegate authority
             hasDelegatedWhiteTeam = false;
@@ -374,7 +394,7 @@ public class NetworkControl {
             Move move = new Move(from, to, identifier, isElimination);
 
             // Apply the move.
-            control.movePiece(move);
+            controlInterface.movePiece(move);
         });
         
         networkServer.setMessageDelegate(ClientReadyMessage.class, (client, message) -> {
@@ -394,7 +414,7 @@ public class NetworkControl {
             }
 
             // Pause the game.
-            control.setPaused(true);
+            controlInterface.setPaused(true);
             
             // Send a load message to the client.
             client.sendMessage(new LoadGameMessage(getModel().getSerialModel()));

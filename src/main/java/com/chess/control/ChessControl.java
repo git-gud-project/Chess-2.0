@@ -17,7 +17,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class ChessControl {
+public class ChessControl implements ChessControlInterface {
     private final ChessModel model;
     private final ChessView view;
 
@@ -51,7 +51,7 @@ public class ChessControl {
      * 
      * @return true if it is our turn
      */
-    public boolean isMyTurn() {
+    private boolean isMyTurn() {
         return networkControl.isSinglePlayer() || model.getCurrentTeam() == ourTeam;
     }
 
@@ -61,27 +61,38 @@ public class ChessControl {
      * @param team the team to check
      * @return true if we have authority over the team
      */
-    public boolean hasAuthorityOver(ChessTeam team) {
+    private boolean hasAuthorityOver(ChessTeam team) {
         return networkControl.isSinglePlayer() || this.ourTeam == team;
     }
 
-    public void setOurTeam(ChessTeam team) {
+    @Override
+    public void setLocalTeam(ChessTeam team) {
         this.ourTeam = team;
     }
 
-    public ChessTeam getOurTeam() {
+    private ChessTeam getOurTeam() {
         return this.ourTeam;
     }
 
-    public ChessModel getModel() {
+    private ChessModel getModel() {
         return model;
     }
 
-    public ChessView getView() {
+    private ChessView getView() {
         return view;
     }
 
-    public void promotePawn(int row, int col, Identifier typeIdentifier, boolean isElimination) {
+    @Override
+    public void setPaused(boolean paused) {
+        model.setPaused(paused);
+
+        JButton button = view.getInfoPanel().getPauseButton();
+        button.setText(!model.getStarted() ? "Make a move to start" : paused ? "Resume" : "Pause");
+        button.setEnabled(true);
+    }
+
+    @Override
+    public void promotePawn(int row, int col, Identifier typeIdentifier, boolean isElimination) throws IllegalArgumentException {
         final Board board = model.getBoard();
 
         final Cell cell = board.getCell(row, col);
@@ -108,6 +119,7 @@ public class ChessControl {
      * 
      * @param move The move that is being performed.
      */
+    @Override
     public void executeMove(Move move) {
         if (!model.getStarted()) {
             model.setStarted(true);
@@ -249,6 +261,7 @@ public class ChessControl {
      * 
      * Forwards to the network client if the game is in network mode.
      */
+    @Override
     public void movePiece(Move move) {
         int fromRow = move.getFromCell().getRow();
         int fromCol = move.getFromCell().getCol();
@@ -299,14 +312,6 @@ public class ChessControl {
         if (networkControl.isHost()) {
             networkControl.broadcastMessage(new PauseGameMessage(model.getPaused()));
         }
-    }
-
-    protected void setPaused(boolean paused) {
-        model.setPaused(paused);
-
-        JButton button = view.getInfoPanel().getPauseButton();
-        button.setText(!model.getStarted() ? "Make a move to start" : paused ? "Resume" : "Pause");
-        button.setEnabled(true);
     }
 
     private void handleClick(BoardCell boardCell) {
@@ -416,7 +421,7 @@ public class ChessControl {
         //
 
         // Create network control.
-        networkControl = new NetworkControl(this);
+        networkControl = new NetworkControl(this, model, view);
 
         networkControl.SetupViewHooks();
 

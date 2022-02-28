@@ -1,6 +1,8 @@
 package com.chess.model.chess;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import com.chess.model.Identifier;
@@ -13,10 +15,8 @@ import com.chess.model.Rule;
  * The class for the Rook behavior.
  */
 public class PieceRook implements PieceBehavior{
-    /**
-     * The ArrayList containing all possible moves.
-     */
-    private final ArrayList<Move> possibleMoves;
+
+    private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<Move>());
     
     /**
      * The team parameters of the team that this piece belongs to.
@@ -30,7 +30,6 @@ public class PieceRook implements PieceBehavior{
      */
     public PieceRook(ChessTeamParameters teamParameters) {
         this.teamParameters = teamParameters;
-        this.possibleMoves = new ArrayList<>();
     }
 
     @Override
