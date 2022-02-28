@@ -177,5 +177,4 @@ public class ChessView extends JFrame {
     public String getSoundMap() {
         return menuPanel.getSoundMap();
     }
-
 }

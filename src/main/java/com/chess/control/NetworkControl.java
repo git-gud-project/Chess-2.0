@@ -103,12 +103,14 @@ public class NetworkControl {
         this.controlInterface = chessControl;
         this.model = model;
         this.view = view;
+
+        SetupViewHooks();
     }
 
-    public void SetupViewHooks() {
-        ChessView view = getView();
+    private void SetupViewHooks() {
+        final ChessView view = getView();
 
-        Menu menu = view.getMenu();
+        final Menu menu = view.getMenu();
 
         // Setup listeners on the menu items
         menu.getOnStartServerEvent().addDelegate((ipAndPort) -> {
@@ -152,6 +154,10 @@ public class NetworkControl {
         menu.getDisconnect().setEnabled(!enabled);
 
         menu.getNewGame().setEnabled(isHost() || enabled);
+    }
+
+    private void showMessage(String message) {
+        // TODO: Some indication of the message
     }
 
     /**
@@ -241,6 +247,13 @@ public class NetworkControl {
 
             // Set local team to null
             controlInterface.setLocalTeam(null);
+
+            // Show UI message
+            if (isHost()) {
+                showMessage("Client disconnected, server closed.");
+            } else {
+                showMessage("Disconnected from server.");
+            }
         });
 
         // Setup message delegates.
@@ -264,6 +277,11 @@ public class NetworkControl {
 
             // Set the opponent's authority.
             getModel().getOtherTeam(localTeam).setHasAuthority(false);
+
+            // Show UI message
+            if (!isHost()) {
+                showMessage("Connected to server.");
+            }
         });
 
         networkClient.setMessageDelegate(AffirmMoveMessage.class, message -> {
@@ -409,6 +427,9 @@ public class NetworkControl {
                 client.sendMessage(new SetTeamMessage(false));
                 
                 hasDelegatedBlackTeam = true;
+
+                // Show UI message.
+                showMessage("Remote client connected.");
             } else {
                 // Client is spectator.
             }

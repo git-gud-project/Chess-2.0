@@ -70,18 +70,6 @@ public class ChessControl implements ChessControlInterface {
         this.ourTeam = team;
     }
 
-    private ChessTeam getOurTeam() {
-        return this.ourTeam;
-    }
-
-    private ChessModel getModel() {
-        return model;
-    }
-
-    private ChessView getView() {
-        return view;
-    }
-
     @Override
     public void setPaused(boolean paused) {
         model.setPaused(paused);
@@ -422,8 +410,6 @@ public class ChessControl implements ChessControlInterface {
 
         // Create network control.
         networkControl = new NetworkControl(this, model, view);
-
-        networkControl.SetupViewHooks();
 
         // Setup listener when clicking on a cell.
         view.getBoardGridPanel().setClickDelegate((BoardCell boardCell) -> handleClick(boardCell));

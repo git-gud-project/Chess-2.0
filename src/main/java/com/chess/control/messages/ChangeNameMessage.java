@@ -3,8 +3,8 @@ package com.chess.control.messages;
 import com.chess.network.Message;
 
 public class ChangeNameMessage implements Message {
-    public String name;
-    public boolean isWhite;
+    private String name;
+    private boolean isWhite;
 
     public ChangeNameMessage(String name, boolean isWhite) {
         this.name = name;
