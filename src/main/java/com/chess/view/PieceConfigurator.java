@@ -38,8 +38,8 @@ public class PieceConfigurator extends JPanel {
     private void setupUI() {
 
         //Creating a local copy of each team's instance to roll back any performed changes that were not committed.
-        ChessTeam teamWhite = model.getTeamWhite().cloneTeam();
-        ChessTeam teamBlack = model.getTeamBlack().cloneTeam();
+        ChessTeam teamWhite = model.getTeamWhite().clone();
+        ChessTeam teamBlack = model.getTeamBlack().clone();
 
         //Creating panel where custom skins for pieces are selected.
         JPanel buttonsPanel = new JPanel();

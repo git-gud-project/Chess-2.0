@@ -1,4 +1,5 @@
 package com.chess.model.chess;
+
 import java.awt.*;
 import java.util.HashMap;
 
@@ -6,364 +7,300 @@ import com.chess.model.*;
 
 import com.chess.utils.Event;
 
+/**
+ * Represents a team in chess
+ */
 public class ChessTeam implements Team {
 
-    //
-    // Fields
-    //
-
+    /**
+     * The team color
+     */
     private final Color teamColor;
 
+    /**
+     * The team name
+     */
     private String name;
 
+    /**
+     * The timer for the team
+     */
     private GameTime time;
 
+    /**
+     * The team identifier
+     */
     private final Identifier teamIdentifier;
 
+    /**
+     * The team parameters
+     */
     private final ChessTeamParameters teamParameters;
 
+    /**
+     * The authority of the team
+     */
     private boolean hasAuthority;
 
+    /**
+     * Map of the skins for the team
+     */
     private HashMap<Identifier, ChessSkinInfo> skinMap;
 
-    private static final ChessTypeIdentifier[] orderedNames = {
-        ChessTypeIdentifier.PAWN,
-        ChessTypeIdentifier.ROOK,
-        ChessTypeIdentifier.KNIGHT,
-        ChessTypeIdentifier.BISHOP,
-        ChessTypeIdentifier.QUEEN,
-        ChessTypeIdentifier.KING
-    };
-
-    //
-    // Events
-    //
-
+    /**
+     * Event to be triggered when the team name is changed
+     */
     private Event<String> onNameChangedEvent = new Event<>();
 
+    /**
+     * Event to be triggered when the team time is changed
+     */
     private Event<GameTime> onTimeChangedEvent = new Event<>();
 
+    /**
+     * Event to be triggered when the team authority is changed
+     */
     private Event<Boolean> onAuthorityChangedEvent = new Event<>();
 
-    //
-    // Constructors
-    //
-
-    public ChessTeam(Identifier teamIdentifier, Color color, String name, GameTime time, ChessTeamParameters teamParameters) {
+    /**
+     * Create a new chess team
+     * 
+     * @param teamIdentifier the team identifier
+     * @param color          the team color
+     * @param name           the team name
+     * @param time           the team time
+     * @param teamParameters the team parameters
+     */
+    public ChessTeam(Identifier teamIdentifier, Color color, String name, GameTime time,
+            ChessTeamParameters teamParameters) {
         this.teamColor = color;
         this.teamIdentifier = teamIdentifier;
         this.name = name;
         this.time = time.clone();
         this.hasAuthority = true;
         this.teamParameters = teamParameters;
+
         initHashMap();
     }
 
-    public ChessTeam(Identifier teamIdentifier, Color color, String name, GameTime time, ChessTeamParameters teamParameters, HashMap<Identifier, ChessSkinInfo> skinMap) {
-        this.teamColor = color;
-        this.teamIdentifier = teamIdentifier;
-        this.name = name;
-        this.teamParameters = teamParameters;
-        this.time = time.clone();
+    /**
+     * Create a new chess team
+     * 
+     * @param teamIdentifier the team identifier
+     * @param color          the team color
+     * @param name           the team name
+     * @param time           the team time
+     * @param teamParameters the team parameters
+     * @param skinMap        the team skins
+     */
+    public ChessTeam(Identifier teamIdentifier, Color color, String name, GameTime time,
+            ChessTeamParameters teamParameters, HashMap<Identifier, ChessSkinInfo> skinMap) {
+        this(teamIdentifier, color, name, time, teamParameters);
+
         this.skinMap = cloneHashMap(skinMap);
     }
 
-    public ChessTeam cloneTeam() {
+    /**
+     * Clone the team
+     */
+    public ChessTeam clone() {
         return new ChessTeam(teamIdentifier, teamColor, name, time, teamParameters, skinMap);
     }
 
-    //
-    // Getters
-    //
-
+    /**
+     * Get the team color
+     * 
+     * @return the team color
+     */
+    @Override
     public Color getColor() {
         return teamColor;
     }
 
+    /**
+     * Get the team identifier
+     * 
+     * @return the team identifier
+     */
     public Identifier getTeamIdentifier() {
         return teamIdentifier;
     }
 
+    /**
+     * Get the team name
+     * 
+     * @return the team name
+     */
+    @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * Get the team time
+     * 
+     * @return the team time
+     */
+    @Override
     public GameTime getTime() {
         return time;
     }
 
+    /**
+     * Get the team authority
+     * 
+     * @return the team authority
+     */
+    @Override
     public boolean getHasAuthority() {
         return hasAuthority;
     }
 
+    /**
+     * Get the team parameters
+     * 
+     * @return the team parameters
+     */
     public ChessTeamParameters getTeamParameters() {
         return teamParameters;
     }
 
-    //
-    // Setters
-    //
-
+    /**
+     * Set the team name
+     * 
+     * @param name the team name
+     */
     public void setName(String name) {
         this.name = name;
         onNameChangedEvent.trigger(name);
     }
 
+    /**
+     * Set the team authority
+     * 
+     * @param hasAuthority the team authority
+     */
     public void setHasAuthority(boolean hasAuthority) {
         this.hasAuthority = hasAuthority;
         onAuthorityChangedEvent.trigger(hasAuthority);
     }
 
+    /**
+     * Set the team time
+     * 
+     * @param time the team time
+     */
     public void setTime(GameTime time) {
         this.time = time;
         onTimeChangedEvent.trigger(time);
     }
 
-    //
-    // Getters - Events
-    //
-
+    /**
+     * Get the event to be triggered when the team name is changed
+     * 
+     * @return the event to be triggered when the team name is changed
+     */
+    @Override
     public Event<String> getOnNameChangedEvent() {
         return onNameChangedEvent;
     }
 
+    /**
+     * Get the event to be triggered when the team time is changed
+     * 
+     * @return the event to be triggered when the team time is changed
+     */
+    @Override
     public Event<GameTime> getOnTimeChangedEvent() {
         return onTimeChangedEvent;
     }
 
+    /**
+     * Get the event to be triggered when the team authority is changed
+     * 
+     * @return the event to be triggered when the team authority is changed
+     */
+    @Override
     public Event<Boolean> getOnAuthorityChangedEvent() {
         return onAuthorityChangedEvent;
     }
 
-    //
-    // Utility
-    //
-
+    /**
+     * Tick the game time
+     */
     public void tickTime() {
         time.tick();
         onTimeChangedEvent.trigger(time);
     }
 
-    /*
-    //
-    // Getters - Utility
-    //
-
-    public int getKingRow() {
-        return pawnDirectionRow == 1 ? 7 : 0;
-    }
-
-    public int getKingCol() {
-        return 4;
-    }
-
-    public int getPromotionRow() {
-        return pawnDirectionRow == 1 ? 0 : 7;
-    }
-
-    //
-    // SKIN - NOT TOUCHED
-    //
-
-    public int getPawnSkin() { return this.skinIndex[0]; }
-    public int getRookSkin() { return this.skinIndex[1]; }
-    public int getKnightSkin() { return this.skinIndex[2]; }
-    public int getBishopSkin() { return this.skinIndex[3]; }
-    public int getQueenSkin() { return this.skinIndex[4]; }
-    public int getKingSkin() { return this.skinIndex[5]; }
-
-    public Color getOpponentColor() {
-        return new Color(255 - teamColor.getRed(), 255 - teamColor.getGreen(), 255 - teamColor.getBlue());
-    }
-
-    //
-    // Setters - Utility
-    //
-
-    public void incPawnSkin() { this.skinIndex[0]++; }
-    public void incRookSkin() { this.skinIndex[1]++; }
-    public void incKnightSkin() { this.skinIndex[2]++; }
-    public void incBishopSkin() { this.skinIndex[3]++; }
-    public void incQueenSkin() { this.skinIndex[4]++; }
-    public void incKingSkin() { this.skinIndex[5]++; }
-
-    public void decPawnSkin() { this.skinIndex[0]--; }
-    public void decRookSkin() { this.skinIndex[1]--; }
-    public void decKnightSkin() { this.skinIndex[2]--; }
-    public void decBishopSkin() { this.skinIndex[3]--; }
-    public void decQueenSkin() { this.skinIndex[4]--; }
-    public void decKingSkin() { this.skinIndex[5]--; }
-
-    //
-    // Methods
-    //
-
-    public void tickTime() {
-        time.tick();
-        onTimeChangedEvent.trigger(time);
-    }
-
-    //
-    // En Passant
-    //
-
-    public boolean isEnPassant(int row, int col) {
-        return enPassantPiece != null && getEnPassantRow() == row && getEnPassantCol() == col;
-    }
-
-    public void setEnPassant(Piece piece) {
-        enPassantPiece = piece;
-    }
-
-    public void clearEnPassant() {
-        enPassantPiece = null;
-    }
-
-    //
-    // Castling
-    //
-
-    public boolean hasCastlingRightKingSide() {
-        Board board = model.getBoard();
-        Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
-        Piece rook = board.getCell(getKingRow(), getKingCol() + 3).getPiece();
-
-        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king.getPieceType() == PieceType.KING) || !(rook.getPieceType() == PieceType.ROOK)) {
-            return false;
-        }
-
-        return !king.hasMoved() && !rook.hasMoved();
-    }
-
-    public void setHasCastlingRightKingSide(boolean hasCastlingRightKingSide) {
-        Board board = model.getBoard();
-        Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
-        Piece rook = board.getCell(getKingRow(), getKingCol() + 3).getPiece();
-
-        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king.getPieceType() == PieceType.KING) || !(rook.getPieceType() == PieceType.ROOK)) {
-            return;
-        }
-
-        king.setHasMoved(!hasCastlingRightKingSide);
-        rook.setHasMoved(!hasCastlingRightKingSide);
-    }
-
-    public boolean hasCastlingRightQueenSide() {
-        Board board = model.getBoard();
-        Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
-        Piece rook = board.getCell(getKingRow(), getKingCol() - 4).getPiece();
-
-        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king.getPieceType() == PieceType.KING) || !(rook.getPieceType() == PieceType.ROOK)) {
-            return false;
-        }
-
-        return !king.hasMoved() && !rook.hasMoved();
-    }
-
-    public void setHasCastlingRightQueenSide(boolean hasCastlingRightQueenSide) {
-        Board board = model.getBoard();
-        Piece king = board.getCell(getKingRow(), getKingCol()).getPiece();
-        Piece rook = board.getCell(getKingRow(), getKingCol() - 4).getPiece();
-
-        if (king == null || rook == null || king.getTeam() != this || rook.getTeam() != this || !(king.getPieceType() == PieceType.KING) || !(rook.getPieceType() == PieceType.ROOK)) {
-            return;
-        }
-
-        king.setHasMoved(!hasCastlingRightQueenSide);
-        rook.setHasMoved(!hasCastlingRightQueenSide);
-    }
-
-    public boolean canCastleKingSide() {
-        if (!hasCastlingRightKingSide()) {
-            return false;
-        }
-
-        for (int i = getKingCol() + 1; i < getKingCol() + 3; i++) {
-            if (model.getBoard().getCell(getKingRow(), i).getPiece() != null) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public boolean canCastleQueenSide() {
-        if (!hasCastlingRightQueenSide()) {
-            return false;
-        }
-
-        for (int i = getKingCol() - 1; i > getKingCol() - 4; i--) {
-            if (model.getBoard().getCell(getKingRow(), i).getPiece() != null) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public Cell getCastlingKingSideCell() {
-        return model.getBoard().getCell(getKingRow(), getKingCol() + 2);
-    }
-
-    public Cell getCastlingQueenSideCell() {
-        return model.getBoard().getCell(getKingRow(), getKingCol() - 2);
-    }
-
-    public String toString(){
-        return this.name;
-    }
-*/
-    private void initHashMap(){
+    private void initHashMap() {
         this.skinMap = new HashMap<>();
-        if(this.teamColor.equals(Color.WHITE)){
-            for (ChessTypeIdentifier orderedName : orderedNames) {
+        if (this.teamColor.equals(Color.WHITE)) {
+            for (ChessTypeIdentifier orderedName : ChessTypeIdentifier.values()) {
                 this.skinMap.put(orderedName, new ChessSkinInfo(orderedName, ChessTeamIdentifier.WHITE));
             }
         } else {
-            for(ChessTypeIdentifier orderedName : orderedNames ){
+            for (ChessTypeIdentifier orderedName : ChessTypeIdentifier.values()) {
                 this.skinMap.put(orderedName, new ChessSkinInfo(orderedName, ChessTeamIdentifier.BLACK));
             }
         }
     }
 
-    public String getSkin(Identifier p){
-        return this.skinMap.get(p).getSkinPath();
+    // TODO: Oscar comment this
+
+    public String getSkin(Identifier typeIdentifier) {
+        return this.skinMap.get(typeIdentifier).getSkinPath();
     }
 
-    public void setSkin(Identifier p, String s){
-        this.skinMap.get(p).setSkinPath(s);
+    public void setSkin(Identifier typeIdentifier, String s) {
+        this.skinMap.get(typeIdentifier).setSkinPath(s);
     }
 
-    public int getSkinIndex(Identifier p){
-        return this.skinMap.get(p).getSkinIndex();
+    public int getSkinIndex(Identifier typeIdentifier) {
+        return this.skinMap.get(typeIdentifier).getSkinIndex();
     }
 
-    public void setSkinIndex(Identifier p, int newValue){
-        this.skinMap.get(p).setSkinIndex(newValue);
+    public void setSkinIndex(Identifier typeIdentifier, int newValue) {
+        this.skinMap.get(typeIdentifier).setSkinIndex(newValue);
     }
 
-    public boolean getOwnSkin(Identifier p){
-        return this.skinMap.get(p).getOwnSkin();
+    public boolean getOwnSkin(Identifier typeIdentifier) {
+        return this.skinMap.get(typeIdentifier).getOwnSkin();
     }
 
-    public void setOwnSkin(Identifier p, boolean newOwn){
-        this.skinMap.get(p).setOwnSkin(newOwn);
+    public void setOwnSkin(Identifier typeIdentifier, boolean newOwn) {
+        this.skinMap.get(typeIdentifier).setOwnSkin(newOwn);
     }
 
-    public void incSkinIndex(Identifier p) { this.skinMap.get(p).incSkinIndex(); }
+    public void incSkinIndex(Identifier typeIdentifier) {
+        this.skinMap.get(typeIdentifier).incSkinIndex();
+    }
 
-    public void decSkinIndex(Identifier p) { this.skinMap.get(p).decSkinIndex(); }
+    public void decSkinIndex(Identifier typeIdentifier) {
+        this.skinMap.get(typeIdentifier).decSkinIndex();
+    }
 
-    private HashMap<Identifier, ChessSkinInfo> cloneHashMap(HashMap<Identifier, ChessSkinInfo> skinMap){
+    private HashMap<Identifier, ChessSkinInfo> cloneHashMap(HashMap<Identifier, ChessSkinInfo> skinMap) {
         HashMap<Identifier, ChessSkinInfo> clone = new HashMap<>();
-        for(Identifier p : orderedNames){
+        for (Identifier p : ChessTypeIdentifier.values()) {
             clone.put(p, skinMap.get(p));
         }
         return clone;
     }
 
-    public void setSkinMap(HashMap<Identifier, ChessSkinInfo> skinMap) { this.skinMap = skinMap; }
+    public void setSkinMap(HashMap<Identifier, ChessSkinInfo> skinMap) {
+        this.skinMap = skinMap;
+    }
 
-    public HashMap<Identifier, ChessSkinInfo> getSkinMap() { return this.skinMap; }
+    public HashMap<Identifier, ChessSkinInfo> getSkinMap() {
+        return this.skinMap;
+    }
 
+    /**
+     * ToString override
+     */
+    @Override
+    public String toString() {
+        return name;
+    }
 }

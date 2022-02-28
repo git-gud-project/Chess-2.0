@@ -310,6 +310,9 @@ public class ChessControl {
     }
 
     private void handleClick(BoardCell boardCell) {
+        // Start a timer
+        long startTime = System.currentTimeMillis();
+
         if (!isMyTurn() || model.getPaused() && model.getStarted()) {
             return;
         }
@@ -357,17 +360,8 @@ public class ChessControl {
 
         selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
 
-        // Start a timer
-        long startTime = System.currentTimeMillis();
-
         Iterator<Move> moves = piece.getPossibleMoves(model.getRule(), new Position(selectedCell.getRow(), selectedCell.getCol()));
 
-        // end timer
-        long endTime = System.currentTimeMillis();
-
-        // print the time it took to get the moves
-        System.out.println("Time to get moves: " + (endTime - startTime) + "ms");
-        
         while (moves.hasNext()) {
             Move move = moves.next();
 
@@ -383,6 +377,12 @@ public class ChessControl {
 
             highlightedCells.add(possibleMove);
         }
+
+        // end timer
+        long endTime = System.currentTimeMillis();
+
+        // print the time it took to get the moves
+        System.out.println("Time to get moves: " + (endTime - startTime) + "ms");
     }
 
     private void handleChangeName(ChessTeam team) {

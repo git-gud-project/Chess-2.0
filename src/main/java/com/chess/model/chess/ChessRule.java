@@ -175,28 +175,63 @@ public class ChessRule implements Rule {
         }
     }
 
-    private boolean isLegalMove(Identifier piece, Identifier team, Move move) {
-        if (boardInfo.isEmpty(move.getToCell())) {
-            return true;
+    private boolean isLegalMove(Identifier pieceIdentifier, Identifier teamIdentifier, Move move) {
+        // Collect relevant details
+        final Position from = move.getFromCell();
+        final Position to = move.getToCell();
+        final boolean isEmpty = boardInfo.isEmpty(to);
+
+        // If the cell is not empty store the details of the piece which is theoretically being captured
+        Identifier originPiece = null;
+        Identifier originTeam = null;
+
+        if (!isEmpty) {
+            originPiece = boardInfo.getTypeIdentifier(to);
+            originTeam = boardInfo.getTeamIdentifier(to);
         }
 
-        Identifier originPiece = boardInfo.getTypeIdentifier(move.getToCell());
-        Identifier originTeam = boardInfo.getTeamIdentifier(move.getToCell());
+        // Do a theoretical move
+        boardInfo.setPiece(
+            to,
+            pieceIdentifier,
+            teamIdentifier,
+            false
+        );
+        
+        boardInfo.clearPiece(
+            from,
+            false
+        );
 
-        boardInfo.setPiece(move.getToCell(),piece,team,false); // 1. Flyttar cellen
-        boardInfo.clearPiece(move.getFromCell(),false);
+        // Check if it results in us being in check
+        final boolean isCheck = isCheck(teamIdentifier);
 
-        if(isCheck(team)){ // 2. Kollar om det är schack efter flytten.
-            boardInfo.setPiece(move.getFromCell(),piece,team,false); // Om det är schack så flyttar vi tillbaks pjäserna.
-            boardInfo.setPiece(move.getToCell(),originPiece,originTeam,false);
+        // It is only a legal move if it does not result in us being in check
+        final boolean isLegalMove = !isCheck;
 
-            return false; // returnerar att det är falsk (en illegal move).
+        // Revert the theoretical move
+        boardInfo.setPiece(
+            from,
+            pieceIdentifier,
+            teamIdentifier,
+            false
+        );
+
+        if (!isEmpty) {
+            boardInfo.setPiece(
+                to,
+                originPiece,
+                originTeam,
+                false
+            );
         } else {
-            boardInfo.setPiece(move.getFromCell(),piece,team,false); // Om det är inte schack så flyttar vi tillbaks pjäserna.
-            boardInfo.setPiece(move.getToCell(),originPiece,originTeam,false);
-
-            return true;
+            boardInfo.clearPiece(
+                to,
+                false
+            );
         }
+
+        return isLegalMove;
     }
 
     /**
