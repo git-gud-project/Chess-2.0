@@ -299,4 +299,40 @@ public class ChessView extends JFrame {
     public String getSoundMap() {
         return menuPanel.getSoundMap();
     }
+
+    public void showMessage(String message) {
+        // Create a new JPanel to display the message floating in the middle of the screen
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.setBackground(Color.BLACK);
+        panel.setOpaque(true);
+
+        // Create a new JLabel to display the message
+        JLabel label = new JLabel(message);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Arial", Font.PLAIN, 20));
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.CENTER);
+
+        // Add the label to the panel
+        panel.add(label, BorderLayout.CENTER);
+
+        // Limit the size of the panel to the size of the message
+        panel.setPreferredSize(new Dimension(label.getPreferredSize().width + 20, label.getPreferredSize().height + 20));
+
+        // Add the panel to the frame
+        this.add(panel, BorderLayout.CENTER);
+
+        // After 2 seconds, remove the panel from the frame
+        new Thread(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                return;
+            }
+            this.remove(panel);
+            this.revalidate();
+            this.repaint();
+        }).start();
+    }
 }
