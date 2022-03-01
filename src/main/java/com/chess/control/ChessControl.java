@@ -2,6 +2,7 @@ package com.chess.control;
 
 import com.chess.view.*;
 import com.chess.model.*;
+import com.chess.model.chess.ChessBoardInformation;
 import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.ChessPieceFactory;
 import com.chess.model.chess.ChessTeam;
@@ -19,7 +20,10 @@ import java.util.*;
 
 public class ChessControl implements ChessControlInterface {
     private final ChessModel model;
+
     private final ChessView view;
+
+    private final ChessBoardInformation boardInformation;
 
     /**
      * The network control.
@@ -122,15 +126,32 @@ public class ChessControl implements ChessControlInterface {
 
         Identifier typeIdentifier = piece.getTypeIdentifier();
 
+        ChessTeam otherTeam = model.getOtherTeam(model.getCurrentTeam());
+
+        final ChessTeamParameters otherTeamParameters = otherTeam.getTeamParameters();
+
+        if (isElimination) {
+            final Position to = move.getToCell();
+
+            Identifier eliminatedTypeIdentifier = boardInformation.getTypeIdentifier(to);
+
+            // If we eliminated a rook, we need to update the castling flags.
+            if (eliminatedTypeIdentifier.equals(ChessTypeIdentifier.ROOK)) {
+                final Position kingSide = otherTeamParameters.getCastlingKingSidePosition().addCol(1);
+                final Position queenSide = otherTeamParameters.getCastlingQueenSidePosition().addCol(-2);
+                if (to.equals(kingSide)) {
+                    otherTeamParameters.setCanCastleKingside(false);
+                } else if (to.equals(queenSide)) {
+                    otherTeamParameters.setCanCastleQueenside(false);
+                }
+            }
+        }
+
         model.movePiece(move.getFromCell(), move.getToCell());
 
         // Halfmove clock: The number of halfmoves since the last capture or pawn
         // advance, used for the fifty-move rule.
         boolean halfMove = !typeIdentifier.equals(ChessTypeIdentifier.PAWN) && !isElimination;
-
-        ChessTeam otherTeam = model.getOtherTeam(model.getCurrentTeam());
-
-        final ChessTeamParameters otherTeamParameters = otherTeam.getTeamParameters();
 
         if (typeIdentifier.equals(ChessTypeIdentifier.PAWN) && move.getToCell().getRow() == otherTeamParameters.getKingRow()) {
             if (isMyTurn()) {
@@ -403,6 +424,8 @@ public class ChessControl implements ChessControlInterface {
         model = new ChessModel();
         view = new ChessView(model);
         highlightedCells = new ArrayList<>();
+
+        boardInformation = model.getBoardInformation();
 
         //
         // Create control subcomponents.
