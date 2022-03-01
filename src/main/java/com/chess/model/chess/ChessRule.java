@@ -32,8 +32,8 @@ public class ChessRule implements Rule {
      * @param boardInfo the board information
      * @param teamManager the team manager
      */
-    public ChessRule(BoardInformation BoardInfo, TeamManager teamManager) {
-        this.boardInfo = BoardInfo;
+    public ChessRule(BoardInformation boardInfo, TeamManager teamManager) {
+        this.boardInfo = boardInfo;
         this.teamManager = teamManager;
 
         gameSize = this.boardInfo.getBoardSize();
@@ -292,10 +292,6 @@ public class ChessRule implements Rule {
      * @return true if the team is in check
      */
     public boolean isCheck(Identifier teamIdentifier) {
-        if (isGameOver(teamManager.getOtherTeamIdentifier(teamIdentifier)) != 0){
-            return false;
-        }
-
         List<Move> allEnemyMoves = allEnemyMoves(teamIdentifier);
         for (Move m : allEnemyMoves) {
             Position toCell = m.getToCell();
