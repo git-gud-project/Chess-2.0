@@ -36,48 +36,6 @@ public class GameTime implements Serializable {
     }
 
     /**
-     * Get the amount of time in minutes.
-     * 
-     * @return The amount of time in minutes.
-     */
-    public int getMinutes() { return minutes; }
-
-    /**
-     * Get the amount of time in seconds.
-     * 
-     * @return The amount of time in seconds.
-     */
-    public int getSeconds() { return seconds; }
-
-    /**
-     * Get the amount of time in milliseconds.
-     * 
-     * @return The amount of time in milliseconds.
-     */
-    public int getMilliseconds() { return milliseconds; }
-
-    /**
-     * Set the amount of time in minutes.
-     * 
-     * @param minutes The amount of time in minutes.
-     */
-    public void setMinutes(int minutes) { this.minutes = minutes; }
-
-    /**
-     * Set the amount of time in seconds.
-     * 
-     * @param seconds The amount of time in seconds.
-     */
-    public void setSeconds(int seconds) { this.seconds = seconds; }
-
-    /**
-     * Set the amount of time in milliseconds.
-     * 
-     * @param milliseconds The amount of time in milliseconds.
-     */
-    public void setMilliSeconds(int milliseconds) { this.milliseconds = milliseconds; }
-
-    /**
      * Tick the time forward by one 10 millisecond.
      */
     public void tick() {
@@ -100,12 +58,20 @@ public class GameTime implements Serializable {
         this.milliseconds = 0;
     }
 
+    /**
+     * Returns the string representation of the time a player has left to play.
+     * @return A string representation of the time a player has left to play.
+     */
     @Override
     public String toString() {
         return String.format("%02d:%02d:%d0", minutes, seconds, milliseconds);
     }
 
-    public GameTime clone() {
+    /**
+     * Clones this instance of the class GameTime to give a new instance of the class with the same parameters.
+     * @return A new instance of the class GameTime with the same parameter values as the callee.
+     */
+    public GameTime cloneTime() {
         return new GameTime(this.minutes, this.seconds, this.milliseconds);
     }
 }

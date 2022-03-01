@@ -13,14 +13,32 @@ import java.awt.*;
  * The rest of the panel is a list of moves.
  */
 public class InformationPanel extends JPanel {
+    /**
+     * A reference to the PlayerPanel corresponding to player1
+     */
     private final PlayerPanel playerPanel1;
+    /**
+     * A reference to the PlayerPanel corresponding to player2.
+     */
     private final PlayerPanel playerPanel2;
 
+    /**
+     * A reference to button used for pausing/starting the game.
+     */
     private final JButton pauseButton;
 
+    /**
+     * A reference to the BottomPanel showing the FEN notation representing the current state of the game.
+     */
     private final BottomPanel bottomPanel;
+    /**
+     * A reference to the MovesPanel showing the history of moves for the game currently being played.
+     */
     private final MovesPanel movesPanel;
 
+    /**
+     * A collection of event to be triggered in the event that the game is paused.
+     */
     private final Event<JButton> onPauseButtonClickedEvent = new Event<>();
 
     /**

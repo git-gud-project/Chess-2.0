@@ -19,29 +19,71 @@ import com.chess.model.chess.SerialModel;
  */
 public class Menu extends JMenuBar {
 
+    /**
+     * A string representing the currently selected sound map.
+     */
     private String choosenSoundMap;
 
     //
     // Buttons
     //
 
+    /**
+     * A reference to the menu item used for starting a new game.
+     */
     private final JMenuItem newGame;
+    /**
+     * A reference to the menu item used for saving the state of a game.
+     */
     private final JMenuItem save;
+    /**
+     * A reference to the menu item used for loading the state of a saved game.
+     */
     private final JMenuItem load;
+    /**
+     * A reference to the menu item used for starting a server in which the game will be hosted.
+     */
     private final JMenuItem startServer;
+    /**
+     * A reference to the menu item used to connect to a game currently being hosted by someone else.
+     */
     private final JMenuItem connectToServer;
+    /**
+     * A reference to the menu item used to open the dialogue to customize the appearance of the pieces.
+     */
     private final JMenuItem customizePieces;
+    /**
+     * A reference to the menu item used to stop the hosting of a game or to disconnect from a hosted game.
+     */
     private final JMenuItem disconnect;
+    /**
+     * A reference to the menu item used for selecting the classic sound map.
+     */
     private final JMenuItem classic;
+    /**
+     * A reference to the menu item used for selecting the not classic sound map.
+     */
     private final JMenuItem notClassic;
 
     //
     // Events
     //
 
+    /**
+     * A collection of events to be triggered when a server to host a game is started.
+     */
     private Event<String> onStartServerEvent = new Event<>();
+    /**
+     * A collection of events to be triggered when a connection to the server on which a game is hosted is made.
+     */
     private Event<String> onConnectToServerEvent = new Event<>();
+    /**
+     * A collection of events to be triggered when a server hosting a game is closed or a disconnection from said server is made.
+     */
     private Event<JMenuItem> onDisconnectEvent = new Event<>();
+    /**
+     * A collection of events to be triggered when a game is loaded by the host of a server.
+     */
     private Event<SerialModel> onLoadGameEvent = new Event<>();
 
     /**

@@ -12,8 +12,17 @@ import com.chess.model.chess.ChessModel;
  * Creates a view for showing Forsyth–Edwards Notation (FEN) representation of the current game. This class extends class JPanel.
  */
 public class BottomPanel extends JPanel {
+    /**
+     * the text field containing the FEN string representing the state of the game.
+     */
     private JTextField infoLabel;
+    /**
+     * The button that can be used to pause/start the game.
+     */
     private JButton copyButton;
+    /**
+     * A reference to the model containing the information about the state of the game.
+     */
     private ChessModel model;
 
     /** Creates a panel with a JLabel field to show the FEN representation and a button used to copy the FEN string
