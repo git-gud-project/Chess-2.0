@@ -3,6 +3,7 @@ package com.chess.view;
 import com.chess.model.*;
 import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.ChessTypeIdentifier;
+import com.chess.utils.Resources;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,6 +64,7 @@ public class ChessView extends JFrame {
 
         Toolkit.getDefaultToolkit().setDynamicLayout(false);
         
+        this.setIconImage(Resources.getImage("/images/icon.png"));
 
         this.setTitle(DEFAULT_TITLE);
         

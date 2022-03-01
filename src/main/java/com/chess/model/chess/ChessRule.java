@@ -40,15 +40,6 @@ public class ChessRule implements Rule {
     }
 
     @Override
-    public boolean isEliminationMove(
-        Position position,
-        Identifier typeIdentifier,
-        Identifier teamIdentifier
-    ) throws IllegalArgumentException {
-        return boardInfo.isElimination(position, typeIdentifier, teamIdentifier);
-    }
-
-    @Override
     public boolean requestClear(
         Position position
     ) throws IllegalArgumentException {
