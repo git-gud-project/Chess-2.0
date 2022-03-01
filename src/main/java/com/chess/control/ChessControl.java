@@ -365,7 +365,6 @@ public class ChessControl implements ChessControlInterface {
 
         for (BoardCell cell : highlightedCells) {
             cell.unhighlight();
-            cell.setElimination(false);
         }
 
         highlightedCells.clear();
@@ -421,7 +420,7 @@ public class ChessControl implements ChessControlInterface {
 
             possibleMove.highlight(
                     move.isEliminatable() ? ChessView.HIGHLIGHT_COLOR_ATTACK : ChessView.HIGHLIGHT_COLOR_MOVE);
-            possibleMove.setElimination(move.isEliminatable());
+
 
             highlightedCells.add(possibleMove);
         }
