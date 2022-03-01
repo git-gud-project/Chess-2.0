@@ -89,7 +89,7 @@ public class ChessControl implements ChessControlInterface {
 
         final Cell cell = board.getCell(row, col);
 
-        final Piece piece = cell.getPiece();
+        Piece piece = cell.getPiece();
 
         final Identifier teamIdentifier = piece.getTeamIdentifier();
 
@@ -97,7 +97,11 @@ public class ChessControl implements ChessControlInterface {
 
         final Piece promoted = ChessPieceFactory.createPiece(typeIdentifier, team);
 
+
+
         cell.updatePiece(promoted, true);
+
+        piece = promoted;
 
         final Move move = new Move(cell.getPosition(), typeIdentifier);
 
@@ -163,6 +167,8 @@ public class ChessControl implements ChessControlInterface {
                 } else {
                     promotePawn(move.getToCell().getRow(), move.getToCell().getCol(), promotedTypeIdentifier,
                             isElimination);
+                    gameOver(model.isGameOver(model.getCurrentTeam().getTeamIdentifier()));
+                    checkHighlight(piece);
                 }
             }
 
@@ -304,6 +310,10 @@ public class ChessControl implements ChessControlInterface {
         }
 
         model.getCurrentTeam().tickTime();
+
+        if(model.getCurrentTeam().getTime().toString().equals("00:00:00")){
+            gameOver(2);
+        }
     }
 
     private void handlePause() {
