@@ -63,4 +63,12 @@ public class CellButton extends JButton {
         g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);
     }
+
+    public void setHoverBackgroundColor(Color hoverBackgroundColor) {
+        this.hoverBackgroundColor = hoverBackgroundColor;
+    }
+
+    public void setPressedBackgroundColor(Color pressedBackgroundColor) {
+        this.pressedBackgroundColor = pressedBackgroundColor;
+    }
 }
