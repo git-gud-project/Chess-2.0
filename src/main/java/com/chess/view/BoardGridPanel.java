@@ -14,9 +14,18 @@ import java.awt.*;
  * This class also set up listeners for all the cells.
  */
 public class BoardGridPanel extends JPanel {
+    /**
+     * A matrix containing all the cells on the board that can be interacted with while playing the game.
+     */
     private BoardCell[][] cells;
+    /**
+     * The size of the nxn grid on which the game is played.
+     */
     private int size;
 
+    /**
+     * A collection of Cells containing the cells that can be interacted with.
+     */
     private Delegate<BoardCell> clickDelegate;
 
     /** Constructor to set up a new panel with a chess board made up of buttons.

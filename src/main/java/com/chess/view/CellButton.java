@@ -8,7 +8,13 @@ import java.awt.*;
  */
 public class CellButton extends JButton {
 
+    /**
+     * The color used to highlight a cell when being hovered.
+     */
     private Color hoverBackgroundColor;
+    /**
+     * The color used ti highlight a cell when being clicked.
+     */
     private Color pressedBackgroundColor;
 
     /**
@@ -64,10 +70,18 @@ public class CellButton extends JButton {
         super.paintComponent(g);
     }
 
+    /**
+     * Sets the color for the background of a cell when being hovered.
+     * @param hoverBackgroundColor New color for the background of a cell when being hovered.
+     */
     public void setHoverBackgroundColor(Color hoverBackgroundColor) {
         this.hoverBackgroundColor = hoverBackgroundColor;
     }
 
+    /**
+     * Sets the color for the background of a cell when being clicked.
+     * @param pressedBackgroundColor New color for the background of a cell when being clicked.
+     */
     public void setPressedBackgroundColor(Color pressedBackgroundColor) {
         this.pressedBackgroundColor = pressedBackgroundColor;
     }

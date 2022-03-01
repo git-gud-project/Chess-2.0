@@ -12,6 +12,9 @@ import java.awt.event.*;
  * Contains a grid of cells.
  */
 public class BoardPanel extends JPanel {
+    /**
+     * A reference to an instance of BoardGridPanel, which contains the grid of cells of the chess board.
+     */
     private BoardGridPanel boardPanel;
 
     /** Constructor for BoardPanel.
