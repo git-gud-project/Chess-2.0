@@ -5,12 +5,12 @@ package com.chess.model;
  */
 public class Move {
     /**
-     * The position of the piece that is being moved.
+     * The position where the piece is being moved to.
      */
-    private Position moveCell;
+    private Position toCell;
 
     /**
-     * The position where the piece is being moved to.
+     * The position of the piece that is being moved.
      */
     private Position fromCell;
 
@@ -62,7 +62,7 @@ public class Move {
      * @param pieceType The piece type identifier of the piece that is being moved
      */
     public Move(Position toCell, Position fromCell, Identifier pieceType) {
-        this.moveCell = toCell;
+        this.toCell = toCell;
         this.fromCell = fromCell;
         this.pieceType = pieceType;
     }
@@ -76,7 +76,7 @@ public class Move {
      * @param elimination If the move is an elimination move
      */
     public Move(Position toCell, Position fromCell, Identifier pieceType, boolean elimination) {
-        this.moveCell = toCell;
+        this.toCell = toCell;
         this.fromCell = fromCell;
         this.pieceType = pieceType;
         this.elimination = elimination;
@@ -91,7 +91,7 @@ public class Move {
      * @param promotionType The piece type identifier of the piece that is being promoted to
      */
     public Move(Position toCell, Identifier promotionType) {
-        this.moveCell = toCell;
+        this.toCell = toCell;
         this.pieceType = promotionType;
         this.isPromotion = true;
     }
@@ -102,7 +102,7 @@ public class Move {
      * @return The cell which the piece is moving to
      */
     public Position getToCell() {
-        return moveCell;
+        return toCell;
     }
 
     /**
@@ -188,6 +188,8 @@ public class Move {
 
     /**
      * Indicate that this move results in check on other team
+     * 
+     * @param isCheck True if this move results in check on other team
      */
     public void setCheck(boolean isCheck) {
         this.isCheck = isCheck;
@@ -195,9 +197,29 @@ public class Move {
 
     /**
      * Indicate that this move results in check mate on other team
+     * 
+     * @param isCheckMate True if this move results in check mate on other team
      */
     public void setCheckMate(boolean isCheckMate) {
         this.isCheckMate = isCheckMate;
+    }
+
+    /**
+     * Set the cell that the piece is moving to
+     * 
+     * @param toCell The cell which the piece is moving to
+     */
+    public void setToCell(Position toCell) {
+        this.toCell = toCell;
+    }
+
+    /**
+     * Set the cell that the piece is moving from
+     * 
+     * @param fromCell The cell which the piece is moving away from
+     */
+    public void setFromCell(Position fromCell) {
+        this.fromCell = fromCell;
     }
 
     /**
@@ -210,13 +232,13 @@ public class Move {
         if(isCastleKingSide) return "0-0";
         else if(isCastleQueenSide) return "0-0-0";
         else if(isPromotion) {
-            String colAndRow = moveCell.toString();
+            String colAndRow = toCell.toString();
             String piecePrefix = pieceType.toString();
             return colAndRow + piecePrefix;
         }
         else {
             StringBuilder result = new StringBuilder("");
-            String colAndRow = moveCell.toString();
+            String colAndRow = toCell.toString();
             String piecePrefix = pieceType.toString();
             if(piecePrefix.equals("p")) {
                 if(elimination) {

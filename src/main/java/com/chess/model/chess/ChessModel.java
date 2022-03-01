@@ -94,6 +94,11 @@ public class ChessModel {
     private Event<SerialModel> onModelLoadedEvent = new Event<>();
 
     /**
+     * The event which is triggered when the game time of a player turns to zero.
+     */
+    private Event<GameTime> onGameTimeZeroEvent = new Event<>();
+
+    /**
      * Construct a new ChessModel.
      * 
      * This does load the default chess board.
@@ -438,6 +443,8 @@ public class ChessModel {
     public Event<SerialModel> getOnModelLoadedEvent() {
         return this.onModelLoadedEvent;
     }
+
+    public Event<GameTime> getOnGameTimeZeroEvent(){ return this.onGameTimeZeroEvent; }
 
     //
     // Setters

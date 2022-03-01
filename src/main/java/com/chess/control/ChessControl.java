@@ -89,7 +89,7 @@ public class ChessControl implements ChessControlInterface {
 
         final Cell cell = board.getCell(row, col);
 
-        final Piece piece = cell.getPiece();
+        Piece piece = cell.getPiece();
 
         final Identifier teamIdentifier = piece.getTeamIdentifier();
 
@@ -97,7 +97,11 @@ public class ChessControl implements ChessControlInterface {
 
         final Piece promoted = ChessPieceFactory.createPiece(typeIdentifier, team);
 
+
+
         cell.updatePiece(promoted, true);
+
+        piece = promoted;
 
         final Move move = new Move(cell.getPosition(), typeIdentifier);
 
@@ -163,6 +167,8 @@ public class ChessControl implements ChessControlInterface {
                 } else {
                     promotePawn(move.getToCell().getRow(), move.getToCell().getCol(), promotedTypeIdentifier,
                             isElimination);
+                    gameOver(model.isGameOver(model.getCurrentTeam().getTeamIdentifier()));
+                    checkHighlight(piece);
                 }
             }
 
@@ -304,6 +310,10 @@ public class ChessControl implements ChessControlInterface {
         }
 
         model.getCurrentTeam().tickTime();
+
+        if(model.getCurrentTeam().getTime().toString().equals("00:00:00")){
+            gameOver(2);
+        }
     }
 
     private void handlePause() {
@@ -381,6 +391,30 @@ public class ChessControl implements ChessControlInterface {
 
             Position position = move.getToCell();
 
+            boolean isLegal = true;
+
+            // Edge case for castling, all moves inbetween the king and rook must be legal positions for the king
+            // and the king cannot be in check.
+            if (move.getIsCastleKingSide() || move.getIsCastleQueenSide()) {
+                if (model.isCheck(model.getCurrentTeam().getTeamIdentifier())) {
+                    isLegal = false;
+                } else {
+                    Position next = move.getFromCell();
+                    while (!next.equals(position)) {
+                        next = next.moveTowards(position, 1);
+                        
+                        if (!model.getRule().isLegalMove(move.getPieceType(), model.getCurrentTeam().getTeamIdentifier(), new Move(next, move.getFromCell(), move.getPieceType()))) {
+                            isLegal = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!isLegal) {
+                continue;
+            }
+
             BoardCell possibleMove = grid.getCell(position.getRow(), position.getCol());
 
             currentMoveMap.put(possibleMove, move);
@@ -439,6 +473,7 @@ public class ChessControl implements ChessControlInterface {
 
         view.getMenu().getOnLoadGameEvent().addDelegate((serialModel) -> {
             model.loadModel(serialModel);
+            setPaused(true);
         });
 
         view.getInfoPanel().getPlayerPanel1().getOnPlayerNameChangedEvent().addDelegate(team -> {

@@ -32,8 +32,8 @@ public class ChessRule implements Rule {
      * @param boardInfo the board information
      * @param teamManager the team manager
      */
-    public ChessRule(BoardInformation BoardInfo, TeamManager teamManager) {
-        this.boardInfo = BoardInfo;
+    public ChessRule(BoardInformation boardInfo, TeamManager teamManager) {
+        this.boardInfo = boardInfo;
         this.teamManager = teamManager;
 
         gameSize = this.boardInfo.getBoardSize();
@@ -167,7 +167,17 @@ public class ChessRule implements Rule {
         }
     }
 
-    private boolean isLegalMove(Identifier pieceIdentifier, Identifier teamIdentifier, Move move) {
+    /**
+     * Checks if the move is legal.
+     * 
+     * A legal move is one that does not leave the king in check.
+     * 
+     * @param pieceIdentifier the piece identifier for the piece that is moving
+     * @param teamIdentifier the team identifier for the team that is moving
+     * @param move the move details
+     * @return true if the move is legal
+     */
+    public boolean isLegalMove(Identifier pieceIdentifier, Identifier teamIdentifier, Move move) {
         // Collect relevant details
         final Position from = move.getFromCell();
         final Position to = move.getToCell();
@@ -292,10 +302,6 @@ public class ChessRule implements Rule {
      * @return true if the team is in check
      */
     public boolean isCheck(Identifier teamIdentifier) {
-        if (isGameOver(teamManager.getOtherTeamIdentifier(teamIdentifier)) != 0){
-            return false;
-        }
-
         List<Move> allEnemyMoves = allEnemyMoves(teamIdentifier);
         for (Move m : allEnemyMoves) {
             Position toCell = m.getToCell();
