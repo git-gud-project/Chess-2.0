@@ -97,8 +97,6 @@ public class ChessControl implements ChessControlInterface {
 
         final Piece promoted = ChessPieceFactory.createPiece(typeIdentifier, team);
 
-
-
         cell.updatePiece(promoted, true);
 
         piece = promoted;
@@ -134,9 +132,9 @@ public class ChessControl implements ChessControlInterface {
 
         final ChessTeamParameters otherTeamParameters = otherTeam.getTeamParameters();
 
-        if (isElimination) {
-            final Position to = move.getToCell();
+        final Position to = move.getToCell();
 
+        if (isElimination && !boardInformation.isEmpty(to)) {
             Identifier eliminatedTypeIdentifier = boardInformation.getTypeIdentifier(to);
 
             // If we eliminated a rook, we need to update the castling flags.
