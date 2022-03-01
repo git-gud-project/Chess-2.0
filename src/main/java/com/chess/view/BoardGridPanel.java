@@ -49,8 +49,6 @@ public class BoardGridPanel extends JPanel {
                 // Set the background color of the button, black or white
                 button.setBackground(color);
 
-                button.setHoverBackgroundColor(color);
-                button.setPressedBackgroundColor(color);
 
                 cells[size - 1 - row][col] = button;
 
@@ -91,6 +89,10 @@ public class BoardGridPanel extends JPanel {
         }
     }
 
+    /**
+     * Adds listeners to be triggered when one of the cells on the board is interacted with.
+     * @param delegate A collection of handlers to be executed when a cell on the board is interacted with.
+     */
     public void setClickDelegate(Delegate<BoardCell> delegate) {
         clickDelegate = delegate;
     }

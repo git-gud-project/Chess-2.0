@@ -6,6 +6,12 @@ import com.chess.utils.Event;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A class to represent a side panel that displays the information of the game.
+ * On top are two panels, one for each player. These panels contain their
+ * name and time.
+ * The rest of the panel is a list of moves.
+ */
 public class InformationPanel extends JPanel {
     private final PlayerPanel playerPanel1;
     private final PlayerPanel playerPanel2;
@@ -18,12 +24,8 @@ public class InformationPanel extends JPanel {
     private final Event<JButton> onPauseButtonClickedEvent = new Event<>();
 
     /**
-     * This is a side panel that displays the information of the game.
-     *
-     * On top are two panels, one for each player. These panels contain their
-     * name and time.
-     *
-     * The rest of the panel is a list of moves.
+     * Constructor for InformationPanel.
+     * @param model A reference to the model containing the information about the state of the game.
      */
     public InformationPanel(ChessModel model) {
 
@@ -100,26 +102,44 @@ public class InformationPanel extends JPanel {
         pauseButton.addActionListener(e -> onPauseButtonClickedEvent.trigger(pauseButton));
     }
 
-    public BottomPanel getBottomPanel() {
-        return bottomPanel;
-    }
+    //Getters
 
+    /**
+     * Gets the reference to the panel showing the move history of the match.
+     * @return A reference to the panel showing the move history of the match.
+     */
     public MovesPanel getMovesPanel() {
         return movesPanel;
     }
 
+    /**
+     * Gets the reference to the panel showing the information corresponding to Player1.
+     * @return A reference to the panel showing the information corresponding to Player1.
+     */
     public PlayerPanel getPlayerPanel1() {
         return playerPanel1;
     }
 
+    /**
+     * Gets the reference to the panel showing the information corresponding to Player2.
+     * @return A reference to the panel showing the information corresponding to Player2.
+     */
     public PlayerPanel getPlayerPanel2() {
         return playerPanel2;
     }
 
+    /**
+     * Gets the reference to the button used for pausing and starting the game.
+     * @return A reference to the button used for pausing and starting the game.
+     */
     public JButton getPauseButton() {
         return pauseButton;
     }
 
+    /**
+     * Gets the reference to the collection of events to be triggered should the pause button be pressed.
+     * @return A reference to the collection of events to be triggered should the pause button be pressed.
+     */
     public Event<JButton> getOnPauseButtonClickedEvent() {
         return onPauseButtonClickedEvent;
     }
