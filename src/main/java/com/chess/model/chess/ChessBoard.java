@@ -88,18 +88,6 @@ public class ChessBoard implements Board {
     }
 
     /**
-     * If a cell is empty.
-     * 
-     * @param row the row of the cell
-     * @param col the column of the cell
-     * @return if the cell is empty
-     * @throws IllegalArgumentException if the position is invalid
-     */
-    public boolean isEmpty(int row, int col) throws IllegalArgumentException {
-        return (cellMatrix[row][col].getPiece() == null);
-    }
-
-    /**
      * If a position is valid.
      * 
      * @param row the row of the position
