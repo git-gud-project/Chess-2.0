@@ -473,6 +473,7 @@ public class ChessControl implements ChessControlInterface {
 
         view.getMenu().getOnLoadGameEvent().addDelegate((serialModel) -> {
             model.loadModel(serialModel);
+            setPaused(true);
         });
 
         view.getInfoPanel().getPlayerPanel1().getOnPlayerNameChangedEvent().addDelegate(team -> {
