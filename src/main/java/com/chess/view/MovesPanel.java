@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * A class used for showing the move history of the match.
+ */
 public class MovesPanel extends JPanel {
     private DefaultListModel<String> listModel;
     private int turn, moves;
@@ -60,13 +63,13 @@ public class MovesPanel extends JPanel {
             vertical.setValue( vertical.getMaximum() );
         });
 
-        model.getOnModelLoadedEvent().addDelegate((serialModel) -> {
-            resetMovesPanel();
-        });
+        model.getOnModelLoadedEvent().addDelegate((serialModel) ->
+            resetMovesPanel()
+        );
     }
 
     /**
-     * Clears all notation from this panel
+     * Clears all notation from this panel.
      */
     public void resetMovesPanel() {
         //Removes the list of moves from the previous game when creating a new one.
@@ -87,7 +90,7 @@ public class MovesPanel extends JPanel {
     }
 
     /**
-     *
+     * Reloads the move history when a saved game is loaded.
      */
      public void loadMovesPanel() {
         //Removes the list of moves from the previous game loading a saved game.

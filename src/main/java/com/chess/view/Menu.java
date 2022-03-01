@@ -14,6 +14,9 @@ import com.chess.model.GameTime;
 import com.chess.model.chess.ChessModel;
 import com.chess.model.chess.SerialModel;
 
+/**
+ * A class representing the menu bar shown at the top of the window containing the GUI for the game.
+ */
 public class Menu extends JMenuBar {
 
     private String choosenSoundMap;
@@ -40,8 +43,11 @@ public class Menu extends JMenuBar {
     private Event<String> onConnectToServerEvent = new Event<>();
     private Event<JMenuItem> onDisconnectEvent = new Event<>();
     private Event<SerialModel> onLoadGameEvent = new Event<>();
-    private Event<GameTime> onTimeChangeEvent = new Event<>();
 
+    /**
+     * Constructor for Menu.
+     * @param model A reference to the model containing information regarding the state of the game.
+     */
     public Menu(ChessModel model) {
         super();
 
@@ -131,9 +137,9 @@ public class Menu extends JMenuBar {
         this.customizePieces = new JMenuItem("Customize Pieces");
         viewMenu.add(customizePieces);
 
-        customizePieces.addActionListener((e) -> {
-            new PieceConfigurator(this, model);
-        });
+        customizePieces.addActionListener((e) ->
+            new PieceConfigurator(this, model)
+        );
 
         //Creating sound menu
         JMenu soundMenu = new JMenu("Sound");
@@ -145,12 +151,12 @@ public class Menu extends JMenuBar {
 
         this.choosenSoundMap = "classic";
 
-        this.classic.addActionListener((e) -> {
-            this.choosenSoundMap = "classic";
-        });
-        this.notClassic.addActionListener((e) -> {
-            this.choosenSoundMap = "notClassic";
-        });
+        this.classic.addActionListener((e) ->
+            this.choosenSoundMap = "classic"
+        );
+        this.notClassic.addActionListener((e) ->
+            this.choosenSoundMap = "notClassic"
+        );
 
 
         //Creating help menu
@@ -195,9 +201,9 @@ public class Menu extends JMenuBar {
         });
 
         disconnect = new JMenuItem("Disconnect");
-        disconnect.addActionListener(e -> {
-            onDisconnectEvent.trigger(disconnect);
-        });
+        disconnect.addActionListener(e ->
+            onDisconnectEvent.trigger(disconnect)
+        );
         disconnect.setEnabled(false);
 
         server.add(startServer);
@@ -205,28 +211,58 @@ public class Menu extends JMenuBar {
         server.add(disconnect);
     }
 
+    /**
+     * Gets the reference to the menu item used to start a new game.
+     * @return A reference to the menu item used to start a new game.
+     */
     public JMenuItem getNewGame() { return newGame; }
 
-    public JMenuItem getSave() { return save; }
-
-    public JMenuItem getLoad() { return load; }
-
+    /**
+     * Gets the reference for the menu item used to start a server for hosting the game.
+     * @return A reference for the menu item used to start a server for hosting the game.
+     */
     public JMenuItem getStartServer() { return startServer; }
 
+    /**
+     * Gets the reference to the menu item used to connect to a hosted game.
+     * @return A reference to the menu item used to connect to a hosted game.
+     */
     public JMenuItem getConnectToServer() { return connectToServer; }
 
+    /**
+     * Gets the reference to the menu item used for disconnecting from a game and to stop hosting the game.
+     * @return A reference to the menu item used for disconnecting from a game and to stop hosting the game.
+     */
     public JMenuItem getDisconnect() { return disconnect; }
-    
+
+    /**
+     * Gets the reference to the collection of events to be triggered when a game starts to be hosted.
+     * @return A reference to the collection of events to be triggered when a game starts to be hosted.
+     */
     public Event<String> getOnStartServerEvent() { return onStartServerEvent; }
 
+    /**
+     * Gets the reference to the collection of events to be triggered when a connection is made a hosted game.
+     * @return A reference to the collection of events to be triggered when a connection is made a hosted game.
+     */
     public Event<String> getOnConnectToServerEvent() { return onConnectToServerEvent; }
 
+    /**
+     * Gets the reference to the collection of events to be triggered when a hosted game is disconnected.
+     * @return A reference to the collection of events to be triggered when a hosted game is disconnected.
+     */
     public Event<JMenuItem> getOnDisconnectEvent() { return onDisconnectEvent; }
-    
+
+    /**
+     * Gets the reference to the collection of events to be triggered when a new game is loaded by the host.
+     * @return A reference to the collection of events to be triggered when a new game is loaded by the host.
+     */
     public Event<SerialModel> getOnLoadGameEvent() { return onLoadGameEvent; }
 
-    public Event<GameTime> getOnTimeChangeEvent() { return onTimeChangeEvent; }
-
+    /**
+     * Gets the reference to the String representing what sound map is currently selected.
+     * @return A reference to the String representing what sound map is currently selected.
+     */
     public String getSoundMap() {
         return this.choosenSoundMap;
     }

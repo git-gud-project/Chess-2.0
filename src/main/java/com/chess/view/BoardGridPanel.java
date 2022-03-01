@@ -49,6 +49,8 @@ public class BoardGridPanel extends JPanel {
                 // Set the background color of the button, black or white
                 button.setBackground(color);
 
+                button.setHoverBackgroundColor(color);
+                button.setPressedBackgroundColor(color);
 
                 cells[size - 1 - row][col] = button;
 
