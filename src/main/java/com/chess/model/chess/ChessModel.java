@@ -418,7 +418,7 @@ public class ChessModel {
     /**
      * Get if this game is over
      * 
-     * @return True if game is over
+     * @return True if game is over, false otherwise.
      */
     public boolean getGameOver() {
         return this.isGameOver;
@@ -428,50 +428,93 @@ public class ChessModel {
     // Getters - Events
     //
 
+    /**
+     * Gets the collection of events that will be triggered if a player changes their name.
+     * @return A collection of events that will be triggered if a player changes their name.
+     */
     public Event<ChessTeam> getOnTeamChangeEvent() {
         return this.onTeamChangeEvent;
     }
 
+    /**
+     * Gets the collection of event that will be triggered if a move is performed.
+     * @return A collection of event that will be triggered if a move is performed.
+     */
     public Event<Move> getOnMoveEvent() {
         return this.onMoveEvent;
     }
 
+    /**
+     * Gets the collection of events that will be triggered if a game is loaded through a FEN string.
+     * @return A collection of events that will be triggered if a game is loaded through a FEN string.
+     */
     public Event<String> getOnGameLoadedEvent() {
         return this.onGameLoadedEvent;
     }
 
+    /**
+     * Gets the collection of events that will be triggered if a new game model is loaded.
+     * @return A collection of events that will be triggered if a new game model is loaded.
+     */
     public Event<SerialModel> getOnModelLoadedEvent() {
         return this.onModelLoadedEvent;
     }
 
+    /**
+     * Gets the collection of events that will be triggered if the time reaches zero.
+     * @return a collection of events that will be triggered if the time reaches zero.
+     */
     public Event<GameTime> getOnGameTimeZeroEvent(){ return this.onGameTimeZeroEvent; }
 
     //
     // Setters
     //
 
+    /**
+     * Changes the team whose turn it is to the team given as a parameter.
+     * @param team The team who will be set as being their turn.
+     */
     public void setCurrentTeam(ChessTeam team) {
         teamManager.setCurrentTeamIdentifier(team.getTeamIdentifier());
 
         this.onTeamChangeEvent.trigger(team);
     }
 
+    /**
+     * Sets the value of paused.
+     * @param paused The new value of paused.
+     */
     public void setPaused(boolean paused) {
         this.paused = paused;
     }
 
+    /**
+     * Sets the value of stared.
+     * @param started The new value of started.
+     */
     public void setStarted(boolean started) {
         this.started = started;
     }
 
+    /**
+     * Sets the value of full moves.
+     * @param fullMoves The new value of full moves.
+     */
     public void setFullMoves(int fullMoves) {
         this.fullMoves = fullMoves;
     }
 
+    /**
+     * Sets the value of half moves.
+     * @param halfMoves The new value of half moves.
+     */
     public void setHalfMoves(int halfMoves) {
         this.halfMoves = halfMoves;
     }
 
+    /**
+     * Sets the value of game over to be true.
+     */
     public void setGameOver() {
         this.isGameOver = true;
     }
@@ -480,9 +523,9 @@ public class ChessModel {
     // Methods
     //
 
-    /**
-     * @param halfMove
-     * @param move
+    /** Record a move if it is performed.
+     * @param halfMove True if it is a half move, false otherwise.
+     * @param move The move that has been performed.
      */
     public void registerMove(boolean halfMove, Move move) {
         // Increment full moves if it's black's turn
