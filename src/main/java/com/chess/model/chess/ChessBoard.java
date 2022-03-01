@@ -44,13 +44,12 @@ public class ChessBoard implements Board {
         if (row < 0 || row >= gameSize || col < 0 || col >= gameSize) {
             throw new IllegalArgumentException("Invalid board position (" + row + ", " + col + "), board size is " + gameSize);
         }
-        
+
         // Row is reversed
         return cellMatrix[gameSize - 1 - row][col];
     }
 
     /**
-     *
      * @param pos Contains the row and column for the cell.
      * @return The cell at the specified position.
      */
@@ -61,7 +60,7 @@ public class ChessBoard implements Board {
 
     /**
      * Initializes the cell matrix.
-     * 
+     *
      * @param gameSize the size of the board
      */
     private void initCellMatrix(int gameSize) {
@@ -75,7 +74,7 @@ public class ChessBoard implements Board {
 
     /**
      * Get a cell from the cell matrix from a string, like "a1".
-     * 
+     *
      * @param position the position of the cell
      * @return the cell at the specified position
      * @throws IllegalArgumentException if the position is invalid
@@ -85,16 +84,5 @@ public class ChessBoard implements Board {
         int col = position.charAt(0) - 'a';
 
         return getCell(row, col);
-    }
-
-    /**
-     * If a position is valid.
-     * 
-     * @param row the row of the position
-     * @param col the column of the position
-     * @return if the position is valid
-     */
-    public boolean isValid(int row, int col) {
-        return ((row < gameSize && row >= 0) && (col < gameSize && col >= 0));
     }
 }
