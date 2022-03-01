@@ -8,6 +8,9 @@ import com.chess.utils.Resources;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * View for a chess game.
+ */
 public class ChessView extends JFrame {
 
     public final static int DEFAULT_WINDOW_WIDTH = 1190;
@@ -52,7 +55,11 @@ public class ChessView extends JFrame {
     private InformationPanel infoPanel;
 
     private Thread thread;
-    
+
+    /**
+     * Constructor for ChessView.
+     * @param model A reference to the model containing the information about the game state.
+     */
     public ChessView(ChessModel model) {
         this.model = model;
 
@@ -133,28 +140,56 @@ public class ChessView extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Gets the reference to the chess model containing the information about the game state.
+     * @return A reference to the chess model containing the information about the game state.
+     */
+    public ChessModel getModel() {
+        return model;
+    }
+
+    /**
+     * Gets the reference to the menu panel displayed at the top of the window containing the GUI for the chess game.
+     * @return reference to the menu panel displayed at the top of the window containing the GUI for the chess game.
+     */
     public Menu getMenu() {
         return menuPanel;
     }
 
-    public ChessModel getModel() {
-        return model;
-    }
-    
+    /**
+     * Gets the reference to the board panel which represents the grid on which the game is played.
+     * @return A reference to the board panel which represents the grid on which the game is played.
+     */
     public BoardPanel getBoardPanel() {
         return boardPanel;
     }
 
+    /**
+     * Gets the reference to the information panel displaying certain aspects of the game state.
+     * @return A reference to the information panel displaying certain aspects of the game state.
+     */
     public InformationPanel getInfoPanel() {
         return infoPanel;
     }
 
+    /**
+     * Gets a reference to the board grid panel containing the grid of cells represented by the chess board.
+     * @return A reference to the board grid panel containing the grid of cells represented by the chess board.
+     */
     public BoardGridPanel getBoardGridPanel() {
         return boardPanel.getBoardGridPanel();
     }
 
+    /**
+     * Sets a new instance of the model which stores the information about the game state.
+     * @param model The new instance of the model containing the information about a new game state.
+     */
     public void setModel(ChessModel model) { this.model = model; }
 
+    /**
+     * Handles the pop-up dialogue to be shown when a pawn is promoted to a different piece.
+     * @return The Identifier for the type of piece chosen by the user to promote their pawn to.
+     */
     public Identifier promotePawn() {
         // Create a dialog to ask the user what piece to promote to
         Object[] options = {"Queen", "Rook", "Bishop", "Knight"};
@@ -176,6 +211,10 @@ public class ChessView extends JFrame {
         }
     }
 
+    /**
+     * Gets the reference to the String representing what sound map is currently selected.
+     * @return A reference to the String representing what sound map is currently selected.
+     */
     public String getSoundMap() {
         return menuPanel.getSoundMap();
     }
