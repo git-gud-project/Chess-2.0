@@ -76,7 +76,7 @@ public class ChessTeam implements Team {
         this.teamColor = color;
         this.teamIdentifier = teamIdentifier;
         this.name = name;
-        this.time = time.clone();
+        this.time = time.cloneTime();
         this.hasAuthority = true;
         this.teamParameters = teamParameters;
 

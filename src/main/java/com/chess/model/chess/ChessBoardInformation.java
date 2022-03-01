@@ -33,6 +33,14 @@ public class ChessBoardInformation implements BoardInformation {
         this.teamManager = teamManager;
     }
 
+    /**
+     * @pre Row and col have to be within the size of the board and != null
+     * @post A boolean representing if the cell is empty will be returned
+     * @param row the row to check
+     * @param col the column to check
+     * @return True if this cell does not contain a piece
+     * @throws IllegalArgumentException if row or col is out of bounds
+     */
     @Override
     public boolean isEmpty(int row, int col) throws IllegalArgumentException {
         return this.board.getCell(row, col).getPiece() == null;
@@ -94,21 +102,6 @@ public class ChessBoardInformation implements BoardInformation {
         cell.emptyCell(isFinalMove);
     }
 
-    @Override
-    public boolean isElimination(Position position, Identifier piece, Identifier team) throws IllegalArgumentException {
-        Identifier otherTeamIdentifier = teamManager.getOtherTeamIdentifier(team);
-        ChessTeamParameters otherTeam = teamManager.getTeamParameters(otherTeamIdentifier);
-
-        if (!getTeamIdentifier(position).equals(otherTeamIdentifier)) {
-            return false;
-        }
-
-        if (piece.equals(ChessTypeIdentifier.PAWN)) {
-            return otherTeam.getSharedTeamParameters().getEnPassantPosition().equals(position);
-        }
-
-        return true;
-    }
 
     @Override
     public MovesCalculator getPossibleMovesIterator(Position position) throws IllegalArgumentException {

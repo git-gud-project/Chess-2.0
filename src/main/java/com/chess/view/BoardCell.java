@@ -6,9 +6,22 @@ import java.awt.*;
  * BoardCell extends class CellButton by containing row and column values as well as containing information regarding eliminations.
  */
 public class BoardCell extends CellButton {
+    /**
+     * The x-coordinate representing the position of the BoardCell.
+     */
     private int row;
+    /**
+     * The y-coordinate representing the position of the BoardCell.
+     */
     private int col;
+    /**
+     * A variable representing if a move made to the BoardCell will be an elimination or not.
+     */
+    private boolean isElimination;
 
+    /**
+     * Stores the default color used for
+     */
     private Color defaultColor = null;
 
     /** Constructs a new cell with coordinates (row,col)

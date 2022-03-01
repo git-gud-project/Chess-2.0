@@ -14,11 +14,26 @@ import java.awt.*;
  */
 
 public class PlayerPanel extends JPanel {
+    /**
+     * A label containing the name of the player.
+     */
     private final JLabel playerName;
+    /**
+     * A label containing the remaining time a player has left.
+     */
     private final JLabel playerTime;
+    /**
+     * A label representing which player is the host and which is the client during a hosted game.
+     */
     private final JLabel playerAuthority;
+    /**
+     * A reference to the team the player belongs to.
+     */
     private final ChessTeam team;
 
+    /**
+     * A collection of event to be triggered if a player changed their name.
+     */
     private Event<ChessTeam> playerNameChangedEvent = new Event<>();
 
     /**
