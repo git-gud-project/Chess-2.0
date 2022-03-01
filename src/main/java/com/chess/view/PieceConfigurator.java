@@ -10,6 +10,10 @@ import com.chess.model.chess.ChessTypeIdentifier;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 
+/**
+ * A class representing the GUI shown when skins for the pieces are selected.
+ */
+
 public class PieceConfigurator extends JPanel {
 
     private static final int ROWS = 3;
@@ -20,18 +24,25 @@ public class PieceConfigurator extends JPanel {
 
     private final JFrame frame;
 
-    public PieceConfigurator(JMenuBar bar, ChessModel model) {
+    /**
+     * Constructor for PieceConfigurator.
+     * @param model A reference to the model containing the information about the game state.
+     * @param locX The X-coordinate location of the parent frame.
+     * @param locY The Y-coordinate location of the parent frame.
+     * @param width The width of the parent frame.
+     * @param height The height of the parent frame.
+     */
+    public PieceConfigurator(ChessModel model, int locX, int locY, int width, int height) {
         super();
         this.model = model;
-        Component comp = bar.getTopLevelAncestor();
         this.frame = new JFrame("Customize pieces");
         this.frame.setUndecorated(true);
         this.setLayout(new BorderLayout());
         this.frame.add(this);
         setupUI();
         this.frame.setSize(500, 500);
-        this.frame.setLocation((int) comp.getLocation().getX() + (comp.getWidth() - this.frame.getWidth()) / 2,
-                (int) comp.getLocation().getY() + (comp.getHeight() - this.frame.getHeight()) / 2);
+        this.frame.setLocation( locX + (width - this.frame.getWidth()) / 2,
+                 locY + (height - this.frame.getHeight()) / 2);
         this.frame.setVisible(true);
     }
 

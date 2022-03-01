@@ -7,24 +7,28 @@ import com.chess.utils.Event;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A class used for displaying the information of a player.
+ * On the top is the player's name, centered.
+ * On the bottom is the player's time, centered.
+ */
+
 public class PlayerPanel extends JPanel {
     private final JLabel playerName;
     private final JLabel playerTime;
     private final JLabel playerAuthority;
     private final ChessTeam team;
 
-    private Event<ChessTeam> playerNameChangedEvent = new Event<ChessTeam>();
+    private Event<ChessTeam> playerNameChangedEvent = new Event<>();
 
+    /**
+     * Constructor for PlayerPanel.
+     * @param model A reference to the model containing the information about the game state.
+     * @param team A reference to the player's team.
+     */
     public PlayerPanel(ChessModel model, ChessTeam team) {
         this.team = team;
 
-        /**
-         * This panel displays the information of the player.
-         * 
-         * On the top is the player's name, centered.
-         * 
-         * On the bottom is the player's time, centered.
-         */
         this.setPreferredSize(new Dimension(220, 100));
 
         this.setLayout(new BorderLayout());
@@ -48,20 +52,19 @@ public class PlayerPanel extends JPanel {
         playerAuthority.setForeground(ChessView.PRIMARY_SIDE_COLOR);
         this.add(playerAuthority, BorderLayout.CENTER);
 
-        /**
-         * Setup event listeners
-         */
-        team.getOnNameChangedEvent().addDelegate(name -> {
-            playerName.setText(name);
-        });
+        // Setup event listeners
 
-        team.getOnTimeChangedEvent().addDelegate(time -> {
-            playerTime.setText(time.toString());
-        });
+        team.getOnNameChangedEvent().addDelegate(name ->
+            playerName.setText(name)
+        );
 
-        team.getOnAuthorityChangedEvent().addDelegate(authority -> {
-            playerAuthority.setText(authority ? "" : "(Remote)");
-        });
+        team.getOnTimeChangedEvent().addDelegate(time ->
+            playerTime.setText(time.toString())
+        );
+
+        team.getOnAuthorityChangedEvent().addDelegate(authority ->
+            playerAuthority.setText(authority ? "" : "(Remote)")
+        );
 
         model.getOnTeamChangeEvent().addDelegate(newTeam -> {
             if (newTeam == team) {
@@ -83,9 +86,8 @@ public class PlayerPanel extends JPanel {
         playerName.setText(team.getName());
         playerTime.setText(team.getTime().toString());
 
-        /**
-         * When double clicking on the player name, it will open a dialog to change
-         */
+        // When double clicking on the player name, it will open a dialog to change
+
         playerName.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
@@ -95,10 +97,18 @@ public class PlayerPanel extends JPanel {
         });
     }
 
+    /**
+     * Gets the reference to the player's team.
+     * @return A reference to the player's team.
+     */
     public ChessTeam getTeam() {
         return team;
     }
 
+    /**
+     * Gets the reference to the collection of events to be triggered when a player changed their name.
+     * @return A reference to the collection of events to be triggered when a player changed their name.
+     */
     public Event<ChessTeam> getOnPlayerNameChangedEvent() {
         return playerNameChangedEvent;
     }
