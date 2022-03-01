@@ -157,7 +157,7 @@ public class NetworkControl {
     }
 
     private void showMessage(String message) {
-        // TODO: Some indication of the message
+        view.showMessage(message);
     }
 
     /**
