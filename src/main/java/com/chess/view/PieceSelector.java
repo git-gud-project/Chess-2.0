@@ -10,14 +10,41 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
-public class PieceSelector extends JPanel {
+/**
+ * Class to represent the individual user interfaces shown in the PieceConfigurator.
+ *
+ * Each instance shows the skin selected for one of the twelve possible piece type and team combinations.
+ *
+ * Each instance is also identified by said piece type and a team combination.
+ */
 
+public class PieceSelector extends JPanel {
+    /**
+     * A reference to model, which stores the information regarding the selected skin for the given piece and team.
+     */
     private final ChessModel model;
+    /**
+     * The piece type the instance of PieceSelector is connected to.
+      */
     private final ChessTypeIdentifier pieceType;
+    /**
+     * The team the instance of PieceSelector is connected to.
+     */
     private final ChessTeamIdentifier teamColor;
 
+    /**
+     * A static array containing .png file names for the skins that can be assigned to the pieces.
+     * More file names can be added to this array to expand the pool of skins available.
+     * The corresponding .png files should be stored in the /resources/skins/ directory.
+     */
     private static final String[] skinsNames = {"bird.png", "blueninja.png", "car.png", "eagle.png", "eyebat.png"};
 
+    /**
+     * Constructor for PieceSelector.
+     * @param model A reference to the model that represents the state of the game.
+     * @param pieceType The type for which PieceSelector will show the selected skin.
+     * @param teamColor The team for which the skin of the given piece will be shown.
+     */
     public PieceSelector(ChessModel model, ChessTypeIdentifier pieceType, ChessTeamIdentifier teamColor){
         //Initial setup for the constructor
         super();
@@ -68,13 +95,17 @@ public class PieceSelector extends JPanel {
             updatePiece(imageLabel);
         });
 
-        plus.addActionListener((e) -> {
-            manageOwnSkin(imageLabel);
-        });
+        plus.addActionListener(e ->
+            manageOwnSkin(imageLabel)
+        );
     }
 
     // Util for constructor
 
+    /**
+     * Helper method to select the title that will be shown above each instance of PieceConfigurator.
+     * @return A String containing the color of the team and the piece type.
+     */
     private String selectName() {
         String s;
         if(teamColor.equals(ChessTeamIdentifier.WHITE)) s = "White ";
@@ -83,6 +114,10 @@ public class PieceSelector extends JPanel {
         return s;
     }
 
+    /**
+     * Helper method to select the name of the piece type.
+     * @return A string containing the name of the piece type.
+     */
     private String selectPieceName() {
         switch(pieceType){
             case ROOK: return "rook";
@@ -94,6 +129,10 @@ public class PieceSelector extends JPanel {
         }
     }
 
+    /**
+     * Selects the .png file chosen to represent the skin for the given team and piece type combination.
+     * @return A JLabel containing a centered ImageIcon representing the chosen skin for the given team and piece type combination.
+     */
     private JLabel selectSkinImage(){
         JLabel imageLabel = new JLabel("", SwingConstants.CENTER);
         ChessTeam team = model.getTeamManager().getTeam(teamColor);
@@ -104,7 +143,6 @@ public class PieceSelector extends JPanel {
                 imageLabel.setIcon(Resources.getImageIcon("/skins/" + team.getSkin(pieceType)));
             }
         } else {
-            //TODO: Behaves a bit mysteriously if a file is deleted or moved in between pop-ups. Could try to fix this some way.
             Image image = Toolkit.getDefaultToolkit().getImage(team.getSkin(pieceType));
             image = image.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
             imageLabel.setIcon(new ImageIcon(image));
@@ -114,6 +152,10 @@ public class PieceSelector extends JPanel {
 
     // Util for action listeners
 
+    /**
+     * Updates the model and the provided JLabel when for the given skin selection.
+     * @param label A reference to the JLabel containing the ImageIcon showing the selected skin for the given team and piece type combination.
+     */
     private void updatePiece(JLabel label) {
         if (((model.getTeamManager().getTeam(teamColor).getSkinIndex(pieceType) % (skinsNames.length + 1)) + (skinsNames.length + 1)) % (skinsNames.length + 1) == 0) {
             label.setIcon(Resources.getImageIcon("/images/" + pieceType.toString() + teamColor.toString() + ".png"));
@@ -128,6 +170,10 @@ public class PieceSelector extends JPanel {
         }
     }
 
+    /**
+     * Opens a pop-up dialog to let the user choose an own .png file to be shown as the selected skin for the given team and piece type combination.
+     * @param label A reference to the JLabel containing the ImageIcon showing the selected skin for the given team and piece type combination.
+     */
     private void manageOwnSkin(JLabel label) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Choose an image file");
@@ -162,6 +208,10 @@ public class PieceSelector extends JPanel {
         }
     }
 
+    /**
+     * Updates the model in order to save the corresponding information regarding the selected skin for the given team and piece type combination.
+     * @param path A string containing the absolute path to the selected .png file.
+     */
     private void saveNewFile(String path){
         model.getTeamManager().getTeam(teamColor).setOwnSkin(pieceType, true);
         model.getTeamManager().getTeam(teamColor).setSkin(pieceType, path);
