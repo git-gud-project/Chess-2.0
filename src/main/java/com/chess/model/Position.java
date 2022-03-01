@@ -62,6 +62,8 @@ public class Position {
 
     /**
      * Add units to row
+     * 
+     * @param units The units to add.
      */
     public Position addRow(int units) {
         return new Position(row + units, col);
@@ -69,9 +71,34 @@ public class Position {
 
     /**
      * Add units to column
+     * 
+     * @param units The units to add.
      */
     public Position addCol(int units) {
         return new Position(row, col + units);
+    }
+
+    /**
+     * Move a position towards another position by a given number of units.
+     * 
+     * @param position The position to move towards.
+     * @param units The number of units to move.
+     * @return The new position.
+     */
+    public Position moveTowards(Position position, int units) {
+        int rowDiff = position.getRow() - row;
+        int colDiff = position.getCol() - col;
+
+        if (rowDiff == 0) {
+            return addCol(units);
+        } else if (colDiff == 0) {
+            return addRow(units);
+        } else {
+            int rowUnit = rowDiff / Math.abs(rowDiff);
+            int colUnit = colDiff / Math.abs(colDiff);
+
+            return addRow(rowUnit * units).addCol(colUnit * units);
+        }
     }
 
     /**

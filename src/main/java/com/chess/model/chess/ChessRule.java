@@ -167,7 +167,17 @@ public class ChessRule implements Rule {
         }
     }
 
-    private boolean isLegalMove(Identifier pieceIdentifier, Identifier teamIdentifier, Move move) {
+    /**
+     * Checks if the move is legal.
+     * 
+     * A legal move is one that does not leave the king in check.
+     * 
+     * @param pieceIdentifier the piece identifier for the piece that is moving
+     * @param teamIdentifier the team identifier for the team that is moving
+     * @param move the move details
+     * @return true if the move is legal
+     */
+    public boolean isLegalMove(Identifier pieceIdentifier, Identifier teamIdentifier, Move move) {
         // Collect relevant details
         final Position from = move.getFromCell();
         final Position to = move.getToCell();
