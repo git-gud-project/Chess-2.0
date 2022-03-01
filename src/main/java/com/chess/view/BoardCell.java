@@ -2,8 +2,8 @@ package com.chess.view;
 
 import java.awt.*;
 
-/**BoardCell extends class CellButton by containing row and column values as well as containing information regarding eliminations.
- *
+/**
+ * BoardCell extends class CellButton by containing row and column values as well as containing information regarding eliminations.
  */
 public class BoardCell extends CellButton {
     private int row;
@@ -67,7 +67,6 @@ public class BoardCell extends CellButton {
         );
         this.setBackground(highlightColor);
     }
-
 
     /**
      * Unhighlight this cell, that is set the background to the default background

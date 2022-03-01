@@ -50,19 +50,19 @@ public class BottomPanel extends JPanel {
          * Setup events
          */
         
-        model.getOnTeamChangeEvent().addDelegate(team -> {
-            updateInfoLabel();
-        });
+        model.getOnTeamChangeEvent().addDelegate(team ->
+            updateInfoLabel()
+        );
 
-        model.getOnGameLoadedEvent().addDelegate(fen -> {
-            infoLabel.setText(fen);
-        });
+        model.getOnGameLoadedEvent().addDelegate(fen ->
+            infoLabel.setText(fen)
+        );
 
         updateInfoLabel();
     }
 
-    /** Update the text field with the current FEN representation.
-     *
+    /**
+     * Update the text field with the current FEN representation.
      */
     private void updateInfoLabel() {
         // Create a Forsyth–Edwards Notation (FEN) of the board
