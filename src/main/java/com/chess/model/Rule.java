@@ -1,27 +1,11 @@
 package com.chess.model;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Rules for how pieces can move and what they may do.
  */
 public interface Rule {
-    /**
-     * Check if a move is an elimination move.
-     * 
-     * @param position       The position to check.
-     * @param typeIdentifier The type identifier of the piece.
-     * @param teamIdentifier The team identifier of the piece.
-     * @return               True if the move is an elimination move, false otherwise.
-     * @throws IllegalArgumentException if the position is invalid.
-     */
-    public boolean isEliminationMove(
-        Position position,
-        Identifier typeIdentifier,
-        Identifier teamIdentifier
-    ) throws IllegalArgumentException;
-
     /**
      * Request that a piece be moved from one position to another.
      * 
