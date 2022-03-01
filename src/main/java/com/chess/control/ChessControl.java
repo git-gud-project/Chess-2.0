@@ -391,6 +391,30 @@ public class ChessControl implements ChessControlInterface {
 
             Position position = move.getToCell();
 
+            boolean isLegal = true;
+
+            // Edge case for castling, all moves inbetween the king and rook must be legal positions for the king
+            // and the king cannot be in check.
+            if (move.getIsCastleKingSide() || move.getIsCastleQueenSide()) {
+                if (model.isCheck(model.getCurrentTeam().getTeamIdentifier())) {
+                    isLegal = false;
+                } else {
+                    Position next = move.getFromCell();
+                    while (!next.equals(position)) {
+                        next = next.moveTowards(position, 1);
+                        
+                        if (!model.getRule().isLegalMove(move.getPieceType(), model.getCurrentTeam().getTeamIdentifier(), new Move(next, move.getFromCell(), move.getPieceType()))) {
+                            isLegal = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!isLegal) {
+                continue;
+            }
+
             BoardCell possibleMove = grid.getCell(position.getRow(), position.getCol());
 
             currentMoveMap.put(possibleMove, move);
