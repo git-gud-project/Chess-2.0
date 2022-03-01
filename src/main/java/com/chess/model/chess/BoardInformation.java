@@ -102,17 +102,6 @@ interface BoardInformation {
     public void clearPiece(Position position, boolean isFinalMove) throws IllegalArgumentException;
 
     /**
-     * Returns whether going to a specific position is an elimination.
-     * 
-     * @param position the position to check
-     * @param piece the piece type of the piece that is moving
-     * @param team the team of the piece that is moving
-     * @return whether going to a specific position is an elimination
-     * @throws IllegalArgumentException if the position is invalid
-     */
-    public boolean isElimination(Position position, Identifier piece, Identifier team) throws IllegalArgumentException;
-
-    /**
      * Returns the move calculator of a piece at the specified position.
      * 
      * @param position the position to check
