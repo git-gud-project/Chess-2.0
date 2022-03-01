@@ -14,10 +14,6 @@ public class BoardCell extends CellButton {
      * The y-coordinate representing the position of the BoardCell.
      */
     private int col;
-    /**
-     * A variable representing if a move made to the BoardCell will be an elimination or not.
-     */
-    private boolean isElimination;
 
     /**
      * Stores the default color used for
@@ -49,19 +45,7 @@ public class BoardCell extends CellButton {
         return col;
     }
 
-    /** Set to true if move is an elimination or false if it isn't
-     * @param isElimination if input value is true it is an elimination if, otherwise it is not an elimination
-     */
-    public void setElimination(boolean isElimination) {
-        this.isElimination = isElimination;
-    }
 
-    /** Returns true if it is an elimination, false if not
-     * @return Boolean value true if it is an elimination false otherwise
-     */
-    public boolean isElimination() {
-        return isElimination;
-    }
 
     /** Highlights the cell in the parameter color. The firs call of this method sets the defaultColor of the Cell to the parameter value
      * @param color Color of the highlight

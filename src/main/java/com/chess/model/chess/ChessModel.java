@@ -668,13 +668,6 @@ public class ChessModel {
     }
 
     /**
-     * Clear en passant square
-     */
-    public void clearEnPassantSquare() {
-        sharedChessTeamParameters.setEnPassantPosition(Position.INVALID);
-    }
-
-    /**
      * Getter for move list
      * 
      * @return list of moves as strings.
