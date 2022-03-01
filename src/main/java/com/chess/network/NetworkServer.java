@@ -153,7 +153,7 @@ public class NetworkServer {
 
     /**
      * Sets the delegate that will be called when the server closes.
-     * @param onCloseDelegate
+     * @param onCloseDelegate The delegate that will be called when the server closes.
      */
     public void setOnCloseDelegate(Runnable onCloseDelegate) {
         this.onCloseDelegate = onCloseDelegate;
