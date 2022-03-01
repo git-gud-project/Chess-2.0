@@ -9,8 +9,9 @@ import com.chess.utils.Resources;
 import javax.swing.*;
 import java.awt.*;
 
-/** Create a new view panel of a Chess board based on data from a model. This class also set up listeners for all the cells.
- *
+/**
+ * Create a new view panel of a Chess board based on data from a model.
+ * This class also set up listeners for all the cells.
  */
 public class BoardGridPanel extends JPanel {
     private BoardCell[][] cells;
@@ -18,7 +19,7 @@ public class BoardGridPanel extends JPanel {
 
     private Delegate<BoardCell> clickDelegate;
 
-    /** Set up a new panel with a chess board made up of buttons.
+    /** Constructor to set up a new panel with a chess board made up of buttons.
      * @param model The model to use to create the board.
      * @param size The size of the chess board to be created. For a normal game of chess the size is 8.
      */
@@ -39,9 +40,9 @@ public class BoardGridPanel extends JPanel {
 
                 this.add(button);
 
-                button.addActionListener((e) -> {
-                    handleClick(button);
-                });
+                button.addActionListener(e ->
+                    handleClick(button)
+                );
 
                 Color color = row % 2 == col % 2 ? ChessView.PRIMARY_COLOR : ChessView.SECONDARY_COLOR;
 
@@ -53,9 +54,7 @@ public class BoardGridPanel extends JPanel {
 
                 cells[size - 1 - row][col] = button;
 
-                /**
-                 * Setup events
-                 */
+                // Setup events
 
                 Cell cell = board.getCell(size - 1 - row, col);
 
@@ -73,7 +72,6 @@ public class BoardGridPanel extends JPanel {
                                 icon = Resources.getImageIcon("/skins/" + team.getSkin(piece.getTypeIdentifier()));
                             }
                         } else {
-                            //TODO: Behaves a bit mysteriously if a file is deleted or moved in between pop-ups. Could try to fix this some way.
                             Image image = Toolkit.getDefaultToolkit().getImage(team.getSkin(piece.getTypeIdentifier()));
                             image = image.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
                             icon = new ImageIcon(image);
@@ -107,24 +105,12 @@ public class BoardGridPanel extends JPanel {
     }
 
 
-    /** TODO
-     * @param boardCell
+    /** Triggers the listener added to the corresponding instance of boardCell.
+     * @param boardCell The cell on the chess board that has been clicked.
      */
     private void handleClick(BoardCell boardCell) {
         if (clickDelegate != null) {
             clickDelegate.trigger(boardCell);
-        }
-    }
-
-    //todo fix with dynamic size
-    public void unHighlightAll (){
-        for(int row=0;row<size;row++){
-            for(int col=0;col<size;col++){
-                cells[row][col].unhighlight();
-                Color color = row % 2 == col % 2 ? ChessView.PRIMARY_COLOR : ChessView.SECONDARY_COLOR;
-                // Set the background color of the button, black or white
-                cells[row][col].setBackground(color);
-            }
         }
     }
 }

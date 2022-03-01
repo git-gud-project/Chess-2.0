@@ -8,12 +8,13 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Represents a board panel. Contains a grid of cells.
+ * Represents a board panel.
+ * Contains a grid of cells.
  */
 public class BoardPanel extends JPanel {
     private BoardGridPanel boardPanel;
 
-    /**
+    /** Constructor for BoardPanel.
      * @param model The model to use to create the board.
      * @param size The size of the chess board to be created.
      */
@@ -156,8 +157,8 @@ public class BoardPanel extends JPanel {
         });
     }
 
-    /** todo
-     * @return
+    /** Used to return a reference of the instance of a class representing the grid of cells.
+     * @return An instance of BoardGridPanel containing the grid of cells representing the chess board.
      */
     public BoardGridPanel getBoardGridPanel() {
         return boardPanel;
