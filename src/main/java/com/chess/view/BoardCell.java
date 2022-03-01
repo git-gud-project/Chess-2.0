@@ -14,10 +14,6 @@ public class BoardCell extends CellButton {
      * The y-coordinate representing the position of the BoardCell.
      */
     private int col;
-    /**
-     * A variable representing if a move made to the BoardCell will be an elimination or not.
-     */
-    private boolean isElimination;
 
     /**
      * Stores the default color used for
