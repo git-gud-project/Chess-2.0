@@ -13,7 +13,7 @@ public class ChessView extends JFrame {
     public final static int DEFAULT_WINDOW_WIDTH = 1190;
     public final static int DEFAULT_WINDOW_HEIGHT = 773;
     public final static boolean DEFAULT_RESIZABLE = true;
-    public final static String DEFAULT_TITLE = "Chess Game";
+    public final static String DEFAULT_TITLE = "Chess 2.0";
 
     public final static Dimension CELL_MIN_SIZE = new Dimension(60, 60);
     public final static Dimension CELL_IDEAL_SIZE = new Dimension(80, 80);
