@@ -2,6 +2,10 @@ package com.chess.view;
 
 import java.awt.*;
 
+/**
+ * A class containing constant values used to set up the GUI for the application.
+ */
+
 public final class ViewConstants {
     /**
      * The default value for the width of the window containing the GUI for the game.

@@ -139,8 +139,12 @@ public class Menu extends JMenuBar {
                     stream.writeObject(model.getSerialModel());
                     stream.flush();
                     stream.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (FileNotFoundException ex) {
+                    // Show a message to the user that the file was not found
+                    JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (IOException ex) {
+                    // Show a message to the user that we could not read the file
+                    JOptionPane.showMessageDialog(null, "Could not write to file", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
             if(!paused) model.setPaused(false);
@@ -164,8 +168,15 @@ public class Menu extends JMenuBar {
                     onLoadGameEvent.trigger(newModel);
                     movesPanel.loadMovesPanel();
                     stream.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (FileNotFoundException ex) {
+                    // Show a message to the user that the file was not found
+                    JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (ClassNotFoundException ex) {
+                    // Show a message to the user that the save file is out of date
+                    JOptionPane.showMessageDialog(null, "Save file is out of date", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (IOException ex) {
+                    // Show a message to the user that we could not read the file
+                    JOptionPane.showMessageDialog(null, "Could not read file, save file might be out of date", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 if(!paused) model.setPaused(false);
@@ -210,7 +221,8 @@ public class Menu extends JMenuBar {
                 Desktop.getDesktop().browse(site);
             }
             catch(URISyntaxException | IOException e ) {
-                e.printStackTrace();
+                // Show a message to the user that the link could not be opened
+                JOptionPane.showMessageDialog(null, "Could not open link", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 

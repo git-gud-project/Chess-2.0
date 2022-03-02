@@ -120,11 +120,6 @@ public class ChessControl implements ChessControlInterface {
         playSound("pawnPromotion");
     }
 
-    /**
-     * Moves the piece on the board.
-     * 
-     * @param move The move that is being performed.
-     */
     @Override
     public void executeMove(Move move) {
         if (!model.getStarted()) {

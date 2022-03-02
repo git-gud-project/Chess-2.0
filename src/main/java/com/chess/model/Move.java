@@ -124,15 +124,6 @@ public class Move {
     }
 
     /**
-     * Get bool for if this move is En Passant
-     * 
-     * @return True if move is En Passant
-     */
-    public boolean getIsEnPassant() {
-        return isEnPassant;
-    }
-
-    /**
      * Set this move to be En Passant
      * 
      * @param isEnPassant The value for En Passant

@@ -23,14 +23,20 @@ public class SoundPlayer {
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);
             clip.start();
-        }
-        catch(FileNotFoundException e) {
-            System.out.println("File not found");
-            System.out.println(System.getProperty("user.dir"));
-        }
-        catch(Exception e) {
+        } catch(FileNotFoundException e) {
+            // Proceed without sound
+            System.out.println("Sound file not found: " + sound);
+        } catch (UnsupportedAudioFileException e) {
+            // Proceed without sound
+            System.out.println("Unsupported audio file: " + sound);
+        } catch (LineUnavailableException e) {
+            // Proceed without sound
+            System.out.println("Line unavailable: " + sound);
+        } catch (IOException e) {
+            // Proceed without sound
+            System.out.println("Unknown IOException on: " + sound);
             e.printStackTrace();
-        }
+        } 
     }
 
 }
