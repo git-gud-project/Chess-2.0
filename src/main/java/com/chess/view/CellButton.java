@@ -5,6 +5,8 @@ import java.awt.*;
 
 /**
  * A class to represent the graphical aspects of a button placed on the chess board.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class CellButton extends JButton {
 

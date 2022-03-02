@@ -4,6 +4,8 @@ import java.awt.*;
 
 /**
  * BoardCell extends class CellButton by containing row and column values as well as containing information regarding eliminations.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class BoardCell extends CellButton {
     /**

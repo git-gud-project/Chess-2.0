@@ -11,6 +11,8 @@ import java.awt.*;
  * On top are two panels, one for each player. These panels contain their
  * name and time.
  * The rest of the panel is a list of moves.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class InformationPanel extends JPanel {
     /**

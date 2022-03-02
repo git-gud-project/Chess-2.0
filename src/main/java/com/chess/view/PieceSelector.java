@@ -16,6 +16,8 @@ import java.io.File;
  * Each instance shows the skin selected for one of the twelve possible piece type and team combinations.
  *
  * Each instance is also identified by said piece type and a team combination.
+ * @author Oscar Marrero Engström
+ * @version 2022-03-02
  */
 
 public class PieceSelector extends JPanel {

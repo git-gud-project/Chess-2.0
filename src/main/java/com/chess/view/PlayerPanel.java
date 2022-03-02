@@ -11,6 +11,8 @@ import java.awt.*;
  * A class used for displaying the information of a player.
  * On the top is the player's name, centered.
  * On the bottom is the player's time, centered.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 
 public class PlayerPanel extends JPanel {

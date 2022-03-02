@@ -10,6 +10,8 @@ import java.awt.event.*;
 /**
  * Represents a board panel.
  * Contains a grid of cells.
+ * @author Rasmus Standar
+ * @version 2022-03-02
  */
 public class BoardPanel extends JPanel {
     /**

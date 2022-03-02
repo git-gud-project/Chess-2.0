@@ -12,6 +12,8 @@ import java.awt.event.WindowEvent;
 
 /**
  * A class representing the GUI shown when skins for the pieces are selected.
+ * @author Oscar Marrero Engström
+ * @version 2022-03-02
  */
 
 public class PieceConfigurator extends JPanel {

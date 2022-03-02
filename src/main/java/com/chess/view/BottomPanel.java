@@ -10,6 +10,8 @@ import com.chess.model.chess.ChessModel;
 
 /**
  * Creates a view for showing Forsyth–Edwards Notation (FEN) representation of the current game. This class extends class JPanel.
+ * @author Wincent Stålbert Holm
+ * @version 2022-02-03
  */
 public class BottomPanel extends JPanel {
     /**

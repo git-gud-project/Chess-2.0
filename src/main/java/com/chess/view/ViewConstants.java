@@ -4,6 +4,8 @@ import java.awt.*;
 
 /**
  * A class containing constant values used to set up the GUI for the application.
+ * @author Rasmus Standar
+ * @version 2022-03-02
  */
 
 public final class ViewConstants {
