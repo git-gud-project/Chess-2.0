@@ -5,6 +5,8 @@ import com.chess.network.Message;
 
 /**
  * A message sent out after the host has loaded a new game.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 
 public class LoadGameMessage implements Message {

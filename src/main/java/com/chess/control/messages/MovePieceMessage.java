@@ -5,6 +5,8 @@ import com.chess.network.Message;
 
 /**
  * A message sent whenever a move is made.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class MovePieceMessage implements Message {
     /**

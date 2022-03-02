@@ -195,6 +195,10 @@ public class ChessView extends JFrame {
         return menuPanel.getSoundMap();
     }
 
+    /**
+     * Shows a message in te GUI for a pre-set amount of time.
+     * @param message The message to be shown on the GUI.
+     */
     public void showMessage(String message) {
         // Create a new JPanel to display the message floating in the middle of the screen
         JPanel panel = new JPanel();

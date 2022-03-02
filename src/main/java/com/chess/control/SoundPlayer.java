@@ -5,6 +5,7 @@ import javax.sound.sampled.*;
 
 /**
  * @author Isak Holmdahl
+ * @version 2022-03-02
  */
 public class SoundPlayer {
 

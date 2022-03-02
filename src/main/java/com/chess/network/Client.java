@@ -7,6 +7,8 @@ import com.chess.utils.Delegate;
 
 /**
  * Class representing a client communicating with our server.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class Client {
     /**

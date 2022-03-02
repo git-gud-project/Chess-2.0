@@ -9,8 +9,9 @@ import com.chess.utils.Delegate;
 
 /**
  * A TCP client.
- * 
  * The client can be configured to connect to a specific ip and port.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class NetworkClient {
     /**

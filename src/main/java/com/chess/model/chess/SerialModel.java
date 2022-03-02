@@ -9,7 +9,7 @@ import com.chess.model.GameTime;
 /**
  * A class that represents the serializable parts of the model used to represent the chess game.
  * @author Oscar Marrero Engström
- * @version 2022-02-01
+ * @version 2022-03-01
  */
 public class SerialModel implements Serializable {
     /**

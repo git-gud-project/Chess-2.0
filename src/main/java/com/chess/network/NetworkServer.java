@@ -9,8 +9,9 @@ import com.chess.utils.Delegate;
 
 /**
  * A TCP server.
- * 
  * The server can be configured to listen on a specific port and which ip to listen on.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class NetworkServer {
     /**

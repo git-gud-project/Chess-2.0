@@ -61,18 +61,18 @@ public class Position {
     }
 
     /**
-     * Add units to row
-     * 
-     * @param units The units to add.
+     * Adds units number of rows to the current position.
+     * @param units Number of rows to be added to the current position.
+     * @return A new position with units number of rows added to it.
      */
     public Position addRow(int units) {
         return new Position(row + units, col);
     }
 
     /**
-     * Add units to column
-     * 
-     * @param units The units to add.
+     * Adds units number of columns to the current position.
+     * @param units Number of columns to be added to the current position.
+     * @return A new position with units number of columns added to it.
      */
     public Position addCol(int units) {
         return new Position(row, col + units);
@@ -102,24 +102,18 @@ public class Position {
     }
 
     /**
-     * Compute the distance between two positions.
-     * 
-     * @param position The position to compute the distance to.
-     * @return The distance between the two positions.
-     */
-    public int distance(Position position) {
-        return Math.abs(this.row - position.getRow()) + Math.abs(this.col - position.getCol());
-    }
-
-    /**
-     * Computer the distance in rows
+     * Compute the distance in rows.
+     * @param position The position being compared to.
+     * @return The distance in rows to the compared position.
      */
     public int distanceRow(Position position) {
         return Math.abs(this.row - position.getRow());
     }
 
     /**
-     * Computer the distance in columns
+     * Computes the distance in columns.
+     * @param position The position being compared to.
+     * @return The distance in columns to the comapred position.
      */
     public int distanceCol(Position position) {
         return Math.abs(this.col - position.getCol());

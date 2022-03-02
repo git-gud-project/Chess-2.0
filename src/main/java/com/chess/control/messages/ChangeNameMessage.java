@@ -4,6 +4,8 @@ import com.chess.network.Message;
 
 /**
  * A massage used to notify that a player has changed their name.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 
 public class ChangeNameMessage implements Message {
