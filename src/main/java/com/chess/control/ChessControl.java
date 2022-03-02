@@ -440,7 +440,7 @@ public class ChessControl implements ChessControlInterface {
 
         selectedCell = boardCell;
 
-        selectedCell.highlight(ChessView.HIGHLIGHT_COLOR_PIECE);
+        selectedCell.highlight(ViewConstants.HIGHLIGHT_COLOR_PIECE);
 
         Iterator<Move> moves = piece.getPossibleMoves(model.getRule(), new Position(selectedCell.getRow(), selectedCell.getCol()));
 
@@ -478,7 +478,7 @@ public class ChessControl implements ChessControlInterface {
             currentMoveMap.put(possibleMove, move);
 
             possibleMove.highlight(
-                    move.isEliminatable() ? ChessView.HIGHLIGHT_COLOR_ATTACK : ChessView.HIGHLIGHT_COLOR_MOVE);
+                    move.isEliminatable() ? ViewConstants.HIGHLIGHT_COLOR_ATTACK : ViewConstants.HIGHLIGHT_COLOR_MOVE);
 
 
             highlightedCells.add(possibleMove);

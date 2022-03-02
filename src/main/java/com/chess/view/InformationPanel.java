@@ -48,7 +48,7 @@ public class InformationPanel extends JPanel {
     public InformationPanel(ChessModel model) {
 
         this.setLayout(new BorderLayout());
-        this.setBackground(ChessView.SECONDARY_COLOR);
+        this.setBackground(ViewConstants.SECONDARY_COLOR);
 
         JPanel playerPanel = new JPanel();
         playerPanel1 = new PlayerPanel(model, model.getTeamWhite());
@@ -65,14 +65,14 @@ public class InformationPanel extends JPanel {
         c.gridx = 0;
         JSeparator separator = new JSeparator(JSeparator.VERTICAL);
         separator.setPreferredSize(new Dimension(10, 0));
-        separator.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
-        separator.setForeground(ChessView.BOARD_BACKGROUND_COLOR);
+        separator.setBackground(ViewConstants.BOARD_BACKGROUND_COLOR);
+        separator.setForeground(ViewConstants.BOARD_BACKGROUND_COLOR);
         playerPanel.add(separator, c);
         c.gridx = 1;
         playerPanel.add(playerPanel2, c);
         this.add(playerPanel, BorderLayout.NORTH);
 
-        playerPanel.setBackground(ChessView.SECONDARY_COLOR);
+        playerPanel.setBackground(ViewConstants.SECONDARY_COLOR);
 
         // Add some margin to the player panels
         playerPanel1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -83,7 +83,7 @@ public class InformationPanel extends JPanel {
 
         // Add the inner panels to the list of moves
         moves.setLayout(new GridLayout(0, 1));
-        moves.setBackground(ChessView.SECONDARY_COLOR);
+        moves.setBackground(ViewConstants.SECONDARY_COLOR);
         
         // Create a panel to place the moves in
         movesPanel = new MovesPanel(model);
@@ -102,8 +102,8 @@ public class InformationPanel extends JPanel {
         // Pause button in the center
         pauseButton = new JButton("Pause");
         pauseButton.setPreferredSize(new Dimension(100, 50));
-        pauseButton.setBackground(ChessView.PRIMARY_SIDE_COLOR);
-        pauseButton.setForeground(ChessView.SECONDARY_COLOR);
+        pauseButton.setBackground(ViewConstants.PRIMARY_SIDE_COLOR);
+        pauseButton.setForeground(ViewConstants.SECONDARY_COLOR);
         pauseButton.setFont(new Font("Arial", Font.BOLD, 20));
         pauseButton.setFocusPainted(false);
         southContainer.add(pauseButton, BorderLayout.NORTH);

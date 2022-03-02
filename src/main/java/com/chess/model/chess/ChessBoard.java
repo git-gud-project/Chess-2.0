@@ -49,10 +49,6 @@ public class ChessBoard implements Board {
         return cellMatrix[gameSize - 1 - row][col];
     }
 
-    /**
-     * @param pos Contains the row and column for the cell.
-     * @return The cell at the specified position.
-     */
     @Override
     public Cell getCell(Position pos) throws IllegalArgumentException {
         return getCell(pos.getRow(), pos.getCol());

@@ -44,8 +44,8 @@ public class BoardGridPanel extends JPanel {
                 
                 BoardCell button = new BoardCell(size - 1 - row, col);
 
-                button.setMinimumSize(ChessView.CELL_MIN_SIZE);
-                button.setPreferredSize(ChessView.CELL_IDEAL_SIZE);
+                button.setMinimumSize(ViewConstants.CELL_MIN_SIZE);
+                button.setPreferredSize(ViewConstants.CELL_IDEAL_SIZE);
 
                 this.add(button);
 
@@ -53,7 +53,7 @@ public class BoardGridPanel extends JPanel {
                     handleClick(button)
                 );
 
-                Color color = row % 2 == col % 2 ? ChessView.PRIMARY_COLOR : ChessView.SECONDARY_COLOR;
+                Color color = row % 2 == col % 2 ? ViewConstants.PRIMARY_COLOR : ViewConstants.SECONDARY_COLOR;
 
                 // Set the background color of the button, black or white
                 button.setBackground(color);
