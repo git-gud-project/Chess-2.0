@@ -339,6 +339,7 @@ public class NetworkControl {
 
             // Load the game.
             getModel().loadModel(loadGameMessage.getModel());
+            getView().getInfoPanel().getMovesPanel().loadMovesPanel();
 
             // Pause the game.
             controlInterface.setPaused(true);

@@ -202,51 +202,100 @@ public class ChessControl implements ChessControlInterface {
      *                    (= 1) or a stalemate (= 2).
      */
     private void gameOver(int endingState) {
-
-        Object[] options = { "New game.", "Exit" };
-        switch (endingState) {
-            case 1:
-                int n = JOptionPane.showOptionDialog(view.getOwner(), "Game over!\nThe game ended in a stalemate.",
-                        "Game over!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
-                        options[0]);
-                if (n == JOptionPane.CLOSED_OPTION) {
-                    System.exit(0);
-                }
-                switch (n) {
-                    case 0:
-                        checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
-                        int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
-                        GameTime newTime = new GameTime(input, 0, 0);
-                        view.getModel().resetState(newTime);
-                        model.resetState(newTime);
-                        view.getInfoPanel().getMovesPanel().resetMovesPanel();
-                        break;
-                    case 1:
+        if(networkControl.isHost()){
+            Object[] options = { "New game.", "Exit" };
+            switch (endingState) {
+                case 1:
+                    int n = JOptionPane.showOptionDialog(view.getOwner(), "Game over!\nThe game ended in a stalemate.",
+                            "Game over!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+                            options[0]);
+                    if (n == JOptionPane.CLOSED_OPTION) {
                         System.exit(0);
-                }
-                break;
-            case 2:
-                n = JOptionPane.showOptionDialog(view.getOwner(),
-                        "Game over!\n" + model.getOtherTeam(model.getCurrentTeam()) + " has won!", "Game over!",
-                        JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                if (n == JOptionPane.CLOSED_OPTION) {
-                    System.exit(0);
-                }
-                switch (n) {
-                    case 0:
-                        checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
-                        int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
-                        GameTime newTime = new GameTime(input, 0, 0);
-                        view.getModel().resetState(newTime);
-                        model.resetState(newTime);
-                        view.getInfoPanel().getMovesPanel().resetMovesPanel();
-                        break;
-                    case 1:
+                    }
+                    switch (n) {
+                        case 0:
+                            checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
+                            int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
+                            GameTime newTime = new GameTime(input, 0, 0);
+                            view.getModel().resetState(newTime);
+                            model.resetState(newTime);
+                            view.getInfoPanel().getMovesPanel().resetMovesPanel();
+                            break;
+                        case 1:
+                            System.exit(0);
+                    }
+                    break;
+                case 2:
+                    n = JOptionPane.showOptionDialog(view.getOwner(),
+                            "Game over!\n" + model.getOtherTeam(model.getCurrentTeam()) + " has won!", "Game over!",
+                            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (n == JOptionPane.CLOSED_OPTION) {
                         System.exit(0);
-                }
-                break;
+                    }
+                    switch (n) {
+                        case 0:
+                            checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
+                            int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
+                            GameTime newTime = new GameTime(input, 0, 0);
+                            view.getModel().resetState(newTime);
+                            model.resetState(newTime);
+                            view.getInfoPanel().getMovesPanel().resetMovesPanel();
+                            break;
+                        case 1:
+                            System.exit(0);
+                    }
+                    break;
+            }
+            networkControl.broadcastMessage(new LoadGameMessage(model.getSerialModel()));
         }
-
+        else if(networkControl.isSinglePlayer()){
+            Object[] options = { "New game.", "Exit" };
+            switch (endingState) {
+                case 1:
+                    int n = JOptionPane.showOptionDialog(view.getOwner(), "Game over!\nThe game ended in a stalemate.",
+                            "Game over!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+                            options[0]);
+                    if (n == JOptionPane.CLOSED_OPTION) {
+                        System.exit(0);
+                    }
+                    switch (n) {
+                        case 0:
+                            checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
+                            int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
+                            GameTime newTime = new GameTime(input, 0, 0);
+                            view.getModel().resetState(newTime);
+                            model.resetState(newTime);
+                            view.getInfoPanel().getMovesPanel().resetMovesPanel();
+                            break;
+                        case 1:
+                            System.exit(0);
+                    }
+                    break;
+                case 2:
+                    n = JOptionPane.showOptionDialog(view.getOwner(),
+                            "Game over!\n" + model.getOtherTeam(model.getCurrentTeam()) + " has won!", "Game over!",
+                            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (n == JOptionPane.CLOSED_OPTION) {
+                        System.exit(0);
+                    }
+                    switch (n) {
+                        case 0:
+                            checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
+                            int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
+                            GameTime newTime = new GameTime(input, 0, 0);
+                            view.getModel().resetState(newTime);
+                            model.resetState(newTime);
+                            view.getInfoPanel().getMovesPanel().resetMovesPanel();
+                            break;
+                        case 1:
+                            System.exit(0);
+                    }
+                    break;
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(view.getOwner(), "Game over!\n" + model.getOtherTeam(model.getCurrentTeam()) + " has won!");
+        }
     }
 
     /**

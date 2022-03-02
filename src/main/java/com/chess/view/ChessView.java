@@ -131,7 +131,7 @@ public class ChessView extends JFrame {
         this.add(infoPanel, BorderLayout.EAST);
 
         // Add menu bar
-        menuPanel = new Menu(model);
+        menuPanel = new Menu(model, infoPanel.getMovesPanel());
 
         this.setJMenuBar(menuPanel);
 
