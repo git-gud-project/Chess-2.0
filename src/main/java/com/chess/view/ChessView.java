@@ -7,7 +7,7 @@ import com.chess.utils.Resources;
 
 import javax.swing.*;
 import java.awt.*;
-//import static ViewConstants.*
+
 
 /**
  * View for a chess game.
