@@ -3,6 +3,9 @@ package com.chess.control;
 import java.io.*;
 import javax.sound.sampled.*;
 
+/**
+ * @author Isak Holmdahl
+ */
 public class SoundPlayer {
 
     /**
