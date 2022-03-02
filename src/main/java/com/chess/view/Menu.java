@@ -90,7 +90,7 @@ public class Menu extends JMenuBar {
      * Constructor for Menu.
      * @param model A reference to the model containing information regarding the state of the game.
      */
-    public Menu(ChessModel model) {
+    public Menu(ChessModel model, MovesPanel movesPanel) {
         super();
 
         //Creating file menu
@@ -162,7 +162,7 @@ public class Menu extends JMenuBar {
                     ObjectInputStream stream = new ObjectInputStream(fIn);
                     SerialModel newModel = (SerialModel) stream.readObject();
                     onLoadGameEvent.trigger(newModel);
-                    //view.getInfoPanel().getMovesPanel().loadMovesPanel();
+                    movesPanel.loadMovesPanel();
                     stream.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();

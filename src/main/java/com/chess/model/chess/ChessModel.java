@@ -94,11 +94,6 @@ public class ChessModel {
     private Event<SerialModel> onModelLoadedEvent = new Event<>();
 
     /**
-     * The event which is triggered when the game time of a player turns to zero.
-     */
-    private Event<GameTime> onGameTimeZeroEvent = new Event<>();
-
-    /**
      * Construct a new ChessModel.
      * 
      * This does load the default chess board.
@@ -253,7 +248,6 @@ public class ChessModel {
         moveList = smodel.getMoveList();
 
         loadFEN(smodel.getFen());
-
         setPaused(true);
         setStarted(smodel.getStarted());
 
@@ -459,12 +453,6 @@ public class ChessModel {
     public Event<SerialModel> getOnModelLoadedEvent() {
         return this.onModelLoadedEvent;
     }
-
-    /**
-     * Gets the collection of events that will be triggered if the time reaches zero.
-     * @return a collection of events that will be triggered if the time reaches zero.
-     */
-    public Event<GameTime> getOnGameTimeZeroEvent(){ return this.onGameTimeZeroEvent; }
 
     //
     // Setters
@@ -819,6 +807,7 @@ public class ChessModel {
             col = 0;
         }
 
+
         ChessTeam team = parts[1].equals("w") ? getTeamWhite() : getTeamBlack();
         setCurrentTeam(team);
 
@@ -852,6 +841,7 @@ public class ChessModel {
         /*
          * Invoke events
          */
+
         getOnGameLoadedEvent().trigger(fen);
     }
 }
