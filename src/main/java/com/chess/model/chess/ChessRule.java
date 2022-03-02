@@ -283,6 +283,11 @@ public class ChessRule implements Rule {
         return false;
     }
 
+    /**
+     * Checks if the game is over.
+     * @param enemyTeamIdentifier The team identifier of the enemy team.
+     * @return True if the game is over, false otherwise.
+     */
     public int isGameOver(Identifier enemyTeamIdentifier) {
         final boolean canMove = canMove(enemyTeamIdentifier);
 

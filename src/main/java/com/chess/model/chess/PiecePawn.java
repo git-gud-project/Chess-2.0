@@ -15,14 +15,30 @@ import com.chess.model.Rule;
  * The class for the Pawn behavior.
  */
 public class PiecePawn implements PieceBehavior {
-    private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<Move>());
+    /**
+     * A collection of moves that can be made by a piece of type pawn.
+     */
+    private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<>());
 
+    /**
+     * The parameters of the team the chess piece belongs to.
+     */
     private final ChessTeamParameters teamParameters;
 
+    /**
+     * Constructor for PiecePawn.
+     * @param teamParameters The parameters of the team the chess piece belongs to.
+     */
     public PiecePawn(ChessTeamParameters teamParameters) {
         this.teamParameters = teamParameters;
     }
 
+    /**
+     * Updates the shared team parameters after a move has been performed.
+     * @param rule The rule that is being used.
+     * @param from The position the piece has moved from.
+     * @param to The position the piece has moved to.
+     */
     @Override
     public void afterMove(Rule rule, Position from, Position to) {
         final SharedChessTeamParameters sharedTeamParameters = teamParameters.getSharedTeamParameters();
@@ -47,11 +63,23 @@ public class PiecePawn implements PieceBehavior {
         }
     }
 
+    /**
+     * Gets the identifier of the piece type this class represents.
+     * @return The identifier of the piece type this class represents.
+     */
     @Override
     public Identifier getTypeIdentifier() {
         return ChessTypeIdentifier.PAWN;
     }
 
+    /**
+     * Gets an iterator containing all the possible moves the given chess piece can perform.
+     * @param rule The rule that is being used.
+     * @param position The position of the piece.
+     * @param teamIdentifier The identifier of the team that the piece belongs to.
+     * @return An iterator containing all the possible moves the given chess piece can perform.
+     * @throws IllegalArgumentException
+     */
     @Override
     public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {
         possibleMoves.clear();
