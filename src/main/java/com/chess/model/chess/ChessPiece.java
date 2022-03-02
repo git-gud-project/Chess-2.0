@@ -10,7 +10,7 @@ import java.util.Iterator;
 public class ChessPiece implements Piece {
 
     /**
-     * The type of the piece.
+     * The behavior of this piece.
      */
     private final PieceBehavior behavior;
 
@@ -61,7 +61,6 @@ public class ChessPiece implements Piece {
                 return "/skins/" + team.getSkin(getTypeIdentifier());
             }
         } else {
-            //TODO: Behaves a bit mysteriously if a file is deleted or moved in between pop-ups. Could try to fix this some way.
             return team.getSkin(getTypeIdentifier());
         }
     }

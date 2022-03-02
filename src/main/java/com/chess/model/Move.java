@@ -124,15 +124,6 @@ public class Move {
     }
 
     /**
-     * Get bool for if this move is En Passant
-     * 
-     * @return True if move is En Passant
-     */
-    public boolean getIsEnPassant() {
-        return isEnPassant;
-    }
-
-    /**
      * Set this move to be En Passant
      * 
      * @param isEnPassant The value for En Passant
@@ -202,24 +193,6 @@ public class Move {
      */
     public void setCheckMate(boolean isCheckMate) {
         this.isCheckMate = isCheckMate;
-    }
-
-    /**
-     * Set the cell that the piece is moving to
-     * 
-     * @param toCell The cell which the piece is moving to
-     */
-    public void setToCell(Position toCell) {
-        this.toCell = toCell;
-    }
-
-    /**
-     * Set the cell that the piece is moving from
-     * 
-     * @param fromCell The cell which the piece is moving away from
-     */
-    public void setFromCell(Position fromCell) {
-        this.fromCell = fromCell;
     }
 
     /**

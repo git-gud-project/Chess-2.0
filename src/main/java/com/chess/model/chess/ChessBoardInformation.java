@@ -80,7 +80,6 @@ public class ChessBoardInformation implements BoardInformation {
     }
 
     @Override
-    // todo add boolean parameter to signal that it is a fake move
     public void setPiece(Position position, Identifier piece, Identifier team, boolean isFinalMove) throws IllegalArgumentException {
         Cell cell = board.getCell(position);
 
@@ -88,7 +87,6 @@ public class ChessBoardInformation implements BoardInformation {
     }
 
     @Override
-    // todo add boolean parameter to signal that it is a fake move
     public void clearPiece(Position position, boolean isFinalMove) throws IllegalArgumentException {
         Cell cell = board.getCell(position);
         cell.emptyCell(isFinalMove);
