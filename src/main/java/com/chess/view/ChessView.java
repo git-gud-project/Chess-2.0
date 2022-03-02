@@ -38,7 +38,7 @@ public class ChessView extends JFrame {
     /**
      * A thread used for maintaining the aspect ratio when resizing the window containing the GUI for he game.
      */
-    private Thread thread;
+    private Thread resizeThread;
 
     /**
      * Constructor for ChessView.
@@ -71,18 +71,10 @@ public class ChessView extends JFrame {
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentResized(java.awt.event.ComponentEvent evt) {
-                /*
-                // Make sure the left mouse button is not pressed
-                if (evt.getComponent().getMousePosition() != null) {
-                    if (evt.getComponent().getMousePosition().getX() > 0) {
-                        return;
-                    }
-                }
-                */
                 
                 // In 100ms, ensure aspect ratio
-                if (thread != null) thread.interrupt();
-                thread = new Thread(() -> {
+                if (resizeThread != null) resizeThread.interrupt();
+                resizeThread = new Thread(() -> {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException ex) {
@@ -100,7 +92,7 @@ public class ChessView extends JFrame {
                         setSize(new Dimension(ViewConstants.DEFAULT_WINDOW_WIDTH, ViewConstants.DEFAULT_WINDOW_HEIGHT));
                     }
                 });
-                thread.start();
+                resizeThread.start();
             }
         });
 
@@ -203,6 +195,10 @@ public class ChessView extends JFrame {
         return menuPanel.getSoundMap();
     }
 
+    /**
+     * Shows a message in te GUI for a pre-set amount of time.
+     * @param message The message to be shown on the GUI.
+     */
     public void showMessage(String message) {
         // Create a new JPanel to display the message floating in the middle of the screen
         JPanel panel = new JPanel();
