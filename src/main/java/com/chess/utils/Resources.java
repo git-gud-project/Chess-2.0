@@ -1,7 +1,6 @@
 package com.chess.utils;
 
 import java.awt.*;
-import java.net.*;
 import java.util.*;
 
 import javax.swing.*;
@@ -21,22 +20,22 @@ public final class Resources {
      * Private constructor.
      */
     private Resources() { }
-    
+
     /**
-     * Get the image of the given resource.
-     * 
+     * get the image of the given resource.
      * @param path The path of the resource.
+     * @return An image created from the given path to the resource.
      */
     public static Image getImage(String path) {
         Image image = Toolkit.getDefaultToolkit().getImage(Resources.class.getResource(path));
 
         return image;
     }
-    
+
     /**
      * Get the icon of the given resource.
-     * 
      * @param path The path of the resource.
+     * @return The image icon from the given path to the resource.
      */
     public static ImageIcon getImageIcon(String path) {
         // Check if the image is already in the cache.

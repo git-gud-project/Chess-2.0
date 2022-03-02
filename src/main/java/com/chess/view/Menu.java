@@ -89,6 +89,7 @@ public class Menu extends JMenuBar {
     /**
      * Constructor for Menu.
      * @param model A reference to the model containing information regarding the state of the game.
+     * @param movesPanel A reference to the moves panel to correctly be updated after loading a new game.
      */
     public Menu(ChessModel model, MovesPanel movesPanel) {
         super();
