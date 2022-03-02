@@ -70,15 +70,6 @@ public class NetworkControl {
     }
 
     /**
-     * Returns true if we are either a client or a server.
-     * 
-     * @return true if we are either a client or a server.
-     */
-    public boolean networked() {
-        return networkServer != null || networkClient != null;
-    }
-
-    /**
      * Returns the model of the control.
      * 
      * @return the model of the control.
