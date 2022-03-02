@@ -108,11 +108,6 @@ public class ChessControl implements ChessControlInterface {
         playSound("pawnPromotion");
     }
 
-    /**
-     * Moves the piece on the board.
-     * 
-     * @param move The move that is being performed.
-     */
     @Override
     public void executeMove(Move move) {
         if (!model.getStarted()) {
@@ -351,6 +346,7 @@ public class ChessControl implements ChessControlInterface {
         networkControl.broadcastMessage(new AffirmMoveMessage(fromRow, fromCol, toRow, toCol, isElimination, typeIdentifier));
     }
 
+
     private void handleTimeTick() {
         if (model.getPaused()) {
             return;
@@ -500,6 +496,9 @@ public class ChessControl implements ChessControlInterface {
         }
     }
 
+    /**
+     * Creates a new ChessControl
+     */
     public ChessControl() {
         model = new ChessModel();
         view = new ChessView(model);
