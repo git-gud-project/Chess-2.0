@@ -4,6 +4,8 @@ import com.chess.network.Message;
 
 /**
  * A message sent out whenever the game is paused/resumed.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 
 public class PauseGameMessage implements Message {

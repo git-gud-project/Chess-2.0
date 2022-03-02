@@ -5,6 +5,8 @@ import com.chess.model.Identifier;
 /**
  * A message sent out to represent that a move has been validated and executed.
  * This message is sent by the server.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class AffirmMoveMessage extends MovePieceMessage {
 

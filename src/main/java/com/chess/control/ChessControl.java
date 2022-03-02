@@ -20,6 +20,8 @@ import java.util.*;
 
 /**
  * A class representing the controller part of the program according to MVC.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class ChessControl implements ChessControlInterface {
     /**

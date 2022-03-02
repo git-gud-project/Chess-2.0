@@ -5,6 +5,8 @@ import com.chess.network.Message;
 
 /**
  * A message sent out if a pawns is promoted.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 
 public class PromotePawnMessage implements Message {

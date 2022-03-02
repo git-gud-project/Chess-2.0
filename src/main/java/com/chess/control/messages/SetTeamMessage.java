@@ -4,6 +4,8 @@ import com.chess.network.Message;
 
 /**
  * A message used to broadcast what team has been set for a given player.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 
 public class SetTeamMessage implements Message {

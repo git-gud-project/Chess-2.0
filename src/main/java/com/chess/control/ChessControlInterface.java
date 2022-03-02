@@ -6,6 +6,8 @@ import com.chess.model.chess.ChessTeam;
 
 /**
  * Interface for the chess control.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public interface ChessControlInterface {
     /**

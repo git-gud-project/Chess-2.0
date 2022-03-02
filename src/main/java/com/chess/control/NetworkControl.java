@@ -12,6 +12,8 @@ import com.chess.view.*;
 
 /**
  * Network controller
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class NetworkControl {
     /**
