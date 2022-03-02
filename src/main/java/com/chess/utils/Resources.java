@@ -23,15 +23,6 @@ public final class Resources {
     private Resources() { }
     
     /**
-     * Get the URL of the given resource.
-     * 
-     * @param path The path of the resource.
-     */
-    public static URL getResource(String path) {
-        return Resources.class.getResource(path);
-    }
-    
-    /**
      * Get the image of the given resource.
      * 
      * @param path The path of the resource.
@@ -61,10 +52,4 @@ public final class Resources {
         return icon;
     }
 
-    public static ImageIcon getOwnImageIcon(String absolutePath) {
-        //TODO: Behaves a bit mysteriously if a file is deleted or moved in between pop-ups. Could try to fix this some way.
-        Image image = Toolkit.getDefaultToolkit().getImage(absolutePath);
-        image = image.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-        return new ImageIcon(image);
-    }
 }

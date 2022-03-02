@@ -51,12 +51,6 @@ public class GameTime implements Serializable {
             }
         }
     }
-    
-    public void reset() {
-        this.minutes = 5;
-        this.seconds = 0;
-        this.milliseconds = 0;
-    }
 
     /**
      * Returns the string representation of the time a player has left to play.
