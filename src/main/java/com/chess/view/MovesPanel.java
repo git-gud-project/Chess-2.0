@@ -11,22 +11,27 @@ import java.util.List;
  * A class used for showing the move history of the match.
  */
 public class MovesPanel extends JPanel {
+    
     /**
      * A list containing the move history of a given match.
      */
     private DefaultListModel<String> listModel;
+    
     /**
      * Stores whose turn it is.
      */
     private int turn;
+    
     /**
      * Stores the number of moves that have been made.
      */
     private int moves;
+    
     /**
      * ScrollPane used to store the move history when the size of the text exceed the dimension of the panel in which it is stored.
      */
     private JScrollPane scrollpane;
+
     /**
      * A reference to the game model in which the information of the game state is stored.
      */
@@ -124,8 +129,7 @@ public class MovesPanel extends JPanel {
         turn = 0;
         moves = 0;
 
-        for (String moveNotation : moveList) {
-            moves++;
+        for (moves = 1; moves < moveList.size(); moves++) {
             if (moves % 2 == 1) {
                 turn++;
                 StringBuilder spacing = new StringBuilder("");

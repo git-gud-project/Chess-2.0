@@ -18,10 +18,6 @@ public class BoardGridPanel extends JPanel {
      * A matrix containing all the cells on the board that can be interacted with while playing the game.
      */
     private BoardCell[][] cells;
-    /**
-     * The size of the nxn grid on which the game is played.
-     */
-    private int size;
 
     /**
      * A collection of Cells containing the cells that can be interacted with.
@@ -35,7 +31,6 @@ public class BoardGridPanel extends JPanel {
     public BoardGridPanel(ChessModel model, int size) {
         super(new GridLayout(size, size));
         this.cells = new BoardCell[size][size];
-        this.size = size;
 
         Board board = model.getBoard();
 
@@ -72,7 +67,7 @@ public class BoardGridPanel extends JPanel {
                         button.setIcon(null);
                     } else {
                         ChessTeam team = model.getTeamManager().getTeam(piece.getTeamIdentifier());
-                        String s = model.getTeamManager().getTeam(piece.getTeamIdentifier()).getSkin(piece.getTypeIdentifier());
+                        
                         ImageIcon icon;
                         if (!team.getOwnSkin(piece.getTypeIdentifier())) {
                             if (team.getSkinIndex(piece.getTypeIdentifier()) == 0) {

@@ -10,35 +10,26 @@ import java.io.Serializable;
 public class ChessSkinInfo implements SkinInfo, Serializable {
 
     /**
-     * The identifier of the team the skin information belongs to.
-     */
-    private final ChessTypeIdentifier pieceType;
-    /**
-     * The identifier of the piece the skin information belongs to.
-     */
-    private final ChessTeamIdentifier teamColor;
-    /**
      * The path to the .png image file that represents the skin the given team and piece type combination uses.
      */
     private String skinPath;
+
     /**
      * The index used to represent which skin has been chosen among the pre-existing ones.
      */
     private int skinIndex;
+
     /**
      * Keeps track of whether an own file has been selected by the user to use as a skin, or if a pre-existing file is being used.
      */
     private boolean ownSkin;
-
 
     /**
      * Constructor for ChessSkinInfo.
      * @param pieceType The identifier of the piece type the skin information belongs to.
      * @param teamColor The identifier of the team the skin information belongs to.
      */
-    public ChessSkinInfo(ChessTypeIdentifier pieceType, ChessTeamIdentifier teamColor){
-        this.pieceType = pieceType;
-        this.teamColor = teamColor;
+    public ChessSkinInfo(ChessTypeIdentifier pieceType, ChessTeamIdentifier teamColor) {
         this.skinPath = pieceType.toString() + teamColor.toString() + ".png";
         this.skinIndex = 0;
         this.ownSkin = false;
