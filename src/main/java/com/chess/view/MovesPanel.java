@@ -42,7 +42,7 @@ public class MovesPanel extends JPanel {
         listModel = new DefaultListModel<>();
         JList<String> moveJList = new JList<>(listModel);
 
-        moveJList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        moveJList.setBackground(ViewConstants.BOARD_BACKGROUND_COLOR);
         moveJList.setForeground(Color.WHITE);
         moveJList.setFont(new Font("Monospaced", Font.PLAIN, 32));
         scrollpane = new JScrollPane(moveJList);
@@ -94,7 +94,7 @@ public class MovesPanel extends JPanel {
         //Creates a new list of move which is empty to begin with.
         listModel = new DefaultListModel<>();
         JList<String> _moveList = new JList<>(listModel);
-        _moveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        _moveList.setBackground(ViewConstants.BOARD_BACKGROUND_COLOR);
         _moveList.setForeground(Color.WHITE);
         _moveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
         scrollpane = new JScrollPane(_moveList);
@@ -116,7 +116,7 @@ public class MovesPanel extends JPanel {
         listModel = new DefaultListModel<>();
         List<String> moveList = model.getMoveList();
         JList<String> jMoveList = new JList<>(listModel);
-        jMoveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        jMoveList.setBackground(ViewConstants.BOARD_BACKGROUND_COLOR);
         jMoveList.setForeground(Color.WHITE);
         jMoveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
         scrollpane = new JScrollPane(jMoveList);

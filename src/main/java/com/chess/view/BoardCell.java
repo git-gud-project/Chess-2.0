@@ -55,11 +55,11 @@ public class BoardCell extends CellButton {
             defaultColor = getBackground();
         }
 
-        // Take a color inbetween the default color and the highlight color, using ChessView.HIGHLIGHT_ALPHA
+        // Take a color inbetween the default color and the highlight color, using ViewConstants.HIGHLIGHT_ALPHA
         Color highlightColor = new Color(
-            (int) (color.getRed() * ChessView.HIGHLIGHT_ALPHA + defaultColor.getRed() * (1 - ChessView.HIGHLIGHT_ALPHA)),
-            (int) (color.getGreen() * ChessView.HIGHLIGHT_ALPHA + defaultColor.getGreen() * (1 - ChessView.HIGHLIGHT_ALPHA)),
-            (int) (color.getBlue() * ChessView.HIGHLIGHT_ALPHA + defaultColor.getBlue() * (1 - ChessView.HIGHLIGHT_ALPHA))
+            (int) (color.getRed() * ViewConstants.HIGHLIGHT_ALPHA + defaultColor.getRed() * (1 - ViewConstants.HIGHLIGHT_ALPHA)),
+            (int) (color.getGreen() * ViewConstants.HIGHLIGHT_ALPHA + defaultColor.getGreen() * (1 - ViewConstants.HIGHLIGHT_ALPHA)),
+            (int) (color.getBlue() * ViewConstants.HIGHLIGHT_ALPHA + defaultColor.getBlue() * (1 - ViewConstants.HIGHLIGHT_ALPHA))
         );
         this.setBackground(highlightColor);
     }

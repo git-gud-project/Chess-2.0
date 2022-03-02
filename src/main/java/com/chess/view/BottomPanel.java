@@ -36,16 +36,16 @@ public class BottomPanel extends JPanel {
         infoLabel = new JTextField();
         infoLabel.setText("");
         infoLabel.setFont(new Font("Arial", Font.BOLD, 8));
-        infoLabel.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+        infoLabel.setForeground(ViewConstants.PRIMARY_SIDE_COLOR);
         infoLabel.setEditable(false);
         this.setLayout(new BorderLayout());
-        this.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        this.setBackground(ViewConstants.BOARD_BACKGROUND_COLOR);
         this.add(infoLabel, BorderLayout.CENTER);
 
         copyButton = new JButton("Copy");
         copyButton.setFont(new Font("Arial", Font.BOLD, 10));
-        copyButton.setForeground(ChessView.SECONDARY_SIDE_COLOR);
-        copyButton.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        copyButton.setForeground(ViewConstants.SECONDARY_SIDE_COLOR);
+        copyButton.setBackground(ViewConstants.BOARD_BACKGROUND_COLOR);
         this.add(copyButton, BorderLayout.EAST);
 
         // When the button is pressed, copy the text to the clipboard

@@ -52,19 +52,19 @@ public class PlayerPanel extends JPanel {
         playerName = new JLabel("Player Name");
         playerName.setHorizontalAlignment(JLabel.CENTER);
         playerName.setFont(new Font("Arial", Font.BOLD, 20));
-        playerName.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+        playerName.setForeground(ViewConstants.PRIMARY_SIDE_COLOR);
         this.add(playerName, BorderLayout.NORTH);
 
         playerTime = new JLabel("00:00");
         playerTime.setHorizontalAlignment(JLabel.CENTER);
         playerTime.setFont(new Font("Arial", Font.BOLD, 20));
-        playerTime.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+        playerTime.setForeground(ViewConstants.PRIMARY_SIDE_COLOR);
         this.add(playerTime, BorderLayout.SOUTH);
 
         playerAuthority = new JLabel("");
         playerAuthority.setHorizontalAlignment(JLabel.CENTER);
         playerAuthority.setFont(new Font("Arial", Font.BOLD, 15));
-        playerAuthority.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+        playerAuthority.setForeground(ViewConstants.PRIMARY_SIDE_COLOR);
         this.add(playerAuthority, BorderLayout.CENTER);
 
         // Setup event listeners

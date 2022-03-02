@@ -29,7 +29,7 @@ public class BoardPanel extends JPanel {
         c.gridheight = 1;
         c.gridwidth = 1;
 
-        this.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        this.setBackground(ViewConstants.BOARD_BACKGROUND_COLOR);
 
         // Top
         for (int i = 0; i < size; ++i) {
@@ -39,10 +39,10 @@ public class BoardPanel extends JPanel {
             c.gridy = 0;
             c.weightx = 1;
             c.weighty = 0;
-            button.setColorAll((i % 2 == 0 ? ChessView.PRIMARY_SIDE_COLOR : ChessView.SECONDARY_SIDE_COLOR));
+            button.setColorAll((i % 2 == 0 ? ViewConstants.PRIMARY_SIDE_COLOR : ViewConstants.SECONDARY_SIDE_COLOR));
             this.add(button, c);
-            button.setMinimumSize(ChessView.NUM_MIN_SIZE_H);
-            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_H);
+            button.setMinimumSize(ViewConstants.NUM_MIN_SIZE_H);
+            button.setPreferredSize(ViewConstants.NUM_IDEAL_SIZE_H);
         }
 
         // Left
@@ -53,10 +53,10 @@ public class BoardPanel extends JPanel {
             c.gridy = i + 1;
             c.weightx = 0;
             c.weighty = 1;
-            button.setColorAll((i % 2 == 0 ? ChessView.PRIMARY_SIDE_COLOR : ChessView.SECONDARY_SIDE_COLOR));
+            button.setColorAll((i % 2 == 0 ? ViewConstants.PRIMARY_SIDE_COLOR : ViewConstants.SECONDARY_SIDE_COLOR));
             this.add(button, c);
-            button.setMinimumSize(ChessView.NUM_MIN_SIZE_V);
-            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_V);
+            button.setMinimumSize(ViewConstants.NUM_MIN_SIZE_V);
+            button.setPreferredSize(ViewConstants.NUM_IDEAL_SIZE_V);
         }
         
         // Bottom
@@ -67,10 +67,10 @@ public class BoardPanel extends JPanel {
             c.gridy = size + 1;
             c.weightx = 1;
             c.weighty = 0;
-            button.setColorAll((i % 2 == 1 ? ChessView.PRIMARY_SIDE_COLOR : ChessView.SECONDARY_SIDE_COLOR));
+            button.setColorAll((i % 2 == 1 ? ViewConstants.PRIMARY_SIDE_COLOR : ViewConstants.SECONDARY_SIDE_COLOR));
             this.add(button, c);
-            button.setMinimumSize(ChessView.NUM_MIN_SIZE_H);
-            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_H);
+            button.setMinimumSize(ViewConstants.NUM_MIN_SIZE_H);
+            button.setPreferredSize(ViewConstants.NUM_IDEAL_SIZE_H);
         }
 
         // Right
@@ -81,10 +81,10 @@ public class BoardPanel extends JPanel {
             c.gridy = i + 1;
             c.weightx = 0;
             c.weighty = 1;
-            button.setColorAll((i % 2 == 1 ? ChessView.PRIMARY_SIDE_COLOR : ChessView.SECONDARY_SIDE_COLOR));
+            button.setColorAll((i % 2 == 1 ? ViewConstants.PRIMARY_SIDE_COLOR : ViewConstants.SECONDARY_SIDE_COLOR));
             this.add(button, c);
-            button.setMinimumSize(ChessView.NUM_MIN_SIZE_V);
-            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_V);
+            button.setMinimumSize(ViewConstants.NUM_MIN_SIZE_V);
+            button.setPreferredSize(ViewConstants.NUM_IDEAL_SIZE_V);
         }
 
         // Add to the corners
@@ -95,10 +95,10 @@ public class BoardPanel extends JPanel {
             c.gridy = 0;
             c.weightx = 1;
             c.weighty = 1;
-            button.setColorAll(ChessView.SECONDARY_SIDE_COLOR);
+            button.setColorAll(ViewConstants.SECONDARY_SIDE_COLOR);
             this.add(button, c);
-            button.setMinimumSize(ChessView.NUM_MIN_SIZE_C);
-            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_C);
+            button.setMinimumSize(ViewConstants.NUM_MIN_SIZE_C);
+            button.setPreferredSize(ViewConstants.NUM_IDEAL_SIZE_C);
         }
         {
             button = new CellButton("");
@@ -107,10 +107,10 @@ public class BoardPanel extends JPanel {
             c.gridy = 0;
             c.weightx = 1;
             c.weighty = 1;
-            button.setColorAll(ChessView.PRIMARY_SIDE_COLOR);
+            button.setColorAll(ViewConstants.PRIMARY_SIDE_COLOR);
             this.add(button, c);
-            button.setMinimumSize(ChessView.NUM_MIN_SIZE_C);
-            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_C);
+            button.setMinimumSize(ViewConstants.NUM_MIN_SIZE_C);
+            button.setPreferredSize(ViewConstants.NUM_IDEAL_SIZE_C);
         }
         {
             button = new CellButton("");
@@ -119,10 +119,10 @@ public class BoardPanel extends JPanel {
             c.gridy = size + 1;
             c.weightx = 1;
             c.weighty = 1;
-            button.setColorAll(ChessView.PRIMARY_SIDE_COLOR);
+            button.setColorAll(ViewConstants.PRIMARY_SIDE_COLOR);
             this.add(button, c);
-            button.setMinimumSize(ChessView.NUM_MIN_SIZE_C);
-            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_C);
+            button.setMinimumSize(ViewConstants.NUM_MIN_SIZE_C);
+            button.setPreferredSize(ViewConstants.NUM_IDEAL_SIZE_C);
         }
         {
             button = new CellButton("");
@@ -131,10 +131,10 @@ public class BoardPanel extends JPanel {
             c.gridy = size + 1;
             c.weightx = 1;
             c.weighty = 1;
-            button.setColorAll(ChessView.SECONDARY_SIDE_COLOR);
+            button.setColorAll(ViewConstants.SECONDARY_SIDE_COLOR);
             this.add(button, c);
-            button.setMinimumSize(ChessView.NUM_MIN_SIZE_C);
-            button.setPreferredSize(ChessView.NUM_IDEAL_SIZE_C);
+            button.setMinimumSize(ViewConstants.NUM_MIN_SIZE_C);
+            button.setPreferredSize(ViewConstants.NUM_IDEAL_SIZE_C);
         }
 
         boardPanel = new BoardGridPanel(model, size);
