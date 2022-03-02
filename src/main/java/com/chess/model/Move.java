@@ -196,24 +196,6 @@ public class Move {
     }
 
     /**
-     * Set the cell that the piece is moving to
-     * 
-     * @param toCell The cell which the piece is moving to
-     */
-    public void setToCell(Position toCell) {
-        this.toCell = toCell;
-    }
-
-    /**
-     * Set the cell that the piece is moving from
-     * 
-     * @param fromCell The cell which the piece is moving away from
-     */
-    public void setFromCell(Position fromCell) {
-        this.fromCell = fromCell;
-    }
-
-    /**
      * The toString of this class. Makes a string in the form of chess notation based on this move
      * 
      * @return A chess notation in String form
