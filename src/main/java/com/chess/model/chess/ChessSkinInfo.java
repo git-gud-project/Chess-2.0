@@ -21,18 +21,6 @@ public class ChessSkinInfo implements SkinInfo, Serializable {
         this.ownSkin = false;
     }
 
-    // Util for constructor
-
-    private int chooseIndex(){
-        switch(pieceType){
-            case ROOK: return 1;
-            case KNIGHT: return 2;
-            case BISHOP: return 3;
-            case QUEEN: return 4;
-            case KING: return 5;
-            default: return 0;
-        }
-    }
 
     // Getters
 
