@@ -352,8 +352,6 @@ public class ChessControl implements ChessControlInterface {
             return;
         }
 
-        // TODO: Validate move.
-
         // If we are the host, broadcast the move to all clients.
         networkControl.broadcastMessage(new AffirmMoveMessage(fromRow, fromCol, toRow, toCol, isElimination, typeIdentifier));
     }
