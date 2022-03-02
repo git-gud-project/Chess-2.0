@@ -181,8 +181,9 @@ public class NetworkControl {
 
     /**
      * Broadcasts a message to all clients.
-     * 
      * This works only as a server.
+     * @param message The message to be broadcast to all clients
+     * @throws IllegalStateException Thrown if the reference to message is null.
      */
     public void broadcastMessage(Message message) throws IllegalStateException {
         if (networkServer != null) {
@@ -370,9 +371,9 @@ public class NetworkControl {
             e.printStackTrace();
         }
 
-        networkServer.setOnClientConnectedDelegate((client) -> {
-            System.out.println("Client connected");
-        });
+        networkServer.setOnClientConnectedDelegate((client) ->
+            System.out.println("Client connected")
+        );
 
         networkServer.setOnClientDisconnectedDelegate((client) -> {
             System.out.println("Client disconnected");

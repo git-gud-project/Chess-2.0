@@ -156,6 +156,13 @@ public class ChessRule implements Rule {
 
     }
 
+    /**
+     * Go through a collection of moves for a piece and remove all moves that are not legal
+     *
+     * @param pieceIdentifier The type of the piece which moves will be validated
+     * @param teamIdentifier The team the piece belongs to
+     * @param moves The collection of moves that will be checked and validated.
+     */
     private void validateMoves(Identifier pieceIdentifier, Identifier teamIdentifier, Collection<Move> moves) {
         // Remove all illegal moves from the list
         Iterator<Move> it = moves.iterator();
@@ -263,6 +270,12 @@ public class ChessRule implements Rule {
         return enemyMovesList;
     }
 
+    /**
+     * Checks to see if there is any available move for a team
+     *
+     * @param playerTeamIdentifier The team to check if there is any available move
+     * @return True if the tream can move, false otherwise
+     */
     private boolean canMove(Identifier playerTeamIdentifier) {
         for (int row = 0; row < gameSize; row++) {
             for (int col = 0; col < gameSize; col++) {
