@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
+ * @author Isak Holmdahl
  * A class used for showing the move history of the match.
  */
 public class MovesPanel extends JPanel {

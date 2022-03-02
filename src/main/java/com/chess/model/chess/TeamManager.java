@@ -8,10 +8,21 @@ import com.chess.model.Identifier;
  * The team manager for chess.
  */
 public class TeamManager {
+    /**
+     * Maps each team identifier to an instance of chess team to keep track of the teams playing the game.
+     */
     private final HashMap<Identifier, ChessTeam> teamMap;
 
+    /**
+     * Keeps track of the team whose turn it is currently.
+     */
     private Identifier currentTeamIdentifier;
 
+    /**
+     * Constructor for TeamManager.
+     * @param white The instance of chess team corresponding to the team playing with the white pieces. This team starts playing.
+     * @param black The instance of chess team corresponding to the team playing with the black pieces.
+     */
     public TeamManager(ChessTeam white, ChessTeam black) {
 
         teamMap = new HashMap<>();
