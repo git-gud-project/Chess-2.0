@@ -33,12 +33,6 @@ public class PiecePawn implements PieceBehavior {
         this.teamParameters = teamParameters;
     }
 
-    /**
-     * Updates the shared team parameters after a move has been performed.
-     * @param rule The rule that is being used.
-     * @param from The position the piece has moved from.
-     * @param to The position the piece has moved to.
-     */
     @Override
     public void afterMove(Rule rule, Position from, Position to) {
         final SharedChessTeamParameters sharedTeamParameters = teamParameters.getSharedTeamParameters();
@@ -63,23 +57,11 @@ public class PiecePawn implements PieceBehavior {
         }
     }
 
-    /**
-     * Gets the identifier of the piece type this class represents.
-     * @return The identifier of the piece type this class represents.
-     */
     @Override
     public Identifier getTypeIdentifier() {
         return ChessTypeIdentifier.PAWN;
     }
 
-    /**
-     * Gets an iterator containing all the possible moves the given chess piece can perform.
-     * @param rule The rule that is being used.
-     * @param position The position of the piece.
-     * @param teamIdentifier The identifier of the team that the piece belongs to.
-     * @return An iterator containing all the possible moves the given chess piece can perform.
-     * @throws IllegalArgumentException
-     */
     @Override
     public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {
         possibleMoves.clear();
