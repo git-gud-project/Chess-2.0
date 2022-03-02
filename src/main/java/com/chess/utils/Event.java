@@ -6,6 +6,8 @@ import java.util.*;
  * Event which can be listened to.
  * 
  * @param <T> The type of the event parameter.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class Event<T> {
     /**

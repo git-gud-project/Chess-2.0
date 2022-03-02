@@ -3,6 +3,8 @@ import com.chess.control.ChessControl;
 
 /**
  * The application class to run the game.
+ * @author Rasmus Standar
+ * @version 2022-03-02
  */
 public class App {
     /**

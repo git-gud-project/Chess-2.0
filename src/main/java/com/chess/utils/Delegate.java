@@ -4,6 +4,8 @@ package com.chess.utils;
  * Interface for a callback with a single generic parameter.
  * 
  * @param <T> The type of the parameter.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public interface Delegate<T> {
     /**

@@ -7,6 +7,8 @@ import javax.swing.*;
 
 /**
  * Utility class for loading resources.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public final class Resources {
     /**
