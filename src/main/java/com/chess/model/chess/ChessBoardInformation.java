@@ -33,14 +33,6 @@ public class ChessBoardInformation implements BoardInformation {
         this.teamManager = teamManager;
     }
 
-    /**
-     * @pre Row and col have to be within the size of the board and != null
-     * @post A boolean representing if the cell is empty will be returned
-     * @param row the row to check
-     * @param col the column to check
-     * @return True if this cell does not contain a piece
-     * @throws IllegalArgumentException if row or col is out of bounds
-     */
     @Override
     public boolean isEmpty(int row, int col) throws IllegalArgumentException {
         return this.board.getCell(row, col).getPiece() == null;

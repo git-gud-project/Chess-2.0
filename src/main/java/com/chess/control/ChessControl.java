@@ -18,11 +18,23 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
+/**
+ * A class representing the controller part of the program according to MVC.
+ */
 public class ChessControl implements ChessControlInterface {
+    /**
+     * A reference to the chess model containing information regarding the current state of the game.
+     */
     private final ChessModel model;
 
+    /**
+     * A reference to the chess view, representing the GUI for the game.
+     */
     private final ChessView view;
 
+    /**
+     * A direct reference to the instance of chess board information.
+     */
     private final ChessBoardInformation boardInformation;
 
     /**
@@ -500,6 +512,9 @@ public class ChessControl implements ChessControlInterface {
         }
     }
 
+    /**
+     * Constructor for chess control.
+     */
     public ChessControl() {
         model = new ChessModel();
         view = new ChessView(model);
