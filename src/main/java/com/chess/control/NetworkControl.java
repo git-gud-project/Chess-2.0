@@ -94,10 +94,12 @@ public class NetworkControl {
         return view;
     }
 
+
     /**
-     * Creates a new network control.
-     * 
-     * @param control The model.
+     * Constrcutor for NetworkControl.
+     * @param chessControl A reference to the controller for the game.
+     * @param model A reference to the model containing the information of the game state.
+     * @param view A reference to the view representing the GUI for the game.
      */
     public NetworkControl(ChessControlInterface chessControl, ChessModel model, ChessView view) {
         this.controlInterface = chessControl;
@@ -157,7 +159,7 @@ public class NetworkControl {
     }
 
     private void showMessage(String message) {
-        // TODO: Some indication of the message
+        view.showMessage(message);
     }
 
     /**

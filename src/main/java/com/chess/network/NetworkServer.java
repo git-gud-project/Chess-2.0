@@ -90,23 +90,9 @@ public class NetworkServer {
     }
 
     /**
-     * Creates a new server.
-     * 
-     * @param ip The ip to listen on.
-     */
-    public NetworkServer(int port) {
-        this.port = port;
-        this.ip = null;
-
-        running = false;
-        clients = new ArrayList<>();
-        messageDelegates = new HashMap<>();
-    }
-
-    /**
      * Starts the server.
      * 
-     * @throws IOException
+     * @throws IOException Can be thrown when opening a socket.
      */
     public void start() throws IOException {
         // Allows for running on a more restrictive network.
@@ -151,6 +137,7 @@ public class NetworkServer {
 
     /**
      * Sets the delegate that will be called when a client connects.
+     * @param onClientConnectedDelegate The delegate that will be colled when the client connects.
      */
     public synchronized void setOnClientConnectedDelegate(Delegate<Client> onClientConnectedDelegate) {
         this.onClientConnectedDelegate = onClientConnectedDelegate;
@@ -158,6 +145,7 @@ public class NetworkServer {
 
     /**
      * Sets the delegate that will be called when a client disconnects.
+     * @param onClientDisconnectedDelegate The delegate that will be called when a client disconnects.
      */
     public synchronized void setOnClientDisconnectedDelegate(Delegate<Client> onClientDisconnectedDelegate) {
         this.onClientDisconnectedDelegate = onClientDisconnectedDelegate;
@@ -165,6 +153,7 @@ public class NetworkServer {
 
     /**
      * Sets the delegate that will be called when the server closes.
+     * @param onCloseDelegate The delegate that will be called when the server closes.
      */
     public void setOnCloseDelegate(Runnable onCloseDelegate) {
         this.onCloseDelegate = onCloseDelegate;
@@ -173,8 +162,8 @@ public class NetworkServer {
     /**
      * Sets the delegate that will be called when a message is received.
      * 
-     * @param type The type of message to listen for. Use <Message>.class.
-     * @param delegate The delegate to call when a message of the specified type is received.
+     * @param type The type of message to listen for.
+     * @param messageDelegate The delegate to call when a message of the specified type is received.
      */
     public synchronized void setMessageDelegate(Type type, MessageDelegate messageDelegate) {
         messageDelegates.put(type, messageDelegate);
@@ -183,8 +172,8 @@ public class NetworkServer {
     /**
      * Sets the delegate that will be called when a message is received, not including the client that sent it.
      * 
-     * @param type The type of message to listen for. Use <Message>.class.
-     * @param delegate The delegate to call when a message of the specified type is received.
+     * @param type The type of message to listen for.
+     * @param messageDelegate The delegate to call when a message of the specified type is received.
      */
     public synchronized void setMessageDelegate(Type type, Delegate<Message> messageDelegate) {
         messageDelegates.put(type, (client, message) -> messageDelegate.trigger(message));
@@ -192,7 +181,7 @@ public class NetworkServer {
 
     /**
      * Sends a message to all clients.
-     * 
+     *
      * @param message The message to send.
      */
     public synchronized void broadcastMessage(Message message) {

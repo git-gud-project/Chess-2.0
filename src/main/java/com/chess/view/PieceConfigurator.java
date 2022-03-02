@@ -16,12 +16,27 @@ import java.awt.event.WindowEvent;
 
 public class PieceConfigurator extends JPanel {
 
+    /**
+     * The number of rows the PieceConfigurator has.
+     */
     private static final int ROWS = 3;
+    /**
+     * The number of columns the PieceConfigurator has.
+     */
     private static final int COLS = 4;
+    /**
+     * The size of the nxn grid on which the game is played.
+     */
     private static final int GAMESIZE = 8;
 
+    /**
+     * A reference to the game model containing the information about the state of the game.
+     */
     private final ChessModel model;
 
+    /**
+     * A reference to the frame in which the GUI for the PieceConfigurator is placed.
+     */
     private final JFrame frame;
 
     /**

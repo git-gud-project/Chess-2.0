@@ -8,12 +8,33 @@ import com.chess.model.Identifier;
  * Contains identifiers for all standard chess pieces.
  */
 public enum ChessTypeIdentifier implements Identifier {
+    /**
+     * Value for the pawn piece type.
+     */
     PAWN("p"),
+    /**
+     * Value for the rook piece type.
+     */
     ROOK("r"),
+    /**
+     * Value for the knight piece type.
+     */
     KNIGHT("n"),
+    /**
+     * Value for the bishop piece type.
+     */
     BISHOP("b"),
+    /**
+     * Value for the queen piece type.
+     */
     QUEEN("q"),
+    /**
+     * Value for the king piece type.
+     */
     KING("k"),
+    /**
+     * Value corresponding to no piece.
+     */
     NULL("");
     
     /**

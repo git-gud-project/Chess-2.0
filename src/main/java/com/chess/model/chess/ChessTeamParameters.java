@@ -48,7 +48,11 @@ public class ChessTeamParameters {
     private Position castlingQueenSidePosition = Position.INVALID;
 
     /**
-     * Constructs a new chess team parameters.
+     * Construct a new chess team parameters.
+     * @param shared The instance of the shared parameters between the team playing.
+     * @param identifier The identifier of the team represented by this instance of the class.
+     * @param pawnDirection The pawn direction in which the pawns of the given teams moves.
+     * @param kingRow The row in which the king of the given team is located.
      */
     public ChessTeamParameters(SharedChessTeamParameters shared, Identifier identifier, int pawnDirection, int kingRow) {
         this.sharedTeamParameters = shared;

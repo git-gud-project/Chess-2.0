@@ -8,8 +8,17 @@ import com.chess.model.Identifier;
  * Contains an entry for white and black.
  */
 public enum ChessTeamIdentifier implements Identifier {
+    /**
+     * Value for the white team.
+     */
     WHITE("w"),
+    /**
+     * Value for the black team.
+     */
     BLACK("b"),
+    /**
+     * Value corresponding to no team.
+     */
     NULL("");
     
     /**
@@ -17,6 +26,10 @@ public enum ChessTeamIdentifier implements Identifier {
      */
     private final String id;
 
+    /**
+     * Private constructor for enum ChessTeamIdentifier.
+     * @param id The string representation of the new instance.
+     */
     private ChessTeamIdentifier(String id) {
         this.id = id;
     }
@@ -38,6 +51,11 @@ public enum ChessTeamIdentifier implements Identifier {
         return NULL;
     }
 
+    /**
+     * Compares the calling instance to the one provided as a parameter.
+     * @param o The instance to be compared to the callee.
+     * @return True if both instances share the same string representation, false otherwise.
+     */
     @Override
     public boolean compare(Identifier o) {
         if (this == o) return true;
@@ -48,6 +66,10 @@ public enum ChessTeamIdentifier implements Identifier {
         return id.equals(that.id);
     }
 
+    /**
+     * Provides a string representation of the calling object.
+     * @return A string representation of the callee.
+     */
     @Override
     public String toString() {
         return String.valueOf(id);
