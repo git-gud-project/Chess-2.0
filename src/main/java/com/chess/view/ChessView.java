@@ -11,7 +11,8 @@ import java.awt.*;
 
 /**
  * View for a chess game.
- * @
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class ChessView extends JFrame {
 
