@@ -6,6 +6,8 @@ import com.chess.model.Position;
 
 /**
  * The board that the game is played on.
+ * @author Oscar Marrero Engström
+ * @version 2022-03-02
  */
 public class ChessBoard implements Board {
 

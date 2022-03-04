@@ -4,8 +4,9 @@ import com.chess.model.Identifier;
 
 /**
  * Identifiers for chess pieces.
- * 
  * Contains identifiers for all standard chess pieces.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public enum ChessTypeIdentifier implements Identifier {
     /**

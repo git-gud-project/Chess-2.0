@@ -13,6 +13,8 @@ import com.chess.model.Rule;
 
 /**
  * The class for the Queen behavior.
+ * @author Marcus Phu
+ * @version 2022-03-02
  */
 public class PieceQueen implements PieceBehavior {
 

@@ -13,6 +13,8 @@ import com.chess.model.Rule;
 
 /**
  * The class for the Rook behavior.
+ * @author Marcus Phu
+ * @version 2022-03-02
  */
 public class PieceRook implements PieceBehavior{
 

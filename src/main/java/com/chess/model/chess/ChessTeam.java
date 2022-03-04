@@ -9,6 +9,8 @@ import com.chess.utils.Event;
 
 /**
  * Represents a team in chess.
+ * @author Oscar Marrero Engström
+ * @version 2022-03-02
  */
 public class ChessTeam implements Team {
 

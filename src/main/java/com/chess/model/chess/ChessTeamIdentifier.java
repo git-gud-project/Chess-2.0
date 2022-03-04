@@ -4,8 +4,9 @@ import com.chess.model.Identifier;
 
 /**
  * Identifiers for the teams in a chess game.
- * 
  * Contains an entry for white and black.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public enum ChessTeamIdentifier implements Identifier {
     /**

@@ -9,6 +9,8 @@ import com.chess.model.*;
 
 /**
  * The class for the King behavior.
+ * @author Marcus Phu
+ * @version 2022-03-02
  */
 public class PieceKing implements PieceBehavior {
     private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<Move>());

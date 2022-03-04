@@ -8,7 +8,9 @@ import com.chess.model.Position;
 
 /**
  * This class contains information about the chess board. Facilitates the
- * connection between the chess model and sub components.
+ * connection between the chess model and sub-components.
+ * @author Wincent Såtlbert Holm
+ * @version 2022-03-02
  */
 public class ChessBoardInformation implements BoardInformation {
 

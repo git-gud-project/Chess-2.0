@@ -5,6 +5,8 @@ import com.chess.model.Position;
 
 /**
  * Parameters shared by all chess teams.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public final class SharedChessTeamParameters {
     /**

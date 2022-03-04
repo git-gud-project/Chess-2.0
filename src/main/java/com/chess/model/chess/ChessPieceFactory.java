@@ -5,6 +5,8 @@ import com.chess.model.PieceBehavior;
 
 /**
  * A factory for creating chess pieces.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public final class ChessPieceFactory {
     /**

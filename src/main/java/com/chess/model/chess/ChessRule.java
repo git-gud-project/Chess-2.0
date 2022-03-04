@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * The rules for the chess game.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class ChessRule implements Rule {
     /**

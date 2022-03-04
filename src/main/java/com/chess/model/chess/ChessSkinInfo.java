@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 /**
  * A class used for representing the selected skin for a given piece belonging to a certain team.
+ * @author Oscar Marrero Engström
+ * @version 2022-03-02
  */
 public class ChessSkinInfo implements SkinInfo, Serializable {
 

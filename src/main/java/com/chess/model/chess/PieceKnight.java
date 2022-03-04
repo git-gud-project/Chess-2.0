@@ -13,6 +13,8 @@ import com.chess.model.Rule;
 
 /**
  * The class for the Knight behavior.
+ * @author Marcus Phu
+ * @version 2022-03-02
  */
 public class PieceKnight implements PieceBehavior {
     private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<Move>());

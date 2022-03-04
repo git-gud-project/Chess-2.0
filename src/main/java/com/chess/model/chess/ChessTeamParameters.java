@@ -5,6 +5,8 @@ import com.chess.model.Position;
 
 /**
  * Details for a chess team.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class ChessTeamParameters {
     /**

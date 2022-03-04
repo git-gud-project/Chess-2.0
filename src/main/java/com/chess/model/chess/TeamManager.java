@@ -6,6 +6,8 @@ import com.chess.model.Identifier;
 
 /**
  * The team manager for chess.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class TeamManager {
     /**

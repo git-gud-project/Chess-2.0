@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 /**
  * Class for all chess pieces.
+ * @author Marcus Phu
+ * @version 2022-03-02
  */
 public class ChessPiece implements Piece {
 

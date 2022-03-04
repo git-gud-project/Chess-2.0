@@ -9,6 +9,8 @@ import com.chess.model.*;
 
 /**
  * The class for the Bishop behavior.
+ * @author Isak Holmdahl
+ * @version 2022-03-02
  */
 public class PieceBishop implements PieceBehavior {
     

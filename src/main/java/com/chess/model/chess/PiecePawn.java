@@ -13,6 +13,8 @@ import com.chess.model.Rule;
 
 /**
  * The class for the Pawn behavior.
+ * @author Isak Holmdahl
+ * @version 2022-03-02
  */
 public class PiecePawn implements PieceBehavior {
     /**

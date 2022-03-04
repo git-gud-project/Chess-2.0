@@ -5,8 +5,9 @@ import com.chess.model.MovesCalculator;
 import com.chess.model.Position;
 
 /**
- * Information about the board. Facilitates the connection between the model and
- * sub components.
+ * Information about the board. Facilitates the connection between the model and sub-components.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 interface BoardInformation {
     /**
