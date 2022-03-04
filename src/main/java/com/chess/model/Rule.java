@@ -4,6 +4,8 @@ import java.util.Collection;
 
 /**
  * Rules for how pieces can move and what they may do.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public interface Rule {
     /**

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 /**
  * Represents a game time.
+ * @author Oscar Marrero Engström
+ * @version 2022-03-02
  */
 public class GameTime implements Serializable {
 

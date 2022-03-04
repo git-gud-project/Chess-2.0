@@ -4,6 +4,8 @@ import java.util.Iterator;
 
 /**
  * Interface for a moves calculator.
+ * @author Marcus Phu
+ * @version 2022-03-02
  */
 public interface MovesCalculator {
     /**

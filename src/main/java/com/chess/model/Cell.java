@@ -3,9 +3,10 @@ package com.chess.model;
 import com.chess.utils.Event;
 
 /**
- * Represents a cell in the board, indentified by a position.
- * 
+ * Represents a cell in the board, identified by a position.
  * Can contain a piece. When a piece is changed, it triggers an event.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class Cell {
     /**

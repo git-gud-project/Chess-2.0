@@ -2,6 +2,8 @@ package com.chess.model;
 
 /**
  * Represents a skin manager system.
+ * @author Oscar Marrero Engström
+ * @version 2022-03-02
  */
 
 public interface SkinInfo {

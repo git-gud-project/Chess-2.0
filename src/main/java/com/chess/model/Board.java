@@ -2,8 +2,9 @@ package com.chess.model;
 
 /**
  * Represents a board.
- * 
  * A board has an integer size in rows and columns.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public interface Board {
     /**

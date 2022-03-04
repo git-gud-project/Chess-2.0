@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 /**
  * An identifier to be used for comparesons.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public interface Identifier extends Serializable {
     /**

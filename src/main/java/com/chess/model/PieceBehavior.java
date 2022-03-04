@@ -4,6 +4,8 @@ import java.util.Iterator;
 
 /**
  * Interface for how a piece behaves.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public interface PieceBehavior {
 

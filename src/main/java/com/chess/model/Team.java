@@ -6,6 +6,8 @@ import java.awt.*;
 
 /**
  * Represents a team
+ * @author Oscar Marrero Engström
+ * @version 2022-03-02
  */
 public interface Team {
 

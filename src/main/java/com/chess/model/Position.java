@@ -2,8 +2,9 @@ package com.chess.model;
 
 /**
  * Represents a position on a board.
- * 
  * Has a row and a column component.
+ * @author Rasmus Standar
+ * @version 2022-03-02
  */
 public class Position {
     /**
