@@ -130,7 +130,8 @@ public class MovesPanel extends JPanel {
         turn = 0;
         moves = 0;
 
-        for (moves = 1; moves < moveList.size(); moves++) {
+        for (String moveNotation : moveList) {
+            moves++;
             if (moves % 2 == 1) {
                 turn++;
                 StringBuilder spacing = new StringBuilder("");

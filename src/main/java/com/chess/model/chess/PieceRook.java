@@ -2,7 +2,6 @@ package com.chess.model.chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 
 import com.chess.model.Identifier;
@@ -18,8 +17,6 @@ import com.chess.model.Rule;
  */
 public class PieceRook implements PieceBehavior{
 
-    private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<Move>());
-    
     /**
      * The team parameters of the team that this piece belongs to.
      */
@@ -51,7 +48,7 @@ public class PieceRook implements PieceBehavior{
 
     @Override
     public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {
-        possibleMoves.clear();
+        final Collection<Move> possibleMoves = new ArrayList<Move>();
 
         rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 0);
         rule.calculateMoves(position, teamIdentifier, possibleMoves, -1, 0);

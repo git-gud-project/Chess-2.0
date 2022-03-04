@@ -2,7 +2,6 @@ package com.chess.model.chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 
 import com.chess.model.Identifier;
@@ -17,11 +16,6 @@ import com.chess.model.Rule;
  * @version 2022-03-02
  */
 public class PiecePawn implements PieceBehavior {
-    /**
-     * A collection of moves that can be made by a piece of type pawn.
-     */
-    private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<>());
-
     /**
      * The parameters of the team the chess piece belongs to.
      */
@@ -66,6 +60,8 @@ public class PiecePawn implements PieceBehavior {
 
     @Override
     public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {
+        final Collection<Move> possibleMoves = new ArrayList<Move>();
+        
         possibleMoves.clear();
 
         final int dirRow = teamParameters.getPawnDirection();

@@ -2,7 +2,6 @@ package com.chess.model.chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 
 import com.chess.model.Identifier;
@@ -17,7 +16,6 @@ import com.chess.model.Rule;
  * @version 2022-03-02
  */
 public class PieceKnight implements PieceBehavior {
-    private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<Move>());
 
     @Override
     public Identifier getTypeIdentifier() {
@@ -26,7 +24,7 @@ public class PieceKnight implements PieceBehavior {
 
     @Override
     public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {
-        possibleMoves.clear();
+        final Collection<Move> possibleMoves = new ArrayList<Move>();
 
         rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 2, 1);
         rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, -2, 1);

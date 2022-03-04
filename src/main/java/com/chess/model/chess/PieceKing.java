@@ -2,7 +2,6 @@ package com.chess.model.chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 
 import com.chess.model.*;
@@ -13,7 +12,6 @@ import com.chess.model.*;
  * @version 2022-03-02
  */
 public class PieceKing implements PieceBehavior {
-    private final Collection<Move> possibleMoves = Collections.synchronizedCollection(new ArrayList<Move>());
 
     /**
      * The team parameters of the team that this piece belongs to.
@@ -36,7 +34,7 @@ public class PieceKing implements PieceBehavior {
 
     @Override
     public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException {
-        possibleMoves.clear();
+        final Collection<Move> possibleMoves = new ArrayList<Move>();
 
         rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 1, 1);
         rule.calculateMoves(position, teamIdentifier, possibleMoves, -1, 1, 1);
@@ -101,7 +99,7 @@ public class PieceKing implements PieceBehavior {
         final boolean canCastleKingSide = teamParameters.canCastleKingside();
         final boolean canCastleQueenSide = teamParameters.canCastleQueenside();
 
-        if (canCastleKingSide && to == teamParameters.getCastlingKingSidePosition()) {
+        if (canCastleKingSide && to.equals(teamParameters.getCastlingKingSidePosition())) {
             // Move the rook
             boolean success = rule.requestMove(new Position(from.getRow(), from.getCol() + 3), new Position(from.getRow(), from.getCol() + 1));
             
@@ -110,7 +108,7 @@ public class PieceKing implements PieceBehavior {
             }
         }
 
-        if (canCastleQueenSide && to == teamParameters.getCastlingQueenSidePosition()) {
+        if (canCastleQueenSide && to.equals(teamParameters.getCastlingQueenSidePosition())) {
             // Move the rook
             boolean success = rule.requestMove(new Position(from.getRow(), from.getCol() - 4), new Position(from.getRow(), from.getCol() - 1));
         

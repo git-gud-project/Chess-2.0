@@ -388,9 +388,6 @@ public class ChessControl implements ChessControlInterface {
     }
 
     private void handleClick(BoardCell boardCell) {
-        // Start a timer
-        long startTime = System.currentTimeMillis();
-
         if (!isMyTurn() || model.getPaused() && model.getStarted()) {
             return;
         }
@@ -478,12 +475,6 @@ public class ChessControl implements ChessControlInterface {
 
             highlightedCells.add(possibleMove);
         }
-
-        // end timer
-        long endTime = System.currentTimeMillis();
-
-        // print the time it took to get the moves
-        System.out.println("Time to get moves: " + (endTime - startTime) + "ms");
     }
 
     private void handleChangeName(ChessTeam team) {
@@ -530,6 +521,10 @@ public class ChessControl implements ChessControlInterface {
         view.getMenu().getOnLoadGameEvent().addDelegate((serialModel) -> {
             model.loadModel(serialModel);
             setPaused(true);
+
+            if (networkControl.isHost()) {
+                networkControl.broadcastMessage(new LoadGameMessage(serialModel));
+            }
         });
 
         view.getInfoPanel().getPlayerPanel1().getOnPlayerNameChangedEvent().addDelegate(team -> {
