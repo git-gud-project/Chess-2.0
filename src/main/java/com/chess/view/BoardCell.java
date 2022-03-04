@@ -2,14 +2,24 @@ package com.chess.view;
 
 import java.awt.*;
 
-/**BoardCell extends class CellButton by containing row and column values as well as containing information regarding eliminations.
- *
+/**
+ * BoardCell extends class CellButton by containing row and column values as well as containing information regarding eliminations.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class BoardCell extends CellButton {
+    /**
+     * The x-coordinate representing the position of the BoardCell.
+     */
     private int row;
+    /**
+     * The y-coordinate representing the position of the BoardCell.
+     */
     private int col;
-    private boolean isElimination;
 
+    /**
+     * Stores the default color used for
+     */
     private Color defaultColor = null;
 
     /** Constructs a new cell with coordinates (row,col)
@@ -37,19 +47,7 @@ public class BoardCell extends CellButton {
         return col;
     }
 
-    /** Set to true if move is an elimination or false if it isn't
-     * @param isElimination if input value is true it is an elimination if, otherwise it is not an elimination
-     */
-    public void setElimination(boolean isElimination) {
-        this.isElimination = isElimination;
-    }
 
-    /** Returns true if it is an elimination, false if not
-     * @return Boolean value true if it is an elimination false otherwise
-     */
-    public boolean isElimination() {
-        return isElimination;
-    }
 
     /** Highlights the cell in the parameter color. The firs call of this method sets the defaultColor of the Cell to the parameter value
      * @param color Color of the highlight
@@ -59,15 +57,14 @@ public class BoardCell extends CellButton {
             defaultColor = getBackground();
         }
 
-        // Take a color inbetween the default color and the highlight color, using ChessView.HIGHLIGHT_ALPHA
+        // Take a color inbetween the default color and the highlight color, using ViewConstants.HIGHLIGHT_ALPHA
         Color highlightColor = new Color(
-            (int) (color.getRed() * ChessView.HIGHLIGHT_ALPHA + defaultColor.getRed() * (1 - ChessView.HIGHLIGHT_ALPHA)),
-            (int) (color.getGreen() * ChessView.HIGHLIGHT_ALPHA + defaultColor.getGreen() * (1 - ChessView.HIGHLIGHT_ALPHA)),
-            (int) (color.getBlue() * ChessView.HIGHLIGHT_ALPHA + defaultColor.getBlue() * (1 - ChessView.HIGHLIGHT_ALPHA))
+            (int) (color.getRed() * ViewConstants.HIGHLIGHT_ALPHA + defaultColor.getRed() * (1 - ViewConstants.HIGHLIGHT_ALPHA)),
+            (int) (color.getGreen() * ViewConstants.HIGHLIGHT_ALPHA + defaultColor.getGreen() * (1 - ViewConstants.HIGHLIGHT_ALPHA)),
+            (int) (color.getBlue() * ViewConstants.HIGHLIGHT_ALPHA + defaultColor.getBlue() * (1 - ViewConstants.HIGHLIGHT_ALPHA))
         );
         this.setBackground(highlightColor);
     }
-
 
     /**
      * Unhighlight this cell, that is set the background to the default background

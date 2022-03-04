@@ -9,8 +9,9 @@ import com.chess.utils.Delegate;
 
 /**
  * A TCP client.
- * 
  * The client can be configured to connect to a specific ip and port.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
  */
 public class NetworkClient {
     /**
@@ -108,8 +109,9 @@ public class NetworkClient {
     /**
      * Sets the delegate that will be called when a message is received.
      * 
-     * @param type The type of message to listen for. Use <Message>.class.
-     * @param delegate The delegate to call when a message of the specified type is received.
+     * @param type The type of message to listen for.
+     * @see com.chess.network.Message
+     * @param messageDelegate The delegate to call when a message of the specified type is received.
      */
     public synchronized void setMessageDelegate(Type type, Delegate<Message> messageDelegate) {
         messageDelegates.put(type, messageDelegate);

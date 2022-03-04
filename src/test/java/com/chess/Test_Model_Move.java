@@ -1,11 +1,11 @@
 package com.chess;
 
-import com.chess.model.*;
+import com.chess.model.Position;
+import com.chess.model.chess.ChessModel;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.*;
 
-public class ModelTest {
+public class Test_Model_Move {
     private ChessModel model;
 
     @BeforeEach
@@ -20,13 +20,11 @@ public class ModelTest {
         model.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
 
-    /**
-     * Test method for {@link com.chess.model.ChessModel#loadFEN(java.lang.String)}. and {@link com.chess.model.ChessModel#toFEN()}.
-     */
     @Test
-    public void testStartFEN() {
+    public void testMovePawn() {
         loadInitialPosition();
 
-        Assertions.assertEquals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", model.toFEN());
+        // Move a pawn 2 spaces forward to from e2 to e4
+        Assertions.assertDoesNotThrow(() -> model.takeTurn(new Position("e2"), new Position("e4")));
     }
 }

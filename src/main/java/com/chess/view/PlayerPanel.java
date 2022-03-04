@@ -1,29 +1,51 @@
 package com.chess.view;
 
-import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
+import com.chess.model.chess.ChessTeam;
 import com.chess.utils.Event;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A class used for displaying the information of a player.
+ * On the top is the player's name, centered.
+ * On the bottom is the player's time, centered.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
+ */
+
 public class PlayerPanel extends JPanel {
-    private JLabel playerName;
-    private JLabel playerTime;
-    private JLabel playerAuthority;
-    private Team team;
+    /**
+     * A label containing the name of the player.
+     */
+    private final JLabel playerName;
+    /**
+     * A label containing the remaining time a player has left.
+     */
+    private final JLabel playerTime;
+    /**
+     * A label representing which player is the host and which is the client during a hosted game.
+     */
+    private final JLabel playerAuthority;
+    /**
+     * A reference to the team the player belongs to.
+     */
+    private final ChessTeam team;
 
-    private Event<Team> playerNameChangedEvent = new Event<Team>();
+    /**
+     * A collection of event to be triggered if a player changed their name.
+     */
+    private Event<ChessTeam> playerNameChangedEvent = new Event<>();
 
-    public PlayerPanel(Team team) {
+    /**
+     * Constructor for PlayerPanel.
+     * @param model A reference to the model containing the information about the game state.
+     * @param team A reference to the player's team.
+     */
+    public PlayerPanel(ChessModel model, ChessTeam team) {
         this.team = team;
 
-        /**
-         * This panel displays the information of the player.
-         * 
-         * On the top is the player's name, centered.
-         * 
-         * On the bottom is the player's time, centered.
-         */
         this.setPreferredSize(new Dimension(220, 100));
 
         this.setLayout(new BorderLayout());
@@ -32,37 +54,36 @@ public class PlayerPanel extends JPanel {
         playerName = new JLabel("Player Name");
         playerName.setHorizontalAlignment(JLabel.CENTER);
         playerName.setFont(new Font("Arial", Font.BOLD, 20));
-        playerName.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+        playerName.setForeground(ViewConstants.PRIMARY_SIDE_COLOR);
         this.add(playerName, BorderLayout.NORTH);
 
         playerTime = new JLabel("00:00");
         playerTime.setHorizontalAlignment(JLabel.CENTER);
         playerTime.setFont(new Font("Arial", Font.BOLD, 20));
-        playerTime.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+        playerTime.setForeground(ViewConstants.PRIMARY_SIDE_COLOR);
         this.add(playerTime, BorderLayout.SOUTH);
 
         playerAuthority = new JLabel("");
         playerAuthority.setHorizontalAlignment(JLabel.CENTER);
         playerAuthority.setFont(new Font("Arial", Font.BOLD, 15));
-        playerAuthority.setForeground(ChessView.PRIMARY_SIDE_COLOR);
+        playerAuthority.setForeground(ViewConstants.PRIMARY_SIDE_COLOR);
         this.add(playerAuthority, BorderLayout.CENTER);
 
-        /**
-         * Setup event listeners
-         */
-        team.getOnNameChangedEvent().addDelegate(name -> {
-            playerName.setText(name);
-        });
+        // Setup event listeners
 
-        team.getOnTimeChangedEvent().addDelegate(time -> {
-            playerTime.setText(time.toString());
-        });
+        team.getOnNameChangedEvent().addDelegate(name ->
+            playerName.setText(name)
+        );
 
-        team.getOnAuthorityChangedEvent().addDelegate(authority -> {
-            playerAuthority.setText(authority ? "" : "(Remote)");
-        });
+        team.getOnTimeChangedEvent().addDelegate(time ->
+            playerTime.setText(time.toString())
+        );
 
-        team.getModel().getOnTeamChangeEvent().addDelegate(newTeam -> {
+        team.getOnAuthorityChangedEvent().addDelegate(authority ->
+            playerAuthority.setText(authority ? "" : "(Remote)")
+        );
+
+        model.getOnTeamChangeEvent().addDelegate(newTeam -> {
             if (newTeam == team) {
                 // Set a yellow border
                 this.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
@@ -72,17 +93,18 @@ public class PlayerPanel extends JPanel {
             }
         });
 
-        /*if (team == team.getModel().getCurrentTeam())*/ {
-            playerName.setForeground(team.getOpponentColor());
-            playerTime.setForeground(team.getOpponentColor());
+        ChessTeam opponent = model.getOtherTeam(team);
+
+        {
+            playerName.setForeground(opponent.getColor());
+            playerTime.setForeground(opponent.getColor());
         }
 
         playerName.setText(team.getName());
         playerTime.setText(team.getTime().toString());
 
-        /**
-         * When double clicking on the player name, it will open a dialog to change
-         */
+        // When double clicking on the player name, it will open a dialog to change
+
         playerName.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
@@ -92,11 +114,19 @@ public class PlayerPanel extends JPanel {
         });
     }
 
-    public Team getTeam() {
+    /**
+     * Gets the reference to the player's team.
+     * @return A reference to the player's team.
+     */
+    public ChessTeam getTeam() {
         return team;
     }
 
-    public Event<Team> getOnPlayerNameChangedEvent() {
+    /**
+     * Gets the reference to the collection of events to be triggered when a player changed their name.
+     * @return A reference to the collection of events to be triggered when a player changed their name.
+     */
+    public Event<ChessTeam> getOnPlayerNameChangedEvent() {
         return playerNameChangedEvent;
     }
 }

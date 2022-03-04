@@ -1,15 +1,41 @@
 package com.chess.view;
 
-import com.chess.model.*;
+import com.chess.model.chess.ChessModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * A class used for showing the move history of the match.
+ * @author Isak Holmdahl
+ * @version 2022-03-02
+ */
 public class MovesPanel extends JPanel {
+    
+    /**
+     * A list containing the move history of a given match.
+     */
     private DefaultListModel<String> listModel;
-    private int turn, moves;
+    
+    /**
+     * Stores whose turn it is.
+     */
+    private int turn;
+    
+    /**
+     * Stores the number of moves that have been made.
+     */
+    private int moves;
+    
+    /**
+     * ScrollPane used to store the move history when the size of the text exceed the dimension of the panel in which it is stored.
+     */
     private JScrollPane scrollpane;
+
+    /**
+     * A reference to the game model in which the information of the game state is stored.
+     */
     private ChessModel model;
 
     /**
@@ -23,7 +49,7 @@ public class MovesPanel extends JPanel {
         listModel = new DefaultListModel<>();
         JList<String> moveJList = new JList<>(listModel);
 
-        moveJList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        moveJList.setBackground(ViewConstants.BOARD_BACKGROUND_COLOR);
         moveJList.setForeground(Color.WHITE);
         moveJList.setFont(new Font("Monospaced", Font.PLAIN, 32));
         scrollpane = new JScrollPane(moveJList);
@@ -60,13 +86,13 @@ public class MovesPanel extends JPanel {
             vertical.setValue( vertical.getMaximum() );
         });
 
-        model.getOnModelLoadedEvent().addDelegate((serialModel) -> {
-            resetMovesPanel();
-        });
+        model.getOnModelLoadedEvent().addDelegate((serialModel) ->
+            resetMovesPanel()
+        );
     }
 
     /**
-     * Clears all notation from this panel
+     * Clears all notation from this panel.
      */
     public void resetMovesPanel() {
         //Removes the list of moves from the previous game when creating a new one.
@@ -75,7 +101,7 @@ public class MovesPanel extends JPanel {
         //Creates a new list of move which is empty to begin with.
         listModel = new DefaultListModel<>();
         JList<String> _moveList = new JList<>(listModel);
-        _moveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
+        _moveList.setBackground(ViewConstants.BOARD_BACKGROUND_COLOR);
         _moveList.setForeground(Color.WHITE);
         _moveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
         scrollpane = new JScrollPane(_moveList);
@@ -87,7 +113,7 @@ public class MovesPanel extends JPanel {
     }
 
     /**
-     *
+     * Reloads the move history when a saved game is loaded.
      */
      public void loadMovesPanel() {
         //Removes the list of moves from the previous game loading a saved game.
@@ -96,11 +122,11 @@ public class MovesPanel extends JPanel {
         //Creates the loaded list of moves which displays the moves until the last saved state.
         listModel = new DefaultListModel<>();
         List<String> moveList = model.getMoveList();
-        JList<String> _moveList = new JList<>(listModel);
-        _moveList.setBackground(ChessView.BOARD_BACKGROUND_COLOR);
-        _moveList.setForeground(Color.WHITE);
-        _moveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
-        scrollpane = new JScrollPane(_moveList);
+        JList<String> jMoveList = new JList<>(listModel);
+        jMoveList.setBackground(ViewConstants.BOARD_BACKGROUND_COLOR);
+        jMoveList.setForeground(Color.WHITE);
+        jMoveList.setFont(new Font("Monospaced", Font.PLAIN, 32));
+        scrollpane = new JScrollPane(jMoveList);
         turn = 0;
         moves = 0;
 

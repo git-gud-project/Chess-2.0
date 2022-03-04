@@ -2,54 +2,49 @@ package com.chess.model;
 
 import java.util.Iterator;
 
+/**
+ * Interface for how a piece behaves.
+ * @author Wincent Stålbert Holm
+ * @version 2022-03-02
+ */
 public interface PieceBehavior {
 
     /**
-     * Get the piece type associated for the piece behavior
-     * @return The piece type of the behavior
+     * Get the type identifier of the piece.
+     * @return the type identifier of the piece
      */
-    public PieceType getPieceType();
+    public Identifier getTypeIdentifier();
 
     /**
-     * Get an iterator of all moves that can be performed by this piece from a specific cell
-     * @param cell The cell to check moves from
+     * Get an iterator of all moves that can be performed by this piece from a specific position
+     * 
+     * @param rule the rule that is being used
+     * @param position The position of the piece
+     * @param teamIdentifier The identifier of the team that the piece belongs to
      * @return An iterator of all possible moves
+     * @throws IllegalArgumentException if the position is invalid
      */
-    public Iterator<Move> getPossibleMoves(Board board, Cell cell);
+    public Iterator<Move> getPossibleMoves(Rule rule, Position position, Identifier teamIdentifier) throws IllegalArgumentException;
 
     /**
-     * Get bool for if this the piece connected to this behavior has moved
-     * @return True if piece has moved
-     */
-    public default boolean hasMoved() {
-        return true;
-    }
-
-    /**
-     * Set if this piece has moved
-     * @param hasMoved The value for if this piece has moved
-     */
-    public default void setHasMoved(boolean hasMoved) {
-        //
-    }
-
-    /**
-     * Called when the piece is moved.
+     * Method that is called after a piece has been moved.
      * 
-     * @param oldCell the cell that the piece was in before it was moved
-     * @param newCell the cell that the piece is now in
+     * @param rule the rule that is being used
+     * @param from the position the piece has moved from
+     * @param to the position the piece has moved to
      */
-    public default void onMove(Board board, Cell oldCell, Cell newCell) {
-        setHasMoved(true);
+    public default void afterMove(Rule rule, Position from, Position to) {
+        // Do nothing by default
     }
 
     /**
-     * Called before the piece is moved.
+     * Method that is called after a piece has been moved.
      * 
-     * @param oldCell the cell that the piece was in before it was moved
-     * @param newCell the cell that the piece is now in
+     * @param rule the rule that is being used
+     * @param from the position the piece has moved from
+     * @param to the position the piece has moved to
      */
-    public default void beforeMove(Board board, Cell oldCell, Cell newCell) {
-        //
+    public default void beforeMove(Rule rule, Position from, Position to) {
+        // Do nothing by default
     }
 }
