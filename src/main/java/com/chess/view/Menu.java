@@ -17,7 +17,7 @@ import com.chess.model.chess.SerialModel;
 /**
  * A class representing the menu bar shown at the top of the window containing the GUI for the game.
  * @author Oscar Marreo Engström
- * @version 2022-03-02
+ * @version 2022-03-05
  */
 public class Menu extends JMenuBar {
 
@@ -118,9 +118,10 @@ public class Menu extends JMenuBar {
                     int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:", "5"));
                     GameTime newTime = new GameTime(input, 0, 0);
                     model.resetState(newTime);
-                }
-                catch(NullPointerException exc) {
-                    exc.printStackTrace();
+                } catch (NumberFormatException e1) {
+                    JOptionPane.showMessageDialog(f, "Invalid input.\nPlease enter a valid number of minutes.", "", JOptionPane.ERROR_MESSAGE);
+                } catch (NullPointerException e2) {
+                    JOptionPane.showMessageDialog(f, "Invalid input.\nPlease enter a valid number of minutes.", "", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -154,8 +155,6 @@ public class Menu extends JMenuBar {
         });
 
         load.addActionListener((e) -> {
-            boolean paused = model.getPaused();
-            if(!paused) model.setPaused(true);
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Load");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -181,8 +180,6 @@ public class Menu extends JMenuBar {
                     // Show a message to the user that we could not read the file
                     JOptionPane.showMessageDialog(null, "Could not read file, save file might be out of date", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            } else {
-                if(!paused) model.setPaused(false);
             }
         });
         
@@ -273,6 +270,18 @@ public class Menu extends JMenuBar {
      * @return A reference to the menu item used to start a new game.
      */
     public JMenuItem getNewGame() { return newGame; }
+
+    /**
+     * Gets the reference to the menu item used to load a game.
+     * @return A reference to the menu item used to load a game.
+     */
+    public JMenuItem getLoad() { return load; }
+
+    /**
+     * Gets the reference to the menu item used to save a game.
+     * @return A reference to the menu item used to save a game.
+     */
+    public JMenuItem getSave() { return save; }
 
     /**
      * Gets the reference for the menu item used to start a server for hosting the game.

@@ -13,7 +13,7 @@ import java.awt.*;
  * Create a new view panel of a Chess board based on data from a model.
  * This class also set up listeners for all the cells.
  * @author Rasmus Standar
- * @version 2022-03-02
+ * @version 2022-03-05
  */
 public class BoardGridPanel extends JPanel {
     /**
@@ -39,7 +39,9 @@ public class BoardGridPanel extends JPanel {
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 
-                BoardCell button = new BoardCell(size - 1 - row, col);
+                Color color = row % 2 == col % 2 ? ViewConstants.PRIMARY_COLOR : ViewConstants.SECONDARY_COLOR;
+
+                BoardCell button = new BoardCell(size - 1 - row, col, color);
 
                 button.setMinimumSize(ViewConstants.CELL_MIN_SIZE);
                 button.setPreferredSize(ViewConstants.CELL_IDEAL_SIZE);
@@ -49,8 +51,6 @@ public class BoardGridPanel extends JPanel {
                 button.addActionListener(e ->
                     handleClick(button)
                 );
-
-                Color color = row % 2 == col % 2 ? ViewConstants.PRIMARY_COLOR : ViewConstants.SECONDARY_COLOR;
 
                 // Set the background color of the button, black or white
                 button.setBackground(color);

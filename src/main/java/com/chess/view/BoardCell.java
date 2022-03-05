@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * BoardCell extends class CellButton by containing row and column values as well as containing information regarding eliminations.
  * @author Wincent Stålbert Holm
- * @version 2022-03-02
+ * @version 2022-03-05
  */
 public class BoardCell extends CellButton {
     /**
@@ -25,12 +25,14 @@ public class BoardCell extends CellButton {
     /** Constructs a new cell with coordinates (row,col)
      * @param row Used to set the row for the cell
      * @param col Used to set the col for the cell
+     * @param defaultColor Used to set the default color for the cell
      */
-    public BoardCell(int row, int col) {
+    public BoardCell(int row, int col, Color defaultColor) {
         super();
 
         this.row = row;
         this.col = col;
+        this.defaultColor = defaultColor;
     }
 
     /** Used to get the row of the cell
@@ -53,10 +55,6 @@ public class BoardCell extends CellButton {
      * @param color Color of the highlight
      */
     public void highlight(Color color) {
-        if (defaultColor == null) {
-            defaultColor = getBackground();
-        }
-
         // Take a color inbetween the default color and the highlight color, using ViewConstants.HIGHLIGHT_ALPHA
         Color highlightColor = new Color(
             (int) (color.getRed() * ViewConstants.HIGHLIGHT_ALPHA + defaultColor.getRed() * (1 - ViewConstants.HIGHLIGHT_ALPHA)),
