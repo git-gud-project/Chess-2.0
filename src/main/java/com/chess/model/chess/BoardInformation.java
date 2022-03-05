@@ -9,7 +9,7 @@ import com.chess.model.Position;
  * @author Wincent Stålbert Holm
  * @version 2022-03-02
  */
-interface BoardInformation {
+public interface BoardInformation {
     /**
      * Returns whether there is a piece at the specified position.
      * 
