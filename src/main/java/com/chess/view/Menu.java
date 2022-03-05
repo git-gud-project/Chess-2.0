@@ -17,7 +17,7 @@ import com.chess.model.chess.SerialModel;
 /**
  * A class representing the menu bar shown at the top of the window containing the GUI for the game.
  * @author Oscar Marreo Engström
- * @version 2022-05-02
+ * @version 2022-03-05
  */
 public class Menu extends JMenuBar {
 

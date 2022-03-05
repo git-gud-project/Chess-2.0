@@ -13,7 +13,7 @@ import java.awt.*;
  * Create a new view panel of a Chess board based on data from a model.
  * This class also set up listeners for all the cells.
  * @author Rasmus Standar
- * @version 2022-05-02
+ * @version 2022-03-05
  */
 public class BoardGridPanel extends JPanel {
     /**
