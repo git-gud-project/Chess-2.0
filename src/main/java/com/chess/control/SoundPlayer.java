@@ -4,6 +4,7 @@ import java.io.*;
 import javax.sound.sampled.*;
 
 /**
+ * A class that enables functionality for playing sound effects during the game.
  * @author Isak Holmdahl
  * @version 2022-03-02
  */
