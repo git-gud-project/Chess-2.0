@@ -21,7 +21,7 @@ import java.util.*;
 /**
  * A class representing the controller part of the program according to MVC.
  * @author Wincent Stålbert Holm
- * @version 2022-03-02
+ * @version 2022-05-02
  */
 public class ChessControl implements ChessControlInterface {
     /**
@@ -58,6 +58,11 @@ public class ChessControl implements ChessControlInterface {
      * The current list of available moves for selected piece
      */
     private HashMap<BoardCell, Move> currentMoveMap = new HashMap<>();
+
+    /**
+     * Map of highlighted check cells for each team.
+     */
+    private HashMap<Identifier, BoardCell> highlightedCheckCells = new HashMap<>();
 
     /**
      * The team we are playing as.
@@ -175,16 +180,17 @@ public class ChessControl implements ChessControlInterface {
                     promotePawn(move.getToCell().getRow(), move.getToCell().getCol(), promotedTypeIdentifier,
                             isElimination);
                     gameOver(model.isGameOver(model.getCurrentTeam().getTeamIdentifier()));
-                    checkHighlight(piece);
                 }
+
+                checkHighlight();
             }
 
             return;
         }
 
-        checkHighlight(piece);
-
         model.registerMove(halfMove, move);
+
+        checkHighlight();
 
         if (model.isGameOver(model.getCurrentTeam().getTeamIdentifier()) != 0) {
             playSound("checkmate");
@@ -221,7 +227,7 @@ public class ChessControl implements ChessControlInterface {
                     }
                     switch (n) {
                         case 0:
-                            checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
+                            checkHighlight();
                             int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
                             GameTime newTime = new GameTime(input, 0, 0);
                             view.getModel().resetState(newTime);
@@ -241,7 +247,7 @@ public class ChessControl implements ChessControlInterface {
                     }
                     switch (n) {
                         case 0:
-                            checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
+                            checkHighlight();
                             int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
                             GameTime newTime = new GameTime(input, 0, 0);
                             view.getModel().resetState(newTime);
@@ -267,7 +273,7 @@ public class ChessControl implements ChessControlInterface {
                     }
                     switch (n) {
                         case 0:
-                            checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
+                            checkHighlight();
                             int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
                             GameTime newTime = new GameTime(input, 0, 0);
                             view.getModel().resetState(newTime);
@@ -287,7 +293,7 @@ public class ChessControl implements ChessControlInterface {
                     }
                     switch (n) {
                         case 0:
-                            checkHighlight(model.getKingCell(model.getCurrentTeam().getTeamIdentifier()).getPiece());
+                            checkHighlight();
                             int input = Integer.parseInt(JOptionPane.showInputDialog("Minutes:"));
                             GameTime newTime = new GameTime(input, 0, 0);
                             view.getModel().resetState(newTime);
@@ -308,23 +314,38 @@ public class ChessControl implements ChessControlInterface {
     /**
      * Highlights and unhighlights the cell containing the teams king piece.
      * 
-     * @param piece - the moved piece.
+     * @param teamIdentifier - the identifier of the team whose king piece should be
      */
-    private void checkHighlight(Piece piece) {
-        Cell c = model.getKingCell(piece.getTeamIdentifier());
+    private void checkHighlight(Identifier teamIdentifier) {
+        Cell c = model.getKingCell(teamIdentifier);
         Position position = c.getPosition();
         BoardCell check = view.getBoardGridPanel().getCell(position.getRow(), position.getCol());
-        if (check.getBackground().equals(new Color(191, 64, 64))
-                || check.getBackground().equals(new Color(223, 96, 96))) {
-            check.unhighlight();
+
+        // Unhighlight the cell in the map
+        if (highlightedCheckCells.containsKey(teamIdentifier)) {
+            highlightedCheckCells.get(teamIdentifier).unhighlight();
         }
 
-        if (model.isCheck(model.getOtherTeamIdentifier(piece.getTeamIdentifier()))) {
-            c = model.getKingCell(model.getOtherTeamIdentifier(piece.getTeamIdentifier()));
+        if (model.isCheck(model.getOtherTeamIdentifier(teamIdentifier))) {
+            c = model.getKingCell(model.getOtherTeamIdentifier(teamIdentifier));
             position = c.getPosition();
             check = view.getBoardGridPanel().getCell(position.getRow(), position.getCol());
             check.highlight(Color.RED);
+
+            // Add the cell to the map
+            highlightedCheckCells.put(teamIdentifier, check);
         }
+    }
+
+    /**
+     * Check and correct the check highlighting for both teams.
+     */
+    private void checkHighlight() {
+        // Check current team
+        checkHighlight(model.getCurrentTeam().getTeamIdentifier());
+
+        // Check other team
+        checkHighlight(model.getOtherTeam(model.getCurrentTeam()).getTeamIdentifier());
     }
 
     /**
@@ -525,6 +546,12 @@ public class ChessControl implements ChessControlInterface {
             if (networkControl.isHost()) {
                 networkControl.broadcastMessage(new LoadGameMessage(serialModel));
             }
+
+            checkHighlight();
+        });
+
+        model.getOnModelLoadedEvent().addDelegate((serialModel) -> {
+            checkHighlight();
         });
 
         view.getInfoPanel().getPlayerPanel1().getOnPlayerNameChangedEvent().addDelegate(team -> {

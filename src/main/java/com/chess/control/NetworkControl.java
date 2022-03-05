@@ -13,7 +13,7 @@ import com.chess.view.*;
 /**
  * Network controller
  * @author Wincent Stålbert Holm
- * @version 2022-03-02
+ * @version 2022-05-02
  */
 public class NetworkControl {
     /**
@@ -149,6 +149,7 @@ public class NetworkControl {
         menu.getDisconnect().setEnabled(!enabled);
 
         menu.getNewGame().setEnabled(isHost() || enabled);
+        menu.getLoad().setEnabled(isHost() || enabled);
     }
 
     private void showMessage(String message) {
@@ -265,6 +266,8 @@ public class NetworkControl {
             } else {
                 localTeam = getModel().getTeamBlack();
             }
+
+            System.out.println("Setting local team to " + localTeam.getName());
 
             // Set out current team and its authority.
             controlInterface.setLocalTeam(localTeam);
