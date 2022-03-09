@@ -91,9 +91,17 @@ public class Position {
         int colDiff = position.getCol() - col;
 
         if (rowDiff == 0) {
-            return addCol(units);
+            if (colDiff > 0) {
+                return addCol(units);
+            } else {
+                return addCol(-units);
+            }
         } else if (colDiff == 0) {
-            return addRow(units);
+            if (rowDiff > 0) {
+                return addRow(units);
+            } else {
+                return addRow(-units);
+            }
         } else {
             int rowUnit = rowDiff / Math.abs(rowDiff);
             int colUnit = colDiff / Math.abs(colDiff);
