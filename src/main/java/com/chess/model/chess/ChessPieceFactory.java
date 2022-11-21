@@ -28,16 +28,26 @@ public final class ChessPieceFactory {
 
         if (typeString.equals(ChessTypeIdentifier.BISHOP.toString())) {
             behavior = new PieceBishop();
+        } else if (typeString.equals(ChessTypeIdentifier.BISHOPUPGRADE.toString())) {
+            behavior = new PieceBishopUpgraded();
         } else if (typeString.equals(ChessTypeIdentifier.KING.toString())) {
             behavior = new PieceKing(team.getTeamParameters());
         } else if (typeString.equals(ChessTypeIdentifier.KNIGHT.toString())) {
             behavior = new PieceKnight();
+        } else if (typeString.equals(ChessTypeIdentifier.KNIGHTUPGRADE.toString())) {
+            behavior = new PieceKnightUpgraded();
         } else if (typeString.equals(ChessTypeIdentifier.PAWN.toString())) {
             behavior = new PiecePawn(team.getTeamParameters());
+        } else if (typeString.equals(ChessTypeIdentifier.PAWNUPGRADE.toString())) {
+            behavior = new PiecePawnUpgraded(team.getTeamParameters());
         } else if (typeString.equals(ChessTypeIdentifier.QUEEN.toString())) {
             behavior = new PieceQueen();
+        } else if (typeString.equals(ChessTypeIdentifier.QUEENUPGRADE.toString())) {
+            behavior = new PieceQueenUpgraded();
         } else if (typeString.equals(ChessTypeIdentifier.ROOK.toString())) {
             behavior = new PieceRook(team.getTeamParameters());
+        } else if (typeString.equals(ChessTypeIdentifier.ROOKUPGRADE.toString())) {
+            behavior = new PieceRookUpgraded(team.getTeamParameters());
         } else {
             throw new IllegalArgumentException("Unknown piece type: " + type);
         }

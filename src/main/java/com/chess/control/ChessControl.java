@@ -1,13 +1,8 @@
 package com.chess.control;
 
+import com.chess.model.chess.*;
 import com.chess.view.*;
 import com.chess.model.*;
-import com.chess.model.chess.ChessBoardInformation;
-import com.chess.model.chess.ChessModel;
-import com.chess.model.chess.ChessPieceFactory;
-import com.chess.model.chess.ChessTeam;
-import com.chess.model.chess.ChessTeamParameters;
-import com.chess.model.chess.ChessTypeIdentifier;
 import com.chess.control.messages.*;
 
 import javax.swing.*;
@@ -128,6 +123,31 @@ public class ChessControl implements ChessControlInterface {
     }
 
     @Override
+    public void promotePiece(int row, int col, Identifier typeIdentifier, boolean isElimination) throws IllegalArgumentException{
+        final Board board = model.getBoard();
+
+        final Cell cell = board.getCell(row, col);
+
+        Piece piece = cell.getPiece();
+
+        final Identifier teamIdentifier = piece.getTeamIdentifier();
+
+        final ChessTeam team = model.getTeam(teamIdentifier);
+
+        final Piece promoted = ChessPieceFactory.createPiece(typeIdentifier, team);
+
+        cell.updatePiece(promoted, true);
+
+        piece = promoted;
+
+        final Move move = new Move(cell.getPosition(), typeIdentifier);
+
+        model.registerMove(false, move);
+
+        playSound("pawnPromotion");
+    }
+
+    @Override
     public void executeMove(Move move) {
         if (!model.getStarted()) {
             model.setStarted(true);
@@ -169,7 +189,7 @@ public class ChessControl implements ChessControlInterface {
         // advance, used for the fifty-move rule.
         boolean halfMove = !typeIdentifier.equals(ChessTypeIdentifier.PAWN) && !isElimination;
 
-        if (typeIdentifier.equals(ChessTypeIdentifier.PAWN) && move.getToCell().getRow() == otherTeamParameters.getKingRow()) {
+        if ((typeIdentifier.equals(ChessTypeIdentifier.PAWN) || typeIdentifier.equals(ChessTypeIdentifier.PAWNUPGRADE)) && move.getToCell().getRow() == otherTeamParameters.getKingRow()) {
             if (isMyTurn()) {
                 Identifier promotedTypeIdentifier = view.promotePawn();
 
@@ -179,6 +199,48 @@ public class ChessControl implements ChessControlInterface {
                 } else {
                     promotePawn(move.getToCell().getRow(), move.getToCell().getCol(), promotedTypeIdentifier,
                             isElimination);
+                    gameOver(model.isGameOver(model.getCurrentTeam().getTeamIdentifier()));
+                }
+
+                checkHighlight();
+            }
+
+            return;
+        }
+        //checks for upgradePiece
+        if (isElimination) {
+            if (isMyTurn()) {
+                Identifier promotedTypeIdentifier = piece.getTypeIdentifier();
+                System.out.println(piece.getTypeIdentifier().toString());
+                switch(piece.getTypeIdentifier().toString()){
+                    case "p":
+                        System.out.println("PAWN");
+                        promotedTypeIdentifier = ChessTypeIdentifier.PAWNUPGRADE;
+                        break;
+                    case "n":
+                        System.out.println("KNIGHT");
+                        promotedTypeIdentifier = ChessTypeIdentifier.KNIGHTUPGRADE;
+                        break;
+                    case "b":
+                        System.out.println("BISHOP");
+                        promotedTypeIdentifier = ChessTypeIdentifier.BISHOPUPGRADE;
+                        break;
+                    case "r":
+                        System.out.println("ROOK");
+                        promotedTypeIdentifier = ChessTypeIdentifier.ROOKUPGRADE;
+                        break;
+                    case "q":
+                        System.out.println("QUEEN");
+                        promotedTypeIdentifier = ChessTypeIdentifier.QUEENUPGRADE;
+                        break;
+                }
+
+                if (!networkControl.isSinglePlayer()) {
+                    networkControl.sendMessage(new PromotePawnMessage(move.getToCell().getRow(),
+                            move.getToCell().getCol(), promotedTypeIdentifier, isElimination));
+                } else {
+                    promotePiece(move.getToCell().getRow(), move.getToCell().getCol(), promotedTypeIdentifier,
+                            true);
                     gameOver(model.isGameOver(model.getCurrentTeam().getTeamIdentifier()));
                 }
 

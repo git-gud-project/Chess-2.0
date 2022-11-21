@@ -34,7 +34,17 @@ public interface ChessControlInterface {
      * @throws IllegalArgumentException if the position is invalid
      */
     public void promotePawn(int row, int col, Identifier typeIdentifier, boolean isElimination) throws IllegalArgumentException;
-    
+    /**
+     * Promote a piece at the given position to the given type.
+     *
+     * @param row the row of the piece
+     * @param col the column of the piece
+     * @param typeIdentifier the type identifier to promote to
+     * @param isElimination whether or not the promotion is also an elimination
+     * @throws IllegalArgumentException if the position is invalid
+     */
+    public void promotePiece(int row, int col, Identifier typeIdentifier, boolean isElimination) throws IllegalArgumentException;
+
     /**
      * Execute a move.
      * 

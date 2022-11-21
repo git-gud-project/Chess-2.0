@@ -123,10 +123,15 @@ public class PieceSelector extends JPanel {
     private String selectPieceName() {
         switch(pieceType){
             case ROOK: return "rook";
+            case ROOKUPGRADE: return "rookupgraded";
             case KNIGHT: return "knight";
+            case KNIGHTUPGRADE: return "knightupgraded";
             case BISHOP: return "bishop";
+            case BISHOPUPGRADE: return "bishopupgraded";
             case QUEEN: return "queen";
+            case QUEENUPGRADE: return "queenupgraded";
             case KING: return "king";
+            case PAWNUPGRADE: return "pawnupgraded";
             default: return "pawn";
         }
     }

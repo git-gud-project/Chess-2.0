@@ -13,22 +13,27 @@ public enum ChessTypeIdentifier implements Identifier {
      * Value for the pawn piece type.
      */
     PAWN("p"),
+    PAWNUPGRADE("pu"),
     /**
      * Value for the rook piece type.
      */
     ROOK("r"),
+    ROOKUPGRADE("ru"),
     /**
      * Value for the knight piece type.
      */
     KNIGHT("n"),
+    KNIGHTUPGRADE("nu"),
     /**
      * Value for the bishop piece type.
      */
     BISHOP("b"),
+    BISHOPUPGRADE("bu"),
     /**
      * Value for the queen piece type.
      */
     QUEEN("q"),
+    QUEENUPGRADE("qu"),
     /**
      * Value for the king piece type.
      */
