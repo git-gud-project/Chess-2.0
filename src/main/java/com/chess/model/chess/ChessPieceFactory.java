@@ -2,6 +2,7 @@ package com.chess.model.chess;
 
 import com.chess.model.Identifier;
 import com.chess.model.PieceBehavior;
+import com.chess.model.chess.pieces.*;
 
 /**
  * A factory for creating chess pieces.
@@ -36,6 +37,16 @@ public final class ChessPieceFactory {
             behavior = new PieceKnight();
         } else if (typeString.equals(ChessTypeIdentifier.KNIGHTUPGRADE.toString())) {
             behavior = new PieceKnightUpgraded();
+        } else if (typeString.equals(ChessTypeIdentifier.BISHOPKNIGHT.toString())) {
+            behavior = new PieceBishopKnight();
+        } else if (typeString.equals(ChessTypeIdentifier.KINGKNIGHT.toString())) {
+            behavior = new PieceKingKnight();
+        } else if (typeString.equals(ChessTypeIdentifier.PAWNKNIGHT.toString())) {
+            behavior = new PiecePawnKnight(team.getTeamParameters());
+        } else if (typeString.equals(ChessTypeIdentifier.QUEENKNIGHT.toString())) {
+            behavior = new PieceQueenKnight();
+        } else if (typeString.equals(ChessTypeIdentifier.ROOKKNIGHT.toString())) {
+            behavior = new PieceRookKnight();
         } else if (typeString.equals(ChessTypeIdentifier.PAWN.toString())) {
             behavior = new PiecePawn(team.getTeamParameters());
         } else if (typeString.equals(ChessTypeIdentifier.PAWNUPGRADE.toString())) {

@@ -168,6 +168,19 @@ public class ChessControl implements ChessControlInterface {
 
         final Position to = move.getToCell();
 
+
+        Identifier previousPieceType;
+
+        try{
+            previousPieceType = boardInformation.getTypeIdentifier(to);
+        }
+        catch (NullPointerException e){
+            previousPieceType = null;
+        }
+
+
+        model.movePiece(move.getFromCell(), move.getToCell());
+
         if (isElimination && !boardInformation.isEmpty(to)) {
             Identifier eliminatedTypeIdentifier = boardInformation.getTypeIdentifier(to);
 
@@ -183,16 +196,15 @@ public class ChessControl implements ChessControlInterface {
             }
         }
 
-        model.movePiece(move.getFromCell(), move.getToCell());
-
         // Halfmove clock: The number of halfmoves since the last capture or pawn
         // advance, used for the fifty-move rule.
         boolean halfMove = !typeIdentifier.equals(ChessTypeIdentifier.PAWN) && !isElimination;
 
+
+
         if ((typeIdentifier.equals(ChessTypeIdentifier.PAWN) || typeIdentifier.equals(ChessTypeIdentifier.PAWNUPGRADE)) && move.getToCell().getRow() == otherTeamParameters.getKingRow()) {
             if (isMyTurn()) {
                 Identifier promotedTypeIdentifier = view.promotePawn();
-
                 if (!networkControl.isSinglePlayer()) {
                     networkControl.sendMessage(new PromotePawnMessage(move.getToCell().getRow(),
                             move.getToCell().getCol(), promotedTypeIdentifier, isElimination));
@@ -201,16 +213,14 @@ public class ChessControl implements ChessControlInterface {
                             isElimination);
                     gameOver(model.isGameOver(model.getCurrentTeam().getTeamIdentifier()));
                 }
-
                 checkHighlight();
             }
-
             return;
         }
         //checks for upgradePiece
+        Identifier promotedTypeIdentifier = piece.getTypeIdentifier();
         if (isElimination) {
             if (isMyTurn()) {
-                Identifier promotedTypeIdentifier = piece.getTypeIdentifier();
                 System.out.println(piece.getTypeIdentifier().toString());
                 switch(piece.getTypeIdentifier().toString()){
                     case "p":
@@ -250,12 +260,52 @@ public class ChessControl implements ChessControlInterface {
             return;
         }
 
+        if(previousPieceType == ChessTypeIdentifier.KNIGHTUPGRADE && boardInformation.getTeamIdentifier(to) == model.getCurrentTeam().getTeamIdentifier()) {
+            switch (typeIdentifier.toString()) {
+                case "p": //make to pawn horse.
+                    System.out.println("UPGRADED TO PAWN HORSE");
+                    promotedTypeIdentifier = ChessTypeIdentifier.PAWNKNIGHT;
+                    break;
+                case "b": //make to bishop horse.
+                    promotedTypeIdentifier = ChessTypeIdentifier.BISHOPKNIGHT;
+                    break;
+                case "r": //make to rook horse.
+                    promotedTypeIdentifier = ChessTypeIdentifier.ROOKKNIGHT;
+                    break;
+                case "q": //make to queen horse.
+                    System.out.println("UPGRADED TO queen HORSE");
+                    promotedTypeIdentifier = ChessTypeIdentifier.QUEENKNIGHT;
+                    break;
+                case "k": //make to king horse.
+                    System.out.println("UPGRADED TO king HORSE");
+                    promotedTypeIdentifier = ChessTypeIdentifier.KINGKNIGHT;
+                    break;
+            }
+            if (!networkControl.isSinglePlayer()) {
+                networkControl.sendMessage(new PromotePawnMessage(move.getToCell().getRow(),
+                        move.getToCell().getCol(), promotedTypeIdentifier, isElimination));
+            } else {
+                promotePiece(move.getToCell().getRow(), move.getToCell().getCol(), promotedTypeIdentifier,
+                        true);
+                gameOver(model.isGameOver(model.getCurrentTeam().getTeamIdentifier()));
+            }
+
+            checkHighlight();
+            return;
+
+        }
         model.registerMove(halfMove, move);
 
         checkHighlight();
 
         if (model.isGameOver(model.getCurrentTeam().getTeamIdentifier()) != 0) {
             playSound("checkmate");
+
+            for (BoardCell bcell : highlightedCells) {
+                bcell.unhighlight();
+            }
+
+            highlightedCells.clear();
             gameOver(model.isGameOver(model.getCurrentTeam().getTeamIdentifier()));
         } else if (model.isCheck(model.getCurrentTeam().getTeamIdentifier())) {
             playSound("check");

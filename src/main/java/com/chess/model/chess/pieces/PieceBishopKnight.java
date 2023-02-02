@@ -1,25 +1,22 @@
-package com.chess.model.chess;
+package com.chess.model.chess.pieces;
+
+import com.chess.model.*;
+import com.chess.model.chess.ChessTypeIdentifier;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
-import com.chess.model.Identifier;
-import com.chess.model.Move;
-import com.chess.model.PieceBehavior;
-import com.chess.model.Position;
-import com.chess.model.Rule;
 
 /**
  * The class for the Knight behavior.
  * @author Marcus Phu
  * @version 2022-03-02
  */
-public class PieceKnight implements PieceBehavior {
+public class PieceBishopKnight implements PieceBehavior {
 
     @Override
     public Identifier getTypeIdentifier() {
-        return ChessTypeIdentifier.KNIGHT;
+        return ChessTypeIdentifier.BISHOPKNIGHT;
     }
 
     @Override
@@ -34,6 +31,10 @@ public class PieceKnight implements PieceBehavior {
         rule.calculateMoves(position, teamIdentifier, possibleMoves, 2, -1, 1);
         rule.calculateMoves(position, teamIdentifier, possibleMoves, -2, 1, 1);
         rule.calculateMoves(position, teamIdentifier, possibleMoves, -2, -1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, -1, 1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, 1, -1);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, -1, -1);
 
         return possibleMoves.iterator();
     }

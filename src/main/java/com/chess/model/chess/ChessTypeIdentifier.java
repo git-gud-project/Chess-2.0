@@ -24,6 +24,11 @@ public enum ChessTypeIdentifier implements Identifier {
      */
     KNIGHT("n"),
     KNIGHTUPGRADE("nu"),
+    BISHOPKNIGHT("bnu"),
+    ROOKKNIGHT("rnu"),
+    PAWNKNIGHT("pnu"),
+    QUEENKNIGHT("qnu"),
+    KINGKNIGHT("knu"),
     /**
      * Value for the bishop piece type.
      */

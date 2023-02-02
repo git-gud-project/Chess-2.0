@@ -294,7 +294,8 @@ public class ChessModel {
 
                 final Piece piece = cell.getPiece();
 
-                if (piece.getTeamIdentifier().equals(teamIdentifier) && piece.getTypeIdentifier().equals(ChessTypeIdentifier.KING)) {
+                if (piece.getTeamIdentifier().equals(teamIdentifier) &&
+                    (piece.getTypeIdentifier().equals(ChessTypeIdentifier.KING) || piece.getTypeIdentifier().equals(ChessTypeIdentifier.KINGKNIGHT))) {
                     return cell;
                 }
             }

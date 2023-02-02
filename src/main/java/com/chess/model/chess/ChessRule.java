@@ -127,13 +127,20 @@ public class ChessRule implements Rule {
 
 
             if (boardInfo.isEmpty(nextPosition)) {
-                // If the cell is both empty and we require a capture, then we can't move here
+                // If the cell is both empty and, we require a capture, then we can't move here
                 if (requireCapture) {
                     break;
                 }
 
                 registry.add(new Move(nextPosition, position,pieceIdentifier,false));
                 continue;
+            }
+
+            if(boardInfo.getTeamIdentifier(nextPosition) == teamIdentifier &&
+                (boardInfo.getTypeIdentifier(nextPosition) == ChessTypeIdentifier.KNIGHTUPGRADE))
+            {
+                registry.add(new Move(nextPosition, position,pieceIdentifier, false));
+                break;
             }
 
             if (boardInfo.getTeamIdentifier(nextPosition) != teamIdentifier) {
@@ -276,7 +283,7 @@ public class ChessRule implements Rule {
      * Checks to see if there is any available move for a team
      *
      * @param playerTeamIdentifier The team to check if there is any available move
-     * @return True if the tream can move, false otherwise
+     * @return True if the team can move, false otherwise
      */
     private boolean canMove(Identifier playerTeamIdentifier) {
         for (int row = 0; row < gameSize; row++) {
@@ -330,7 +337,7 @@ public class ChessRule implements Rule {
             }
 
             if (boardInfo.getTeamIdentifier(toCell).equals(teamIdentifier) &&
-                boardInfo.getTypeIdentifier(toCell).equals(ChessTypeIdentifier.KING)) {
+                    (boardInfo.getTypeIdentifier(toCell).equals(ChessTypeIdentifier.KING) || boardInfo.getTypeIdentifier(toCell).equals(ChessTypeIdentifier.KINGKNIGHT))) {
                 return true;
             }
         }

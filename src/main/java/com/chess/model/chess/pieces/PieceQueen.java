@@ -1,4 +1,4 @@
-package com.chess.model.chess;
+package com.chess.model.chess.pieces;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +9,7 @@ import com.chess.model.Move;
 import com.chess.model.PieceBehavior;
 import com.chess.model.Position;
 import com.chess.model.Rule;
+import com.chess.model.chess.ChessTypeIdentifier;
 
 /**
  * The class for the Queen behavior.

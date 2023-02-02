@@ -1,10 +1,12 @@
-package com.chess.model.chess;
+package com.chess.model.chess.pieces;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 import com.chess.model.*;
+import com.chess.model.chess.ChessTeamParameters;
+import com.chess.model.chess.ChessTypeIdentifier;
 
 /**
  * The class for the King behavior.

@@ -1,6 +1,8 @@
-package com.chess.model.chess;
+package com.chess.model.chess.pieces;
 
 import com.chess.model.*;
+import com.chess.model.chess.ChessTeamParameters;
+import com.chess.model.chess.ChessTypeIdentifier;
 
 import java.util.ArrayList;
 import java.util.Collection;

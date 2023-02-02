@@ -1,17 +1,24 @@
-package com.chess.model.chess;
-
-import com.chess.model.*;
+package com.chess.model.chess.pieces;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import com.chess.model.Identifier;
+import com.chess.model.Move;
+import com.chess.model.PieceBehavior;
+import com.chess.model.Position;
+import com.chess.model.Rule;
+import com.chess.model.chess.ChessTeamParameters;
+import com.chess.model.chess.ChessTypeIdentifier;
+import com.chess.model.chess.SharedChessTeamParameters;
 
 /**
  * The class for the Pawn behavior.
  * @author Isak Holmdahl
  * @version 2022-03-02
  */
-public class PiecePawnUpgraded implements PieceBehavior {
+public class PiecePawn implements PieceBehavior {
     /**
      * The parameters of the team the chess piece belongs to.
      */
@@ -21,7 +28,7 @@ public class PiecePawnUpgraded implements PieceBehavior {
      * Constructor for PiecePawn.
      * @param teamParameters The parameters of the team the chess piece belongs to.
      */
-    public PiecePawnUpgraded(ChessTeamParameters teamParameters) {
+    public PiecePawn(ChessTeamParameters teamParameters) {
         this.teamParameters = teamParameters;
     }
 
@@ -51,7 +58,7 @@ public class PiecePawnUpgraded implements PieceBehavior {
 
     @Override
     public Identifier getTypeIdentifier() {
-        return ChessTypeIdentifier.PAWNUPGRADE;
+        return ChessTypeIdentifier.PAWN;
     }
 
     @Override
@@ -72,8 +79,8 @@ public class PiecePawnUpgraded implements PieceBehavior {
             rule.calculateMoves(position, teamIdentifier, possibleMoves, dirRow, 0, 1, false, true, false);
         }
 
-        rule.calculateMoves(position, teamIdentifier, possibleMoves, dirRow, 1, 1, false, false, false);
-        rule.calculateMoves(position, teamIdentifier, possibleMoves, dirRow, -1, 1, false, false, false);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, dirRow, 1, 1, false, false, true);
+        rule.calculateMoves(position, teamIdentifier, possibleMoves, dirRow, -1, 1, false, false, true);
 
         Position enPassentRow = teamParameters.getSharedTeamParameters().getEnPassantPosition();
 
